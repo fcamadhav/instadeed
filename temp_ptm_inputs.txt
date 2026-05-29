@@ -1,0 +1,37 @@
+
+                            {activeTab === 'GNIDA_PTM' && (
+                                <>
+                                    <Section title="Application Details" icon="fa-calendar" color="rose" isOpen={true}>
+                                        <Input label="Application Date (Dated)" name="dated" type="date" value={gnidaPtmData.dated} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, dated: e.target.value }))} />
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <Input label="Form No." name="formNo" value={gnidaPtmData.formNo} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, formNo: e.target.value }))} />
+                                            <Input label="Allotment No." name="allotmentNo" value={gnidaPtmData.allotmentNo} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, allotmentNo: e.target.value }))} />
+                                        </div>
+                                    </Section>
+
+                                    <Section title="Scheme & Property" icon="fa-building" color="rose" isOpen={true}>
+                                        <Input label="Scheme Name" name="schemeName" value={gnidaPtmData.schemeName} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, schemeName: e.target.value }))} />
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <Input label="Scheme Code" name="schemeCode" value={gnidaPtmData.schemeCode} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, schemeCode: e.target.value }))} />
+                                            <Input label="Plot Size (Sq.M)" name="plotSize" value={gnidaPtmData.plotSize} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, plotSize: e.target.value }))} />
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <Input label="Block" name="block" value={gnidaPtmData.block} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, block: e.target.value }))} />
+                                            <Input label="Plot No." name="plotNo" value={gnidaPtmData.plotNo} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, plotNo: e.target.value }))} />
+                                        </div>
+                                        <Input label="Plot Code" name="plotCode" value={gnidaPtmData.plotCode} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, plotCode: e.target.value }))} />
+                                    </Section>
+
+                                    <Section title="Allottee & Agency" icon="fa-user-tie" color="rose" isOpen={true}>
+                                        <Input label="Allottee Name" name="allotteeName" value={gnidaPtmData.allotteeName} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, allotteeName: e.target.value }))} />
+                                        <Input label="Mortgaging Agency Name" name="mortgagingAgencyName" value={gnidaPtmData.mortgagingAgencyName} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, mortgagingAgencyName: e.target.value }))} />
+                                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Agency Address</label>
+                                        <textarea name="mortgagingAgencyAddress" value={gnidaPtmData.mortgagingAgencyAddress} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, mortgagingAgencyAddress: e.target.value }))} className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-rose-500 focus:outline-none text-sm" rows="3"></textarea>
+                                    </Section>
+
+                                    <Section title="Acknowledgement (Office Use)" icon="fa-stamp" color="rose">
+                                        <Input label="Acknowledgement No." name="acknowledgementNo" value={gnidaPtmData.acknowledgementNo} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, acknowledgementNo: e.target.value }))} />
+                                        <Input label="Receiving Date" name="receivingDate" type="date" value={gnidaPtmData.receivingDate} onChange={(e) => setGnidaPtmData(prev => ({ ...prev, receivingDate: e.target.value }))} />
+                                    </Section>
+                                </>
+                            )}

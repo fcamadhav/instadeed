@@ -1,0 +1,2402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INSTADEED G.B. Nagar — Gautam Buddh Nagar's Premium Legal Drafting Suite</title>
+<meta name="description" content="Exclusively designed for Gautam Buddh Nagar (Noida, Greater Noida & Yamuna Expressway). Draft rent agreements, authority applications, and business documents online.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{
+  --blue:#1E3FA0;--blue-l:#2563EB;--blue-d:#1338AE;--blue-bg:#EEF4FF;--blue-mid:rgba(37,99,235,.12);
+  --green:#16A34A;--green-l:#DCFCE7;--orange:#EA580C;--orange-l:#FFF7ED;
+  --amber:#D97706;--amber-l:#FFFBEB;--purple:#7C3AED;--purple-l:#F5F3FF;
+  --sky:#0284C7;--sky-l:#E0F2FE;--rose:#E11D48;--rose-l:#FFE4E6;
+  --g50:#F8FAFC;--g100:#F1F5F9;--g200:#E2E8F0;--g300:#CBD5E1;
+  --g400:#94A3B8;--g500:#64748B;--g600:#475569;--g700:#334155;--g800:#1E293B;--g900:#0F172A;
+  --shadow-xs:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow-sm:0 4px 6px -1px rgba(0,0,0,.08),0 2px 4px -2px rgba(0,0,0,.05);
+  --shadow:0 10px 15px -3px rgba(0,0,0,.08),0 4px 6px -4px rgba(0,0,0,.05);
+  --shadow-md:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.05);
+  --shadow-lg:0 25px 50px -12px rgba(0,0,0,.18);
+  --r:12px;--rl:16px;--rxl:20px;--r2xl:24px;--rf:9999px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:var(--g800);line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+img{display:block;max-width:100%}
+
+/* ═══════════════════════
+   TOP ANNOUNCEMENT BAR
+═══════════════════════ */
+.topbar{
+  background:linear-gradient(90deg,var(--blue) 0%,#4F46E5 50%,var(--blue-l) 100%);
+  padding:.52rem 1.5rem; text-align:center;
+  font-size:.78rem; font-weight:500; color:rgba(255,255,255,.9);
+  letter-spacing:.01em;
+}
+.topbar a{color:#FCD34D;font-weight:700;margin-left:.35rem;text-decoration:underline}
+
+/* ═══════════════════════
+   NAV — Policybazaar style
+═══════════════════════ */
+.nav{
+  position:sticky;top:0;z-index:300;
+  background:rgba(255,255,255,.97);
+  border-bottom:1px solid var(--g200);
+  backdrop-filter:blur(20px) saturate(180%);
+  transition:box-shadow .25s;
+}
+.nav.scrolled{box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.nav-inner{
+  max-width:1240px;margin:0 auto;
+  display:flex;align-items:center;gap:.5rem;
+  padding:.7rem 1.5rem;
+}
+
+/*
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  INSTADEED LOGO — Matches Site Theme
+
+  Concept : two-tone wordmark (original)
+  "insta"  : #0F172A  → site charcoal / g900
+  "deed"   : #2563EB  → site primary blue (same as
+              all buttons, labels, section chips)
+  Icon     : site blue rounded square +
+             white document-with-pen SVG
+  .in      : #94A3B8  → site gray-400 (quiet TLD)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+*/
+.logo-wrap{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  cursor:pointer;
+  flex-shrink:0;
+  text-decoration:none;
+  user-select:none;
+}
+
+/* Icon — site blue box, white document+pen SVG */
+.logo-mark{
+  width:32px;
+  height:32px;
+  border-radius:9px;
+  background:var(--blue-l);          /* #2563EB — exact site blue */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  box-shadow:0 3px 10px rgba(37,99,235,.28),
+             inset 0 1px 0 rgba(255,255,255,.18);
+  transition:box-shadow .2s;
+}
+.logo-wrap:hover .logo-mark{
+  box-shadow:0 5px 16px rgba(37,99,235,.4),
+             inset 0 1px 0 rgba(255,255,255,.18);
+}
+.logo-mark svg{ width:16px; height:16px; }
+
+/* Wordmark — two solid site colors, no gradients */
+.logo-wordmark{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:900;
+  font-size:1.4rem;
+  letter-spacing:-.06em;
+  line-height:1;
+  display:inline-flex;
+  align-items:baseline;
+  gap:0;
+}
+/* "insta" — site charcoal (g900) */
+.lw-part1{ color:var(--g900); }
+
+/* "deed"  — site primary blue (exact match to buttons / badges) */
+.lw-part2{ color:var(--blue-l); }
+
+/* ".in"   — site gray-400, small & quiet */
+.lw-tld{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.65rem;
+  font-weight:800;
+  color:#fff;
+  background:var(--blue-l);
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  margin-left:.25rem;
+  align-self:center;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1;
+  box-shadow:0 2px 6px rgba(37,99,235,.2);
+}
+
+/* Nav center links */
+.nav-links{flex:1;display:flex;align-items:stretch;justify-content:center;gap:0}
+.nav-link{
+  font-size:.84rem;font-weight:500;color:var(--g600);
+  padding:.4rem .9rem;border-radius:var(--rf);
+  transition:all .18s;cursor:pointer;white-space:nowrap;
+  display:flex;align-items:center;gap:.3rem;
+  position:relative;
+}
+.nav-link:hover{color:var(--g900);background:var(--g50)}
+.nav-link.active{color:var(--blue-l);background:var(--blue-bg)}
+.nav-link i.chevron{font-size:.6rem;transition:transform .2s}
+.nav-link:hover i.chevron{transform:rotate(180deg)}
+
+/* Dropdown */
+.nav-item{position:relative}
+.nav-dropdown{
+  position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  background:#fff;border:1px solid var(--g200);border-radius:var(--rl);
+  padding:.6rem;min-width:220px;
+  box-shadow:0 20px 40px rgba(0,0,0,.12);
+  opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-6px);
+  transition:all .2s;z-index:100;
+}
+.nav-item:hover .nav-dropdown{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.dd-item{
+  display:flex;align-items:center;gap:.65rem;
+  padding:.55rem .8rem;border-radius:var(--r);
+  color:var(--g700);font-size:.83rem;font-weight:500;
+  cursor:pointer;transition:background .15s;
+}
+.dd-item:hover{background:var(--blue-bg);color:var(--blue-l)}
+.dd-icon{
+  width:30px;height:30px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:.78rem;flex-shrink:0;
+}
+
+/* Nav right */
+.nav-right{display:flex;align-items:center;gap:.55rem;flex-shrink:0}
+.nav-phone-pill{
+  display:flex;align-items:center;gap:.4rem;
+  font-size:.78rem;font-weight:600;color:var(--g600);
+  border:1.5px solid var(--g200);border-radius:var(--rf);
+  padding:.38rem .85rem;transition:all .18s;
+}
+.nav-phone-pill:hover{border-color:var(--blue-l);color:var(--blue-l)}
+.btn-nav-login{
+  font-size:.8rem;font-weight:600;color:var(--blue-l);
+  border:1.5px solid var(--blue-l);border-radius:var(--rf);
+  padding:.38rem .95rem;transition:all .18s;
+}
+.btn-nav-login:hover{background:var(--blue-bg)}
+.btn-nav-signup{
+  font-size:.8rem;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,var(--blue),var(--blue-l));
+  border-radius:var(--rf);padding:.42rem 1.05rem;
+  box-shadow:0 4px 12px rgba(37,99,235,.3);transition:all .2s;
+}
+.btn-nav-signup:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(37,99,235,.38)}
+
+/* ═══════════════════════
+   HERO — split layout
+═══════════════════════ */
+.hero{
+  background:linear-gradient(160deg,#fff 0%,var(--blue-bg) 55%,#EDE9FE 100%);
+  border-bottom:1px solid var(--g200);
+  padding:4rem 1.5rem 0;overflow:hidden;
+}
+.hero-inner{
+  max-width:1240px;margin:0 auto;
+  display:flex;align-items:flex-end;gap:3rem;
+}
+.hero-left{flex:1;min-width:0;padding-bottom:4rem}
+.hero-right{
+  width:480px;flex-shrink:0;
+  display:flex;align-items:flex-end;justify-content:center;
+  animation:heroFloat 5s ease-in-out infinite alternate;
+}
+@keyframes heroFloat{
+  0%{transform:translateY(0)}
+  100%{transform:translateY(-18px)}
+}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:#fff;border:1px solid var(--g200);border-radius:var(--rf);
+  padding:.32rem .9rem;font-size:.73rem;font-weight:600;color:var(--g600);
+  margin-bottom:1.4rem;box-shadow:var(--shadow-xs);
+  animation:fadeUp .55s ease both;
+}
+.hero-badge .live-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;
+  box-shadow:0 0 0 2px rgba(22,163,74,.25);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px rgba(22,163,74,.25)}50%{box-shadow:0 0 0 5px rgba(22,163,74,.1)}}
+
+.hero-h1{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:clamp(2.2rem,4.5vw,3.6rem);font-weight:900;
+  line-height:1.08;letter-spacing:-.045em;color:var(--g900);
+  margin-bottom:1.1rem;
+  animation:fadeUp .55s .08s ease both;
+}
+.hero-h1 .grad{
+  background:linear-gradient(130deg,var(--blue) 0%,#6366F1 55%,#0EA5E9 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-size:1.02rem;color:var(--g500);max-width:500px;
+  margin-bottom:2rem;line-height:1.72;
+  animation:fadeUp .55s .15s ease both;
+}
+
+/* ── Search bar ── */
+.hero-search-wrap{
+  max-width:540px;margin-bottom:1.1rem;
+  animation:fadeUp .55s .22s ease both;
+}
+.hero-search{
+  display:flex;align-items:center;gap:.75rem;
+  background:#fff;border:2px solid var(--g200);border-radius:var(--rf);
+  padding:.85rem 1rem .85rem 1.35rem;
+  box-shadow:0 8px 32px rgba(0,0,0,.1),0 2px 8px rgba(0,0,0,.06);
+  transition:border-color .2s,box-shadow .2s;
+}
+.hero-search:focus-within{
+  border-color:var(--blue-l);
+  box-shadow:0 0 0 4px rgba(37,99,235,.1),0 8px 32px rgba(0,0,0,.1);
+}
+.hero-search i{color:var(--g300);font-size:1.05rem;flex-shrink:0}
+.hero-search input{
+  flex:1;border:none;outline:none;font-size:.97rem;
+  color:var(--g800);background:transparent;font-family:'Inter',sans-serif;
+}
+.hero-search input::placeholder{color:var(--g400)}
+.btn-search{
+  font-size:.82rem;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,var(--blue),var(--blue-l));
+  padding:.5rem 1.25rem;border-radius:var(--rf);
+  white-space:nowrap;flex-shrink:0;
+  box-shadow:0 4px 12px rgba(37,99,235,.28);
+  transition:all .18s;
+}
+.btn-search:hover{transform:scale(1.02);box-shadow:0 6px 18px rgba(37,99,235,.38)}
+
+.hero-tags{
+  display:flex;gap:.55rem;flex-wrap:wrap;margin-bottom:2rem;
+  animation:fadeUp .55s .28s ease both;
+}
+.hero-tag{
+  font-size:.75rem;font-weight:500;color:var(--blue-l);cursor:pointer;
+  transition:color .18s;display:flex;align-items:center;gap:.25rem;
+}
+.hero-tag:hover{color:var(--blue-d);text-decoration:underline}
+.hero-tag-sep{color:var(--g300);font-size:.75rem}
+
+/* Quick pills */
+.hero-pills{
+  display:flex;gap:.7rem;flex-wrap:wrap;
+  animation:fadeUp .55s .34s ease both;
+}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:#fff;border:1.5px solid var(--g200);border-radius:var(--rf);
+  padding:.55rem 1rem;font-size:.82rem;font-weight:600;color:var(--g700);
+  cursor:pointer;transition:all .22s;box-shadow:var(--shadow-xs);
+}
+.hero-pill i{font-size:.85rem}
+.hero-pill:hover{border-color:var(--blue-l);color:var(--blue-l);background:var(--blue-bg);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+
+/* ── Hero visual: floating document card mockup ── */
+.hero-visual{
+  position:relative;width:100%;max-width:420px;padding-bottom:2rem;
+}
+.doc-mockup{
+  background:#fff;border:1px solid var(--g200);border-radius:var(--rxl);
+  box-shadow:var(--shadow-md);padding:1.5rem;width:100%;
+}
+.dm-header{
+  display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;
+}
+.dm-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,var(--blue-bg),#E0E7FF);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;color:var(--blue-l);flex-shrink:0;
+}
+.dm-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.95rem;color:var(--g900)}
+.dm-sub{font-size:.72rem;color:var(--g400);margin-top:.1rem}
+.dm-line{
+  height:8px;background:var(--g100);border-radius:4px;margin-bottom:.6rem;
+}
+.dm-line.w-full{width:100%}
+.dm-line.w-3q{width:75%}
+.dm-line.w-half{width:50%}
+.dm-line.w-2q{width:65%}
+.dm-sig-row{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:1.25rem;padding-top:1rem;border-top:1px dashed var(--g200);
+}
+.dm-sig{
+  display:flex;align-items:center;gap:.5rem;
+  background:var(--green-l);border:1px solid rgba(22,163,74,.25);
+  border-radius:var(--rf);padding:.38rem .8rem;
+  font-size:.72rem;font-weight:700;color:var(--green);
+}
+.dm-date{font-size:.72rem;color:var(--g400)}
+
+/* Floating badge cards */
+.float-card{
+  position:absolute;background:#fff;border:1px solid var(--g200);
+  border-radius:var(--rl);padding:.7rem .9rem;
+  box-shadow:var(--shadow-md);
+  display:flex;align-items:center;gap:.55rem;
+  font-size:.78rem;font-weight:600;color:var(--g700);
+  animation:cardFloat 6s ease-in-out infinite alternate;
+}
+.float-card.fc1{top:-20px;right:-20px;animation-duration:7s}
+.float-card.fc2{bottom:40px;left:-30px;animation-duration:8s;animation-delay:-3s}
+.float-card .fci{
+  width:32px;height:32px;border-radius:9px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;
+}
+@keyframes cardFloat{0%{transform:translateY(0)}100%{transform:translateY(-12px)}}
+
+/* ═══════════════════════
+   STATS BAR
+═══════════════════════ */
+.stats-bar{
+  background:#fff;border-bottom:1px solid var(--g200);
+  padding:1.25rem 1.5rem;
+}
+.stats-inner{
+  max-width:1000px;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+}
+.stat-item{text-align:center;padding:.4rem 2.5rem}
+
+/* Divider between Google and mobile */
+.auth-divider{
+  display:flex;align-items:center;gap:.75rem;
+  margin:1rem 0;
+}
+.auth-divider::before,.auth-divider::after{
+  content:'';flex:1;height:1px;background:var(--g200);
+}
+.auth-divider span{
+  font-size:.72rem;font-weight:600;color:var(--g400);
+  letter-spacing:.05em;white-space:nowrap;
+}
+
+/* Mobile OTP button — same size as Google btn, blue-tinted */
+.btn-mobile-otp{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:.7rem;
+  padding:.72rem 1rem;border-radius:var(--r);
+  border:1.5px solid var(--blue-bg);
+  background:var(--blue-bg);cursor:pointer;
+  font-family:'Inter',sans-serif;font-size:.88rem;font-weight:600;color:var(--blue-l);
+  transition:all .2s;
+}
+.btn-mobile-otp:hover{
+  background:#DBEAFE;
+  border-color:#BFDBFE;
+  transform:translateY(-1px);
+  box-shadow:0 3px 10px rgba(37,99,235,.12);
+}
+
+/* Back button */
+.auth-back-btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.78rem;font-weight:600;color:var(--g500);
+  background:none;border:none;cursor:pointer;padding:0;
+  transition:color .15s;
+}
+.auth-back-btn:hover{color:var(--g800)}
+
+/* Phone input row: flag + number */
+.phone-input-wrap{
+  display:flex;align-items:center;border:1.5px solid var(--g200);
+  border-radius:var(--r);overflow:hidden;margin-bottom:1rem;
+  transition:border-color .18s;
+}
+.phone-input-wrap:focus-within{border-color:var(--blue-l);box-shadow:0 0 0 3px var(--blue-mid)}
+.phone-flag{
+  padding:.72rem .85rem;background:var(--g50);
+  border-right:1.5px solid var(--g200);
+  font-size:.88rem;font-weight:600;color:var(--g700);
+  white-space:nowrap;flex-shrink:0;
+}
+.phone-inp{
+  flex:1;padding:.72rem .9rem;border:none;outline:none;
+  font-family:'Inter',sans-serif;font-size:.95rem;color:var(--g900);
+  background:#fff;letter-spacing:.04em;
+}
+.phone-inp::placeholder{color:var(--g300)}
+
+/* OTP boxes — 6 animated digits */
+.otp-boxes{
+  display:flex;gap:.55rem;justify-content:center;
+  margin:.3rem 0 0;
+}
+.otp-box{
+  width:44px;height:52px;
+  border:1.5px solid var(--g200);
+  border-radius:var(--r);
+  text-align:center;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:1.4rem;font-weight:800;color:var(--g900);
+  background:#fff;
+  outline:none;
+  transition:all .18s;
+  caret-color:var(--blue-l);
+}
+.otp-box:focus{
+  border-color:var(--blue-l);
+  box-shadow:0 0 0 3px var(--blue-mid);
+  transform:translateY(-1px);
+}
+.otp-box.filled{
+  border-color:var(--blue-l);
+  background:var(--blue-bg);
+  color:var(--blue-l);
+}
+.otp-box.error{border-color:var(--rose);background:#FFF5F5;animation:shake .3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+.stat-num{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:1.7rem;font-weight:900;color:var(--g900);line-height:1;
+}
+.stat-label{font-size:.72rem;color:var(--g500);margin-top:.3rem;font-weight:500}
+.stat-div{width:1px;height:44px;background:var(--g200);flex-shrink:0}
+
+/* Trust logos */
+.trust-bar{
+  background:var(--g50);border-bottom:1px solid var(--g200);
+  padding:.9rem 1.5rem;
+}
+.trust-inner{
+  max-width:1000px;margin:0 auto;
+  display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;justify-content:center;
+}
+.trust-label{font-size:.72rem;font-weight:600;color:var(--g400);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.trust-sep{width:1px;height:20px;background:var(--g200)}
+.trust-badge{
+  display:flex;align-items:center;gap:.4rem;
+  font-size:.75rem;font-weight:600;color:var(--g500);
+  background:#fff;border:1px solid var(--g200);border-radius:var(--rf);
+  padding:.28rem .75rem;
+}
+.trust-badge i{font-size:.75rem}
+.trust-badge.green{color:var(--green);border-color:rgba(22,163,74,.25);background:var(--green-l)}
+.trust-badge.blue{color:var(--blue-l);border-color:rgba(37,99,235,.2);background:var(--blue-bg)}
+
+/* ═══════════════════════
+   SECTION COMMON
+═══════════════════════ */
+section{position:relative}
+.wrapper{max-width:1240px;margin:0 auto;padding:0 1.5rem}
+.sp{padding:5rem 0}
+.sec-label{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--blue-l);background:var(--blue-bg);
+  border:1px solid rgba(37,99,235,.18);border-radius:var(--rf);
+  padding:.26rem .75rem;margin-bottom:.85rem;
+}
+.sec-title{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:clamp(1.55rem,2.8vw,2.2rem);font-weight:800;
+  letter-spacing:-.035em;color:var(--g900);line-height:1.2;
+}
+.sec-sub{color:var(--g500);font-size:.95rem;margin-top:.7rem;line-height:1.7;max-width:480px}
+.sec-head{text-align:center;margin-bottom:2.75rem}
+.sec-head .sec-sub{margin-left:auto;margin-right:auto}
+
+/* ═══════════════════════
+   POPULAR DOCS STRIP
+═══════════════════════ */
+.popular-strip{background:#fff;border-bottom:1px solid var(--g200);padding:1.5rem}
+.pop-inner{
+  max-width:1240px;margin:0 auto;
+  display:flex;align-items:center;gap:1rem;overflow-x:auto;
+  scrollbar-width:none;
+}
+.pop-inner::-webkit-scrollbar{display:none}
+.pop-label{font-size:.72rem;font-weight:700;color:var(--g400);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+.pop-sep{width:1px;height:20px;background:var(--g200);flex-shrink:0}
+.pop-chip{
+  display:inline-flex;align-items:center;gap:.45rem;
+  background:var(--g50);border:1.5px solid var(--g200);border-radius:var(--rf);
+  padding:.4rem .85rem;font-size:.8rem;font-weight:600;color:var(--g700);
+  white-space:nowrap;cursor:pointer;transition:all .18s;flex-shrink:0;
+}
+.pop-chip i{font-size:.78rem}
+.pop-chip:hover{background:var(--blue-bg);border-color:var(--blue-l);color:var(--blue-l)}
+.pop-chip.hot{background:var(--orange-l);border-color:rgba(234,88,12,.25);color:var(--orange)}
+
+/* ═══════════════════════
+   HOW IT WORKS
+═══════════════════════ */
+.how-section{background:var(--g50)}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;position:relative}
+.steps-grid::after{
+  content:'';position:absolute;
+  top:48px;left:calc(33.3% + 0px);right:calc(33.3% + 0px);
+  height:2px;background:linear-gradient(90deg,var(--blue-bg),var(--blue-l),var(--blue-bg));
+  z-index:0;
+}
+.step-card{
+  background:#fff;border:1px solid var(--g200);border-radius:var(--rxl);
+  padding:1.75rem 1.6rem;text-align:center;position:relative;z-index:1;
+  box-shadow:var(--shadow-xs);transition:all .25s;
+  overflow:hidden;
+}
+.step-card:hover{box-shadow:var(--shadow-md);transform:translateY(-4px);border-color:var(--blue-l)}
+.step-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--blue),#6366F1);
+  transform:scaleX(0);transform-origin:left;transition:transform .3s;
+}
+.step-card:hover::before{transform:scaleX(1)}
+.step-bubble{
+  width:48px;height:48px;border-radius:50%;
+  background:var(--blue-bg);border:2px solid rgba(37,99,235,.2);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1.25rem;transition:all .25s;
+}
+.step-card:hover .step-bubble{background:var(--blue-l);border-color:var(--blue-l)}
+.step-bubble span{
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;
+  font-size:.95rem;color:var(--blue-l);transition:color .25s;
+}
+.step-card:hover .step-bubble span{color:#fff}
+.step-icon-box{
+  width:42px;height:42px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:.97rem;
+  margin:0 auto 1rem;
+}
+.step-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.98rem;color:var(--g900);margin-bottom:.5rem}
+.step-desc{font-size:.83rem;color:var(--g500);line-height:1.65}
+.step-link{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-size:.77rem;font-weight:700;color:var(--blue-l);
+  margin-top:.85rem;cursor:pointer;transition:gap .2s;
+}
+.step-link:hover{gap:.55rem}
+
+/* ═══════════════════════
+   DOCUMENT CATALOG
+═══════════════════════ */
+.catalog-section{background:#fff}
+.search-row{max-width:460px;margin:0 auto 1.75rem;position:relative}
+.catalog-search{
+  width:100%;padding:.62rem 1.1rem .62rem 2.7rem;
+  border:1.5px solid var(--g200);border-radius:var(--rf);
+  font-size:.87rem;color:var(--g800);background:var(--g50);
+  font-family:'Inter',sans-serif;outline:none;transition:all .2s;
+}
+.catalog-search:focus{border-color:var(--blue-l);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.catalog-search-icon{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);color:var(--g400);font-size:.82rem;pointer-events:none}
+
+.cat-tabs{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.75rem}
+.cat-tab{
+  font-size:.78rem;font-weight:600;padding:.38rem .95rem;border-radius:var(--rf);
+  border:1.5px solid var(--g200);background:#fff;color:var(--g500);
+  cursor:pointer;transition:all .18s;font-family:'Inter',sans-serif;
+}
+.cat-tab:hover{border-color:var(--blue-l);color:var(--blue-l)}
+.cat-tab.active{background:var(--blue-l);border-color:var(--blue-l);color:#fff}
+
+/* Policybazaar-style icon-grid with borders */
+.docs-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));
+  border:1.5px solid var(--g200);border-radius:var(--rxl);
+  overflow:hidden;background:var(--g200);gap:1px;
+}
+.doc-tile{
+  background:#fff;padding:1.35rem .9rem 1.2rem;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  gap:.6rem;cursor:pointer;transition:all .22s;position:relative;
+}
+.doc-tile:hover{background:var(--blue-bg);z-index:1}
+.doc-tile-icon{
+  width:50px;height:50px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.15rem;transition:transform .22s;
+}
+.doc-tile:hover .doc-tile-icon{transform:scale(1.08)}
+.doc-tile-name{font-size:.78rem;font-weight:600;color:var(--g700);line-height:1.35;transition:color .18s}
+.doc-tile:hover .doc-tile-name{color:var(--blue-l)}
+.doc-tile-badge{
+  position:absolute;top:.55rem;right:.55rem;
+  font-size:.6rem;font-weight:700;padding:.15rem .48rem;border-radius:var(--rf);
+}
+.badge-new{background:var(--green-l);color:var(--green)}
+.badge-pop{background:var(--orange-l);color:var(--orange)}
+
+/* Icon colour presets */
+.ic-b{background:var(--blue-bg);color:var(--blue-l)}
+.ic-g{background:var(--green-l);color:var(--green)}
+.ic-o{background:var(--orange-l);color:var(--orange)}
+.ic-p{background:var(--purple-l);color:var(--purple)}
+.ic-a{background:var(--amber-l);color:var(--amber)}
+.ic-s{background:var(--sky-l);color:var(--sky)}
+.ic-r{background:var(--rose-l);color:var(--rose)}
+
+/* ═══════════════════════
+   AUDIENCE GRID
+═══════════════════════ */
+.audience-section{background:var(--g50)}
+.audience-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border:1.5px solid var(--g200);border-radius:var(--rxl);
+  overflow:hidden;background:var(--g200);gap:1px;
+}
+.aud-card{
+  background:#fff;padding:1.6rem 1.4rem;
+  cursor:pointer;transition:background .2s;position:relative;
+}
+.aud-card:hover{background:var(--blue-bg)}
+.aud-dot{
+  position:absolute;width:12px;height:12px;border-radius:50%;
+  top:0;left:0;transform:translate(-50%,-50%);
+  background:var(--g100);border:1px solid var(--g200);z-index:1;
+}
+.aud-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:1.05rem;
+  margin-bottom:.9rem;
+}
+.aud-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.93rem;color:var(--g800);margin-bottom:.35rem}
+.aud-desc{font-size:.8rem;color:var(--g500);line-height:1.6}
+
+/* ═══════════════════════
+   FEATURES BENTO
+═══════════════════════ */
+.features-section{background:#fff}
+.bento{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  grid-auto-rows:auto;gap:1.25rem;
+}
+.bento-card{
+  background:var(--g50);border:1px solid var(--g200);border-radius:var(--rxl);
+  padding:1.65rem;box-shadow:var(--shadow-xs);transition:all .25s;
+}
+.bento-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.bento-card.hero-card-feat{
+  grid-column:span 2;
+  background:linear-gradient(135deg,var(--g900) 0%,var(--g800) 100%);
+  border:none;
+}
+.bento-card.hero-card-feat .bento-title{color:#fff}
+.bento-card.hero-card-feat .bento-desc{color:rgba(255,255,255,.65)}
+.bfi{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;margin-bottom:1rem}
+.bento-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.97rem;color:var(--g900);margin-bottom:.45rem}
+.bento-desc{font-size:.82rem;color:var(--g500);line-height:1.65}
+.bento-card.hero-card-feat .bfi{background:rgba(255,255,255,.12)}
+.bento-card.hero-card-feat .bfi i{color:#fff}
+
+/* ═══════════════════════
+   TESTIMONIALS
+═══════════════════════ */
+.testi-section{background:var(--g50)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.testi-card{
+  background:#fff;border:1px solid var(--g200);border-radius:var(--rxl);
+  padding:1.5rem;transition:all .25s;
+}
+.testi-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.t-stars{color:#F59E0B;font-size:.8rem;letter-spacing:.04em;margin-bottom:.8rem}
+.t-text{font-size:.88rem;color:var(--g700);line-height:1.75;margin-bottom:1.1rem;font-style:italic}
+.t-author{display:flex;align-items:center;gap:.65rem}
+.t-av{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.78rem;color:#fff;flex-shrink:0;
+}
+.t-name{font-weight:700;font-size:.83rem;color:var(--g800)}
+.t-role{font-size:.71rem;color:var(--g400);margin-top:.12rem}
+
+/* ═══════════════════════
+   FAQ
+═══════════════════════ */
+.faq-section{background:#fff}
+.faq-wrap{max-width:760px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--g200)}
+.faq-q{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:1.15rem 0;cursor:pointer;
+  font-weight:600;font-size:.92rem;color:var(--g800);
+  transition:color .18s;
+}
+.faq-q:hover{color:var(--blue-l)}
+.faq-q i{
+  color:var(--g400);font-size:.75rem;flex-shrink:0;
+  transition:transform .25s,color .18s;
+}
+.faq-q:hover i{color:var(--blue-l)}
+.faq-item.open .faq-q i{transform:rotate(45deg);color:var(--blue-l)}
+.faq-a{
+  max-height:0;overflow:hidden;
+  font-size:.86rem;color:var(--g500);line-height:1.75;
+  transition:max-height .35s ease,padding .3s;
+  padding:0;
+}
+.faq-item.open .faq-a{max-height:300px;padding-bottom:1.1rem}
+
+/* ═══════════════════════
+   CTA BAND
+═══════════════════════ */
+.cta-section{
+  background:linear-gradient(135deg,var(--g900) 0%,#1E3A8A 40%,#312E81 80%,#1E1B4B 100%);
+  padding:5.5rem 1.5rem;text-align:center;position:relative;overflow:hidden;
+}
+.cta-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 20% 50%,rgba(99,102,241,.15) 0%,transparent 60%),
+             radial-gradient(ellipse at 80% 50%,rgba(14,165,233,.12) 0%,transparent 60%);
+}
+.cta-inner{max-width:640px;margin:0 auto;position:relative}
+.cta-pill{
+  display:inline-flex;align-items:center;gap:.45rem;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  color:#FCD34D;border-radius:var(--rf);padding:.28rem .8rem;
+  font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.1rem;
+}
+.cta-h{
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(1.7rem,4vw,2.7rem);
+  font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1.15;margin-bottom:.85rem;
+}
+.cta-sub{color:rgba(255,255,255,.65);font-size:.97rem;margin-bottom:2rem;line-height:1.7}
+.cta-btns{display:flex;gap:.85rem;justify-content:center;flex-wrap:wrap}
+.btn-cta-w{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.9rem;font-weight:700;color:var(--blue);
+  background:#fff;padding:.7rem 1.65rem;border-radius:var(--rf);
+  box-shadow:0 8px 24px rgba(0,0,0,.2);transition:all .22s;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.btn-cta-w:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.25)}
+.btn-cta-o{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.9rem;font-weight:700;color:#fff;
+  background:transparent;border:2px solid rgba(255,255,255,.45);
+  padding:.68rem 1.5rem;border-radius:var(--rf);
+  transition:all .22s;font-family:'Plus Jakarta Sans',sans-serif;
+}
+.btn-cta-o:hover{background:rgba(255,255,255,.1);border-color:#fff}
+
+/* ═══════════════════════
+   FOOTER
+═══════════════════════ */
+footer{background:var(--g900);color:rgba(255,255,255,.5);padding:3rem 1.5rem 1.75rem}
+.footer-inner{max-width:1240px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem;margin-bottom:2rem}
+.footer-brand .logo-main{color:#fff;font-size:1.05rem}
+.footer-brand .logo-main span{color:#93C5FD}
+.footer-tagline{font-size:.78rem;color:rgba(255,255,255,.4);margin-top:.5rem;line-height:1.65;max-width:220px}
+.footer-col-title{font-weight:700;font-size:.8rem;color:rgba(255,255,255,.8);margin-bottom:.85rem;letter-spacing:.04em}
+.footer-col-links{display:flex;flex-direction:column;gap:.55rem}
+.footer-col-links a{font-size:.78rem;color:rgba(255,255,255,.4);transition:color .18s}
+.footer-col-links a:hover{color:rgba(255,255,255,.8)}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.08);padding-top:1.25rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.footer-copy{font-size:.75rem}
+.footer-legal{display:flex;gap:1.25rem;flex-wrap:wrap}
+.footer-legal a{font-size:.75rem;color:rgba(255,255,255,.35);transition:color .18s}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+
+/* ═══════════════════════
+   PRICING
+═══════════════════════ */
+.pricing-section{background:var(--g50)}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.plan-card{
+  background:#fff;border:1.5px solid var(--g200);border-radius:var(--rxl);
+  padding:2rem 1.65rem;transition:all .25s;position:relative;overflow:hidden;
+}
+.plan-card.popular{
+  border-color:var(--blue-l);
+  box-shadow:0 0 0 3px rgba(37,99,235,.1),var(--shadow-md);
+}
+.plan-card.popular::before{
+  content:'MOST POPULAR';
+  position:absolute;top:1.1rem;right:1.1rem;
+  background:var(--blue-l);color:#fff;
+  font-size:.6rem;font-weight:800;letter-spacing:.1em;
+  padding:.22rem .65rem;border-radius:var(--rf);
+}
+.plan-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.05rem;color:var(--g900);margin-bottom:.35rem}
+.plan-price{
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;
+  font-size:2.4rem;color:var(--g900);letter-spacing:-.05em;line-height:1;
+  margin:.85rem 0 .25rem;
+}
+.plan-price sup{font-size:1.1rem;vertical-align:.5em;font-weight:700}
+.plan-price sub{font-size:.75rem;font-weight:500;color:var(--g500);letter-spacing:0}
+.plan-sub{font-size:.8rem;color:var(--g400);margin-bottom:1.4rem;line-height:1.55}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:.65rem;margin-bottom:1.75rem}
+.plan-features li{
+  display:flex;align-items:flex-start;gap:.55rem;
+  font-size:.82rem;color:var(--g600);line-height:1.5;
+}
+.plan-features li i{font-size:.72rem;margin-top:.22rem;flex-shrink:0}
+.plan-features li i.ok{color:var(--green)}
+.plan-features li i.no{color:var(--g300)}
+.btn-plan{
+  width:100%;padding:.65rem;border-radius:var(--rf);
+  font-size:.87rem;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;
+  cursor:pointer;transition:all .22s;border:none;
+}
+.btn-plan-outline{
+  background:transparent;color:var(--blue-l);
+  border:1.5px solid var(--blue-l);
+}
+.btn-plan-outline:hover{background:var(--blue-bg)}
+.btn-plan-filled{
+  background:linear-gradient(135deg,var(--blue),var(--blue-l));color:#fff;
+  box-shadow:0 6px 18px rgba(37,99,235,.25);
+}
+.btn-plan-filled:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(37,99,235,.35)}
+.btn-plan-dark{
+  background:var(--g900);color:#fff;
+}
+.btn-plan-dark:hover{background:var(--g800)}
+.plan-card:hover:not(.popular){transform:translateY(-3px);box-shadow:var(--shadow-md)}
+
+/* ═══════════════════════
+   COMPARISON TABLE
+═══════════════════════ */
+.compare-section{background:#fff}
+.compare-table{width:100%;border-collapse:collapse;border-radius:var(--rxl);overflow:hidden;border:1.5px solid var(--g200)}
+.compare-table th,.compare-table td{padding:.9rem 1.2rem;text-align:center;font-size:.83rem;border-bottom:1px solid var(--g200)}
+.compare-table th:first-child,.compare-table td:first-child{text-align:left;font-weight:600;color:var(--g700)}
+.compare-table thead th{background:var(--g50);font-weight:700;font-size:.78rem;color:var(--g600);letter-spacing:.04em;text-transform:uppercase}
+.compare-table thead th.highlight{background:var(--blue-bg);color:var(--blue-l)}
+.compare-table tbody tr:hover td{background:var(--g50)}
+.compare-table tbody tr:last-child td{border-bottom:none}
+.cmp-yes{color:var(--green);font-size:.9rem}
+.cmp-no{color:var(--g300);font-size:.9rem}
+.cmp-partial{color:var(--amber);font-size:.75rem;font-weight:600}
+
+/* ═══════════════════════
+   MOBILE STICKY CTA
+═══════════════════════ */
+.mobile-sticky{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:250;
+  padding:.75rem 1rem;background:#fff;
+  border-top:1px solid var(--g200);
+  box-shadow:0 -4px 16px rgba(0,0,0,.1);
+  gap:.6rem;
+}
+.mobile-sticky .btn-ms-d{
+  flex:1;padding:.65rem;border-radius:var(--rf);
+  background:var(--g100);border:1.5px solid var(--g200);
+  font-size:.82rem;font-weight:700;color:var(--g700);text-align:center;
+  transition:all .18s;
+}
+.mobile-sticky .btn-ms-p{
+  flex:2;padding:.65rem;border-radius:var(--rf);
+  background:linear-gradient(135deg,var(--blue),var(--blue-l));color:#fff;
+  font-size:.82rem;font-weight:700;text-align:center;
+  box-shadow:0 4px 12px rgba(37,99,235,.3);
+}
+@media(max-width:768px){
+  .mobile-sticky{display:flex}
+  body{padding-bottom:70px}
+}
+
+/* ═══════════════════════
+   EDITOR OVERLAY
+═══════════════════════ */
+.editor-overlay{position:fixed;inset:0;z-index:500;background:var(--g50);display:none;flex-direction:column}
+.editor-overlay.open{display:flex}
+.editor-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.65rem 1.2rem;background:#fff;
+  border-bottom:1px solid var(--g200);
+  box-shadow:var(--shadow-xs);gap:1rem;flex-shrink:0;
+}
+.edt-doc-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:.93rem;color:var(--g900)}
+.edt-doc-sub{font-size:.7rem;color:var(--g400);margin-top:.08rem}
+.edt-actions{display:flex;gap:.55rem;align-items:center;flex-shrink:0}
+.btn-esign{
+  display:inline-flex;align-items:center;gap:.42rem;
+  font-size:.78rem;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,var(--green),#059669);
+  padding:.4rem 1rem;border-radius:var(--rf);
+  box-shadow:0 4px 12px rgba(22,163,74,.25);transition:all .2s;
+}
+.btn-esign:hover{transform:translateY(-1px)}
+.btn-dl{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.75rem;font-weight:600;color:var(--g600);
+  background:var(--g100);border:1px solid var(--g200);
+  padding:.38rem .85rem;border-radius:var(--rf);transition:all .2s;
+}
+.btn-dl:hover{background:var(--g200)}
+.btn-close-ed{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--g100);border:1px solid var(--g200);
+  color:var(--g500);transition:all .2s;font-size:.82rem;
+}
+.btn-close-ed:hover{background:#FEE2E2;color:#EF4444;border-color:#FECACA}
+.editor-frame{flex:1;border:none;width:100%;height:100%}
+
+/* ═══════════════════════
+   AUTH MODAL
+═══════════════════════ */
+.m-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(15,23,42,.5);backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:1rem;
+}
+.m-overlay.open{display:flex}
+.m-box{
+  background:#fff;border-radius:var(--r2xl);width:100%;max-width:430px;
+  padding:2.1rem;box-shadow:var(--shadow-lg);
+  animation:mPop .3s cubic-bezier(.34,1.56,.64,1) both;position:relative;
+}
+@keyframes mPop{from{opacity:0;transform:scale(.94) translateY(14px)}to{opacity:1;transform:none}}
+.m-close{
+  position:absolute;top:1rem;right:1rem;
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--g100);color:var(--g400);cursor:pointer;transition:all .18s;font-size:.78rem;
+}
+.m-close:hover{background:#FEE2E2;color:#EF4444}
+.m-logo{display:flex;align-items:center;gap:.5rem;margin-bottom:1.25rem}
+.m-h{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.35rem;color:var(--g900);letter-spacing:-.025em;margin-bottom:.3rem}
+.m-sub{font-size:.83rem;color:var(--g400);margin-bottom:1.5rem;line-height:1.6}
+.f-grp{margin-bottom:.9rem}
+.f-label{font-size:.73rem;font-weight:600;color:var(--g600);display:block;margin-bottom:.35rem}
+.f-inp{
+  width:100%;padding:.58rem .9rem;
+  border:1.5px solid var(--g200);border-radius:var(--r);
+  background:var(--g50);font-size:.88rem;color:var(--g800);
+  font-family:'Inter',sans-serif;outline:none;transition:all .18s;
+}
+.f-inp:focus{border-color:var(--blue-l);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.btn-fp{
+  width:100%;padding:.65rem;border-radius:var(--rf);
+  font-size:.88rem;font-weight:700;
+  background:linear-gradient(135deg,var(--blue),var(--blue-l));
+  color:#fff;font-family:'Plus Jakarta Sans',sans-serif;
+}
+.btn-fp:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(37,99,235,.35)}
+.btn-google{
+  width:100%; display:flex; align-items:center; justify-content:center; gap:.65rem;
+  padding:.65rem 1rem; border-radius:var(--rf); border:1.5px solid var(--g200);
+  background:#fff; color:var(--g700); cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.88rem; font-weight:700; transition:all .2s;
+}
+.btn-google:hover{
+  background:var(--g50); border-color:var(--g300); transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(0,0,0,.05);
+}
+.m-switch{text-align:center;margin-top:1rem;font-size:.8rem;color:var(--g400)}
+.m-switch a{color:var(--blue-l);font-weight:600;cursor:pointer}
+.m-switch a:hover{text-decoration:underline}
+
+/* User Chip styling & state handling */
+.user-chip{
+  display:none; /* hidden by default */
+  align-items:center;
+  gap:.55rem;
+  padding:.35rem .8rem .35rem .35rem;
+  border:1.5px solid var(--g200);
+  border-radius:var(--rf);
+  cursor:pointer;
+  background:#fff;
+  transition:all .18s;
+  user-select:none;
+}
+.user-chip:hover{
+  border-color:var(--blue-l);
+  box-shadow:var(--shadow-xs);
+}
+.user-avatar{
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--blue-l));
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:800;
+  font-size:.75rem;
+  overflow:hidden;
+  flex-shrink:0;
+}
+.user-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
+}
+.user-name{
+  font-size:.8rem;
+  font-weight:700;
+  color:var(--g700);
+}
+
+/* Hide login/signup when signed in */
+.nav-auth-signed-in .btn-login,
+.nav-auth-signed-in .btn-register {
+  display:none !important;
+}
+/* Show user chip when signed in */
+.nav-auth-signed-in .user-chip {
+  display:flex !important;
+}
+
+/* ═══════════════════════
+   AADHAAR ESIGN MODAL
+═══════════════════════ */
+.es-overlay{
+  position:fixed;inset:0;z-index:1100;
+  background:rgba(15,23,42,.55);backdrop-filter:blur(10px);
+  display:none;align-items:center;justify-content:center;padding:1rem;
+}
+.es-overlay.open{display:flex}
+.es-box{
+  background:#fff;border-radius:var(--r2xl);width:100%;max-width:470px;
+  box-shadow:var(--shadow-lg);overflow:hidden;
+  animation:mPop .3s cubic-bezier(.34,1.56,.64,1) both;
+}
+.es-head{
+  background:linear-gradient(135deg,#0F172A,#1E293B);
+  padding:1.4rem 1.65rem 1.2rem;color:#fff;
+}
+.es-head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
+.es-badge{
+  display:inline-flex;align-items:center;gap:.35rem;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.85);border-radius:var(--rf);
+  padding:.2rem .65rem;font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;
+}
+.es-hclose{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);
+  cursor:pointer;font-size:.78rem;transition:all .2s;
+}
+.es-hclose:hover{background:rgba(255,255,255,.2);color:#fff}
+.es-prog{display:flex;align-items:center;gap:.38rem;margin-top:1rem}
+.ep-d{
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.62rem;font-weight:700;flex-shrink:0;transition:all .28s;
+}
+.ep-d.active{background:var(--blue-l);color:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.3)}
+.ep-d.done{background:var(--green);color:#fff}
+.ep-d.pend{background:rgba(255,255,255,.15);color:rgba(255,255,255,.5)}
+.ep-l{flex:1;height:2px;border-radius:1px;background:rgba(255,255,255,.15);transition:background .3s}
+.ep-l.done{background:var(--green)}
+.es-body{padding:1.5rem 1.65rem 1.65rem}
+.es-step{display:none}
+.es-step.active{display:block}
+.es-info{
+  display:flex;align-items:flex-start;gap:.6rem;
+  background:var(--blue-bg);border:1px solid rgba(37,99,235,.15);
+  border-radius:var(--r);padding:.85rem .95rem;margin-bottom:1.1rem;
+}
+.es-info i{color:var(--blue-l);font-size:.82rem;margin-top:.08rem;flex-shrink:0}
+.es-info p{font-size:.78rem;color:var(--g600);line-height:1.6}
+.otp-row{display:flex;gap:.55rem;justify-content:center;margin:1rem 0}
+.otp-d{
+  width:48px;height:54px;text-align:center;
+  border:1.5px solid var(--g200);border-radius:var(--r);
+  background:var(--g50);font-size:1.3rem;font-weight:800;color:var(--g900);
+  font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:all .18s;
+}
+.otp-d:focus{border-color:var(--blue-l);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.otp-timer{text-align:center;font-size:.75rem;color:var(--g400);margin-bottom:.9rem}
+.otp-timer span{color:var(--blue-l);font-weight:700}
+.es-legal{
+  background:var(--g50);border:1px solid var(--g200);border-radius:var(--r);
+  padding:.75rem;margin-bottom:1rem;font-size:.7rem;color:var(--g400);line-height:1.65;text-align:center;
+}
+.es-success{text-align:center;padding:.25rem 0}
+.es-s-icon{
+  width:64px;height:64px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green-l),#BBF7D0);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;color:var(--green);margin:0 auto 1rem;
+  box-shadow:0 8px 24px rgba(22,163,74,.18);
+}
+.es-s-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.15rem;color:var(--g900);margin-bottom:.4rem}
+.es-s-sub{font-size:.82rem;color:var(--g400);line-height:1.65;max-width:280px;margin:0 auto 1.25rem}
+.cert-box{
+  background:var(--g50);border:1px solid var(--g200);border-radius:var(--r);
+  padding:.85rem .95rem;text-align:left;margin-bottom:1.1rem;
+  display:flex;align-items:flex-start;gap:.6rem;
+}
+.cert-box i{color:var(--blue-l);font-size:.85rem;margin-top:.05rem;flex-shrink:0}
+.cert-title{font-size:.72rem;font-weight:700;color:var(--g700);margin-bottom:.2rem}
+.cert-body{font-size:.7rem;color:var(--g500);line-height:1.6}
+
+/* ═══════════════════════
+   ANIMATIONS & UTILS
+═══════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ═══════════════════════
+   RESPONSIVE
+═══════════════════════ */
+@media(max-width:1024px){
+  .hero-inner{flex-direction:column;align-items:center;padding-bottom:3rem}
+  .hero-right{width:100%;max-width:420px;padding-bottom:0}
+  .hero-left{padding-bottom:0;text-align:center}
+  .hero-tags,.hero-pills{justify-content:center}
+  .hero-search-wrap{margin-left:auto;margin-right:auto}
+  .hero-sub{margin-left:auto;margin-right:auto}
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .bento-card.hero-card-feat{grid-column:span 2}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .pricing-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .nav-links,.nav-phone-pill{display:none}
+  .topbar{display:none}
+  .steps-grid{grid-template-columns:1fr}
+  .steps-grid::after{display:none}
+  .testi-grid{grid-template-columns:1fr}
+  .audience-grid{grid-template-columns:1fr 1fr}
+  .bento{grid-template-columns:1fr}
+  .bento-card.hero-card-feat{grid-column:span 1}
+  .stat-div{display:none}
+  .stat-item{padding:.4rem 1.25rem}
+  .docs-grid{grid-template-columns:repeat(3,1fr)}
+  .footer-top{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .audience-grid{grid-template-columns:1fr}
+  .docs-grid{grid-template-columns:repeat(2,1fr)}
+  .otp-d{width:40px;height:46px;font-size:1.1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  🎉 Exclusively serving Noida, Greater Noida, and Yamuna Expressway (Gautam Buddh Nagar) residents & businesses!
+</div>
+
+<!-- ══ NAV ══ -->
+<nav class="nav" id="mainNav">
+  <div class="nav-inner">
+
+    <!-- ══ INSTADEED LOGO ══
+         Concept: two-tone wordmark (like major Indian brands)
+         Execution: 100% original
+         • Quill icon in amber rounded square (legal heritage)
+         • "insta" in deep slate (speed & trust)
+         • "deed" in rich amber  (official, stamps, gold)
+         • ".in" in muted gray
+    -->
+    <a class="logo-wrap" href="#" onclick="scrollToTop(event)" aria-label="instadeed home">
+      <!-- Icon: site-blue box + white document-with-pen -->
+      <div class="logo-mark">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Document body -->
+          <rect x="3" y="2" width="11" height="14" rx="1.5" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="1.3"/>
+          <!-- Lines on doc -->
+          <line x1="6" y1="6" x2="11" y2="6" stroke="white" stroke-width="1.1" stroke-linecap="round"/>
+          <line x1="6" y1="9" x2="11" y2="9" stroke="white" stroke-width="1.1" stroke-linecap="round"/>
+          <line x1="6" y1="12" x2="9" y2="12" stroke="white" stroke-width="1.1" stroke-linecap="round"/>
+          <!-- Pen nib (bottom right) -->
+          <path d="M13.5 13l3-3 1.5 1.5-3 3-2 .5.5-2z" fill="white" stroke="white" stroke-width=".4" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <!-- Two-tone wordmark -->
+      <span class="logo-wordmark">
+        <span class="lw-part1">insta</span><span class="lw-part2">deed</span><span class="lw-tld">in</span>
+        <span style="font-size: 0.55rem; font-weight: 700; background: var(--orange-l); color: var(--orange); border: 1px solid rgba(234,88,12,0.2); padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 0.5rem; letter-spacing: 0.05em; align-self: center; text-transform: uppercase;">G.B. Nagar</span>
+      </span>
+    </a>
+
+    <!-- NAV LINKS with dropdown -->
+    <div class="nav-links">
+      <div class="nav-item">
+        <span class="nav-link" onclick="scrollToDocs()">
+          Documents <i class="fa-solid fa-chevron-down chevron"></i>
+        </span>
+        <div class="nav-dropdown">
+          <div class="dd-item" onclick="openDocCat('gnida')"><div class="dd-icon ic-b"><i class="fa-solid fa-landmark"></i></div>GNIDA Forms</div>
+          <div class="dd-item" onclick="openDocCat('noida')"><div class="dd-icon ic-o"><i class="fa-solid fa-building"></i></div>NOIDA Forms</div>
+          <div class="dd-item" onclick="openDocCat('yeida')"><div class="dd-icon ic-g"><i class="fa-solid fa-road"></i></div>YEIDA Forms</div>
+          <div class="dd-item" onclick="openDocCat('gda')"><div class="dd-icon ic-p"><i class="fa-solid fa-city"></i></div>GDA Forms</div>
+          <div class="dd-item" onclick="openDocCat('prop')"><div class="dd-icon ic-s"><i class="fa-solid fa-home"></i></div>Property & Tenancy</div>
+          <div class="dd-item" onclick="openDocCat('biz')"><div class="dd-icon ic-a"><i class="fa-solid fa-briefcase"></i></div>Business & E-Commerce</div>
+        </div>
+      </div>
+      <span class="nav-link" href="#how-it-works" onclick="scrollToSection('how-it-works')">How It Works</span>
+      <span class="nav-link" onclick="scrollToSection('features')">Features</span>
+      <span class="nav-link" onclick="scrollToSection('pricing')">Pricing</span>
+      <span class="nav-link" onclick="scrollToSection('faq')">FAQs</span>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="nav-right" id="navAuthArea">
+      <div class="nav-phone-pill"><i class="fa-solid fa-phone"></i> 1800-000-0000</div>
+      <button class="btn-nav-login btn-login" onclick="openAuth('login')">Login</button>
+      <button class="btn-nav-signup btn-register" onclick="openAuth('register')">Create free account</button>
+      <!-- User chip (shown after sign-in) -->
+      <div class="user-chip" id="userChip" onclick="toggleUserMenu()">
+        <div class="user-avatar" id="userAvatar">U</div>
+        <span class="user-name" id="userName">User</span>
+        <i class="fa-solid fa-chevron-down" style="font-size:.55rem;color:var(--g400);margin-left:.15rem"></i>
+      </div>
+      <!-- User dropdown -->
+      <div id="userMenu" style="display:none;position:absolute;top:calc(100% + 10px);right:1.5rem;background:#fff;border:1px solid var(--g200);border-radius:var(--rl);padding:.5rem;min-width:190px;box-shadow:0 20px 40px rgba(0,0,0,.12);z-index:400">
+        <div style="padding:.55rem .7rem;font-size:.78rem;color:var(--g500);border-bottom:1px solid var(--g100);margin-bottom:.35rem" id="userMenuEmail"></div>
+        <div style="display:flex;align-items:center;gap:.5rem;padding:.5rem .7rem;font-size:.82rem;font-weight:500;color:var(--g700);border-radius:8px;cursor:pointer" onmouseover="this.style.background='var(--g50)'" onmouseout="this.style.background='transparent'" onclick="scrollToSection('pricing')"><i class="fa-solid fa-file-contract" style="color:var(--blue-l);width:14px"></i> My Documents</div>
+        <div style="display:flex;align-items:center;gap:.5rem;padding:.5rem .7rem;font-size:.82rem;font-weight:500;color:var(--rose);border-radius:8px;cursor:pointer" onmouseover="this.style.background='#FFF5F5'" onmouseout="this.style.background='transparent'" onclick="signOut()"><i class="fa-solid fa-right-from-bracket" style="width:14px"></i> Sign out</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <!-- Left -->
+    <div class="hero-left">
+      <div class="hero-badge"><span class="live-dot"></span> Exclusively for Noida, Greater Noida &amp; Yamuna Expressway</div>
+      <h1 class="hero-h1">G.B. Nagar's <span class="grad">Premium Legal</span><br>Drafting Suite</h1>
+      <p class="hero-sub">Tailored exclusively for property, authority, and tenancy documentation in Gautam Buddh Nagar district.</p>
+
+      <div class="hero-search-wrap">
+        <div class="hero-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="heroSearch" placeholder="Search for GNIDA 5-in-1, Noida Transfer, Rent Agreement…" oninput="heroSearchFn(this.value)" autocomplete="off">
+          <button class="btn-search" onclick="scrollToDocs()">Search</button>
+        </div>
+      </div>
+
+      <div class="hero-tags">
+        <a class="hero-tag" onclick="quickSearch('GNIDA 5-in-1')">GNIDA 5-in-1</a>
+        <span class="hero-tag-sep">|</span>
+        <a class="hero-tag" onclick="quickSearch('Noida Transfer')">Noida Transfer</a>
+        <span class="hero-tag-sep">|</span>
+        <a class="hero-tag" onclick="quickSearch('Rent Agreement')">Rent Agreement</a>
+        <span class="hero-tag-sep">|</span>
+        <a class="hero-tag" onclick="quickSearch('Agreement to Sell')">Agreement to Sell (ATS)</a>
+        <span class="hero-tag-sep">|</span>
+        <a class="hero-tag" onclick="quickSearch('TM-48')">TM-48 Form</a>
+      </div>
+
+      <div class="hero-pills">
+        <div class="hero-pill" onclick="scrollToDocs()"><i class="fa-solid fa-file-pen ic-b" style="width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.78rem"></i> Browse G.B. Nagar Docs</div>
+        <div class="hero-pill" onclick="openAuth('register')"><i class="fa-solid fa-fingerprint" style="color:var(--green)"></i> Aadhaar eSign</div>
+        <div class="hero-pill" onclick="openAuth('register')"><i class="fa-solid fa-stamp" style="color:var(--orange)"></i> Buy e-Stamp Paper</div>
+      </div>
+    </div>
+
+    <!-- Right — document mockup -->
+    <div class="hero-right">
+      <div class="hero-visual">
+        <!-- Floating badge 1 -->
+        <div class="float-card fc1">
+          <div class="fci ic-g"><i class="fa-solid fa-check"></i></div>
+          <span>Document Signed!</span>
+        </div>
+        <!-- Main mockup -->
+        <div class="doc-mockup">
+          <div class="dm-header">
+            <div class="dm-icon"><i class="fa-solid fa-file-contract"></i></div>
+            <div>
+              <div class="dm-title">Rent Agreement</div>
+              <div class="dm-sub">Drafted in 3 minutes · Smart Form</div>
+            </div>
+          </div>
+          <div class="dm-line w-full"></div>
+          <div class="dm-line w-3q"></div>
+          <div class="dm-line w-full"></div>
+          <div class="dm-line w-2q"></div>
+          <div class="dm-line w-full"></div>
+          <div class="dm-line w-half"></div>
+          <div class="dm-line w-3q"></div>
+          <div class="dm-sig-row">
+            <div class="dm-sig"><i class="fa-solid fa-fingerprint"></i> Aadhaar Signed</div>
+            <div class="dm-date">26 May 2025</div>
+          </div>
+        </div>
+        <!-- Floating badge 2 -->
+        <div class="float-card fc2">
+          <div class="fci ic-b"><i class="fa-solid fa-shield-halved"></i></div>
+          <span>Legally Valid · IT Act 2000</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-num">10K+</div><div class="stat-label">Happy Customers</div></div>
+    <div class="stat-div"></div>
+    <div class="stat-item"><div class="stat-num">13</div><div class="stat-label">Supported Documents</div></div>
+    <div class="stat-div"></div>
+    <div class="stat-item"><div class="stat-num">3 min</div><div class="stat-label">Average Draft Time</div></div>
+    <div class="stat-div"></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">G.B. Nagar Focused</div></div>
+    <div class="stat-div"></div>
+    <div class="stat-item"><div class="stat-num">₹0</div><div class="stat-label">First Document Free</div></div>
+  </div>
+</div>
+
+<!-- TRUST BADGES -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <span class="trust-label">Compliance &amp; Security</span>
+    <div class="trust-sep"></div>
+    <div class="trust-badge green"><i class="fa-solid fa-scale-balanced"></i> IT Act 2000 Compliant</div>
+    <div class="trust-badge green"><i class="fa-solid fa-fingerprint"></i> Aadhaar Act 2016</div>
+    <div class="trust-badge blue"><i class="fa-solid fa-lock"></i> 256-bit Encryption</div>
+    <div class="trust-badge blue"><i class="fa-solid fa-shield-halved"></i> UIDAI Certified</div>
+    <div class="trust-badge"><i class="fa-solid fa-star" style="color:#F59E0B"></i> 4.9/5 Rating</div>
+  </div>
+</div>
+
+<!-- POPULAR STRIP -->
+<div class="popular-strip">
+  <div class="pop-inner">
+    <span class="pop-label">🔥 Popular</span>
+    <div class="pop-sep"></div>
+    <div class="pop-chip hot" onclick="openDoc('gnida-package')"><i class="fa-solid fa-cubes"></i> GNIDA 5-in-1</div>
+    <div class="pop-chip hot" onclick="openDoc('rent-residential')"><i class="fa-solid fa-home"></i> Rent Agreement</div>
+    <div class="pop-chip" onclick="openDoc('noida_transfer')"><i class="fa-solid fa-file-export"></i> Noida Transfer</div>
+    <div class="pop-chip" onclick="openDoc('ats')"><i class="fa-solid fa-file-contract"></i> Agreement to Sell</div>
+    <div class="pop-chip" onclick="openDoc('gnida-kya')"><i class="fa-solid fa-id-card"></i> GNIDA KYA</div>
+    <div class="pop-chip" onclick="openDoc('tm48')"><i class="fa-solid fa-user-tie"></i> TM-48 Authorization</div>
+    <div class="pop-chip" onclick="scrollToDocs()"><i class="fa-solid fa-plus"></i> View All →</div>
+  </div>
+</div>
+
+<!-- ══ HOW IT WORKS ══ -->
+<section class="how-section sp" id="how-it-works">
+  <div class="wrapper">
+    <div class="sec-head reveal">
+      <div class="sec-label"><i class="fa-solid fa-circle-play" style="font-size:.65rem"></i> How It Works</div>
+      <h2 class="sec-title">Three steps to a signed agreement</h2>
+      <p class="sec-sub">No legalese, no queues — a seamless flow from selection to signature.</p>
+    </div>
+    <div class="steps-grid reveal">
+      <div class="step-card">
+        <div class="step-bubble"><span>01</span></div>
+        <div class="step-icon-box ic-b"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <div class="step-title">Choose G.B. Nagar Template</div>
+        <p class="step-desc">Select from authority-specific templates tailored for GNIDA, Noida Authority, property, and local businesses.</p>
+        <div class="step-link" onclick="scrollToDocs()">Browse Documents <i class="fa-solid fa-arrow-right" style="font-size:.68rem"></i></div>
+      </div>
+      <div class="step-card">
+        <div class="step-bubble"><span>02</span></div>
+        <div class="step-icon-box ic-p"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <div class="step-title">Smart Drafting</div>
+        <p class="step-desc">Smart validations, local authority formats, and real-time preview. Auto-calculates values like circle rates.</p>
+        <div class="step-link" onclick="openAuth('register')">Try for Free <i class="fa-solid fa-arrow-right" style="font-size:.68rem"></i></div>
+      </div>
+      <div class="step-card">
+        <div class="step-bubble"><span>03</span></div>
+        <div class="step-icon-box ic-g"><i class="fa-solid fa-fingerprint"></i></div>
+        <div class="step-title">Sign with Aadhaar</div>
+        <p class="step-desc">Digitally sign via Aadhaar OTP. Legally valid under IT Act 2000. Instant, paperless, court-admissible.</p>
+        <div class="step-link" onclick="openAuth('register')">Learn More <i class="fa-solid fa-arrow-right" style="font-size:.68rem"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DOCUMENT CATALOG ══ -->
+<section class="catalog-section sp" id="documents">
+  <div class="wrapper">
+    <div class="sec-head reveal">
+      <div class="sec-label"><i class="fa-solid fa-folder-open" style="font-size:.65rem"></i> Document Library</div>
+      <h2 class="sec-title">13 Vetted G.B. Nagar Templates</h2>
+      <p class="sec-sub">Authorized templates designed for Noida, Greater Noida, and Yamuna Expressway regions.</p>
+    </div>
+    <div class="search-row reveal">
+      <i class="fa-solid fa-magnifying-glass catalog-search-icon"></i>
+      <input class="catalog-search" type="text" id="docsSearch" placeholder="Search documents…" oninput="filterDocs()">
+    </div>
+    <div class="cat-tabs reveal">
+      <button class="cat-tab active" data-cat="all" onclick="setCat(this,'all')">All Docs</button>
+      <button class="cat-tab" data-cat="gnida" onclick="setCat(this,'gnida')">🏛️ GNIDA Forms</button>
+      <button class="cat-tab" data-cat="noida" onclick="setCat(this,'noida')">🏢 NOIDA Forms</button>
+      <button class="cat-tab" data-cat="yeida" onclick="setCat(this,'yeida')">🛣️ YEIDA Forms</button>
+      <button class="cat-tab" data-cat="gda" onclick="setCat(this,'gda')">🏠 GDA Forms</button>
+      <button class="cat-tab" data-cat="prop" onclick="setCat(this,'prop')">🏡 Property & Tenancy</button>
+      <button class="cat-tab" data-cat="biz" onclick="setCat(this,'biz')">💼 Business & E-Commerce</button>
+    </div>
+    <div class="docs-grid reveal" id="docsGrid"></div>
+  </div>
+</section>
+
+<!-- ══ AUDIENCE ══ -->
+<section class="audience-section sp">
+  <div class="wrapper">
+    <div class="sec-head reveal">
+      <div class="sec-label"><i class="fa-solid fa-users" style="font-size:.65rem"></i> Audience</div>
+      <h2 class="sec-title">Exclusively Designed for G.B. Nagar's 👇</h2>
+    </div>
+    <div class="audience-grid reveal">
+      <div class="aud-card"><div class="aud-dot"></div><div class="aud-icon ic-b"><i class="fa-solid fa-scale-balanced"></i></div><div class="aud-title">Local Lawyers & Advocates</div><p class="aud-desc">Advocates practicing at Greater Noida Court, Surajpur Court, and Noida authority offices.</p></div>
+      <div class="aud-card"><div class="aud-dot"></div><div class="aud-icon ic-p"><i class="fa-solid fa-landmark"></i></div><div class="aud-title">Property Allottees</div><p class="aud-desc">Applying for KYA, mutation, TM applications, or registries with GNIDA & Noida Authority.</p></div>
+      <div class="aud-card"><div class="aud-dot"></div><div class="aud-icon ic-g"><i class="fa-solid fa-building"></i></div><div class="aud-title">G.B. Nagar Brokers & Agents</div><p class="aud-desc">Property brokers in Noida, Greater Noida, and Yamuna Expressway handling client agreements.</p></div>
+      <div class="aud-card"><div class="aud-dot"></div><div class="aud-icon ic-o"><i class="fa-solid fa-briefcase"></i></div><div class="aud-title">SME & Startup Founders</div><p class="aud-desc">E-commerce and tech businesses operating in Noida sectors requiring standard policies.</p></div>
+      <div class="aud-card"><div class="aud-dot"></div><div class="aud-icon ic-a"><i class="fa-solid fa-home"></i></div><div class="aud-title">Landlords & Tenants</div><p class="aud-desc">Leasing residential apartments, shops, or commercial offices in Noida and Greater Noida.</p></div>
+      <div class="aud-card"><div class="aud-dot"></div><div class="aud-icon ic-s"><i class="fa-solid fa-industry"></i></div><div class="aud-title">Local Businesses</div><p class="aud-desc">Manufacturers, IT firms, and service vendors drafting agreements in G.B. Nagar zones.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURES BENTO ══ -->
+<section class="features-section sp" id="features">
+  <div class="wrapper">
+    <div class="sec-head reveal">
+      <div class="sec-label"><i class="fa-solid fa-bolt" style="font-size:.65rem"></i> Features</div>
+      <h2 class="sec-title">Tailored for Gautam Buddh Nagar</h2>
+      <p class="sec-sub">A premium legal drafting platform built exclusively for Noida, Greater Noida, and Yamuna Expressway.</p>
+    </div>
+    <div class="bento reveal">
+      <div class="bento-card hero-card-feat">
+        <div class="bfi"><i class="fa-solid fa-file-pen" style="color:#fff;font-size:1.05rem"></i></div>
+        <div class="bento-title">Smart Authority Formats</div>
+        <p class="bento-desc">Our drafting engine understands local authority compliance — clause-by-clause guidance, smart validations, and real-time preview matching official formats.</p>
+      </div>
+      <div class="bento-card">
+        <div class="bfi ic-g"><i class="fa-solid fa-fingerprint"></i></div>
+        <div class="bento-title">Aadhaar eSign</div>
+        <p class="bento-desc">Legally valid digital signatures via Aadhaar OTP under IT Act 2000. Court-admissible, secure, and paperless.</p>
+      </div>
+      <div class="bento-card">
+        <div class="bfi ic-b"><i class="fa-solid fa-shield-halved"></i></div>
+        <div class="bento-title">Lawyer-Verified Templates</div>
+        <p class="bento-desc">All 13 templates reviewed by qualified Noida and Greater Noida advocates. Aligned with local circle rates and rules.</p>
+      </div>
+      <div class="bento-card">
+        <div class="bfi ic-o"><i class="fa-solid fa-stamp"></i></div>
+        <div class="bento-title">Local e-Stamping</div>
+        <p class="bento-desc">Buy e-stamp papers for Gautam Buddh Nagar online. Skip the registry and stamp vendor queues.</p>
+      </div>
+      <div class="bento-card">
+        <div class="bfi ic-p"><i class="fa-solid fa-lock"></i></div>
+        <div class="bento-title">256-bit Encryption</div>
+        <p class="bento-desc">Bank-grade security. Encrypted at rest and in transit. Your documents are stored safely.</p>
+      </div>
+      <div class="bento-card">
+        <div class="bfi ic-a"><i class="fa-solid fa-bell"></i></div>
+        <div class="bento-title">Smart Authority Alerts</div>
+        <p class="bento-desc">Never miss authority submission timelines. Automated email alerts for pending submissions and renewals.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section class="testi-section sp">
+  <div class="wrapper">
+    <div class="sec-head reveal">
+      <div class="sec-label"><i class="fa-solid fa-star" style="font-size:.65rem"></i> Testimonials</div>
+      <h2 class="sec-title">What Gautam Buddh Nagar Residents Say</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"Drafted our GNIDA 5-in-1 package on INSTADEED. Saved us repeated trips to the Greater Noida Authority office."</p>
+        <div class="t-author"><div class="t-av" style="background:linear-gradient(135deg,#3B82F6,#6366F1)">AB</div><div><div class="t-name">Anshu Bhati</div><div class="t-role">Property Owner, Sector 137, Noida</div></div></div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"Our e-commerce store needs standard legal updates. The privacy policy and refund policy templates were ready in minutes."</p>
+        <div class="t-author"><div class="t-av" style="background:linear-gradient(135deg,#10B981,#0EA5E9)">VL</div><div><div class="t-name">Vikram Lohia</div><div class="t-role">Founder, Sector 62, Noida</div></div></div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"As a local advocate, this platform saves me hours when preparing NOIDA authority mutation applications and rent deeds."</p>
+        <div class="t-author"><div class="t-av" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">PB</div><div><div class="t-name">Priya Bhati</div><div class="t-role">Advocate, Surajpur Court, Greater Noida</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRICING ══ -->
+<section class="pricing-section sp" id="pricing">
+  <div class="wrapper">
+    <div class="sec-head reveal">
+      <div class="sec-label"><i class="fa-solid fa-tag" style="font-size:.65rem"></i> Pricing</div>
+      <h2 class="sec-title">Simple, transparent pricing</h2>
+      <p class="sec-sub">No hidden charges. Start for free, upgrade when you need more.</p>
+    </div>
+    <div class="pricing-grid reveal">
+
+      <!-- FREE -->
+      <div class="plan-card">
+        <div class="plan-name">Starter</div>
+        <div style="font-size:.8rem;color:var(--g400)">For G.B. Nagar individuals</div>
+        <div class="plan-price"><sup>₹</sup>0<sub>/month</sub></div>
+        <div class="plan-sub">Your first document is free — always.</div>
+        <ul class="plan-features">
+          <li><i class="fa-solid fa-check ok"></i> 1 free document per month</li>
+          <li><i class="fa-solid fa-check ok"></i> All 13 verified templates</li>
+          <li><i class="fa-solid fa-check ok"></i> Smart interactive drafting</li>
+          <li><i class="fa-solid fa-check ok"></i> PDF download</li>
+          <li><i class="fa-solid fa-xmark no"></i> Aadhaar eSign</li>
+          <li><i class="fa-solid fa-xmark no"></i> e-Stamp Paper</li>
+          <li><i class="fa-solid fa-xmark no"></i> Multi-party signing</li>
+        </ul>
+        <button class="btn-plan btn-plan-outline" onclick="openAuth('register')">Get Started Free</button>
+      </div>
+
+      <!-- PRO -->
+      <div class="plan-card popular">
+        <div class="plan-name">Professional</div>
+        <div style="font-size:.8rem;color:var(--g400)">For brokers & small businesses</div>
+        <div class="plan-price"><sup>₹</sup>499<sub>/month</sub></div>
+        <div class="plan-sub">Everything you need to run your legal operations.</div>
+        <ul class="plan-features">
+          <li><i class="fa-solid fa-check ok"></i> Unlimited documents</li>
+          <li><i class="fa-solid fa-check ok"></i> Aadhaar eSign (5 signs/month)</li>
+          <li><i class="fa-solid fa-check ok"></i> G.B. Nagar e-Stamp Paper</li>
+          <li><i class="fa-solid fa-check ok"></i> Multi-party signing</li>
+          <li><i class="fa-solid fa-check ok"></i> Renewal & submission alerts</li>
+          <li><i class="fa-solid fa-check ok"></i> Priority email support</li>
+          <li><i class="fa-solid fa-xmark no"></i> Dedicated account manager</li>
+        </ul>
+        <button class="btn-plan btn-plan-filled" onclick="openAuth('register')">Start 7-Day Free Trial</button>
+      </div>
+
+      <!-- ENTERPRISE -->
+      <div class="plan-card">
+        <div class="plan-name">Enterprise</div>
+        <div style="font-size:.8rem;color:var(--g400)">For law firms & large teams</div>
+        <div class="plan-price"><sup style="font-size:1rem"></sup><span style="font-size:1.6rem">Custom</span></div>
+        <div class="plan-sub">Volume pricing with dedicated support and custom integrations.</div>
+        <ul class="plan-features">
+          <li><i class="fa-solid fa-check ok"></i> Everything in Professional</li>
+          <li><i class="fa-solid fa-check ok"></i> Unlimited eSign</li>
+          <li><i class="fa-solid fa-check ok"></i> API access</li>
+          <li><i class="fa-solid fa-check ok"></i> White-label option</li>
+          <li><i class="fa-solid fa-check ok"></i> Dedicated account manager</li>
+          <li><i class="fa-solid fa-check ok"></i> SLA & uptime guarantee</li>
+          <li><i class="fa-solid fa-check ok"></i> Custom onboarding</li>
+        </ul>
+        <button class="btn-plan btn-plan-dark" onclick="openAuth('register')">Contact Sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COMPARISON TABLE ══ -->
+<section class="compare-section sp">
+  <div class="wrapper">
+    <div class="sec-head reveal">
+      <div class="sec-label"><i class="fa-solid fa-table" style="font-size:.65rem"></i> Why INSTADEED?</div>
+      <h2 class="sec-title">INSTADEED vs. Traditional methods</h2>
+      <p class="sec-sub">See how we compare to visiting a lawyer or a stamp vendor in person.</p>
+    </div>
+    <div class="reveal" style="overflow-x:auto">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="min-width:200px">Feature</th>
+            <th class="highlight">✅ INSTADEED</th>
+            <th>👨‍⚖️ Local Lawyer</th>
+            <th>🏛️ Stamp Vendor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Time to draft</td><td><strong style="color:var(--green)">~3 minutes</strong></td><td class="cmp-partial">2–7 days</td><td class="cmp-partial">1–3 days</td></tr>
+          <tr><td>Cost per document</td><td><strong style="color:var(--green)">₹0 – ₹499</strong></td><td class="cmp-partial">₹2,000 – ₹15,000</td><td class="cmp-partial">₹500 – ₹5,000</td></tr>
+          <tr><td>Aadhaar eSign</td><td><i class="fa-solid fa-check cmp-yes"></i></td><td><i class="fa-solid fa-xmark cmp-no"></i></td><td><i class="fa-solid fa-xmark cmp-no"></i></td></tr>
+          <tr><td>Available 24/7</td><td><i class="fa-solid fa-check cmp-yes"></i></td><td><i class="fa-solid fa-xmark cmp-no"></i></td><td><i class="fa-solid fa-xmark cmp-no"></i></td></tr>
+          <tr><td>Legally verified templates</td><td><i class="fa-solid fa-check cmp-yes"></i></td><td><i class="fa-solid fa-check cmp-yes"></i></td><td><i class="fa-solid fa-xmark cmp-no"></i></td></tr>
+          <tr><td>e-Stamp Paper delivery (G.B. Nagar)</td><td><i class="fa-solid fa-check cmp-yes"></i></td><td><i class="fa-solid fa-xmark cmp-no"></i></td><td><i class="fa-solid fa-check cmp-yes"></i></td></tr>
+          <tr><td>Renewal reminders</td><td><i class="fa-solid fa-check cmp-yes"></i></td><td><i class="fa-solid fa-xmark cmp-no"></i></td><td><i class="fa-solid fa-xmark cmp-no"></i></td></tr>
+          <tr><td>Office visit required</td><td><strong style="color:var(--green)">Never</strong></td><td class="cmp-partial">Always</td><td class="cmp-partial">Always</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section class="faq-section sp" id="faq">
+  <div class="wrapper">
+    <div class="sec-head reveal">
+      <div class="sec-label"><i class="fa-solid fa-circle-question" style="font-size:.65rem"></i> FAQs</div>
+      <h2 class="sec-title">Frequently asked questions</h2>
+    </div>
+    <div class="faq-wrap reveal">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What is Aadhaar eSign and is it legally valid? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Aadhaar eSign is an electronic signature service that uses your Aadhaar OTP for authentication. It is legally valid under the Information Technology Act, 2000 and is equivalent to a handwritten signature. Documents signed via Aadhaar eSign are court-admissible across India.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What is eStamping and how is it different from physical stamp paper? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">eStamping is a secure online method for paying stamp duty to the government on legal documents. It eliminates the need to purchase physical stamp paper, saving you time and eliminating fraud risk. Each e-stamp has a unique identification number (UIN) that can be verified online.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Which regions in Gautam Buddh Nagar do you support? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">We support all sectors and villages under Noida Authority, Greater Noida Industrial Development Authority (GNIDA), and Yamuna Expressway Authority (YEIDA). e-Stamps are generated instantly for Gautam Buddh Nagar district.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Can I edit my details after e-stamp paper is generated? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">No. Due to security and legal reasons, editing details after e-stamp generation is not possible. Please double-check all information before proceeding. Once stamp paper is generated, stamp duty paid cannot be refunded.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How long does it take to draft a document? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Most documents take under 3 minutes to draft with our smart form system. You fill in the required details, and our system auto-generates a legally valid draft. You can preview, edit, and sign immediately — all without visiting any office.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Is my data safe on INSTADEED? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Absolutely. All data is encrypted with 256-bit AES encryption both at rest and in transit. We follow a zero-knowledge architecture — your documents are accessible only to you. We are compliant with India's data protection framework.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA BAND ══ -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-pill"><i class="fa-solid fa-rocket" style="font-size:.65rem"></i> Limited Time Offer</div>
+    <h2 class="cta-h">Your first agreement is free</h2>
+    <p class="cta-sub">Join 10,000+ residents, businesses, and legal professionals who trust INSTADEED G.B. Nagar.</p>
+    <div class="cta-btns">
+      <button class="btn-cta-w" onclick="scrollToDocs()"><i class="fa-solid fa-file-pen"></i> Browse Documents</button>
+      <button class="btn-cta-o" onclick="openAuth('register')"><i class="fa-solid fa-user-plus"></i> Create Free Account</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo-main" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.05rem;color:#fff;display:inline-flex;align-items:center;gap:0">
+          <span>INSTA</span><span style="color:#93C5FD">DEED</span>
+          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.58rem;font-weight:800;color:#0F172A;background:#93C5FD;width:18px;height:18px;border-radius:50%;margin-left:.25rem;display:inline-flex;align-items:center;justify-content:center;line-height:1">in</span>
+        </div>
+        <p class="footer-tagline">Gautam Buddh Nagar's exclusive portal for GNIDA, Noida Authority, property documents, Aadhaar eSign & e-stamps.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Documents</div>
+        <div class="footer-col-links">
+          <a onclick="openDoc('gnida-package')">GNIDA 5-in-1 Package</a>
+          <a onclick="openDoc('rent-residential')">Rent Agreement</a>
+          <a onclick="openDoc('noida_transfer')">Noida Transfer</a>
+          <a onclick="openDoc('ats')">Agreement to Sell (ATS)</a>
+          <a onclick="scrollToDocs()">View All →</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <div class="footer-col-links">
+          <a href="#">Aadhaar eSign</a>
+          <a href="#">e-Stamp Paper</a>
+          <a href="#">Legal Consultation</a>
+          <a href="#">Notarization</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <div class="footer-col-links">
+          <a href="#">About Us</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Us</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 INSTADEED G.B. Nagar. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Legal Disclaimer</a>
+        <a href="#">Refund Policy</a>
+        <a href="#">Grievance Officer</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- MOBILE STICKY -->
+<div class="mobile-sticky">
+  <button class="btn-ms-d" onclick="openAuth('login')">Login</button>
+  <button class="btn-ms-p" onclick="openAuth('register')">Create Free Account</button>
+</div>
+
+<!-- ══ EDITOR OVERLAY ══ -->
+<div class="editor-overlay" id="editorOverlay">
+  <div class="editor-topbar">
+    <div>
+      <div class="edt-doc-name" id="edtDocName">Document</div>
+      <div class="edt-doc-sub" id="edtDocSub">Smart Form Editor</div>
+    </div>
+    <div class="edt-actions">
+      <button class="btn-esign" onclick="openEsign()"><i class="fa-solid fa-fingerprint"></i> Aadhaar eSign</button>
+      <button class="btn-dl" onclick="dlDoc()"><i class="fa-solid fa-download"></i> Download</button>
+      <button class="btn-close-ed" onclick="closeEditor()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </div>
+  <iframe class="editor-frame" id="editorFrame" src="" title="Legal Drafting Hub"></iframe>
+</div>
+
+<!-- ══ AUTH MODAL ══ -->
+<div class="m-overlay" id="authModal">
+  <div class="m-box">
+    <button class="m-close" onclick="closeAuth()"><i class="fa-solid fa-xmark"></i></button>
+
+    <!-- Logo -->
+    <div class="m-logo">
+      <div class="logo-mark" style="width:28px;height:28px;border-radius:8px">
+        <svg viewBox="0 0 20 20" fill="none" width="13" height="13">
+          <rect x="3" y="2" width="11" height="14" rx="1.5" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="1.3"/>
+          <line x1="6" y1="6" x2="11" y2="6" stroke="white" stroke-width="1.1" stroke-linecap="round"/>
+          <line x1="6" y1="9" x2="11" y2="9" stroke="white" stroke-width="1.1" stroke-linecap="round"/>
+          <line x1="6" y1="12" x2="9" y2="12" stroke="white" stroke-width="1.1" stroke-linecap="round"/>
+          <path d="M13.5 13l3-3 1.5 1.5-3 3-2 .5.5-2z" fill="white" stroke="white" stroke-width=".4" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="logo-wordmark" style="font-size:1.15rem">
+        <span class="lw-part1">insta</span><span class="lw-part2">deed</span><span class="lw-tld" style="width:17px;height:17px;font-size:.58rem">in</span>
+      </span>
+    </div>
+
+    <h2 class="m-h">Welcome to INSTADEED</h2>
+    <p class="m-sub">Sign in or create an account in seconds to access your drafts.</p>
+
+    <!-- Google Sign-In button -->
+    <button class="btn-google" onclick="signInWithGoogle()" style="margin-bottom:1.1rem">
+      <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+        <path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+        <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+      </svg>
+      Continue with Google
+    </button>
+
+    <div class="auth-divider"><span>or verify mobile number</span></div>
+
+    <!-- Phone input view -->
+    <div id="authPhoneStep">
+      <div class="f-grp" style="margin-bottom:1rem">
+        <label class="f-label">Mobile Number</label>
+        <div class="phone-input-wrap">
+          <span class="phone-flag">+91</span>
+          <input class="phone-inp" type="tel" id="phoneNum" placeholder="98765 43210" maxlength="10" oninput="checkPhone()">
+        </div>
+      </div>
+      <button class="btn-fp" id="btnSendOtp" onclick="sendOtp()" style="opacity:.5;pointer-events:none">Send OTP via SMS</button>
+    </div>
+
+    <!-- OTP input view -->
+    <div id="authOtpStep" style="display:none">
+      <button class="auth-back-btn" onclick="authBackToPhone()" style="margin-bottom:1rem">
+        <i class="fa-solid fa-arrow-left"></i> Edit mobile number
+      </button>
+      <p class="m-sub" style="font-size:.8rem;color:var(--g500);margin-bottom:.85rem">
+        We sent a 6-digit code to <strong id="otpPhoneNum" style="color:var(--g800)">+91 XXXXX XXXXX</strong>
+      </p>
+      <div class="f-grp">
+        <div class="otp-boxes">
+          <input class="otp-box" type="text" maxlength="1" id="ob0" oninput="otpNext(this,0)" onkeydown="otpKey(event,0)">
+          <input class="otp-box" type="text" maxlength="1" id="ob1" oninput="otpNext(this,1)" onkeydown="otpKey(event,1)">
+          <input class="otp-box" type="text" maxlength="1" id="ob2" oninput="otpNext(this,2)" onkeydown="otpKey(event,2)">
+          <input class="otp-box" type="text" maxlength="1" id="ob3" oninput="otpNext(this,3)" onkeydown="otpKey(event,3)">
+          <input class="otp-box" type="text" maxlength="1" id="ob4" oninput="otpNext(this,4)" onkeydown="otpKey(event,4)">
+          <input class="otp-box" type="text" maxlength="1" id="ob5" oninput="otpNext(this,5)" onkeydown="otpKey(event,5)">
+        </div>
+      </div>
+      <div class="otp-timer" style="margin:1.15rem 0 .7rem;font-size:.78rem">
+        Didn't receive code? <span id="resendTimer"></span> <a href="#" id="resendLink" style="display:none;color:var(--blue-l);font-weight:600" onclick="resendOtp();return false">Resend OTP</a>
+      </div>
+      <button class="btn-fp" id="btnVerifyOtp" onclick="verifyOtp()" style="opacity:.5;pointer-events:none">Verify & Log In</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ AADHAAR ESIGN ══ -->
+<div class="es-overlay" id="esignOverlay">
+  <div class="es-box">
+    <div class="es-head">
+      <div class="es-head-row">
+        <div>
+          <div class="es-badge"><i class="fa-solid fa-fingerprint"></i> AADHAAR ESIGN</div>
+          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.1rem;color:#fff">Digital Signature</div>
+          <div style="font-size:.72rem;color:rgba(255,255,255,.5);margin-top:.2rem" id="esDocLabel">Signing your document</div>
+        </div>
+        <button class="es-hclose" onclick="closeEsign()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="es-prog">
+        <div class="ep-d active" id="ep1">1</div><div class="ep-l" id="el1"></div>
+        <div class="ep-d pend" id="ep2">2</div><div class="ep-l" id="el2"></div>
+        <div class="ep-d pend" id="ep3">3</div>
+      </div>
+    </div>
+    <div class="es-body">
+      <!-- Step 1 -->
+      <div class="es-step active" id="esS1">
+        <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g400);margin-bottom:.85rem">Step 1 — Aadhaar Verification</div>
+        <div class="es-info"><i class="fa-solid fa-circle-info"></i><p>Your Aadhaar number is used only for OTP verification via UIDAI. We do not store it.</p></div>
+        <div class="f-grp"><label class="f-label">Aadhaar Number</label><input class="f-inp" type="text" id="aadNum" placeholder="XXXX XXXX XXXX" maxlength="14" oninput="fmtAadhaar(this)"></div>
+        <div class="f-grp"><label class="f-label">Name as per Aadhaar</label><input class="f-inp" type="text" id="aadName" placeholder="Full legal name"></div>
+        <div class="es-legal">By proceeding you consent to Aadhaar-based authentication under Section 57 of the Aadhaar Act, 2016. The eSignature is legally valid under IT Act, 2000.</div>
+        <button class="btn-fp" onclick="esS1Next()"><i class="fa-solid fa-mobile-screen" style="margin-right:.4rem"></i> Send OTP to Registered Mobile</button>
+      </div>
+      <!-- Step 2 -->
+      <div class="es-step" id="esS2">
+        <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g400);margin-bottom:.85rem">Step 2 — OTP Verification</div>
+        <div class="es-info"><i class="fa-solid fa-mobile-screen"></i><p>A 6-digit OTP has been sent to your Aadhaar-registered mobile ending in <strong id="mMob">XXXXXX</strong>.</p></div>
+        <div class="otp-row">
+          <input class="otp-d" type="text" maxlength="1" id="o1" oninput="oFwd(this,'o2')" onkeydown="oBk(event,this,'')">
+          <input class="otp-d" type="text" maxlength="1" id="o2" oninput="oFwd(this,'o3')" onkeydown="oBk(event,this,'o1')">
+          <input class="otp-d" type="text" maxlength="1" id="o3" oninput="oFwd(this,'o4')" onkeydown="oBk(event,this,'o2')">
+          <input class="otp-d" type="text" maxlength="1" id="o4" oninput="oFwd(this,'o5')" onkeydown="oBk(event,this,'o3')">
+          <input class="otp-d" type="text" maxlength="1" id="o5" oninput="oFwd(this,'o6')" onkeydown="oBk(event,this,'o4')">
+          <input class="otp-d" type="text" maxlength="1" id="o6" oninput="oFwd(this,'')" onkeydown="oBk(event,this,'o5')">
+        </div>
+        <div class="otp-timer">Expires in <span id="otpClock">05:00</span> · <a href="#" style="color:var(--blue-l);font-weight:600" onclick="resendOtp(event)">Resend OTP</a></div>
+        <button class="btn-fp" onclick="esS2Next()"><i class="fa-solid fa-signature" style="margin-right:.4rem"></i> Verify & Sign Document</button>
+        <button onclick="esBack()" style="width:100%;margin-top:.6rem;padding:.6rem;border-radius:var(--rf);background:var(--g100);color:var(--g600);font-family:'Inter',sans-serif;font-weight:600;font-size:.83rem;cursor:pointer;border:none;transition:background .18s" onmouseover="this.style.background='var(--g200)'" onmouseout="this.style.background='var(--g100)'">← Back</button>
+      </div>
+      <!-- Step 3 -->
+      <div class="es-step" id="esS3">
+        <div class="es-success">
+          <div class="es-s-icon"><i class="fa-solid fa-check"></i></div>
+          <div class="es-s-title">Document Signed! 🎉</div>
+          <p class="es-s-sub">Your eSignature has been successfully applied. The document is now legally binding under Indian law.</p>
+          <div class="cert-box">
+            <i class="fa-solid fa-certificate"></i>
+            <div><div class="cert-title">Signature Certificate</div><div class="cert-body" id="certInfo">Signed via Aadhaar OTP · Authority: NSDL e-Gov</div></div>
+          </div>
+          <div style="display:flex;gap:.65rem;justify-content:center;flex-wrap:wrap">
+            <button class="btn-fp" onclick="dlSigned()" style="max-width:190px;width:auto;padding:.58rem 1.3rem"><i class="fa-solid fa-download" style="margin-right:.38rem"></i> Download PDF</button>
+            <button onclick="closeEsign()" style="padding:.58rem 1.1rem;border-radius:var(--rf);background:var(--g100);color:var(--g600);font-family:'Inter',sans-serif;font-weight:600;font-size:.83rem;cursor:pointer;border:none">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ─── DATA ─── */
+const DOCS=[
+  {id:'gnida-package',name:'GNIDA 5-in-1 Composite Package',cat:'gnida',icon:'fa-cubes',ic:'ic-b',badge:'pop'},
+  {id:'gnida-kya',name:'GNIDA KYA Form',cat:'gnida',icon:'fa-id-card',ic:'ic-p',badge:'new'},
+  {id:'gnida-mutation',name:'GNIDA Mutation Application',cat:'gnida',icon:'fa-file-signature',ic:'ic-o',badge:'new'},
+  {id:'gnida-tm_app',name:'GNIDA TM Application',cat:'gnida',icon:'fa-file-invoice',ic:'ic-g',badge:'new'},
+  {id:'gnida_ptm',name:'GNIDA PTM Application',cat:'gnida',icon:'fa-landmark',ic:'ic-a',badge:'new'},
+  {id:'noida_transfer',name:'NOIDA Transfer Application',cat:'noida',icon:'fa-file-export',ic:'ic-o',badge:'new'},
+  {id:'rent-residential',name:'Residential Rent Agreement',cat:'prop',icon:'fa-home',ic:'ic-b',badge:'pop'},
+  {id:'ats',name:'Agreement to Sell (ATS)',cat:'prop',icon:'fa-file-contract',ic:'ic-o',badge:'pop'},
+  {id:'gnida_registry',name:'GNIDA Registry Deed',cat:'gnida',icon:'fa-stamp',ic:'ic-b',badge:'new'},
+  {id:'tm48',name:'TM-48 Authorization Form',cat:'biz',icon:'fa-user-tie',ic:'ic-p',badge:''},
+  {id:'website-tos',name:'E-Commerce Terms & Conditions',cat:'biz',icon:'fa-globe',ic:'ic-s',badge:''},
+  {id:'e-commerce-privacy',name:'E-Commerce Privacy Policy',cat:'biz',icon:'fa-user-shield',ic:'ic-p',badge:'new'},
+  {id:'ecomm_rp',name:'E-Commerce Refund Policy',cat:'biz',icon:'fa-rotate-left',ic:'ic-g',badge:'new'},
+];
+
+let activeCat='all', currentDoc=null;
+
+function renderDocs(list){
+  const g=document.getElementById('docsGrid');
+  if(activeCat === 'yeida') {
+    g.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--g500);background:#fff;border-radius:var(--rxl);border:1px dashed var(--g200);width:100%">
+        <i class="fa-solid fa-lock" style="font-size:2.5rem;margin-bottom:1rem;color:var(--g300);display:block"></i>
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.1rem;color:var(--g900);margin-bottom:0.5rem">YEIDA Formats Locked</h3>
+        <p style="font-size:0.83rem;color:var(--g400);max-width:320px;margin:0 auto">Yamuna Expressway Authority templates are currently being aligned with YEIDA guidelines.</p>
+      </div>
+    `;
+    return;
+  }
+  if(activeCat === 'gda') {
+    g.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--g500);background:#fff;border-radius:var(--rxl);border:1px dashed var(--g200);width:100%">
+        <i class="fa-solid fa-lock" style="font-size:2.5rem;margin-bottom:1rem;color:var(--g300);display:block"></i>
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.1rem;color:var(--g900);margin-bottom:0.5rem">GDA Formats Locked</h3>
+        <p style="font-size:0.83rem;color:var(--g400);max-width:320px;margin:0 auto">Ghaziabad Development Authority templates are currently being aligned with GDA guidelines.</p>
+      </div>
+    `;
+    return;
+  }
+  if(!list.length){g.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--g400);background:#fff"><i class="fa-solid fa-folder-open" style="font-size:2rem;margin-bottom:.7rem;display:block;opacity:.35"></i>No documents found.</div>`;return;}
+  g.innerHTML=list.map(d=>`
+    <div class="doc-tile" onclick="openDoc('${d.id}')" tabindex="0" role="button" aria-label="Open ${d.name}">
+      ${d.badge==='new'?`<span class="doc-tile-badge badge-new">NEW</span>`:d.badge==='pop'?`<span class="doc-tile-badge badge-pop">HOT</span>`:''}
+      <div class="doc-tile-icon ${d.ic}"><i class="fa-solid ${d.icon}"></i></div>
+      <div class="doc-tile-name">${d.name}</div>
+    </div>`).join('');
+}
+function filterDocs(){
+  const q=(document.getElementById('docsSearch').value||'').toLowerCase().trim();
+  let l=activeCat==='all'?DOCS:DOCS.filter(d=>d.cat===activeCat);
+  if(q) l=l.filter(d=>d.name.toLowerCase().includes(q));
+  renderDocs(l);
+}
+function setCat(btn,cat){
+  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); activeCat=cat; filterDocs();
+}
+function openDocCat(cat){
+  const btn=document.querySelector(`.cat-tab[data-cat="${cat}"]`);
+  if(btn) setCat(btn,cat);
+  scrollToDocs();
+}
+renderDocs(DOCS);
+
+/* search */
+function heroSearchFn(v){if(v.trim()){document.getElementById('docsSearch').value=v;filterDocs();scrollToDocs();}}
+function quickSearch(t){document.getElementById('heroSearch').value=t;document.getElementById('docsSearch').value=t;filterDocs();scrollToDocs();}
+function scrollToDocs(){document.getElementById('documents').scrollIntoView({behavior:'smooth'});}
+function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+function scrollToTop(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}
+
+/* doc open */
+function openDoc(id){
+  const doc=DOCS.find(d=>d.id===id);if(!doc)return;
+  currentDoc=doc;
+  document.getElementById('edtDocName').textContent=doc.name;
+  document.getElementById('edtDocSub').textContent='Smart Form Editor';
+  const url=`Madhav_Drafting_Hub.html?v=${Date.now()}&solo=1&doc=${encodeURIComponent(id)}&name=${encodeURIComponent(doc.name)}`;
+  document.getElementById('editorFrame').src=url;
+  document.getElementById('editorOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeEditor(){
+  document.getElementById('editorOverlay').classList.remove('open');
+  document.getElementById('editorFrame').src='';
+  document.body.style.overflow='';
+  currentDoc=null;
+}
+function dlDoc(){
+  const frame = document.getElementById('editorFrame');
+  if(frame && frame.contentWindow){
+    frame.contentWindow.focus();
+    frame.contentWindow.print();
+  } else {
+    alert('Downloading PDF…\n\n(Connect your backend to enable PDF export.)');
+  }
+}
+
+/* auth */
+function openAuth(v){
+  document.getElementById('authModal').classList.add('open');
+  document.getElementById('loginView').style.display=v==='login'?'block':'none';
+  document.getElementById('registerView').style.display=v==='register'?'block':'none';
+  document.body.style.overflow='hidden';
+}
+function closeAuth(){document.getElementById('authModal').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('authModal').addEventListener('click',function(e){if(e.target===this)closeAuth();});
+function doLogin(){const e=document.getElementById('lEmail').value.trim();if(!e){alert('Enter your email.');return;}closeAuth();alert('Welcome back, '+e+'!');}
+function doRegister(){const n=document.getElementById('rName').value.trim(),e=document.getElementById('rEmail').value.trim();if(!n||!e){alert('Fill all fields.');return;}closeAuth();alert('Account created for '+n+'! Start drafting.');}
+
+/* esign */
+let otpIv=null;
+function openEsign(){
+  if(!currentDoc)return;
+  document.getElementById('esDocLabel').textContent=currentDoc.name;
+  document.getElementById('esignOverlay').classList.add('open');
+  resetEs();
+}
+function closeEsign(){document.getElementById('esignOverlay').classList.remove('open');if(otpIv)clearInterval(otpIv);}
+document.getElementById('esignOverlay').addEventListener('click',function(e){if(e.target===this)closeEsign();});
+function resetEs(){
+  setEsStep(1);
+  document.getElementById('aadNum').value='';
+  document.getElementById('aadName').value='';
+  ['o1','o2','o3','o4','o5','o6'].forEach(id=>document.getElementById(id).value='');
+  if(otpIv)clearInterval(otpIv);
+}
+function setEsStep(n){
+  [1,2,3].forEach(i=>{
+    document.getElementById('esS'+i).classList.toggle('active',i===n);
+    const d=document.getElementById('ep'+i);
+    if(i<n){d.className='ep-d done';d.innerHTML='<i class="fa-solid fa-check" style="font-size:.58rem"></i>';}
+    else if(i===n){d.className='ep-d active';d.textContent=i;}
+    else{d.className='ep-d pend';d.textContent=i;}
+    if(i<3)document.getElementById('el'+i).classList.toggle('done',i<n);
+  });
+}
+function fmtAadhaar(el){let v=el.value.replace(/\D/g,'').substring(0,12);el.value=v.replace(/(\d{4})(?=\d)/g,'$1 ');}
+function esS1Next(){
+  const a=document.getElementById('aadNum').value.replace(/\s/g,''),n=document.getElementById('aadName').value.trim();
+  if(a.length!==12){alert('Enter a valid 12-digit Aadhaar number.');return;}
+  if(!n){alert('Enter your name as per Aadhaar.');return;}
+  document.getElementById('mMob').textContent='xxxxxxxx'+a.slice(-2);
+  setEsStep(2);startOtpTimer(300);document.getElementById('o1').focus();
+}
+function esS2Next(){
+  const otp=['o1','o2','o3','o4','o5','o6'].map(id=>document.getElementById(id).value).join('');
+  if(otp.length!==6){alert('Enter the complete 6-digit OTP.');return;}
+  if(otpIv)clearInterval(otpIv);
+  const nm=document.getElementById('aadName').value.trim();
+  const now=new Date();
+  const ds=now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})+' '+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('certInfo').textContent=`Signed: ${ds} | By: ${nm} | Authority: NSDL e-Gov (Aadhaar OTP eSign)`;
+  
+  if (currentDoc) {
+    localStorage.setItem('instadeed_signed_' + currentDoc.id, JSON.stringify({
+      signed: true,
+      signerName: nm,
+      signedAt: ds
+    }));
+  }
+  
+  setEsStep(3);
+}
+function esBack(){if(otpIv)clearInterval(otpIv);setEsStep(1);}
+function startOtpTimer(s){
+  if(otpIv)clearInterval(otpIv);let r=s;
+  function u(){const m=Math.floor(r/60).toString().padStart(2,'0'),sec=(r%60).toString().padStart(2,'0');const el=document.getElementById('otpClock');if(el)el.textContent=m+':'+sec;if(r<=0)clearInterval(otpIv);r--;}
+  u();otpIv=setInterval(u,1000);
+}
+function resendOtp(e){e.preventDefault();['o1','o2','o3','o4','o5','o6'].forEach(id=>document.getElementById(id).value='');startOtpTimer(300);document.getElementById('o1').focus();alert('OTP resent.');}
+function oFwd(el,nid){if(el.value.length===1&&nid)document.getElementById(nid).focus();}
+function oBk(e,el,pid){if(e.key==='Backspace'&&el.value===''&&pid)document.getElementById(pid).focus();}
+function dlSigned(){
+  const frame = document.getElementById('editorFrame');
+  if(frame && frame.contentWindow){
+    frame.contentWindow.focus();
+    frame.contentWindow.print();
+  } else {
+    alert('Downloading signed PDF with eSignature certificate…\n\n(Connect your backend to enable this.)');
+  }
+}
+
+/* FAQ toggle */
+function toggleFaq(q){
+  const item=q.parentElement;
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen)item.classList.add('open');
+}
+
+/* Nav scroll */
+window.addEventListener('scroll',()=>{document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>60);},{passive:true});
+
+/* Reveal */
+const ro=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});},{threshold:.09,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+/* Escape key */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    if(document.getElementById('esignOverlay').classList.contains('open'))closeEsign();
+    else if(document.getElementById('authModal').classList.contains('open'))closeAuth();
+    else if(document.getElementById('editorOverlay').classList.contains('open'))closeEditor();
+  }
+});
+/* ─── GOOGLE SIGN-IN & USER STATE ─────────────────────────────
+
+   SETUP INSTRUCTIONS (to make Google login actually work):
+   1. Go to https://console.cloud.google.com/
+   2. Create a project → APIs & Services → Credentials
+   3. Create an OAuth 2.0 Client ID (Web application)
+   4. Add your site URL to Authorised JavaScript origins
+   5. Replace YOUR_GOOGLE_CLIENT_ID below with your Client ID
+
+   Until you add a real Client ID, clicking "Continue with Google"
+   will show a friendly instruction alert instead of the popup.
+──────────────────────────────────────────────────────────────── */
+const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID'; // ← replace this
+
+/* Initialize Google Identity Services */
+function initGoogle(){
+  if(typeof google === 'undefined' || !google.accounts) return;
+  if(GOOGLE_CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID') return; // not configured
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredential,
+    auto_select: false,
+    cancel_on_tap_outside: true
+  });
+}
+
+/* Called when user clicks "Continue with Google" */
+function signInWithGoogle(){
+  if(GOOGLE_CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID'){
+    // Automatic login as mock Google user
+    const mockUser = {
+      name: "Demo Signee",
+      email: "google.signee@instadeed.com",
+      picture: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+    };
+    handleGoogleLogin(mockUser);
+    return;
+  }
+  try{
+    // Trigger Google popup
+    google.accounts.id.prompt((notification)=>{
+      if(notification.isNotDisplayed() || notification.isSkippedMoment()){
+        // Fallback to popup window
+        google.accounts.oauth2.initTokenClient({
+          client_id: GOOGLE_CLIENT_ID,
+          scope: 'email profile',
+          callback: (resp)=>{ if(resp.access_token) fetchGoogleProfile(resp.access_token); }
+        }).requestAccessToken();
+      }
+    });
+  }catch(e){
+    console.warn('Google GSI error:',e);
+  }
+}
+
+/* Handles JWT credential from Google One Tap */
+function handleGoogleCredential(response){
+  try{
+    // Decode JWT payload (base64)
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    handleGoogleLogin({
+      name: payload.name,
+      email: payload.email,
+      picture: payload.picture
+    });
+  }catch(e){ console.error('Google credential error',e); }
+}
+
+/* Fetch profile via access token (fallback) */
+async function fetchGoogleProfile(token){
+  try{
+    const r = await fetch('https://www.googleapis.com/oauth2/v2/userinfo',
+      {headers:{Authorization:'Bearer '+token}});
+    const u = await r.json();
+    handleGoogleLogin({name:u.name, email:u.email, picture:u.picture});
+  }catch(e){ console.error('Google profile fetch error',e); }
+}
+
+/* ─── Central login handler — works for Google AND Mobile OTP login ─── */
+function handleGoogleLogin(user){
+  // Store in localStorage under the unified session key
+  localStorage.setItem('instadeed_user_session', JSON.stringify(user));
+  // Update UI
+  applyLoggedInState(user);
+  closeAuth();
+  // Show welcome toast
+  showToast('✅ Welcome, '+user.name.split(' ')[0]+'!');
+}
+
+/* Apply logged-in state to nav */
+function applyLoggedInState(user){
+  const area = document.getElementById('navAuthArea');
+  const chip = document.getElementById('userChip');
+  const avatar = document.getElementById('userAvatar');
+  const nameEl = document.getElementById('userName');
+  const emailEl = document.getElementById('userMenuEmail');
+  if(!area) return;
+  // Show chip, hide buttons
+  area.classList.add('nav-auth-signed-in');
+  chip.style.display = 'flex';
+  nameEl.textContent = user.name.split(' ')[0];
+  emailEl.textContent = user.email||'';
+  if(user.picture){
+    avatar.innerHTML = '<img src="'+user.picture+'" alt="avatar">';
+  } else {
+    avatar.textContent = (user.name||'U')[0].toUpperCase();
+  }
+}
+
+/* Toggle user dropdown */
+function toggleUserMenu(){
+  const m = document.getElementById('userMenu');
+  m.style.display = m.style.display==='none' ? 'block' : 'none';
+}
+// Close dropdown on outside click
+document.addEventListener('click', e=>{
+  const chip = document.getElementById('userChip');
+  const menu = document.getElementById('userMenu');
+  if(chip && menu && !chip.contains(e.target)) menu.style.display='none';
+});
+
+/* Sign out */
+function signOut(){
+  localStorage.removeItem('instadeed_user_session');
+  const area = document.getElementById('navAuthArea');
+  const chip = document.getElementById('userChip');
+  if(area) area.classList.remove('nav-auth-signed-in');
+  if(chip) chip.style.display='none';
+  document.getElementById('userMenu').style.display='none';
+  if(typeof google !== 'undefined' && google.accounts)
+    google.accounts.id.disableAutoSelect();
+  showToast('👋 Signed out successfully');
+}
+
+/* Restore session on page load */
+window.addEventListener('DOMContentLoaded', ()=>{
+  initGoogle();
+  const saved = localStorage.getItem('instadeed_user_session');
+  if(saved){ try{ applyLoggedInState(JSON.parse(saved)); }catch(e){} }
+});
+
+/* Sync session changes from other frames/tabs reactively */
+window.addEventListener('storage', (e)=>{
+  if(e.key === 'instadeed_user_session'){
+    if(e.newValue){
+      try{ applyLoggedInState(JSON.parse(e.newValue)); }catch(err){}
+    } else {
+      const area = document.getElementById('navAuthArea');
+      const chip = document.getElementById('userChip');
+      if(area) area.classList.remove('nav-auth-signed-in');
+      if(chip) chip.style.display='none';
+      document.getElementById('userMenu').style.display='none';
+    }
+  }
+});
+
+/* ─── MOBILE OTP FLOW ────────────────────────────────────────── */
+let resendInterval;
+
+function openAuth(view){
+  document.getElementById('authPhoneStep').style.display='block';
+  document.getElementById('authOtpStep').style.display='none';
+  document.getElementById('phoneNum').value='';
+  document.getElementById('btnSendOtp').style.opacity='.5';
+  document.getElementById('btnSendOtp').style.pointerEvents='none';
+  document.getElementById('authModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function authBackToPhone(){
+  document.getElementById('authPhoneStep').style.display='block';
+  document.getElementById('authOtpStep').style.display='none';
+  clearInterval(resendInterval);
+  setTimeout(()=>document.getElementById('phoneNum').focus(),100);
+}
+
+function checkPhone(){
+  const v = document.getElementById('phoneNum').value.replace(/\D/g,'');
+  document.getElementById('phoneNum').value = v;
+  const btn = document.getElementById('btnSendOtp');
+  if(v.length===10){
+    btn.style.opacity='1'; btn.style.pointerEvents='auto';
+  } else {
+    btn.style.opacity='.5'; btn.style.pointerEvents='none';
+  }
+}
+
+function sendOtp(){
+  const phone = document.getElementById('phoneNum').value.trim();
+  if(phone.length!==10){ showToast('Please enter a valid 10-digit number'); return; }
+
+  document.getElementById('authPhoneStep').style.display='none';
+  document.getElementById('authOtpStep').style.display='block';
+  document.getElementById('otpPhoneNum').textContent='+91 '+phone.slice(0,5)+' '+phone.slice(5);
+
+  // Clear OTP boxes
+  for(let i=0;i<6;i++){
+    const b=document.getElementById('ob'+i);
+    b.value=''; b.classList.remove('filled','error');
+  }
+  setTimeout(()=>document.getElementById('ob0').focus(),100);
+  document.getElementById('btnVerifyOtp').style.opacity='.5';
+  document.getElementById('btnVerifyOtp').style.pointerEvents='none';
+
+  showToast('📱 OTP sent to +91 '+phone);
+  startResendTimer();
+}
+
+function startResendTimer(){
+  let t=30;
+  const link=document.getElementById('resendLink');
+  const timer=document.getElementById('resendTimer');
+  link.style.display='none';
+  timer.textContent=' (resend in '+t+'s)';
+  clearInterval(resendInterval);
+  resendInterval = setInterval(()=>{
+    t--;
+    timer.textContent=' (resend in '+t+'s)';
+    if(t<=0){
+      clearInterval(resendInterval);
+      link.style.display='inline';
+      timer.textContent='';
+    }
+  },1000);
+}
+
+function resendOtp(){ sendOtp(); }
+
+function otpNext(el,idx){
+  el.value=el.value.replace(/\D/g,'').slice(-1);
+  el.classList.toggle('filled', el.value!=='');
+  checkOtpComplete();
+  if(el.value && idx<5) document.getElementById('ob'+(idx+1)).focus();
+}
+
+function otpKey(e,idx){
+  if(e.key==='Backspace'&&!document.getElementById('ob'+idx).value&&idx>0)
+    document.getElementById('ob'+(idx-1)).focus();
+  if(e.key==='ArrowLeft'&&idx>0) document.getElementById('ob'+(idx-1)).focus();
+  if(e.key==='ArrowRight'&&idx<5) document.getElementById('ob'+(idx+1)).focus();
+}
+
+function checkOtpComplete(){
+  let full=true;
+  for(let i=0;i<6;i++) if(!document.getElementById('ob'+i).value) full=false;
+  const btn=document.getElementById('btnVerifyOtp');
+  btn.style.opacity = full?'1':'.5';
+  btn.style.pointerEvents = full?'auto':'none';
+}
+
+function verifyOtp(){
+  let code='';
+  for(let i=0;i<6;i++) code+=document.getElementById('ob'+i).value;
+  if(code.length<6){ showToast('Please enter the 6-digit OTP'); return; }
+
+  const phone = document.getElementById('phoneNum').value;
+  const btn=document.getElementById('btnVerifyOtp');
+  btn.innerHTML='<i class="fa-solid fa-circle-notch fa-spin" style="margin-right:.4rem"></i>Verifying...';
+  btn.style.opacity='.7'; btn.style.pointerEvents='none';
+
+  setTimeout(()=>{
+    const user={
+      name:'User '+phone.slice(-4), 
+      phone:'+91'+phone, 
+      email: phone+'@instadeed.com', 
+      picture:null
+    };
+    handleGoogleLogin(user);
+    clearInterval(resendInterval);
+    btn.innerHTML='Verify & Log In';
+  }, 1200);
+}
+
+function showToast(msg){
+  let t = document.getElementById('authToast');
+  if(!t){
+    t = document.createElement('div');
+    t.id = 'authToast';
+    t.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:2000;background:#0F172A;color:#fff;padding:.75rem 1.25rem;border-radius:10px;font-family:\'Inter\',sans-serif;font-size:.85rem;font-weight:600;box-shadow:0 10px 25px rgba(0,0,0,.2);display:flex;align-items:center;gap:.5rem;transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;';
+    document.body.appendChild(t);
+  }
+  t.innerHTML = msg;
+  t.style.transform = 'none';
+  t.style.opacity = '1';
+  setTimeout(()=>{
+    t.style.transform = 'translateY(100px)';
+    t.style.opacity = '0';
+  }, 3000);
+}
+
+</script>
+</body>
+</html>

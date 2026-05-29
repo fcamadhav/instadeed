@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- Fonts -->
+    <!-- Icons: Font Awesome Free (https://fontawesome.com) - CC BY 4.0 License -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Merriweather:wght@300;400;700&family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+    <!-- Google Identity Services SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <title>INSTADEED – Legal Drafting Suite | Draft, eSign & Deliver</title>
+    <script>
+        window.onerror = function (msg, url, line, col, error) {
+            // Suppress cross-origin CDN "Script error" (line 0) - not a real app error
+            if (msg === 'Script error.' || (line === 0 && col === 0)) return true;
+            // Show real app errors during development
+            alert("[INSTADEED Error] " + msg + "\nLine: " + line + "\nCol: " + col);
+            console.error('[INSTADEED]', msg, 'at', url, line + ':' + col, error);
+            return false;
+        };
+    </script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        doc: ['"Merriweather"', 'serif'],
+                        ui: ['"Plus Jakarta Sans"', '"Inter"', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+    <!-- Babel -->
+    <!-- Babel compiler library removed in production -->
+
+    <style>
+        :root {
+            --blue: #1E3FA0;
+            --blue-l: #2563EB;
+            --blue-bg: #EEF4FF;
+            --blue-mid: rgba(37,99,235,.12);
+            --g900: #0F172A;
+            --g800: #1E293B;
+            --g500: #64748B;
+            --g400: #94A3B8;
+            --g200: #E2E8F0;
+            --g100: #F1F5F9;
+            --g50:  #F8FAFC;
+        }
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+        }
+
+        /* Page Layout Optimization */
+        .paper-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 1.5cm;
+            /* Restored to 1.5cm as requested */
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 2rem auto;
+            position: relative;
+            font-family: 'Merriweather', serif;
+            font-size: 12pt;
+            /* Standard legal font */
+            line-height: 1.5;
+            /* Standard spacing */
+        }
+
+        .paper-page p {
+            margin-bottom: 1rem;
+            /* Consistent paragraph spacing */
+        }
+
+        .paper-page li {
+            margin-bottom: 0.35rem;
+            /* Tighter list items for 31 clauses */
+        }
+
+        .highlight-var {
+            font-weight: bold;
+            color: #1e293b;
+            background-color: #e0f2fe;
+            padding: 1px 4px;
+            border-radius: 2px;
+            border-bottom: 1px solid #7dd3fc;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            /* Legacy support */
+            word-break: break-all;
+            /* Force breaks for long underscores/URLs */
+            white-space: pre-wrap;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .highlight-var.active-fill {
+            background-color: #fef08a !important; /* yellow-200 */
+            color: #0f172a !important;
+            border-bottom: 2px solid #ca8a04 !important; /* yellow-600 */
+            box-shadow: 0 0 10px rgba(234, 179, 8, 0.6);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .bg-dot-pattern {
+            background-color: #0f172a;
+            background-image: radial-gradient(#334155 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Claymorphism Colorful Icons */
+        .clay-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            /* The "Clay" effect: Heavy soft shadows + Inner highlights */
+            box-shadow:
+                6px 6px 14px rgba(164, 180, 200, 0.4),
+                -6px -6px 14px rgba(255, 255, 255, 0.9),
+                inset 2px 2px 5px rgba(255, 255, 255, 0.4),
+                inset -2px -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .clay-icon i {
+            filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2));
+        }
+
+        /* Color Variants - Matching the reference image vibes */
+        .clay-cyan {
+            background-color: #06b6d4;
+        }
+
+        .clay-purple {
+            background-color: #a855f7;
+        }
+
+        .clay-pink {
+            background-color: #ec4899;
+        }
+
+        .clay-orange {
+            background-color: #f97316;
+        }
+
+        .clay-green {
+            background-color: #22c55e;
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+
+            body {
+                background: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .paper-page {
+                box-shadow: none;
+                margin: 0;
+                width: 210mm;
+                min-height: 297mm;
+                page-break-after: always;
+            }
+
+            .print-break {
+                page-break-before: always;
+            }
+
+            /* Fix for faint borders in print */
+            .char-grid-box {
+                border-width: 1px !important;
+                border-color: #000 !important;
+                border-style: solid !important;
+                background-color: #fff !important;
+            }
+
+            .char-grid-container {
+                border-width: 1px !important;
+                border-color: #000 !important;
+                border-style: solid !important;
+                background-color: #fff !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            /* Remove highlights in print except if user wants them (previous request asked to REMOVE yellow) */
+            .highlight-var {
+                background-color: transparent !important;
+                border-bottom: none !important;
+                color: #000 !important;
+                font-weight: bold !important;
+                padding: 0 !important;
+            }
+        }
+
+        .clay-yellow {
+            background-color: #eab308;
+        }
+
+        .clay-icon:active {
+            transform: scale(0.95);
+            box-shadow:
+                2px 2px 6px rgba(164, 180, 200, 0.4),
+                -2px -2px 6px rgba(255, 255, 255, 0.9),
+                inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+                inset -4px -4px 8px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Consistent Page Numbering Footer */
+        .page-number-footer {
+            position: absolute;
+            bottom: 0.5cm;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 9pt;
+            color: #6b7280;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Print Specifics */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @media print {
+
+            html,
+            body {
+                width: 210mm;
+                height: auto !important;
+                overflow: visible !important;
+                background: white;
+                margin: 0;
+                padding: 0;
+            }
+
+            .no-print,
+            .app-sidebar {
+                display: none !important;
+            }
+
+            /* Unset fixed layouts that block scrolling/printing */
+            #root,
+            .app-layout-container {
+                display: block !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            .paper-page-container {
+                display: block !important;
+                background: none !important;
+                padding: 0 !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            .paper-page {
+                position: relative;
+                text-align: justify;
+                box-shadow: none;
+                margin: 0;
+                width: 210mm;
+                min-height: 297mm;
+                height: 297mm !important;
+                /* Force exact height */
+                overflow: hidden !important;
+                /* Clip content to prevent spillover */
+                page-break-inside: avoid;
+                padding: 1.5cm;
+                /* Match screen padding */
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+                font-size: 12pt;
+                line-height: 1.5;
+            }
+
+            .print-break {
+                page-break-after: always !important;
+            }
+
+            /* Hide page digest footer borders in print if desired, or keep them */
+            .highlight-var {
+                background-color: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                color: black !important;
+            }
+
+            /* Remove variable highlights in print */
+            .bg-yellow-100,
+            .bg-rose-50,
+            .bg-blue-50,
+            .bg-blue-50,
+            .bg-cyan-50,
+            .bg-emerald-50,
+            .bg-orange-50 {
+                background-color: transparent !important;
+            }
+        }
+    
+        /* ===== SOLO MODE: hide authority selector + doc grid, show only active form ===== */
+        body.solo-mode .instadeed-authority-selector { display: none !important; }
+        body.solo-mode .instadeed-doc-grid { display: none !important; }
+        body.solo-mode .instadeed-solo-header { display: none !important; }
+
+        </style>
+</head>
+
+<body>
+    <div id="root">
+        <!-- Premium Instadeed Loader -->
+        <div class="fixed inset-0 flex flex-col items-center justify-center bg-slate-50 z-[1000]" id="page-loader-screen" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+            <style>
+                .doc-skeleton-container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-bottom: 1.5rem;
+                }
+                .doc-skeleton {
+                    width: 70px;
+                    height: 90px;
+                    background: #fff;
+                    border: 2px solid #E2E8F0;
+                    border-radius: 8px;
+                    position: relative;
+                    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.04);
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    padding: 16px 10px;
+                    gap: 8px;
+                }
+                .doc-skeleton::before {
+                    content: '';
+                    position: absolute;
+                    top: -1px;
+                    right: -1px;
+                    width: 18px;
+                    height: 18px;
+                    background: linear-gradient(135deg, #F1F5F9 45%, #CBD5E1 50%, #fff 55%);
+                    border-bottom-left-radius: 6px;
+                    border-left: 2px solid #E2E8F0;
+                    border-bottom: 2px solid #E2E8F0;
+                    box-shadow: -2px 2px 4px rgba(0,0,0,0.02);
+                }
+                .doc-line {
+                    height: 6px;
+                    background: #E2E8F0;
+                    border-radius: 9999px;
+                    position: relative;
+                    overflow: hidden;
+                }
+                .doc-line-1 { width: 50%; }
+                .doc-line-2 { width: 85%; }
+                .doc-line-3 { width: 75%; }
+                .doc-line-4 { width: 40%; }
+                .doc-line::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 50%;
+                    height: 100%;
+                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+                    animation: shimmer 1.5s infinite;
+                }
+                @keyframes shimmer {
+                    0% { left: -100%; }
+                    100% { left: 150%; }
+                }
+                .scanner-laser {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 3px;
+                    background: linear-gradient(90deg, rgba(37,99,235,0) 5%, rgba(37,99,235,1) 50%, rgba(37,99,235,0) 95%);
+                    box-shadow: 0 0 10px rgba(37,99,235,0.8), 0 0 4px rgba(37,99,235,0.5);
+                    animation: scan 2s infinite ease-in-out;
+                }
+                @keyframes scan {
+                    0% { top: 8%; }
+                    50% { top: 88%; }
+                    100% { top: 8%; }
+                }
+                .step-dot {
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background-color: #CBD5E1;
+                    transition: all 0.3s;
+                }
+                .step-dot.active {
+                    background-color: #2563EB;
+                    transform: scale(1.2);
+                    box-shadow: 0 0 8px rgba(37,99,235,0.4);
+                }
+            </style>
+            
+            <div class="flex flex-col items-center">
+                <!-- Document Animation -->
+                <div class="doc-skeleton-container">
+                    <div class="doc-skeleton">
+                        <div class="scanner-laser"></div>
+                        <div class="doc-line doc-line-1"></div>
+                        <div class="doc-line doc-line-2"></div>
+                        <div class="doc-line doc-line-3"></div>
+                        <div class="doc-line doc-line-4"></div>
+                    </div>
+                </div>
+                
+                <!-- Loading Status Text -->
+                <div class="text-slate-700 text-sm font-extrabold tracking-wide mb-1 text-center" id="loader-title">
+                    Loading Document...
+                </div>
+                
+                <!-- Animated Status Subtext / Checklist -->
+                <div class="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-4 h-4 flex items-center justify-center gap-1.5" id="loader-status">
+                    Preparing template
+                </div>
+                
+                <!-- Status Dots -->
+                <div class="flex gap-2 justify-center mb-6">
+                    <div class="step-dot active" id="dot-1"></div>
+                    <div class="step-dot" id="dot-2"></div>
+                    <div class="step-dot" id="dot-3"></div>
+                </div>
+
+                <!-- Two-tone Wordmark -->
+                <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:1.15rem;letter-spacing:-0.05em;line-height:1;display:inline-flex;align-items:baseline;gap:0;opacity:0.8;">
+                    <span style="color:#0F172A">insta</span><span style="color:#2563EB">deed</span>
+                    <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.55rem;font-weight:800;color:#fff;background:#2563EB;width:15px;height:15px;border-radius:50%;margin-left:3px;align-self:center;display:inline-flex;align-items:center;justify-content:center;line-height:1;">in</span>
+                </div>
+            </div>
+            
+            <!-- Inline Script to parse doc name and animate checklist status -->
+            <script>
+                (function() {
+                    const params = new URLSearchParams(window.location.search);
+                    const nameParam = params.get('name');
+                    const docParam = params.get('doc');
+                    
+                    let docName = 'Legal Document';
+                    if (nameParam) {
+                        docName = decodeURIComponent(nameParam);
+                    } else if (docParam) {
+                        // fallback formatting
+                        docName = docParam.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                    }
+                    
+                    const titleEl = document.getElementById('loader-title');
+                    if (titleEl) {
+                        titleEl.textContent = 'Loading ' + docName + '...';
+                    }
+                    
+                    // Simple checklist stages
+                    const stages = [
+                        { text: 'Reading Template Structure', dot: 1 },
+                        { text: 'Compiling Document Clauses', dot: 2 },
+                        { text: 'Loading Form Input Editor', dot: 3 }
+                    ];
+                    
+                    const statusEl = document.getElementById('loader-status');
+                    let currentStage = 0;
+                    
+                    function advanceStage() {
+                        if (currentStage >= stages.length) return;
+                        
+                        const stage = stages[currentStage];
+                        if (statusEl) {
+                            statusEl.textContent = stage.text;
+                        }
+                        
+                        // Activate dots
+                        for (let i = 1; i <= 3; i++) {
+                            const dot = document.getElementById('dot-' + i);
+                            if (dot) {
+                                dot.classList.toggle('active', i === stage.dot);
+                            }
+                        }
+                        
+                        currentStage++;
+                        // Advance stages smoothly
+                        setTimeout(advanceStage, 220);
+                    }
+                    
+                    // Start status animation
+                    advanceStage();
+                })();
+            </script>
+        </div>
+    </div>
+
+    <script src="out.js"></script>
+</body>
+
+</html>

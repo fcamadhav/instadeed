@@ -1,0 +1,12 @@
+node_modules/
+__pycache__/
+*.pyc
+*.db
+.env
+venv/
+*.docx
+*.doc
+*.pdf
+*.png
+*.zip
+*.bak

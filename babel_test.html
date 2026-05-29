@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>Babel Error Test</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>body{font-family:monospace;padding:20px;background:#111;color:#0f0}pre{white-space:pre-wrap;word-break:break-all}</style>
+</head><body>
+<h2>Babel Parse Test</h2>
+<div id="result">Loading script...</div>
+<script>
+// Fetch the Hub file and try to parse the Babel block
+fetch('Madhav_Drafting_Hub.html')
+    .then(r => r.text())
+    .then(html => {
+        const start = html.indexOf('<script type="text/babel">') + '<script type="text/babel">'.length;
+        const end = html.lastIndexOf('<\/script>');
+        const babelCode = html.substring(start, end);
+        
+        document.getElementById('result').textContent = 
+            'Babel block: ' + babelCode.length + ' chars, ' + babelCode.split('\n').length + ' lines\n\nParsing...';
+        
+        try {
+            // Try to transform the code using Babel
+            const result = Babel.transform(babelCode, {
+                presets: ['react'],
+                filename: 'Hub.jsx'
+            });
+            document.getElementById('result').textContent = 'SUCCESS! Babel parsed ' + babelCode.length + ' chars without errors.';
+            document.getElementById('result').style.color = '#0f0';
+        } catch(e) {
+            document.getElementById('result').innerHTML = 
+                '<span style="color:red;font-size:18px">BABEL ERROR FOUND:</span><br><br>' +
+                '<pre style="color:yellow">' + e.message + '</pre><br>' +
+                '<pre style="color:#888">' + (e.stack || '') + '</pre>';
+        }
+    })
+    .catch(e => {
+        document.getElementById('result').textContent = 'Fetch error: ' + e.message;
+    });
+</script>
+</body></html>

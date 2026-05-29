@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CDN Test</title>
+</head>
+<body style="font-family:monospace;padding:40px;background:#111;color:#0f0;font-size:16px">
+<h2>INSTADEED CDN + Babel Test</h2>
+<div id="log"></div>
+<div id="root"></div>
+<script>
+function log(msg, color) {
+    var d = document.createElement('div');
+    d.style.color = color || '#0f0';
+    d.style.margin = '4px 0';
+    d.textContent = '> ' + msg;
+    document.getElementById('log').appendChild(d);
+}
+
+window.onerror = function(msg, url, line, col) {
+    log('ERROR: ' + msg + ' (line ' + line + ')', 'red');
+    return true;
+};
+
+log('Page loaded. Checking CDN scripts...');
+</script>
+
+<script src="https://cdn.tailwindcss.com" onload="log('Tailwind: OK')" onerror="log('Tailwind: FAILED TO LOAD', 'red')"></script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin onload="log('React: OK')" onerror="log('React: FAILED TO LOAD', 'red')"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin onload="log('ReactDOM: OK')" onerror="log('ReactDOM: FAILED TO LOAD', 'red')"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js" onload="log('Babel: OK')" onerror="log('Babel: FAILED TO LOAD', 'red')"></script>
+
+<script>
+// Check after a delay
+setTimeout(function() {
+    log('---');
+    if (typeof React === 'undefined') { log('React is UNDEFINED - CDN blocked?', 'red'); return; }
+    if (typeof ReactDOM === 'undefined') { log('ReactDOM is UNDEFINED', 'red'); return; }
+    if (typeof Babel === 'undefined') { log('Babel is UNDEFINED', 'red'); return; }
+    log('All CDN scripts loaded. Testing Babel transform...');
+    
+    try {
+        var code = 'function App() { return <div style={{color:"lime",fontSize:"24px"}}>Babel JSX works!</div>; }';
+        var result = Babel.transform(code, { presets: ['react'] });
+        log('Babel transform: OK');
+        eval(result.code);
+        var root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+        log('React render: OK - you should see green text below', 'lime');
+    } catch(e) {
+        log('Babel/React error: ' + e.message, 'red');
+    }
+}, 3000);
+</script>
+</body>
+</html>

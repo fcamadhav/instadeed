@@ -1,0 +1,962 @@
+Targets found: [(254, 'NameMatch'), (2383, 'ActiveTabMatch'), (2413, 'ActiveTabMatch'), (2460, 'ActiveTabMatch'), (2489, 'ActiveTabMatch'), (2536, 'ActiveTabMatch'), (2600, 'ActiveTabMatch'), (2677, 'ActiveTabMatch'), (3091, 'ActiveTabMatch'), (4101, 'ActiveTabMatch'), (4107, 'ActiveTabMatch'), (4214, 'ActiveTabMatch'), (4371, 'ActiveTabMatch'), (4372, 'NameMatch'), (6166, 'ActiveTabMatch')]
+
+--- Around Line 254 (NameMatch) ---
+244:             return (
+245:                 <button
+246:                     onClick={onClick}
+247:                     className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 border ${styles}`}
+248:                 >
+249:                     {children}
+250:                 </button>
+251:             );
+252:         }
+253: 
+254:         const NoidaTransferForm = ({ data, onChange }) => {
+255:             const handleSyncChange = (e, legacyName) => {
+256:                 onChange(e);
+257:                 if (legacyName) {
+258:                     onChange({
+259:                         target: {
+260:                             name: legacyName,
+261:                             value: e.target.value
+262:                         }
+263:                     });
+264:                 }
+265:             };
+266: 
+267:             return (
+268:                 <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
+269:                     <Section title="Form Metadata & Fees" icon="fa-receipt" color="blue" isOpen={true}
+270:                         fields={[data.slNo, data.issueDate]}>
+271:                         <div className="grid grid-cols-2 gap-4">
+272:                             <Input label="Form Serial No." name="slNo" value={data.slNo} onChange={onChange} placeholder="e.g. 124578" />
+273:                             <Input label="Form Issue Date" name="issueDate" type="date" value={data.issueDate} onChange={onChange} />
+274:                         </div>
+275:                         <div className="bg-blue-50/50 p-3 rounded-lg border border-blue-100 space-y-3 mt-2">
+276:                             <div className="text-xs font-bold text-blue-800">If Form Downloaded Online:</div>
+277:                             <div className="grid grid-cols-2 gap-3">
+278:                                 <Input label="Form Fee Deposit Date" name="downloadDepositDate" type="date" value={data.downloadDepositDate} onChange={onChange} />
+279:                                 <Input label="Form Fee Challan No." name="downloadDepositChallanNo" value={data.downloadDepositChallanNo} onChange={onChange} placeholder="e.g. CH-9923" />
+280:                             </div>
+281:                             <Input label="Authorized Bank Branch" name="downloadDepositBank" value={data.downloadDepositBank} onChange={onChange} placeholder="e.g. ICICI Bank, Sector 62, Noida" />
+282:                         </div>
+283:                         <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 space-y-3 mt-2">
+284:                             <div className="text-xs font-bold text-gray-700">Processing Fee (Rs. 1000) & Transfer Charges:</div>
+285:                             <div className="grid grid-cols-2 gap-3">
+286:                                 <Input label="Processing Challan No." name="processingFeeChallanNo" value={data.processingFeeChallanNo} onChange={onChange} placeholder="Challan No." />
+287:                                 <Input label="Processing Challan Date" name="processingFeeDate" type="date" value={data.processingFeeDate} onChange={onChange} />
+288:                             </div>
+289:                             <div className="grid grid-cols-2 gap-3">
+290:                                 <Input label="Transfer Charges Challan" name="transferChargesChallanNo" value={data.transferChargesChallanNo} onChange={onChange} placeholder="Challan No." />
+291:                                 <Input label="Transfer Charges Date" name="transferChargesDate" type="date" value={data.transferChargesDate} onChange={onChange} />
+292:                             </div>
+293:                             <Input label="Transfer Charges Paid (Rs.)" name="transferChargesAmount" value={data.transferChargesAmount} onChange={onChange} placeholder="e.g. 45000" />
+294:                         </div>
+295:                     </Section>
+296: 
+297:                     <Section title="Property Details" icon="fa-building" color="indigo" isOpen={true}
+298:                         fields={[data.plotNo, data.block, data.sector, data.projectName, data.area]}>
+299:                         <div className="grid grid-cols-2 gap-4">
+300:                             <Input label="Plot/Flat No." name="plotNo" value={data.plotNo} onChange={onChange} placeholder="e.g. B-1101" />
+301:                             <Input label="Block / Tower" name="block" value={data.block} onChange={onChange} placeholder="e.g. Tower B" />
+302:                         </div>
+303:                         <div className="grid grid-cols-2 gap-4">
+304:                             <Input label="Sector" name="sector" value={data.sector} placeholder="e.g. 120" onChange={onChange} />
+
+
+--- Around Line 2383 (ActiveTabMatch) ---
+2373:             }, [atsData?.paymentTransactions, atsData?.totalConsideration, activeTab]);
+2374: 
+2375:             const downloadJSON = () => {
+2376:                 let currentData, name;
+2377:                 if (activeTab === 'RENT') { currentData = rentData; name = rentData.tenantName || 'Draft'; }
+2378:                 else if (activeTab === 'ATS') { currentData = atsData; name = atsData.buyerName || 'Draft'; }
+2379:                 else if (activeTab === 'MUTATION') { currentData = mutationData; name = mutationData.applicantName || 'Draft'; }
+2380:                 else if (activeTab === 'GNIDA') { currentData = gnidaData; name = gnidaData.allotteeName || 'Draft'; }
+2381:                 else if (activeTab === 'TM48') { currentData = tm48Data; name = tm48Data.applicantName || 'Draft'; }
+2382:                 else if (activeTab === 'TM_APP') { currentData = tmAppData; name = tmAppData.transferorName || 'Draft'; }
+2383:                 else if (activeTab === 'NOIDA_TRANSFER') { currentData = noidaTransferData; name = noidaTransferData.allotteeName || 'Draft'; }
+2384:                 else if (activeTab === 'GNIDA_REGISTRY') { currentData = gnidaRegistryData; name = gnidaRegistryData.projectName || 'Draft'; }
+2385:                 else if (activeTab === 'GNIDA_PTM') { currentData = gnidaPtmData; name = gnidaPtmData.allotteeName || 'Draft'; }
+2386:                 else if (activeTab === 'ECOMM_TC') { currentData = ecommTCData; name = ecommTCData.companyName || 'Draft'; }
+2387:                 else if (activeTab === 'ECOMM_PP') { currentData = ecommPPData; name = ecommPPData.companyName || 'Draft'; }
+2388:                 else if (activeTab === 'ECOMM_RP') { currentData = ecommRPData; name = ecommRPData.companyName || 'Draft'; }
+2389:                 else if (activeTab === 'GNIDA_PACKAGE') { currentData = gnidaPackageData; name = (gnidaPackageData.transferee1Name || 'Package') + '_5_in_1'; }
+2390:                 else { currentData = regData; name = regData.lesseeName || 'Draft'; }
+2391: 
+2392:                 const blob = new Blob([JSON.stringify(currentData, null, 2)], { type: "application/json" });
+2393:                 const url = URL.createObjectURL(blob);
+2394:                 const link = document.createElement("a");
+2395:                 link.href = url;
+2396:                 link.download = `Instadeed_${activeTab}_${name}.json`;
+2397:                 link.click();
+2398:             };
+2399: 
+2400:             const uploadJSON = (e) => {
+2401:                 const file = e.target.files[0];
+2402:                 if (!file) return;
+2403:                 const reader = new FileReader();
+2404:                 reader.onload = (event) => {
+2405:                     try {
+2406:                         const loaded = JSON.parse(event.target.result);
+2407:                         if (activeTab === 'RENT') setRentData(prev => ({ ...prev, ...loaded }));
+2408:                         else if (activeTab === 'ATS') setAtsData(prev => ({ ...prev, ...loaded }));
+2409:                         else if (activeTab === 'MUTATION') setMutationData(prev => ({ ...prev, ...loaded }));
+2410:                         else if (activeTab === 'GNIDA') setGnidaData(prev => ({ ...prev, ...loaded }));
+2411:                         else if (activeTab === 'TM48') setTm48Data(prev => ({ ...prev, ...loaded }));
+2412:                         else if (activeTab === 'TM_APP') setTmAppData(prev => ({ ...prev, ...loaded }));
+2413:                         else if (activeTab === 'NOIDA_TRANSFER') setNoidaTransferData(prev => ({ ...prev, ...loaded }));
+2414: 
+2415:                         else if (activeTab === 'GNIDA_REGISTRY') setGnidaRegistryData(prev => ({ ...prev, ...loaded }));
+2416:                         else if (activeTab === 'GNIDA_PTM') setGnidaPtmData(prev => ({ ...prev, ...loaded }));
+2417:                         else if (activeTab === 'ECOMM_TC') setEcommTCData(prev => ({ ...prev, ...loaded }));
+2418:                         else if (activeTab === 'ECOMM_PP') setEcommPPData(prev => ({ ...prev, ...loaded }));
+2419:                         else if (activeTab === 'ECOMM_RP') setEcommRPData(prev => ({ ...prev, ...loaded }));
+2420:                         else if (activeTab === 'GNIDA_PACKAGE') setGnidaPackageData(prev => ({ ...prev, ...loaded }));
+2421:                         else setRegData(prev => ({ ...prev, ...loaded }));
+2422:                     } catch (err) {
+2423:                         alert("Invalid JSON file");
+2424:                     }
+2425:                 };
+2426:                 reader.readAsText(file);
+2427:             };
+2428: 
+2429:             const clearAllData = () => {
+2430:                 if (confirm("Are you sure you want to CLEAR ALL DATA from ALL forms? This cannot be undone.")) {
+2431:                     setRentData(defaultRentData);
+2432:                     setRegData(defaultRegData);
+2433:                     setTm48Data(defaultTM48Data);
+
+
+--- Around Line 2413 (ActiveTabMatch) ---
+2403:                 const reader = new FileReader();
+2404:                 reader.onload = (event) => {
+2405:                     try {
+2406:                         const loaded = JSON.parse(event.target.result);
+2407:                         if (activeTab === 'RENT') setRentData(prev => ({ ...prev, ...loaded }));
+2408:                         else if (activeTab === 'ATS') setAtsData(prev => ({ ...prev, ...loaded }));
+2409:                         else if (activeTab === 'MUTATION') setMutationData(prev => ({ ...prev, ...loaded }));
+2410:                         else if (activeTab === 'GNIDA') setGnidaData(prev => ({ ...prev, ...loaded }));
+2411:                         else if (activeTab === 'TM48') setTm48Data(prev => ({ ...prev, ...loaded }));
+2412:                         else if (activeTab === 'TM_APP') setTmAppData(prev => ({ ...prev, ...loaded }));
+2413:                         else if (activeTab === 'NOIDA_TRANSFER') setNoidaTransferData(prev => ({ ...prev, ...loaded }));
+2414: 
+2415:                         else if (activeTab === 'GNIDA_REGISTRY') setGnidaRegistryData(prev => ({ ...prev, ...loaded }));
+2416:                         else if (activeTab === 'GNIDA_PTM') setGnidaPtmData(prev => ({ ...prev, ...loaded }));
+2417:                         else if (activeTab === 'ECOMM_TC') setEcommTCData(prev => ({ ...prev, ...loaded }));
+2418:                         else if (activeTab === 'ECOMM_PP') setEcommPPData(prev => ({ ...prev, ...loaded }));
+2419:                         else if (activeTab === 'ECOMM_RP') setEcommRPData(prev => ({ ...prev, ...loaded }));
+2420:                         else if (activeTab === 'GNIDA_PACKAGE') setGnidaPackageData(prev => ({ ...prev, ...loaded }));
+2421:                         else setRegData(prev => ({ ...prev, ...loaded }));
+2422:                     } catch (err) {
+2423:                         alert("Invalid JSON file");
+2424:                     }
+2425:                 };
+2426:                 reader.readAsText(file);
+2427:             };
+2428: 
+2429:             const clearAllData = () => {
+2430:                 if (confirm("Are you sure you want to CLEAR ALL DATA from ALL forms? This cannot be undone.")) {
+2431:                     setRentData(defaultRentData);
+2432:                     setRegData(defaultRegData);
+2433:                     setTm48Data(defaultTM48Data);
+2434:                     setMutationData(defaultMutationData);
+2435:                     setGnidaData(defaultGNIDAData);
+2436:                     setTmAppData(defaultTMAppData);
+2437:                     setAtsData(defaultATSData);
+2438:                     setGnidaPtmData(defaultGnidaPtmData);
+2439:                     setEcommTCData(defaultEcommTCData);
+2440:                     setEcommPPData(defaultEcommPPData);
+2441:                     setEcommRPData(defaultEcommRPData);
+2442:                     setGnidaPackageData(defaultGnidaPackageData);
+2443: 
+2444:                     localStorage.removeItem('madhav_legal_suite_v4_clean');
+2445:                     alert("All forms have been cleared.");
+2446:                 }
+2447:             };
+2448: 
+2449:             const saveDefault = () => {
+2450:                 let currentData;
+2451:                 if (activeTab === 'RENT') currentData = rentData;
+2452:                 else if (activeTab === 'ATS') currentData = atsData;
+2453:                 else if (activeTab === 'MUTATION') currentData = mutationData;
+2454:                 else if (activeTab === 'GNIDA') currentData = gnidaData;
+2455:                 else if (activeTab === 'GNIDA_REGISTRY') currentData = gnidaRegistryData;
+2456:                 else if (activeTab === 'GNIDA_REGISTRY') currentData = gnidaRegistryData;
+2457:                 else if (activeTab === 'GNIDA_PTM') currentData = gnidaPtmData;
+2458:                 else if (activeTab === 'TM48') currentData = tm48Data;
+2459:                 else if (activeTab === 'TM_APP') currentData = tmAppData;
+2460:                 else if (activeTab === 'NOIDA_TRANSFER') currentData = noidaTransferData;
+2461:                 else if (activeTab === 'ECOMM_TC') currentData = ecommTCData;
+2462:                 else if (activeTab === 'ECOMM_PP') currentData = ecommPPData;
+2463:                 else if (activeTab === 'ECOMM_RP') currentData = ecommRPData;
+
+
+--- Around Line 2460 (ActiveTabMatch) ---
+2450:                 let currentData;
+2451:                 if (activeTab === 'RENT') currentData = rentData;
+2452:                 else if (activeTab === 'ATS') currentData = atsData;
+2453:                 else if (activeTab === 'MUTATION') currentData = mutationData;
+2454:                 else if (activeTab === 'GNIDA') currentData = gnidaData;
+2455:                 else if (activeTab === 'GNIDA_REGISTRY') currentData = gnidaRegistryData;
+2456:                 else if (activeTab === 'GNIDA_REGISTRY') currentData = gnidaRegistryData;
+2457:                 else if (activeTab === 'GNIDA_PTM') currentData = gnidaPtmData;
+2458:                 else if (activeTab === 'TM48') currentData = tm48Data;
+2459:                 else if (activeTab === 'TM_APP') currentData = tmAppData;
+2460:                 else if (activeTab === 'NOIDA_TRANSFER') currentData = noidaTransferData;
+2461:                 else if (activeTab === 'ECOMM_TC') currentData = ecommTCData;
+2462:                 else if (activeTab === 'ECOMM_PP') currentData = ecommPPData;
+2463:                 else if (activeTab === 'ECOMM_RP') currentData = ecommRPData;
+2464:                 else if (activeTab === 'GNIDA_PACKAGE') currentData = gnidaPackageData;
+2465: 
+2466:                 else currentData = regData;
+2467:                 localStorage.setItem(`madhav_default_${activeTab}`, JSON.stringify(currentData));
+2468:                 alert(`Settings saved as your Default ${activeTab} Template!`);
+2469:             };
+2470: 
+2471:             // --- Helper to build document name: [FlatNo] - [Name] - [Date] ---
+2472:             const buildDocumentName = (flat, owner, type) => {
+2473:                 const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+2474:                 const parts = [];
+2475:                 if (flat && flat.trim()) parts.push(flat.trim());
+2476:                 if (owner && owner.trim()) parts.push(owner.trim());
+2477:                 parts.push(today);
+2478:                 return parts.length > 1 ? parts.join(' - ') : `${type} - ${today}`;
+2479:             };
+2480: 
+2481:             useEffect(() => {
+2482:                 let name = 'Draft';
+2483:                 if (activeTab === 'RENT') name = buildDocumentName(rentData.propertyAddress ? rentData.propertyAddress.split(',')[0] : '', rentData.landlordName, 'Rent Agreement');
+2484:                 else if (activeTab === 'ATS') name = buildDocumentName(atsData.propertyAddress ? atsData.propertyAddress.split(',')[0] : '', atsData.seller1Name, 'Agreement to Sell');
+2485:                 else if (activeTab === 'MUTATION') name = buildDocumentName(mutationData.flatNo, mutationData.applicantName, 'Mutation');
+2486:                 else if (activeTab === 'GNIDA') name = buildDocumentName(gnidaData.propertyNo, gnidaData.allotteeName, 'GNIDA Transfer');
+2487:                 else if (activeTab === 'TM48') name = buildDocumentName('', tm48Data.applicantName, 'TM-48');
+2488:                 else if (activeTab === 'TM_APP') name = buildDocumentName(tmAppData.plotNo, tmAppData.transferorName, 'TM App');
+2489:                 else if (activeTab === 'NOIDA_TRANSFER') name = buildDocumentName(noidaTransferData.plotNo, noidaTransferData.allotteeName, 'NOIDA Transfer');
+2490:                 else if (activeTab === 'GNIDA_PTM') name = buildDocumentName(gnidaPtmData.plotNo, gnidaPtmData.allotteeName, 'GNIDA PTM');
+2491:                 else if (activeTab === 'ECOMM_TC') name = buildDocumentName('', ecommTCData.companyName, 'E-Commerce T&C');
+2492:                 else if (activeTab === 'ECOMM_PP') name = buildDocumentName('', ecommPPData.companyName, 'E-Commerce Privacy');
+2493:                 else if (activeTab === 'ECOMM_RP') name = buildDocumentName('', ecommRPData.companyName, 'Refund Policy');
+2494:                 else if (activeTab === 'GNIDA_PACKAGE') name = buildDocumentName(gnidaPackageData.flatNo, gnidaPackageData.transferee1Name, 'GNIDA_5in1_Package');
+2495: 
+2496:                 else name = buildDocumentName(regData.propertyAddress ? regData.propertyAddress.split(',')[0] : '', regData.lessorName, 'Reg Rent Agreement');
+2497: 
+2498:                 document.title = name;
+2499:             }, [rentData, atsData, regData, tm48Data, gnidaData, mutationData, tmAppData, gnidaPtmData, activeTab]);
+2500: 
+2501:             // --- Saved Drafts Logic ---
+2502:             const [savedDrafts, setSavedDrafts] = useState([]);
+2503:             const [showLibrary, setShowLibrary] = useState(false);
+2504:             const [showShare, setShowShare] = useState(false);
+2505:             const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(localStorage.getItem('instadeed_admin') === 'true');
+2506:             const [showAdminLoginModal, setShowAdminLoginModal] = useState(false);
+2507:             const [isOfficeMode, setIsOfficeMode] = useState(false);
+2508:             const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+2509:             const [checkoutDetails, setCheckoutDetails] = useState({ name: '', phone: '', email: '' });
+2510:             const [crmOrders, setCrmOrders] = useState([]);
+
+
+--- Around Line 2489 (ActiveTabMatch) ---
+2479:             };
+2480: 
+2481:             useEffect(() => {
+2482:                 let name = 'Draft';
+2483:                 if (activeTab === 'RENT') name = buildDocumentName(rentData.propertyAddress ? rentData.propertyAddress.split(',')[0] : '', rentData.landlordName, 'Rent Agreement');
+2484:                 else if (activeTab === 'ATS') name = buildDocumentName(atsData.propertyAddress ? atsData.propertyAddress.split(',')[0] : '', atsData.seller1Name, 'Agreement to Sell');
+2485:                 else if (activeTab === 'MUTATION') name = buildDocumentName(mutationData.flatNo, mutationData.applicantName, 'Mutation');
+2486:                 else if (activeTab === 'GNIDA') name = buildDocumentName(gnidaData.propertyNo, gnidaData.allotteeName, 'GNIDA Transfer');
+2487:                 else if (activeTab === 'TM48') name = buildDocumentName('', tm48Data.applicantName, 'TM-48');
+2488:                 else if (activeTab === 'TM_APP') name = buildDocumentName(tmAppData.plotNo, tmAppData.transferorName, 'TM App');
+2489:                 else if (activeTab === 'NOIDA_TRANSFER') name = buildDocumentName(noidaTransferData.plotNo, noidaTransferData.allotteeName, 'NOIDA Transfer');
+2490:                 else if (activeTab === 'GNIDA_PTM') name = buildDocumentName(gnidaPtmData.plotNo, gnidaPtmData.allotteeName, 'GNIDA PTM');
+2491:                 else if (activeTab === 'ECOMM_TC') name = buildDocumentName('', ecommTCData.companyName, 'E-Commerce T&C');
+2492:                 else if (activeTab === 'ECOMM_PP') name = buildDocumentName('', ecommPPData.companyName, 'E-Commerce Privacy');
+2493:                 else if (activeTab === 'ECOMM_RP') name = buildDocumentName('', ecommRPData.companyName, 'Refund Policy');
+2494:                 else if (activeTab === 'GNIDA_PACKAGE') name = buildDocumentName(gnidaPackageData.flatNo, gnidaPackageData.transferee1Name, 'GNIDA_5in1_Package');
+2495: 
+2496:                 else name = buildDocumentName(regData.propertyAddress ? regData.propertyAddress.split(',')[0] : '', regData.lessorName, 'Reg Rent Agreement');
+2497: 
+2498:                 document.title = name;
+2499:             }, [rentData, atsData, regData, tm48Data, gnidaData, mutationData, tmAppData, gnidaPtmData, activeTab]);
+2500: 
+2501:             // --- Saved Drafts Logic ---
+2502:             const [savedDrafts, setSavedDrafts] = useState([]);
+2503:             const [showLibrary, setShowLibrary] = useState(false);
+2504:             const [showShare, setShowShare] = useState(false);
+2505:             const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(localStorage.getItem('instadeed_admin') === 'true');
+2506:             const [showAdminLoginModal, setShowAdminLoginModal] = useState(false);
+2507:             const [isOfficeMode, setIsOfficeMode] = useState(false);
+2508:             const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+2509:             const [checkoutDetails, setCheckoutDetails] = useState({ name: '', phone: '', email: '' });
+2510:             const [crmOrders, setCrmOrders] = useState([]);
+2511:             const [crmAnalytics, setCrmAnalytics] = useState(null);
+2512:             const [crmFilterStatus, setCrmFilterStatus] = useState('');
+2513:             const [crmFilterType, setCrmFilterType] = useState('');
+2514:             const [crmSearch, setCrmSearch] = useState('');
+2515:             const [crmFilterToday, setCrmFilterToday] = useState(false);
+2516: 
+2517:             useEffect(() => {
+2518:                 const saved = localStorage.getItem('madhav_saved_drafts');
+2519:                 if (saved) {
+2520:                     try {
+2521:                         setSavedDrafts(JSON.parse(saved));
+2522:                     } catch (e) { console.error("Error loading drafts", e); }
+2523:                 }
+2524:             }, []);
+2525: 
+2526:             const saveToLibrary = () => {
+2527:                 let currentData;
+2528:                 let defaultName = "New Draft";
+2529: 
+2530:                 if (activeTab === 'RENT') { currentData = rentData; defaultName = buildDocumentName(rentData.propertyAddress ? rentData.propertyAddress.split(',')[0] : '', rentData.landlordName, "Rent Agreement"); }
+2531:                 else if (activeTab === 'ATS') { currentData = atsData; defaultName = buildDocumentName(atsData.propertyAddress ? atsData.propertyAddress.split(',')[0] : '', atsData.seller1Name, "Agreement to Sell"); }
+2532:                 else if (activeTab === 'MUTATION') { currentData = mutationData; defaultName = buildDocumentName(mutationData.flatNo, mutationData.applicantName, "Mutation"); }
+2533:                 else if (activeTab === 'GNIDA' || activeTab === 'KYA') { currentData = gnidaData; defaultName = buildDocumentName(gnidaData.propertyNo, gnidaData.allotteeName, "GNIDA KYA"); }
+2534:                 else if (activeTab === 'TM48') { currentData = tm48Data; defaultName = buildDocumentName('', tm48Data.applicantName, "TM-48"); }
+2535:                 else if (activeTab === 'TM_APP') { currentData = tmAppData; defaultName = buildDocumentName(tmAppData.plotNo, tmAppData.transferorName, "TM App"); }
+2536:                 else if (activeTab === 'NOIDA_TRANSFER') { currentData = noidaTransferData; defaultName = buildDocumentName(noidaTransferData.plotNo, noidaTransferData.allotteeName, "NOIDA Transfer"); }
+2537:                 else if (activeTab === 'GNIDA_REGISTRY') { currentData = gnidaRegistryData; defaultName = buildDocumentName(gnidaRegistryData.flatNo, gnidaRegistryData.projectName, "GNIDA Registry"); }
+2538:                 else if (activeTab === 'GNIDA_PTM') { currentData = gnidaPtmData; defaultName = buildDocumentName(gnidaPtmData.plotNo, gnidaPtmData.allotteeName, "GNIDA PTM"); }
+2539:                 else if (activeTab === 'ECOMM_TC') { currentData = ecommTCData; defaultName = buildDocumentName('', ecommTCData.companyName, "E-Commerce T&C"); }
+
+
+--- Around Line 2536 (ActiveTabMatch) ---
+2526:             const saveToLibrary = () => {
+2527:                 let currentData;
+2528:                 let defaultName = "New Draft";
+2529: 
+2530:                 if (activeTab === 'RENT') { currentData = rentData; defaultName = buildDocumentName(rentData.propertyAddress ? rentData.propertyAddress.split(',')[0] : '', rentData.landlordName, "Rent Agreement"); }
+2531:                 else if (activeTab === 'ATS') { currentData = atsData; defaultName = buildDocumentName(atsData.propertyAddress ? atsData.propertyAddress.split(',')[0] : '', atsData.seller1Name, "Agreement to Sell"); }
+2532:                 else if (activeTab === 'MUTATION') { currentData = mutationData; defaultName = buildDocumentName(mutationData.flatNo, mutationData.applicantName, "Mutation"); }
+2533:                 else if (activeTab === 'GNIDA' || activeTab === 'KYA') { currentData = gnidaData; defaultName = buildDocumentName(gnidaData.propertyNo, gnidaData.allotteeName, "GNIDA KYA"); }
+2534:                 else if (activeTab === 'TM48') { currentData = tm48Data; defaultName = buildDocumentName('', tm48Data.applicantName, "TM-48"); }
+2535:                 else if (activeTab === 'TM_APP') { currentData = tmAppData; defaultName = buildDocumentName(tmAppData.plotNo, tmAppData.transferorName, "TM App"); }
+2536:                 else if (activeTab === 'NOIDA_TRANSFER') { currentData = noidaTransferData; defaultName = buildDocumentName(noidaTransferData.plotNo, noidaTransferData.allotteeName, "NOIDA Transfer"); }
+2537:                 else if (activeTab === 'GNIDA_REGISTRY') { currentData = gnidaRegistryData; defaultName = buildDocumentName(gnidaRegistryData.flatNo, gnidaRegistryData.projectName, "GNIDA Registry"); }
+2538:                 else if (activeTab === 'GNIDA_PTM') { currentData = gnidaPtmData; defaultName = buildDocumentName(gnidaPtmData.plotNo, gnidaPtmData.allotteeName, "GNIDA PTM"); }
+2539:                 else if (activeTab === 'ECOMM_TC') { currentData = ecommTCData; defaultName = buildDocumentName('', ecommTCData.companyName, "E-Commerce T&C"); }
+2540:                 else if (activeTab === 'ECOMM_PP') { currentData = ecommPPData; defaultName = buildDocumentName('', ecommPPData.companyName, "E-Commerce Privacy"); }
+2541:                 else if (activeTab === 'ECOMM_RP') { currentData = ecommRPData; defaultName = buildDocumentName('', ecommRPData.companyName, "Refund Policy"); }
+2542:                 else { currentData = regData; defaultName = buildDocumentName(regData.propertyAddress ? regData.propertyAddress.split(',')[0] : '', regData.lessorName, "Reg Rent Agreement"); }
+2543: 
+2544:                 const name = prompt("Enter a name for this draft:", defaultName);
+2545:                 if (!name) return;
+2546: 
+2547:                 const newDraft = {
+2548:                     id: Date.now(),
+2549:                     name,
+2550:                     type: activeTab,
+2551:                     data: currentData,
+2552:                     date: new Date().toLocaleString()
+2553:                 };
+2554: 
+2555:                 const updatedDrafts = [newDraft, ...savedDrafts];
+2556:                 setSavedDrafts(updatedDrafts);
+2557:                 localStorage.setItem('madhav_saved_drafts', JSON.stringify(updatedDrafts));
+2558:                 alert("Draft saved to Library!");
+2559:             };
+2560: 
+2561:             const loadFromLibrary = (draft) => {
+2562:                 if (confirm(`Load "${draft.name}"? This will overwrite current ${draft.type} form data.`)) {
+2563:                     setActiveTab(draft.type);
+2564:                     if (draft.type === 'RENT') setRentData(draft.data);
+2565:                     else if (draft.type === 'ATS') setAtsData(draft.data);
+2566:                     else if (draft.type === 'MUTATION') setMutationData(draft.data);
+2567:                     else if (draft.type === 'GNIDA' || draft.type === 'KYA') setGnidaData(draft.data);
+2568:                     else if (draft.type === 'TM48') setTm48Data(draft.data);
+2569:                     else if (draft.type === 'TM_APP') setTmAppData(draft.data);
+2570:                     else if (draft.type === 'NOIDA_TRANSFER') setNoidaTransferData(draft.data);
+2571:                     else if (draft.type === 'GNIDA_REGISTRY') setGnidaRegistryData(draft.data);
+2572:                     else if (draft.type === 'GNIDA_PTM') setGnidaPtmData(draft.data);
+2573:                     else if (draft.type === 'ECOMM_TC') setEcommTCData(draft.data);
+2574:                     else if (draft.type === 'ECOMM_PP') setEcommPPData(draft.data);
+2575:                     else if (draft.type === 'ECOMM_RP') setEcommRPData(draft.data);
+2576:                     else setRegData(draft.data);
+2577:                     setShowLibrary(false);
+2578:                 }
+2579:             };
+2580: 
+2581:             const deleteFromLibrary = (id) => {
+2582:                 if (confirm("Delete this draft?")) {
+2583:                     const updatedDrafts = savedDrafts.filter(d => d.id !== id);
+2584:                     setSavedDrafts(updatedDrafts);
+2585:                     localStorage.setItem('madhav_saved_drafts', JSON.stringify(updatedDrafts));
+2586:                 }
+
+
+--- Around Line 2600 (ActiveTabMatch) ---
+2590:                 const saved = localStorage.getItem(`madhav_default_${activeTab}`);
+2591:                 if (saved) {
+2592:                     if (confirm(`Load your Default ${activeTab} Template?`)) {
+2593:                         const parsed = JSON.parse(saved);
+2594:                         if (activeTab === 'RENT') setRentData(parsed);
+2595:                         else if (activeTab === 'ATS') setAtsData(parsed);
+2596:                         else if (activeTab === 'MUTATION') setMutationData(parsed);
+2597:                         else if (activeTab === 'GNIDA' || activeTab === 'KYA') setGnidaData(parsed);
+2598:                         else if (activeTab === 'TM48') setTm48Data(parsed);
+2599:                         else if (activeTab === 'TM_APP') setTmAppData(parsed);
+2600:                         else if (activeTab === 'NOIDA_TRANSFER') setNoidaTransferData(parsed);
+2601:                         else if (activeTab === 'GNIDA_REGISTRY') setGnidaRegistryData(parsed);
+2602:                         else if (activeTab === 'GNIDA_PTM') setGnidaPtmData(parsed);
+2603:                         else if (activeTab === 'ECOMM_TC') setEcommTCData(parsed);
+2604:                         else if (activeTab === 'ECOMM_PP') setEcommPPData(parsed);
+2605:                         else if (activeTab === 'ECOMM_RP') setEcommRPData(parsed);
+2606:                         else if (activeTab === 'GNIDA_PACKAGE') setGnidaPackageData(parsed);
+2607: 
+2608:                         else setRegData(parsed);
+2609:                     }
+2610:                 } else {
+2611:                     alert("No default template found for this document type.");
+2612:                 }
+2613:             };
+2614: 
+2615:             const handleChange = (e) => {
+2616:                 let { name, value } = e.target;
+2617: 
+2618:                 // Enforce strict digits and maximum lengths
+2619:                 const phoneFields = [
+2620:                     'allotteePhone', 'transfereePhone', 'landlordPhone', 'tenantPhone', 
+2621:                     'witness1Phone', 'witness2Phone', 'lessorPhone', 'lessor2Phone', 
+2622:                     'lesseePhone', 'lessee2Phone', 'contactPhone', 'allottee1Mobile', 
+2623:                     'allottee2Mobile', 'phone'
+2624:                 ];
+2625:                 const moneyFields = [
+2626:                     'monthlyRent', 'rentAmount', 'securityAmount', 'totalAmount', 'stampDuty', 
+2627:                     'consideration', 'advanceRent', 'securityDeposit', 'earnestMoney', 
+2628:                     'totalConsideration', 'balanceConsideration'
+2629:                 ];
+2630:                 if (phoneFields.includes(name) || name.toLowerCase().includes('phone') || name.toLowerCase().includes('mobile')) {
+2631:                     value = value.replace(/\D/g, '').slice(0, 10);
+2632:                 } else if (name.toLowerCase().includes('aadhar') || name.toLowerCase().includes('aadhaar')) {
+2633:                     const digits = value.replace(/\D/g, '').slice(0, 12);
+2634:                     const parts = [];
+2635:                     for (let i = 0; i < digits.length; i += 4) {
+2636:                         parts.push(digits.slice(i, i + 4));
+2637:                     }
+2638:                     value = parts.join(' ');
+2639:                 } else if (name.toLowerCase().includes('pan')) {
+2640:                     value = value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 10);
+2641:                 } else if (name.toLowerCase().includes('pincode') || name === 'pinCode') {
+2642:                     value = value.replace(/\D/g, '').slice(0, 6);
+2643:                 } else if (moneyFields.includes(name)) {
+2644:                     value = value.replace(/\D/g, '');
+2645:                 }
+2646: 
+2647:                 if (activeTab === 'ECOMM_TC') {
+2648:                     setEcommTCData(prev => ({ ...prev, [name]: value }));
+2649:                     return;
+2650:                 }
+
+
+--- Around Line 2677 (ActiveTabMatch) ---
+2667:                     return;
+2668:                 }
+2669:                 if (activeTab === 'GNIDA_PTM') {
+2670:                     setGnidaPtmData(prev => ({ ...prev, [name]: value }));
+2671:                     return;
+2672:                 }
+2673: 
+2674: 
+2675: 
+2676: 
+2677:                 if (activeTab === 'NOIDA_TRANSFER') {
+2678:                     setNoidaTransferData(prev => ({ ...prev, [name]: value }));
+2679:                     return;
+2680:                 }
+2681: 
+2682:                 if (activeTab === 'MUTATION') {
+2683:                     setMutationData(prev => ({ ...prev, [name]: value }));
+2684:                     return;
+2685:                 }
+2686: 
+2687:                 if (activeTab === 'TM48') {
+2688:                     setTm48Data(prev => ({ ...prev, [name]: value }));
+2689:                     return;
+2690:                 }
+2691: 
+2692:                 if (activeTab === 'GNIDA' || activeTab === 'KYA') {
+2693:                     setGnidaData(prev => ({ ...prev, [name]: value }));
+2694:                     return;
+2695:                 }
+2696: 
+2697:                 if (activeTab === 'ATS') {
+2698:                     setAtsData(prev => {
+2699:                         const newData = { ...prev, [name]: value };
+2700: 
+2701:                         // Auto-calculate Completion Date if Execution Date or Tenure changes
+2702:                         if (name === 'executionDate' || name === 'tenure') {
+2703:                             const execDate = newData.executionDate;
+2704:                             const tenure = newData.tenure; // e.g., '45', '2', '3' etc.
+2705: 
+2706:                             if (execDate && tenure) {
+2707:                                 let targetDate = new Date(execDate);
+2708:                                 if (tenure === '45') {
+2709:                                     // Days
+2710:                                     targetDate.setDate(targetDate.getDate() + 45);
+2711:                                 } else {
+2712:                                     // Months
+2713:                                     const months = parseInt(tenure);
+2714:                                     targetDate.setMonth(targetDate.getMonth() + months);
+2715:                                 }
+2716: 
+2717:                                 // Format to YYYY-MM-DD
+2718:                                 const yyyy = targetDate.getFullYear();
+2719:                                 const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
+2720:                                 const dd = String(targetDate.getDate()).padStart(2, '0');
+2721:                                 newData.completionDate = `${yyyy}-${mm}-${dd}`;
+2722:                             }
+2723:                         }
+2724:                         return newData;
+2725:                     });
+2726:                     return;
+2727:                 }
+
+
+--- Around Line 3091 (ActiveTabMatch) ---
+3081:                     filename = `${flatNo}_${owner}_${rentData.agreementDate || 'Date'}`;
+3082:                 } else if (activeTab === 'ATS') {
+3083:                     filename = `ats_${atsData.executionDate || 'Date'}`;
+3084:                 } else if (activeTab === 'REG_RENT') {
+3085:                     const flat = regData.propertyAddress ? regData.propertyAddress.split(',')[0].trim() : 'Reg_Agreement';
+3086:                     filename = `${flat}_${regData.lessorName.split(' ')[0]}_${regData.executionDate}`;
+3087:                 } else if (activeTab === 'TM48') {
+3088:                     filename = `THE_TRADE_MARKS_ACT_${tm48Data.applicantName || 'Applicant'}`;
+3089:                 } else if (activeTab === 'GNIDA' || activeTab === 'KYA') {
+3090:                     filename = `GNIDA_KYC_${gnidaData.propertyNo}_${gnidaData.allotteeName || 'Allottee'}`;
+3091:                 } else if (activeTab === 'NOIDA_TRANSFER') {
+3092:                     filename = `NOIDA_Transfer_${noidaTransferData.plotNo || 'Plot'}`;
+3093:                 } else if (activeTab === 'GNIDA_REGISTRY') {
+3094:                     filename = `GNIDA_Registry_${gnidaRegistryData.flatNo || 'Flat'}`;
+3095:                 } else if (activeTab === 'GNIDA_PTM') {
+3096:                     filename = `GNIDA_PTM_${gnidaPtmData.plotNo || 'Plot'}`;
+3097:                 }
+3098:                 return filename;
+3099:             };
+3100: 
+3101:             const triggerPrint = () => {
+3102:                 document.title = getFilename();
+3103:                 window.print();
+3104:             };
+3105: 
+3106:             const handleSaveOffline = async () => {
+3107:                 const details = extractCustomerDetails();
+3108:                 const payload = getActiveDataPayload();
+3109:                 try {
+3110:                     const res = await fetch('http://localhost:8000/create-offline-order', {
+3111:                         method: 'POST',
+3112:                         headers: { 'Content-Type': 'application/json' },
+3113:                         body: JSON.stringify({
+3114:                             customer_name: details.name || 'Walk-in Client',
+3115:                             customer_phone: details.phone || '0000000000',
+3116:                             customer_email: details.email || 'walkin@office.com',
+3117:                             agreement_type: activeTab,
+3118:                             amount: 0.0,
+3119:                             status: 'COMPLETED',
+3120:                             form_data: payload
+3121:                         })
+3122:                     });
+3123:                     if (res.ok) {
+3124:                         const resData = await res.json();
+3125:                         console.log("Offline draft saved:", resData);
+3126:                         setSaveStatus("Saved to CRM!");
+3127:                         setTimeout(() => setSaveStatus("Auto-saved"), 2000);
+3128:                     }
+3129:                 } catch (e) {
+3130:                     console.error("Backend offline save failed:", e);
+3131:                 }
+3132:                 triggerPrint();
+3133:             };
+3134: 
+3135:             const handleOnlinePayment = async () => {
+3136:                 const payload = getActiveDataPayload();
+3137:                 try {
+3138:                     // 1. Create order on backend
+3139:                     const res = await fetch('http://localhost:8000/create-order', {
+3140:                         method: 'POST',
+3141:                         headers: { 'Content-Type': 'application/json' },
+
+
+--- Around Line 4101 (ActiveTabMatch) ---
+4091:                                                     </div>
+4092:                                                 </button>
+4093:                                             </>
+4094:                                         )}
+4095: 
+4096:                                         {(activeAuthority === 'NOIDA') && (
+4097:                                             <>
+4098:                                                 <button
+4099:                                                     onClick={() => setActiveTab('NOIDA_TRANSFER')}
+4100:                                                     className={`group col-span-2 flex flex-row items-center gap-3 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
+4101:                                                         activeTab === 'NOIDA_TRANSFER'
+4102:                                                             ? 'bg-blue-50/80 border-blue-600 shadow-sm ring-1 ring-blue-100 text-blue-700'
+4103:                                                             : 'bg-white border-slate-100 text-slate-700 hover:border-blue-100 hover:bg-blue-50/30'
+4104:                                                     }`}
+4105:                                                 >
+4106:                                                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+4107:                                                         activeTab === 'NOIDA_TRANSFER' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-100/80'
+4108:                                                     }`}>
+4109:                                                         <i className="fa-solid fa-right-left text-sm"></i>
+4110:                                                     </div>
+4111:                                                     <div className="flex flex-col">
+4112:                                                         <span className="font-bold text-[12px] leading-tight">Transfer Application</span>
+4113:                                                         <span className="text-[10px] text-slate-400 font-normal leading-none">Official NOIDA Transfer</span>
+4114:                                                     </div>
+4115:                                                 </button>
+4116:                                             </>
+4117:                                         )}
+4118: 
+4119:                                         {(activeAuthority === 'GDA') && (
+4120:                                             <div className="col-span-2 bg-slate-50 border border-slate-100 rounded-xl p-4 text-center">
+4121:                                                 <i className="fa-solid fa-lock text-slate-300 text-xl mb-1.5 block"></i>
+4122:                                                 <span className="font-bold text-xs text-slate-600 block">GDA Formats Locked</span>
+4123:                                                 <span className="text-[10px] text-slate-400">Drafting templates coming soon</span>
+4124:                                             </div>
+4125:                                         )}
+4126: 
+4127:                                         {(activeAuthority === 'ECOMMERCE') && (
+4128:                                             <>
+4129:                                                 <button
+4130:                                                     onClick={() => setActiveTab('ECOMM_TC')}
+4131:                                                     className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
+4132:                                                         activeTab === 'ECOMM_TC'
+4133:                                                             ? 'bg-emerald-50/80 border-emerald-600 shadow-sm ring-1 ring-emerald-100 text-emerald-700'
+4134:                                                             : 'bg-white border-slate-100 text-slate-700 hover:border-emerald-100 hover:bg-emerald-50/30'
+4135:                                                     }`}
+4136:                                                 >
+4137:                                                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+4138:                                                         activeTab === 'ECOMM_TC' ? 'bg-emerald-600 text-white' : 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-100/80'
+4139:                                                     }`}>
+4140:                                                         <i className="fa-solid fa-file-contract text-sm"></i>
+4141:                                                     </div>
+4142:                                                     <span className="font-bold text-[12px] mt-1 leading-tight">Terms & Conditions</span>
+4143:                                                     <span className="text-[10px] text-slate-400 font-normal leading-none">Website T&C</span>
+4144:                                                 </button>
+4145: 
+4146:                                                 <button
+4147:                                                     onClick={() => setActiveTab('ECOMM_PP')}
+4148:                                                     className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
+4149:                                                         activeTab === 'ECOMM_PP'
+4150:                                                             ? 'bg-violet-50/80 border-violet-600 shadow-sm ring-1 ring-violet-100 text-violet-700'
+4151:                                                             : 'bg-white border-slate-100 text-slate-700 hover:border-violet-100 hover:bg-violet-50/30'
+
+
+--- Around Line 4107 (ActiveTabMatch) ---
+4097:                                             <>
+4098:                                                 <button
+4099:                                                     onClick={() => setActiveTab('NOIDA_TRANSFER')}
+4100:                                                     className={`group col-span-2 flex flex-row items-center gap-3 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
+4101:                                                         activeTab === 'NOIDA_TRANSFER'
+4102:                                                             ? 'bg-blue-50/80 border-blue-600 shadow-sm ring-1 ring-blue-100 text-blue-700'
+4103:                                                             : 'bg-white border-slate-100 text-slate-700 hover:border-blue-100 hover:bg-blue-50/30'
+4104:                                                     }`}
+4105:                                                 >
+4106:                                                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+4107:                                                         activeTab === 'NOIDA_TRANSFER' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-100/80'
+4108:                                                     }`}>
+4109:                                                         <i className="fa-solid fa-right-left text-sm"></i>
+4110:                                                     </div>
+4111:                                                     <div className="flex flex-col">
+4112:                                                         <span className="font-bold text-[12px] leading-tight">Transfer Application</span>
+4113:                                                         <span className="text-[10px] text-slate-400 font-normal leading-none">Official NOIDA Transfer</span>
+4114:                                                     </div>
+4115:                                                 </button>
+4116:                                             </>
+4117:                                         )}
+4118: 
+4119:                                         {(activeAuthority === 'GDA') && (
+4120:                                             <div className="col-span-2 bg-slate-50 border border-slate-100 rounded-xl p-4 text-center">
+4121:                                                 <i className="fa-solid fa-lock text-slate-300 text-xl mb-1.5 block"></i>
+4122:                                                 <span className="font-bold text-xs text-slate-600 block">GDA Formats Locked</span>
+4123:                                                 <span className="text-[10px] text-slate-400">Drafting templates coming soon</span>
+4124:                                             </div>
+4125:                                         )}
+4126: 
+4127:                                         {(activeAuthority === 'ECOMMERCE') && (
+4128:                                             <>
+4129:                                                 <button
+4130:                                                     onClick={() => setActiveTab('ECOMM_TC')}
+4131:                                                     className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
+4132:                                                         activeTab === 'ECOMM_TC'
+4133:                                                             ? 'bg-emerald-50/80 border-emerald-600 shadow-sm ring-1 ring-emerald-100 text-emerald-700'
+4134:                                                             : 'bg-white border-slate-100 text-slate-700 hover:border-emerald-100 hover:bg-emerald-50/30'
+4135:                                                     }`}
+4136:                                                 >
+4137:                                                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+4138:                                                         activeTab === 'ECOMM_TC' ? 'bg-emerald-600 text-white' : 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-100/80'
+4139:                                                     }`}>
+4140:                                                         <i className="fa-solid fa-file-contract text-sm"></i>
+4141:                                                     </div>
+4142:                                                     <span className="font-bold text-[12px] mt-1 leading-tight">Terms & Conditions</span>
+4143:                                                     <span className="text-[10px] text-slate-400 font-normal leading-none">Website T&C</span>
+4144:                                                 </button>
+4145: 
+4146:                                                 <button
+4147:                                                     onClick={() => setActiveTab('ECOMM_PP')}
+4148:                                                     className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
+4149:                                                         activeTab === 'ECOMM_PP'
+4150:                                                             ? 'bg-violet-50/80 border-violet-600 shadow-sm ring-1 ring-violet-100 text-violet-700'
+4151:                                                             : 'bg-white border-slate-100 text-slate-700 hover:border-violet-100 hover:bg-violet-50/30'
+4152:                                                     }`}
+4153:                                                 >
+4154:                                                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+4155:                                                         activeTab === 'ECOMM_PP' ? 'bg-violet-600 text-white' : 'bg-violet-50 text-violet-600 group-hover:bg-violet-100/80'
+4156:                                                     }`}>
+4157:                                                         <i className="fa-solid fa-shield-halved text-sm"></i>
+
+
+--- Around Line 4214 (ActiveTabMatch) ---
+4204:                                                 activeTab === 'REG_RENT' ? 'Registered Rent' :
+4205:                                                 activeTab === 'TM48' ? 'TM-48 Auth' :
+4206:                                                 activeTab === 'KYA' ? 'Know Your Allottee' :
+4207:                                                 activeTab === 'TM_APP' ? 'Transfer Memo' :
+4208:                                                 activeTab === 'MUTATION' ? 'Mutation Form' :
+4209:                                                 activeTab === 'GNIDA_REGISTRY' ? 'Registry Format' :
+4210:                                                 activeTab === 'GNIDA_PTM' ? 'Permission to Mortgage' :
+4211:                                                 activeTab === 'ECOMM_TC' ? 'Terms & Conditions' :
+4212:                                                 activeTab === 'ECOMM_PP' ? 'Privacy Policy' :
+4213:                                                 activeTab === 'ECOMM_RP' ? 'Refund Policy' :
+4214:                                                 activeTab === 'NOIDA_TRANSFER' ? 'Noida Transfer' :
+4215:                                                 activeTab
+4216:                                             }
+4217:                                         </span>
+4218:                                     </div>
+4219:                                     <button
+4220:                                         onClick={() => { setActiveTab('HOME'); setActiveAuthority('ALL'); }}
+4221:                                         className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-[10px] font-bold text-slate-500 hover:text-slate-700 transition cursor-pointer"
+4222:                                     >
+4223:                                         <i className="fa-solid fa-arrow-left"></i> Change Template
+4224:                                     </button>
+4225:                                 </div>
+4226:                             )}
+4227:                         </div>
+4228: 
+4229:                         {/* Scrollable Form Area */}
+4230:                         <div 
+4231:                             className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50/50 scrollbar-thin scrollbar-thumb-gray-200"
+4232:                             onFocusCapture={(e) => {
+4233:                                 if (e.target && e.target.name) {
+4234:                                     setActiveField(e.target.name);
+4235:                                 }
+4236:                             }}
+4237:                             onBlurCapture={() => setActiveField(null)}
+4238:                         >
+4239: 
+4240:                             {activeTab === 'HOME' && (
+4241:                                 <div className="bg-slate-50 border border-dashed border-slate-200 rounded-xl p-5 text-center my-4 space-y-3">
+4242:                                     <i className="fa-solid fa-file-invoice text-blue-500 text-2xl animate-bounce mb-1 block"></i>
+4243:                                     <h4 className="font-bold text-slate-700 text-xs uppercase tracking-wider">Template Library Ready</h4>
+4244:                                     <p className="text-[11px] text-slate-400 font-medium leading-relaxed">
+4245:                                         Welcome to Instadeed Drafting Suite. Select a template from the catalog on the right to start drafting with real-time legal validations.
+4246:                                     </p>
+4247:                                     <div className="pt-2">
+4248:                                         <button onClick={() => { setActiveTab('RENT'); }} className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-[10px] font-bold transition shadow-sm cursor-pointer">
+4249:                                             Quick Draft Rent Agreement
+4250:                                         </button>
+4251:                                     </div>
+4252:                                 </div>
+4253:                             )}
+4254:                             {activeTab === 'CRM' && (
+4255:                                 <div className="p-5 space-y-4 select-none">
+4256:                                     <div className="bg-blue-50/70 border border-blue-100 rounded-2xl p-4 text-slate-700 shadow-[inset_0_1px_2px_rgba(37,99,235,0.01)]">
+4257:                                         <div className="flex items-center gap-2 mb-2 font-bold text-slate-800 text-sm">
+4258:                                             <i className="fa-solid fa-lock text-blue-600"></i>
+4259:                                             <span>CRM Administration</span>
+4260:                                         </div>
+4261:                                         <p className="text-[11px] leading-normal text-slate-500 font-medium">
+4262:                                             You are signed in as Administrator. Use the main screen to track documents, search files, and reload drafts back into the form editor.
+4263:                                         </p>
+4264:                                     </div>
+
+
+--- Around Line 4371 (ActiveTabMatch) ---
+4361:                                         <Input label="Partial Refund Conditions" name="partialRefundConditions" value={ecommRPData.partialRefundConditions} onChange={handleChange} />
+4362:                                         <Input label="Cancellation Window" name="cancellationWindow" value={ecommRPData.cancellationWindow} onChange={handleChange} />
+4363:                                     </Section>
+4364:                                     <Section title="Dates & Jurisdiction" icon="fa-calendar" color="amber">
+4365:                                         <Input label="Governing State" name="governingState" value={ecommRPData.governingState} onChange={handleChange} />
+4366:                                         <Input label="Effective Date" name="effectiveDate" type="date" value={ecommRPData.effectiveDate} onChange={handleChange} />
+4367:                                     </Section>
+4368:                                 </>
+4369:                             )}
+4370: 
+4371:                             {activeTab === 'NOIDA_TRANSFER' && (
+4372:                                 <NoidaTransferForm data={noidaTransferData} onChange={handleChange} />
+4373:                             )}
+4374: 
+4375:                             {activeTab === 'KYA' && (
+4376:                                 <>
+4377:                                     <Section title="Dated & Basic Info" icon="fa-calendar" color="yellow">
+4378:                                         <Input label="Date (DD-MM-YYYY)" name="dated" value={gnidaData.dated} onChange={handleChange} />
+4379:                                     </Section>
+4380: 
+4381:                                     <Section title="Allottee Details" icon="fa-user" color="yellow">
+4382:                                         <Input label="Allottee Name" name="allotteeName" value={gnidaData.allotteeName} onChange={handleChange} />
+4383:                                         <Input label="Father/Spouse Name" name="fatherSpouseName" value={gnidaData.fatherSpouseName} onChange={handleChange} />
+4384:                                     </Section>
+4385: 
+4386:                                     <Section title="Property Details" icon="fa-building" color="yellow">
+4387:                                         <div className="grid grid-cols-2 gap-2">
+4388:                                             <Input label="Scheme Name" name="schemeName" value={gnidaData.schemeName} onChange={handleChange} />
+4389:                                             <Input label="Scheme Code" name="schemeCode" value={gnidaData.schemeCode} onChange={handleChange} />
+4390:                                         </div>
+4391:                                         <div className="grid grid-cols-2 gap-2">
+4392:                                             <Input label="Allotment No" name="allotmentNo" value={gnidaData.allotmentNo} onChange={handleChange} />
+4393:                                             <Input label="Prop No" name="propertyNo" value={gnidaData.propertyNo} onChange={handleChange} />
+4394:                                         </div>
+4395:                                         <div className="grid grid-cols-2 gap-2">
+4396:                                             <Input label="Block" name="block" value={gnidaData.block} onChange={handleChange} />
+4397:                                             <Input label="Sector" name="sector" value={gnidaData.sector} onChange={handleChange} />
+4398:                                         </div>
+4399:                                         <div className="grid grid-cols-2 gap-2">
+4400:                                             <Input label="Allotment Date (DD/MM/YYYY)" name="allotmentDate" value={gnidaData.allotmentDate} onChange={handleChange} />
+4401:                                             <Input label="Plot Size" name="plotSize" value={gnidaData.plotSize} onChange={handleChange} />
+4402:                                         </div>
+4403:                                     </Section>
+4404: 
+4405:                                     <Section title="Applicants" icon="fa-users" color="yellow">
+4406:                                         <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Applicant 1</label>
+4407:                                         <div className="grid grid-cols-1 gap-2 mb-4">
+4408:                                             <Input label="Name" name="allottee1Name" value={gnidaData.allottee1Name} onChange={handleChange} />
+4409:                                             <Input label="Mobile" name="allottee1Mobile" value={gnidaData.allottee1Mobile} onChange={handleChange} />
+4410:                                             <Input label="Email" name="allottee1Email" value={gnidaData.allottee1Email} onChange={handleChange} />
+4411:                                             <Input label="DOB (DDMMYYYY)" name="allottee1DOB" value={gnidaData.allottee1DOB} onChange={handleChange} />
+4412:                                             <div className="grid grid-cols-2 gap-2">
+4413:                                                 <Input label="PAN" name="allottee1PAN" value={gnidaData.allottee1PAN} onChange={handleChange} />
+4414:                                                 <Input label="Aadhar" name="allottee1Aadhar" value={gnidaData.allottee1Aadhar} onChange={handleChange} />
+4415:                                             </div>
+4416:                                             <div className="grid grid-cols-2 gap-2">
+4417:                                                 <Input label="Voter ID" name="allottee1Voter" value={gnidaData.allottee1Voter} onChange={handleChange} />
+4418:                                                 <Input label="D. License" name="allottee1DL" value={gnidaData.allottee1DL} onChange={handleChange} />
+4419:                                             </div>
+4420:                                         </div>
+4421: 
+
+
+--- Around Line 4372 (NameMatch) ---
+4362:                                         <Input label="Cancellation Window" name="cancellationWindow" value={ecommRPData.cancellationWindow} onChange={handleChange} />
+4363:                                     </Section>
+4364:                                     <Section title="Dates & Jurisdiction" icon="fa-calendar" color="amber">
+4365:                                         <Input label="Governing State" name="governingState" value={ecommRPData.governingState} onChange={handleChange} />
+4366:                                         <Input label="Effective Date" name="effectiveDate" type="date" value={ecommRPData.effectiveDate} onChange={handleChange} />
+4367:                                     </Section>
+4368:                                 </>
+4369:                             )}
+4370: 
+4371:                             {activeTab === 'NOIDA_TRANSFER' && (
+4372:                                 <NoidaTransferForm data={noidaTransferData} onChange={handleChange} />
+4373:                             )}
+4374: 
+4375:                             {activeTab === 'KYA' && (
+4376:                                 <>
+4377:                                     <Section title="Dated & Basic Info" icon="fa-calendar" color="yellow">
+4378:                                         <Input label="Date (DD-MM-YYYY)" name="dated" value={gnidaData.dated} onChange={handleChange} />
+4379:                                     </Section>
+4380: 
+4381:                                     <Section title="Allottee Details" icon="fa-user" color="yellow">
+4382:                                         <Input label="Allottee Name" name="allotteeName" value={gnidaData.allotteeName} onChange={handleChange} />
+4383:                                         <Input label="Father/Spouse Name" name="fatherSpouseName" value={gnidaData.fatherSpouseName} onChange={handleChange} />
+4384:                                     </Section>
+4385: 
+4386:                                     <Section title="Property Details" icon="fa-building" color="yellow">
+4387:                                         <div className="grid grid-cols-2 gap-2">
+4388:                                             <Input label="Scheme Name" name="schemeName" value={gnidaData.schemeName} onChange={handleChange} />
+4389:                                             <Input label="Scheme Code" name="schemeCode" value={gnidaData.schemeCode} onChange={handleChange} />
+4390:                                         </div>
+4391:                                         <div className="grid grid-cols-2 gap-2">
+4392:                                             <Input label="Allotment No" name="allotmentNo" value={gnidaData.allotmentNo} onChange={handleChange} />
+4393:                                             <Input label="Prop No" name="propertyNo" value={gnidaData.propertyNo} onChange={handleChange} />
+4394:                                         </div>
+4395:                                         <div className="grid grid-cols-2 gap-2">
+4396:                                             <Input label="Block" name="block" value={gnidaData.block} onChange={handleChange} />
+4397:                                             <Input label="Sector" name="sector" value={gnidaData.sector} onChange={handleChange} />
+4398:                                         </div>
+4399:                                         <div className="grid grid-cols-2 gap-2">
+4400:                                             <Input label="Allotment Date (DD/MM/YYYY)" name="allotmentDate" value={gnidaData.allotmentDate} onChange={handleChange} />
+4401:                                             <Input label="Plot Size" name="plotSize" value={gnidaData.plotSize} onChange={handleChange} />
+4402:                                         </div>
+4403:                                     </Section>
+4404: 
+4405:                                     <Section title="Applicants" icon="fa-users" color="yellow">
+4406:                                         <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Applicant 1</label>
+4407:                                         <div className="grid grid-cols-1 gap-2 mb-4">
+4408:                                             <Input label="Name" name="allottee1Name" value={gnidaData.allottee1Name} onChange={handleChange} />
+4409:                                             <Input label="Mobile" name="allottee1Mobile" value={gnidaData.allottee1Mobile} onChange={handleChange} />
+4410:                                             <Input label="Email" name="allottee1Email" value={gnidaData.allottee1Email} onChange={handleChange} />
+4411:                                             <Input label="DOB (DDMMYYYY)" name="allottee1DOB" value={gnidaData.allottee1DOB} onChange={handleChange} />
+4412:                                             <div className="grid grid-cols-2 gap-2">
+4413:                                                 <Input label="PAN" name="allottee1PAN" value={gnidaData.allottee1PAN} onChange={handleChange} />
+4414:                                                 <Input label="Aadhar" name="allottee1Aadhar" value={gnidaData.allottee1Aadhar} onChange={handleChange} />
+4415:                                             </div>
+4416:                                             <div className="grid grid-cols-2 gap-2">
+4417:                                                 <Input label="Voter ID" name="allottee1Voter" value={gnidaData.allottee1Voter} onChange={handleChange} />
+4418:                                                 <Input label="D. License" name="allottee1DL" value={gnidaData.allottee1DL} onChange={handleChange} />
+4419:                                             </div>
+4420:                                         </div>
+4421: 
+4422:                                         <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Applicant 2</label>
+
+
+--- Around Line 6166 (ActiveTabMatch) ---
+6156:                                             <div className="mt-auto border-t border-black pt-4">
+6157:                                                 <div className="font-bold uppercase">DRAFTED BY:</div>
+6158:                                                 <div className="font-bold text-lg">Advocate Madhav Maheshwari</div>
+6159:                                                 <div>Distt. G.B. Nagar</div>
+6160:                                             </div>
+6161:                                             <div className="absolute bottom-4 left-0 right-0 text-center text-[8pt] text-gray-500">Page 5</div>
+6162:                                         </div>
+6163:                                     </>
+6164:                                     )}
+6165: 
+6166:                                     {activeTab === 'NOIDA_TRANSFER' && (() => {
+6167:                                         const p = noidaTransferData;
+6168: 
+6169:                                         // Helpers to format names
+6170:                                         const getTransferorText = () => {
+6171:                                             const t1 = `${p.transferor1Name || p.allotteeName || '__________________' } ${p.transferor1Relation || 'S/o'} ${p.transferor1Father || p.allotteeFather || '__________________'} R/o ${p.transferor1Address || p.allotteeAddress || '__________________'}`;
+6172:                                             if (p.hasJointTransferor && p.transferor2Name) {
+6173:                                                 const t2 = `${p.transferor2Name} ${p.transferor2Relation || 'S/o'} ${p.transferor2Father || '__________________'} R/o ${p.transferor2Address || '__________________'}`;
+6174:                                                 return `${t1} AND ${t2}`;
+6175:                                             }
+6176:                                             return t1;
+6177:                                         };
+6178: 
+6179:                                         const getTransfereeText = () => {
+6180:                                             const tr1 = `${p.transferee1Name || p.transfereeName || '__________________'} ${p.transferee1Relation || 'S/o'} ${p.transferee1Father || p.transfereeFather || '__________________'} R/o ${p.transferee1Address || p.transfereeAddress || '__________________'}`;
+6181:                                             let res = tr1;
+6182:                                             if (parseInt(p.transfereeCount) >= 2 && p.transferee2Name) {
+6183:                                                 const tr2 = `${p.transferee2Name} ${p.transferee2Relation || 'S/o'} ${p.transferee2Father || '__________________'} R/o ${p.transferee2Address || '__________________'}`;
+6184:                                                 res += ` AND ${tr2}`;
+6185:                                             }
+6186:                                             if (parseInt(p.transfereeCount) >= 3 && p.transferee3Name) {
+6187:                                                 const tr3 = `${p.transferee3Name} ${p.transferee3Relation || 'S/o'} ${p.transferee3Father || '__________________'} R/o ${p.transferee3Address || '__________________'}`;
+6188:                                                 res += ` AND ${tr3}`;
+6189:                                             }
+6190:                                             return res;
+6191:                                         };
+6192: 
+6193:                                         const getTransferorNamesOnly = () => {
+6194:                                             const t1 = p.transferor1Name || p.allotteeName || '__________________';
+6195:                                             if (p.hasJointTransferor && p.transferor2Name) {
+6196:                                                 return `${t1} & ${p.transferor2Name}`;
+6197:                                             }
+6198:                                             return t1;
+6199:                                         };
+6200: 
+6201:                                         const getTransfereeNamesOnly = () => {
+6202:                                             const tr1 = p.transferee1Name || p.transfereeName || '__________________';
+6203:                                             let res = tr1;
+6204:                                             if (parseInt(p.transfereeCount) >= 2 && p.transferee2Name) {
+6205:                                                 res += ` & ${p.transferee2Name}`;
+6206:                                             }
+6207:                                             if (parseInt(p.transfereeCount) >= 3 && p.transferee3Name) {
+6208:                                                 res += ` & ${p.transferee3Name}`;
+6209:                                             }
+6210:                                             return res;
+6211:                                         };
+6212: 
+6213:                                         // Format date to local standard
+6214:                                         const formatDate = (dStr) => {
+6215:                                             if (!dStr) return '__________';
+6216:                                             try {
+
+

@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent Agreement Drafter - Madhav Law Firm</title>
+
+    <!-- Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        doc: ['"Merriweather"', 'serif'],
+                        ui: ['"Inter"', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-family: "Inter", sans-serif;
+        }
+
+        /* Page Layout Optimization */
+        .paper-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 1.5cm;
+            /* Aggressively reduced padding */
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 2rem auto;
+            position: relative;
+            font-family: 'Merriweather', serif;
+            font-size: 10pt;
+            /* Smaller font */
+            line-height: 1.35;
+            /* Tighter lines */
+        }
+
+        .paper-page p {
+            margin-bottom: 1rem;
+            /* Consistent paragraph spacing */
+        }
+
+        .paper-page li {
+            margin-bottom: 0.5rem;
+            /* Tighter list items */
+        }
+
+        .highlight-var {
+            font-weight: bold;
+            color: #1e293b;
+            background-color: #e0f2fe;
+            padding: 1px 4px;
+            border-radius: 2px;
+            border-bottom: 1px solid #7dd3fc;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            /* Legacy support */
+            word-break: break-all;
+            /* Force breaks for long underscores/URLs */
+            white-space: pre-wrap;
+        }
+
+        .bg-dot-pattern {
+            background-color: #0f172a;
+            background-image: radial-gradient(#334155 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Claymorphism Colorful Icons */
+        .clay-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            /* The "Clay" effect: Heavy soft shadows + Inner highlights */
+            box-shadow:
+                6px 6px 14px rgba(164, 180, 200, 0.4),
+                -6px -6px 14px rgba(255, 255, 255, 0.9),
+                inset 2px 2px 5px rgba(255, 255, 255, 0.4),
+                inset -2px -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .clay-icon i {
+            filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2));
+        }
+
+        /* Color Variants - Matching the reference image vibes */
+        .clay-cyan {
+            background-color: #06b6d4;
+        }
+
+        .clay-purple {
+            background-color: #a855f7;
+        }
+
+        .clay-pink {
+            background-color: #ec4899;
+        }
+
+        .clay-orange {
+            background-color: #f97316;
+        }
+
+        .clay-green {
+            background-color: #10b981;
+        }
+
+        .clay-yellow {
+            background-color: #eab308;
+        }
+
+        .clay-icon:active {
+            transform: scale(0.95);
+            box-shadow:
+                2px 2px 6px rgba(164, 180, 200, 0.4),
+                -2px -2px 6px rgba(255, 255, 255, 0.9),
+                inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+                inset -4px -4px 8px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Print Specifics */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @media print {
+
+            html,
+            body {
+                width: 210mm;
+                height: auto !important;
+                overflow: visible !important;
+                background: white;
+                margin: 0;
+                padding: 0;
+            }
+
+            .no-print,
+            .app-sidebar {
+                display: none !important;
+            }
+
+            /* Unset fixed layouts that block scrolling/printing */
+            #root,
+            .app-layout-container {
+                display: block !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            .paper-page-container {
+                display: block !important;
+                background: none !important;
+                padding: 0 !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            .paper-page {
+                position: relative;
+                text-align: justify;
+                box-shadow: none;
+                margin: 0;
+                width: 210mm;
+                min-height: 297mm;
+                height: 297mm !important;
+                /* Force exact height */
+                overflow: hidden !important;
+                /* Clip content to prevent spillover */
+                page-break-inside: avoid;
+                padding: 1.5cm;
+                /* Match screen padding */
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+                font-size: 10pt;
+                line-height: 1.35;
+            }
+
+            .print-break {
+                page-break-after: always !important;
+            }
+
+            /* Hide page digest footer borders in print if desired, or keep them */
+            .highlight-var {
+                background-color: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- Helper: Number to Words ---
+        function numToWords(n) {
+            if (!n) return "";
+            const num = parseInt(n);
+            if (isNaN(num)) return "";
+
+            const units = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+            const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+
+            function convertUnderThousand(num) {
+                if (num < 20) return units[num];
+                const digitTen = Math.floor(num / 10);
+                const digitUnit = num % 10;
+                return (tens[digitTen] + " " + units[digitUnit]).trim();
+            }
+
+            let words = "";
+            let val = num;
+
+            if (val >= 10000000) {
+                words += convertUnderThousand(Math.floor(val / 10000000)) + " Crore ";
+                val %= 10000000;
+            }
+
+            if (val >= 100000) {
+                words += convertUnderThousand(Math.floor(val / 100000)) + " Lakh ";
+                val %= 100000;
+            }
+
+            if (val >= 1000) {
+                words += convertUnderThousand(Math.floor(val / 1000)) + " Thousand ";
+                val %= 1000;
+            }
+
+            if (val >= 100) {
+                words += convertUnderThousand(Math.floor(val / 100)) + " Hundred ";
+                val %= 100;
+            }
+
+            if (val > 0) {
+                words += convertUnderThousand(val);
+            }
+
+            return words.trim();
+        }
+
+        // --- Components ---
+
+        const Section = ({ title, icon, color = "cyan", children, isOpen: defaultOpen = false }) => {
+            const [isOpen, setIsOpen] = useState(defaultOpen);
+
+            return (
+                <div className="bg-white border border-gray-200 rounded-xl overflow-hidden transition-all duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-md">
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className={`w-full flex items-center justify-between p-4 text-left transition-colors ${isOpen ? 'bg-blue-50/30' : 'bg-white hover:bg-gray-50'}`}
+                    >
+                        <div className="flex items-center gap-4">
+                            <div className={`clay-icon clay-${color}`}>
+                                <i className={`fa-solid ${icon}`}></i>
+                            </div>
+                            <span className={`font-semibold text-sm text-gray-700`}>{title}</span>
+                        </div>
+                        <i className={`fa-solid fa-chevron-down text-xs text-gray-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}></i>
+                    </button>
+
+                    <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                        <div className="overflow-hidden">
+                            <div className="p-4 pt-0">
+                                {children}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Input = ({ label, name, type = "text", value, onChange, fullWidth, placeholder = "", as = "input" }) => (
+            <div className={`${fullWidth ? 'col-span-2' : ''} mb-0`}>
+                <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
+                    {label}
+                </label>
+                {as === "textarea" ? (
+                    <textarea
+                        name={name}
+                        value={value}
+                        onChange={onChange}
+                        rows={3}
+                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-ui shadow-sm resize-none placeholder:text-gray-300 hover:border-gray-300"
+                        placeholder={placeholder}
+                    />
+                ) : (
+                    <input
+                        type={type}
+                        name={name}
+                        value={value}
+                        onChange={onChange}
+                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-ui shadow-sm placeholder:text-gray-300 hover:border-gray-300"
+                        placeholder={placeholder}
+                    />
+                )}
+            </div>
+        );
+
+        const Var = ({ children }) => (
+            <span className="highlight-var">{children}</span>
+        );
+
+        const FooterButton = ({ onClick, children, variant = "primary" }) => {
+            const styles = variant === "primary"
+                ? "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-blue-200 shadow-lg border-transparent"
+                : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 shadow-sm";
+
+            return (
+                <button
+                    onClick={onClick}
+                    className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 border ${styles}`}
+                >
+                    {children}
+                </button>
+            );
+        }
+
+        const Row = ({ label, value }) => (
+            <tr>
+                <td className="py-2 pr-4 w-1/2 border-b border-gray-200 text-gray-800">{label}</td>
+                <td className="py-2 pl-4 w-1/2 border-b border-gray-200 font-bold text-black">{value || '—'}</td>
+            </tr>
+        );
+
+        function Home() {
+            const defaultData = {
+                agreementDate: '', // New single date field
+                agreementPlace: '',
+                stampPaperNumber: '',
+                showDraftedBy: true,
+                landlordName: '',
+                landlordAddress: '',
+                landlordPhone: '',
+                tenantName: '',
+                tenantAddress: '',
+                tenantPhone: '',
+                propertyAddress: '',
+                propertyType: 'Residential',
+                // Witness Details
+                witness1Name: '',
+                witness1Phone: '',
+                witness1Address: '',
+                witness2Name: '',
+                witness2Phone: '',
+                witness2Address: '',
+                rentAmount: '',
+                startDate: '',
+                endDate: '',
+                paymentDay: '',
+                advanceRent: '',
+                securityDeposit: '',
+                // Annexure Data - All Blank
+                tubeLights: '',
+                fans: '',
+                leds: '',
+                chimney: '',
+                roUnit: '',
+                ac: '',
+                keys: '',
+                exhaustFan: '',
+                bell: '',
+                mirror: '',
+                curtains: '',
+                wardrobe: '',
+                kitchenCupboard: '',
+                modularKitchen: '',
+                otherFixtures: ''
+            };
+
+            const [data, setData] = useState(defaultData);
+
+            // Helpers for Date Formatting
+            const getOrdinal = (n) => {
+                const s = ["th", "st", "nd", "rd"];
+                const v = n % 100;
+                return n + (s[(v - 20) % 10] || s[v] || s[0]);
+            };
+
+            const formatDateParts = (dateStr) => {
+                if (!dateStr) return { day: '______', monthYear: '____________________' };
+                const d = new Date(dateStr);
+                const day = getOrdinal(d.getDate());
+                const monthYear = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                return { day, monthYear };
+            };
+
+            const { day: agreementDay, monthYear: agreementMonthYear } = formatDateParts(data.agreementDate);
+
+            const formattedPaymentDay = data.paymentDay && !isNaN(data.paymentDay)
+                ? getOrdinal(parseInt(data.paymentDay))
+                : data.paymentDay;
+
+            const rentInWords = numToWords(data.rentAmount);
+            const advanceInWords = numToWords(data.advanceRent);
+            const securityInWords = numToWords(data.securityDeposit);
+
+            useEffect(() => {
+                const saved = localStorage.getItem('madhav_rent_v3');
+                if (saved) {
+                    try {
+                        setData(JSON.parse(saved));
+                    } catch (e) { console.error(e); }
+                }
+            }, []);
+
+            useEffect(() => {
+                localStorage.setItem('madhav_rent_v3', JSON.stringify(data));
+            }, [data]);
+
+            const downloadJSON = () => {
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = `Rent_Agreement_${data.tenantName || 'Draft'}.json`;
+                link.click();
+            };
+
+            const uploadJSON = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const loaded = JSON.parse(event.target.result);
+                        setData(prev => ({ ...prev, ...loaded }));
+                    } catch (err) {
+                        alert("Invalid JSON file");
+                    }
+                };
+                reader.readAsText(file);
+            };
+
+            const saveDefault = () => {
+                localStorage.setItem('madhav_rent_user_default', JSON.stringify(data));
+                alert("Settings saved as your Default Template!");
+            };
+
+            const loadDefault = () => {
+                const saved = localStorage.getItem('madhav_rent_user_default');
+                if (saved) {
+                    if (confirm("Load your Default Template? This will replace current data.")) {
+                        setData(JSON.parse(saved));
+                    }
+                } else {
+                    alert("No default template found. Set one first!");
+                }
+            };
+
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+
+                if (name === 'startDate' && value) {
+                    const parts = value.split('-');
+                    if (parts.length === 3) {
+                        const y = parseInt(parts[0], 10);
+                        const m = parseInt(parts[1], 10) - 1; // 0-indexed month
+                        const d = parseInt(parts[2], 10);
+
+                        // Safe date construction (Noon to safely avoid DST/TZ shifts)
+                        const start = new Date(y, m, d, 12, 0, 0);
+
+                        // Add 11 Months
+                        const end = new Date(start);
+                        end.setMonth(end.getMonth() + 11);
+
+                        // Subtract 1 Day
+                        end.setDate(end.getDate() - 1);
+
+                        const yyyy = end.getFullYear();
+                        const mm = String(end.getMonth() + 1).padStart(2, '0');
+                        const dd = String(end.getDate()).padStart(2, '0');
+                        const endStr = `${yyyy}-${mm}-${dd}`;
+
+                        setData(prev => ({ ...prev, [name]: value, endDate: endStr }));
+                        return;
+                    }
+                }
+
+                setData(prev => ({ ...prev, [name]: value }));
+            };
+
+            // --- Page Footer Component for Signatures on Every Page ---
+            const PageBottomSignature = ({ isFinal = false, data }) => {
+                if (!isFinal) {
+                    return (
+                        <div className="mt-auto pt-8 px-4 flex justify-between items-end">
+                            <div className="flex flex-col items-center gap-1">
+                                <div className="font-bold uppercase">{data.landlordName || '__________________________'}</div>
+                                <div className="text-xs font-bold">OWNER/FIRST PARTY</div>
+                            </div>
+                            <div className="flex flex-col items-center gap-1">
+                                <div className="font-bold uppercase">{data.tenantName || '__________________________'}</div>
+                                <div className="text-xs font-bold">TENANT/SECOND PARTY</div>
+                            </div>
+                        </div>
+                    );
+                }
+
+                return (
+                    <div className="mt-8 border-t border-gray-300 pt-4">
+                        <div className="flex justify-between items-end px-4">
+                            <div className="text-center">
+                                <div className="font-bold uppercase mb-1">{data.landlordName || '__________________'}</div>
+                                <div className="text-sm font-bold">OWNER/FIRST PARTY</div>
+                            </div>
+                            <div className="text-center">
+                                <div className="font-bold uppercase mb-1">{data.tenantName || '__________________'}</div>
+                                <div className="text-sm font-bold">TENANT/SECOND PARTY</div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="flex flex-col lg:flex-row h-screen font-ui overflow-hidden app-layout-container">
+                    {/* Left Sidebar */}
+                    <div className="w-full lg:w-[480px] bg-white border-r border-gray-200 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-10 app-sidebar h-full">
+                        {/* Header */}
+                        <div className="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-white/95 backdrop-blur-sm sticky top-0 z-20">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-blue-200 shadow-lg">
+                                    <i className="fa-solid fa-file-signature text-lg"></i>
+                                </div>
+                                <div>
+                                    <h1 className="text-xl font-bold text-gray-900 tracking-tight">Rent Drafter</h1>
+                                    <p className="text-xs text-gray-500 font-medium">Madhav Law Firm</p>
+                                </div>
+                            </div>
+                            <div className="flex gap-1">
+                                <button onClick={saveDefault} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-yellow-50 text-gray-400 hover:text-yellow-600 transition" title="Save as Default Settings">
+                                    <i className="fa-solid fa-star text-sm"></i>
+                                </button>
+                                <button onClick={loadDefault} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-yellow-50 text-gray-400 hover:text-yellow-600 transition" title="Load Default Settings">
+                                    <i className="fa-regular fa-star text-sm"></i>
+                                </button>
+                                <div className="w-px h-6 bg-gray-200 mx-1 my-auto"></div>
+                                <label className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition cursor-pointer" title="Load JSON">
+                                    <i className="fa-solid fa-folder-open text-sm"></i>
+                                    <input type="file" accept=".json" onChange={uploadJSON} className="hidden" />
+                                </label>
+                                <button onClick={downloadJSON} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition" title="Save JSON">
+                                    <i className="fa-solid fa-save text-sm"></i>
+                                </button>
+                                <button onClick={() => { if (confirm("Reset form to blank?")) setData(defaultData); }} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-red-50 text-gray-400 hover:text-red-500 transition" title="Reset to Blank">
+                                    <i className="fa-solid fa-rotate-right text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Scrollable Form Area */}
+                        <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50/50 scrollbar-thin scrollbar-thumb-gray-200">
+
+                            <Section title="Agreement Details" icon="fa-calendar-days" color="cyan" isOpen={true}>
+                                <Input label="Agreement Date" name="agreementDate" type="date" value={data.agreementDate} onChange={handleChange} />
+                                <Input label="Place" name="agreementPlace" value={data.agreementPlace} onChange={handleChange} placeholder="e.g. New Delhi" />
+                                <Input label="Stamp Paper No." name="stampPaperNumber" value={data.stampPaperNumber} onChange={handleChange} placeholder="e.g. IN-DL..." />
+                                <div className="mt-4 flex items-center gap-3 p-3 bg-cyan-50 rounded-lg border border-cyan-100">
+                                    <input
+                                        type="checkbox"
+                                        checked={data.showDraftedBy}
+                                        onChange={(e) => setData(prev => ({ ...prev, showDraftedBy: e.target.checked }))}
+                                        className="w-4 h-4 text-cyan-600 rounded border-gray-300 focus:ring-cyan-500 cursor-pointer"
+                                    />
+                                    <label className="text-sm font-medium text-gray-700 cursor-pointer" onClick={() => setData(prev => ({ ...prev, showDraftedBy: !prev.showDraftedBy }))}>
+                                        Show "Drafted By" Signature
+                                    </label>
+                                </div>
+                            </Section>
+
+                            <Section title="Landlord Details" icon="fa-user-tie" color="purple">
+                                <Input label="Full Name" name="landlordName" value={data.landlordName} onChange={handleChange} placeholder="e.g. Ashok Kumar" />
+                                <Input label="Address (R/o...)" name="landlordAddress" value={data.landlordAddress} onChange={handleChange} as="textarea" placeholder="Full residential address" />
+                                <Input label="Phone Number" name="landlordPhone" value={data.landlordPhone} onChange={handleChange} placeholder="+91..." />
+                            </Section>
+
+                            <Section title="Tenant Details" icon="fa-user" color="pink">
+                                <Input label="Full Name" name="tenantName" value={data.tenantName} onChange={handleChange} placeholder="e.g. Mohnish Nirwan" />
+                                <Input label="Address (Permanent)" name="tenantAddress" value={data.tenantAddress} onChange={handleChange} as="textarea" placeholder="Permanent address" />
+                                <Input label="Phone Number" name="tenantPhone" value={data.tenantPhone} onChange={handleChange} placeholder="+91..." />
+                            </Section>
+
+                            <Section title="Property Details" icon="fa-house-chimney" color="orange" isOpen={true}>
+                                <div className="space-y-4">
+                                    <Input
+                                        label="Rented Property Address"
+                                        name="propertyAddress"
+                                        value={data.propertyAddress}
+                                        onChange={handleChange}
+                                        as="textarea"
+                                        placeholder="Full address of the flat/house"
+                                    />
+                                    {/* Property Purpose Selector */}
+                                    <div className="group">
+                                        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5 transition-colors group-focus-within:text-blue-600">
+                                            Property Purpose
+                                        </label>
+                                        <select
+                                            name="propertyType"
+                                            value={data.propertyType}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 text-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200"
+                                        >
+                                            <option value="Residential">Residential</option>
+                                            <option value="Commercial">Commercial</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </Section>
+
+                            <Section title="Financials & Terms" icon="fa-indian-rupee-sign" color="green">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <Input label="Rent Amount (₹)" name="rentAmount" type="number" value={data.rentAmount} onChange={handleChange} />
+                                    <Input label="Deposit (₹)" name="securityDeposit" type="number" value={data.securityDeposit} onChange={handleChange} />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <Input label="Start Date" name="startDate" type="date" value={data.startDate} onChange={handleChange} />
+                                    <Input label="End Date" name="endDate" type="date" value={data.endDate} onChange={handleChange} />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <Input label="Pay By (Day)" name="paymentDay" value={data.paymentDay} onChange={handleChange} placeholder="7th" />
+                                    <Input label="Advance Rent" name="advanceRent" type="number" value={data.advanceRent} onChange={handleChange} placeholder="0" />
+                                </div>
+
+                                <div className="mt-4 bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+                                    <label className="block text-xs font-bold text-blue-800 uppercase tracking-wider mb-3">Maintenance</label>
+                                    <div className="flex gap-4">
+                                        <label className="flex items-center gap-2 cursor-pointer group">
+                                            <div className="relative flex items-center">
+                                                <input
+                                                    type="radio"
+                                                    checked={data.maintenanceIncluded}
+                                                    onChange={() => setData(d => ({ ...d, maintenanceIncluded: true }))}
+                                                    className="peer sr-only"
+                                                />
+                                                <div className="w-5 h-5 border-2 border-gray-300 rounded-full peer-checked:border-blue-600 peer-checked:after:bg-blue-600 after:content-[''] after:absolute after:top-1 after:left-1 after:w-3 after:h-3 after:rounded-full after:scale-0 peer-checked:after:scale-100 transition-all"></div>
+                                            </div>
+                                            <span className="text-sm font-medium text-gray-700 group-hover:text-blue-700 transition">Included</span>
+                                        </label>
+                                        <label className="flex items-center gap-2 cursor-pointer group">
+                                            <div className="relative flex items-center">
+                                                <input
+                                                    type="radio"
+                                                    checked={!data.maintenanceIncluded}
+                                                    onChange={() => setData(d => ({ ...d, maintenanceIncluded: false }))}
+                                                    className="peer sr-only"
+                                                />
+                                                <div className="w-5 h-5 border-2 border-gray-300 rounded-full peer-checked:border-blue-600 peer-checked:after:bg-blue-600 after:content-[''] after:absolute after:top-1 after:left-1 after:w-3 after:h-3 after:rounded-full after:scale-0 peer-checked:after:scale-100 transition-all"></div>
+                                            </div>
+                                            <span className="text-sm font-medium text-gray-700 group-hover:text-blue-700 transition">Excluded</span>
+                                        </label>
+                                    </div>
+                                    <div className="mt-2 text-xs text-blue-600/80">
+                                        {data.maintenanceIncluded
+                                            ? "Clause 6 will reflect that maintenance is NOT paid separately by tenant."
+                                            : "Clause 6 will reflect that maintenance IS paid directly by tenant."}
+                                    </div>
+                                </div>
+                            </Section>
+
+                            <Section title="Fixtures (Annexure)" icon="fa-couch" color="yellow">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <Input label="Tube Lights/Bulbs" name="tubeLights" value={data.tubeLights} onChange={handleChange} />
+                                    <Input label="Ceiling Fans" name="fans" value={data.fans} onChange={handleChange} />
+                                    <Input label="LEDs" name="leds" value={data.leds} onChange={handleChange} />
+                                    <Input label="Chimney" name="chimney" value={data.chimney} onChange={handleChange} />
+                                    <Input label="RO Unit" name="roUnit" value={data.roUnit} onChange={handleChange} />
+                                    <Input label="Exhaust Fan" name="exhaustFan" value={data.exhaustFan} onChange={handleChange} />
+                                    <Input label="Bell" name="bell" value={data.bell} onChange={handleChange} />
+                                    <Input label="Wall Mirror" name="mirror" value={data.mirror} onChange={handleChange} />
+                                    <Input label="Curtain Rods" name="curtains" value={data.curtains} onChange={handleChange} />
+                                    <Input label="Wardrobe" value={data.wardrobe} onChange={handleChange} />
+                                    <Input label="Kitchen Cupboard" name="kitchenCupboard" value={data.kitchenCupboard} onChange={handleChange} />
+                                    <Input label="Modular Kitchen" name="modularKitchen" value={data.modularKitchen} onChange={handleChange} />
+                                    <Input label="ACs" name="ac" value={data.ac} onChange={handleChange} />
+                                    <Input label="Main Door Keys" name="keys" value={data.keys} onChange={handleChange} />
+                                    <Input label="Other" name="otherFixtures" value={data.otherFixtures} onChange={handleChange} placeholder="Misc items" />
+                                </div>
+                            </Section>
+
+                            <Section title="Witness Details" icon="fa-users" color="gray">
+                                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Witness 1</h3>
+                                <div className="space-y-3 mb-4">
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <Input label="Name" name="witness1Name" value={data.witness1Name} onChange={handleChange} />
+                                        <Input label="Phone" name="witness1Phone" value={data.witness1Phone} onChange={handleChange} />
+                                    </div>
+                                    <Input label="Address" name="witness1Address" value={data.witness1Address} onChange={handleChange} placeholder="Witness Address" />
+                                </div>
+                                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Witness 2</h3>
+                                <div className="space-y-3">
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <Input label="Name" name="witness2Name" value={data.witness2Name} onChange={handleChange} />
+                                        <Input label="Phone" name="witness2Phone" value={data.witness2Phone} onChange={handleChange} />
+                                    </div>
+                                    <Input label="Address" name="witness2Address" value={data.witness2Address} onChange={handleChange} placeholder="Witness Address" />
+                                </div>
+                            </Section>
+                        </div>
+
+                        <div className="p-4 border-t border-gray-200 bg-white z-20">
+                            <FooterButton onClick={() => {
+                                const flatNo = data.propertyAddress ? data.propertyAddress.split(',')[0].trim() : 'Rent_Agreement';
+                                const owner = data.landlordName ? data.landlordName.trim() : 'Owner';
+                                const date = data.agreementDate || 'Date';
+                                document.title = `${flatNo}_${owner}_${date}`;
+                                window.print();
+                            }}>
+                                <i className="fa-solid fa-file-pdf"></i> Download PDF Agreement
+                            </FooterButton>
+                        </div>
+                    </div>
+
+                    {/* Right Preview Area */}
+                    <div className="flex-1 overflow-y-auto bg-dot-pattern p-8 lg:p-16 flex justify-center items-start paper-page-container">
+                        <div className="flex flex-col gap-8 w-full items-center">
+
+                            {/* Page 1 (Clauses 1-10) */}
+                            <div className="paper-page print-break text-[10pt] flex flex-col [&_p]:text-justify [&_li]:text-justify">
+                                {data.stampPaperNumber && (
+                                    <div className="absolute top-4 left-0 right-0 text-center text-[8pt] font-mono text-gray-500">
+                                        Stamp Paper No: {data.stampPaperNumber}
+                                    </div>
+                                )}
+                                <h1 className="text-center font-bold text-xl mb-4 underline uppercase">RENT AGREEMENT</h1>
+                                <p className="mb-2">
+                                    This Rent Agreement is made on this <Var>{agreementDay}</Var> Day of <Var>{agreementMonthYear}</Var> at <Var>{data.agreementPlace || '_________________'}</Var> between
+                                </p>
+
+                                <p className="mb-2">
+                                    <strong>MR./MRS. <Var>{data.landlordName || '____________________________________'}</Var></strong>, R/o <Var>{data.landlordAddress || '_______________________________________________________________________________________________________________________________________'}</Var>, Cont. No. - <Var>{data.landlordPhone || '________________'}</Var>. (Hereinafter called the First Party-Owner).
+                                </p>
+
+                                <p className="font-bold text-center mb-2">AND</p>
+
+                                <p className="mb-2">
+                                    <strong>MR./MRS. <Var>{data.tenantName || '____________________________________'}</Var></strong>, R/o <Var>{data.tenantAddress || '_______________________________________________________________________________________________________________________________________'}</Var>, Cont. No. - <Var>{data.tenantPhone || '________________'}</Var>. (Hereinafter called the Second Party Tenant).
+                                </p>
+
+                                <p className="mb-2">
+                                    And whereas the First Party has agreed to let out <Var>{data.propertyAddress || '____________________________________________________'}</Var>. And the Second Party has agreed to take on rent the said premises mentioned as above the following terms and condition:-
+                                </p>
+                                <ol className="list-decimal pl-8 space-y-2">
+                                    <li>
+                                        That the monthly rent agreed between both the parties is Rs. <Var>{data.rentAmount || '________'}/-</Var> (Rupees <Var>{rentInWords || '________________________'}</Var> only) <strong>{data.maintenanceIncluded ? 'Including' : 'Excluding'}</strong> Maintenance charges.
+                                    </li>
+                                    <li>
+                                        That the tenancy has commenced from <Var>{data.startDate || '__________'}</Var> to <Var>{data.endDate || '__________'}</Var> for a period of 11 months.
+                                    </li>
+                                    <li>
+                                        The monthly Rent of Rs. <Var>{data.rentAmount || '________'}/-</Var> (Rupees <Var>{rentInWords || '________________________'}</Var> only) which shall be paid by the Second Party to the First Party by the <Var>{formattedPaymentDay || '____'}</Var> day of every English Calendar month.
+                                    </li>
+                                    <li>
+                                        If both the parties have agreed to continue further, then after 11 months of tenancy period its mandatory that the rent will be increased by 10%.
+                                    </li>
+                                    <li>
+                                        That the Second party shall not make any additions or alteration in the said premises without permission of the First party. That the Second party shall use the said premises only for <Var>{data.propertyType}</Var> purpose not for any other purpose. That the First party can visit the said premises at reasonable hours.
+                                    </li>
+                                    <li>
+                                        That electric charge, Gas charges, shall be paid by the Second party. Power backup, water charges
+                                        {data.maintenanceIncluded ? ' ' : ' & maintenance charges '}
+                                        with Club house will be borne by the Second party directly to the concerned authorities.
+                                    </li>
+                                    <li>
+                                        That the Second party will be giving Rs. <Var>{data.advanceRent || '____________'}/-</Var> (Rupees <Var>{advanceInWords || '________________________'}</Var> only) as one month advance rent giving and Rs. <Var>{data.securityDeposit || '____________'}/-</Var> (Rupees <Var>{securityInWords || '________________________'}</Var> only) as interest free security deposit.
+                                    </li>
+                                    <li>
+                                        If this agreement is not renewed after expiry of the tenancy period, the Second party will hand over the said premises to the First party in smooth manner.
+                                    </li>
+                                    <li>
+                                        All the keys which were handed over to the Second party at the time of possession should be handed over back to the First party otherwise the First party will get that lock replaced or will get the amount deducted from the security money in getting that lock replaced.
+                                    </li>
+                                    <li>
+                                        The security amount is not adjustable. The First party will refund the security amount to the Second party when the Second party will vacant the premises.
+                                    </li>
+                                </ol>
+                                <PageBottomSignature data={data} />
+                                <div className="absolute bottom-4 left-0 right-0 text-center text-[8pt] text-gray-500">Page 1 of 3</div>
+                            </div>
+
+                            {/* Page 2 (Clauses 11-19 & Witnesses & Signatures) */}
+                            <div className="paper-page print-break text-[10pt] flex flex-col [&_p]:text-justify [&_li]:text-justify">
+                                {data.stampPaperNumber && (
+                                    <div className="absolute top-4 left-0 right-0 text-center text-[8pt] font-mono text-gray-500">
+                                        Stamp Paper No: {data.stampPaperNumber}
+                                    </div>
+                                )}
+                                <ol className="list-decimal pl-8 space-y-2" start="11">
+                                    <li>
+                                        That in case if the First party wants to evict the said premises prior to the completion of tenancy period, then the First party will give one-month prior notice to the Second party and if the Second party wants to vacate the said Premises prior to the completion of the tenancy period, then the Second party will also give one months’ notice in written or one month rent to the First party.
+                                    </li>
+                                    <li>
+                                        All furniture & fixtures as per annexure/if any should be taken due care of regular maintenance & servicing of furniture & fixture must be done be the Second party. Any damage/breakage to the property/furniture & fixtures will have to be borne by Second party or that will be deducted from the security deposit.
+                                    </li>
+                                    <li>
+                                        That the lease has been granted for exclusive <Var>{data.propertyType}</Var> use of the same family and under no circumstances Second party cannot sublet the premises for PG or to any other party.
+                                    </li>
+                                    <li>
+                                        That the First party shall not be responsible for any incident in the premises during the tenancy period.
+                                    </li>
+                                    <li>
+                                        In case the rent is not paid timely for consecutive two months and if the rent not paid for the running month by the Second party then, he/she shall be liable to vacate the premises immediately. In the First party shall not be liable to any refund of security deposit.
+                                    </li>
+                                    <li>
+                                        That the second party shall not use the said property for any illegal purpose, if the second party shall use the said property for illegal purpose he will liable himself for the same the first party and his property shall not be responsible for the same.
+                                    </li>
+                                    <li>
+                                        That the Tenant cannot make any addition / alteration to the said property / premises for any purposes, without the in written permission granted by the first party.
+                                    </li>
+                                    <li>
+                                        In no way the second party or his heir will claim for ownership of the said flat.
+                                    </li>
+                                    <li>
+                                        It has been agreed between both the parties that if tenant vacate before six months then one month of advance rent amount security will not be refundable and it shall be forfeited.
+                                    </li>
+                                </ol>
+
+                                <div className="mt-auto px-4">
+                                    <p className="font-bold mb-4 text-center">WITNESSES:-</p>
+                                    <div className="grid grid-cols-2 gap-x-20 gap-y-6 text-center">
+                                        <div>
+                                            <p>1. __________________________</p>
+                                            <p className="mt-1 text-sm text-gray-500">(Signature)</p>
+                                            <p className="mt-2 text-sm">Name: <span className="font-bold">{data.witness1Name || '______________________'}</span></p>
+                                            <p className="mt-1 text-sm">Ph: <span className="font-bold">{data.witness1Phone || '_______________________'}</span></p>
+                                            <p className="mt-1 text-sm">Add: <span className="font-bold">{data.witness1Address || '_______________________'}</span></p>
+                                        </div>
+                                        <div>
+                                            <p>2. __________________________</p>
+                                            <p className="mt-1 text-sm text-gray-500">(Signature)</p>
+                                            <p className="mt-2 text-sm">Name: <span className="font-bold">{data.witness2Name || '______________________'}</span></p>
+                                            <p className="mt-1 text-sm">Ph: <span className="font-bold">{data.witness2Phone || '_______________________'}</span></p>
+                                            <p className="mt-1 text-sm">Add: <span className="font-bold">{data.witness2Address || '_______________________'}</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <PageBottomSignature isFinal={true} data={data} />
+                                <div className="absolute bottom-4 left-0 right-0 text-center text-[8pt] text-gray-500">Page 2 of 3</div>
+                            </div>
+
+                            {/* Page 3 - Annexure */}
+                            <div className="paper-page text-[10pt] flex flex-col [&_p]:text-justify [&_li]:text-justify">
+                                {data.stampPaperNumber && (
+                                    <div className="absolute top-4 left-0 right-0 text-center text-[8pt] font-mono text-gray-500">
+                                        Stamp Paper No: {data.stampPaperNumber}
+                                    </div>
+                                )}
+                                <h1 className="text-center font-bold text-xl mb-8 underline uppercase">ANNEXURE-I</h1>
+                                <p className="mb-6">Detail of fixtures & fittings provided in the flat no. <Var>{data.propertyAddress}</Var></p>
+                                <table className="w-full mb-12">
+                                    <tbody>
+                                        <Row label="Tube light & bulbs" value={data.tubeLights} />
+                                        <Row label="Ceiling fan" value={data.fans} />
+                                        <Row label="LED" value={data.leds} />
+                                        <Row label="Chimney" value={data.chimney} />
+                                        <Row label="RO water unit" value={data.roUnit} />
+                                        <Row label="Exhaust fan" value={data.exhaustFan} />
+                                        <Row label="Bell" value={data.bell} />
+                                        <Row label="Furnishing wall mirror" value={data.mirror} />
+                                        <Row label="Curtain rods" value={data.curtains} />
+                                        <Row label="Wardrobe" value={data.wardrobe} />
+                                        <Row label="Kitchen Cupboard" value={data.kitchenCupboard} />
+                                        <Row label="Modular kitchen" value={data.modularKitchen} />
+                                        <Row label="AC" value={data.ac} />
+                                        <Row label="Key in Main door" value={data.keys} />
+                                        <Row label="Other" value={data.otherFixtures} />
+                                    </tbody>
+                                </table>
+
+                                <div className="mt-auto">
+                                    <PageBottomSignature isFinal={true} data={data} />
+                                    {data.showDraftedBy && (
+                                        <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+                                            <p className="text-[9pt] font-bold text-gray-700">Advocate Madhav Maheshwari (8899999321)</p>
+                                        </div>
+                                    )}
+                                    <div className="absolute bottom-1 left-0 right-0 text-center text-[8pt] text-gray-500">Page 3 of 3</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Home />);
+    </script>
+</body>
+
+</html>

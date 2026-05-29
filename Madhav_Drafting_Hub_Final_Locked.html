@@ -1,0 +1,2228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent Agreement Drafter - Madhav Law Firm</title>
+
+    <!-- Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        doc: ['"Merriweather"', 'serif'],
+                        ui: ['"Inter"', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-family: "Inter", sans-serif;
+        }
+
+        /* Page Layout Optimization */
+        .paper-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 1.5cm;
+            /* Restored to 1.5cm as requested */
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 2rem auto;
+            position: relative;
+            font-family: 'Merriweather', serif;
+            font-size: 12pt;
+            /* Standard legal font */
+            line-height: 1.5;
+            /* Standard spacing */
+        }
+
+        .paper-page p {
+            margin-bottom: 1rem;
+            /* Consistent paragraph spacing */
+        }
+
+        .paper-page li {
+            margin-bottom: 0.35rem;
+            /* Tighter list items for 31 clauses */
+        }
+
+        .highlight-var {
+            font-weight: bold;
+            color: #1e293b;
+            background-color: #e0f2fe;
+            padding: 1px 4px;
+            border-radius: 2px;
+            border-bottom: 1px solid #7dd3fc;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            /* Legacy support */
+            word-break: break-all;
+            /* Force breaks for long underscores/URLs */
+            white-space: pre-wrap;
+        }
+
+        .bg-dot-pattern {
+            background-color: #0f172a;
+            background-image: radial-gradient(#334155 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Claymorphism Colorful Icons */
+        .clay-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            /* The "Clay" effect: Heavy soft shadows + Inner highlights */
+            box-shadow:
+                6px 6px 14px rgba(164, 180, 200, 0.4),
+                -6px -6px 14px rgba(255, 255, 255, 0.9),
+                inset 2px 2px 5px rgba(255, 255, 255, 0.4),
+                inset -2px -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .clay-icon i {
+            filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.2));
+        }
+
+        /* Color Variants - Matching the reference image vibes */
+        .clay-cyan {
+            background-color: #06b6d4;
+        }
+
+        .clay-purple {
+            background-color: #a855f7;
+        }
+
+        .clay-pink {
+            background-color: #ec4899;
+        }
+
+        .clay-orange {
+            background-color: #f97316;
+        }
+
+        .clay-green {
+            background-color: #10b981;
+        }
+
+        .clay-yellow {
+            background-color: #eab308;
+        }
+
+        .clay-icon:active {
+            transform: scale(0.95);
+            box-shadow:
+                2px 2px 6px rgba(164, 180, 200, 0.4),
+                -2px -2px 6px rgba(255, 255, 255, 0.9),
+                inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+                inset -4px -4px 8px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Consistent Page Numbering Footer */
+        .page-number-footer {
+            position: absolute;
+            bottom: 0.5cm;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 9pt;
+            color: #6b7280;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Print Specifics */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @media print {
+
+            html,
+            body {
+                width: 210mm;
+                height: auto !important;
+                overflow: visible !important;
+                background: white;
+                margin: 0;
+                padding: 0;
+            }
+
+            .no-print,
+            .app-sidebar {
+                display: none !important;
+            }
+
+            /* Unset fixed layouts that block scrolling/printing */
+            #root,
+            .app-layout-container {
+                display: block !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            .paper-page-container {
+                display: block !important;
+                background: none !important;
+                padding: 0 !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            .paper-page {
+                position: relative;
+                text-align: justify;
+                box-shadow: none;
+                margin: 0;
+                width: 210mm;
+                min-height: 297mm;
+                height: 297mm !important;
+                /* Force exact height */
+                overflow: hidden !important;
+                /* Clip content to prevent spillover */
+                page-break-inside: avoid;
+                padding: 1.5cm;
+                /* Match screen padding */
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+                font-size: 12pt;
+                line-height: 1.5;
+            }
+
+            .print-break {
+                page-break-after: always !important;
+            }
+
+            /* Hide page digest footer borders in print if desired, or keep them */
+            .highlight-var {
+                background-color: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- Helper: Number to Words ---
+        function numToWords(n) {
+            if (!n) return "";
+            const num = parseInt(n);
+            if (isNaN(num)) return "";
+
+            const units = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+            const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+
+            function convertUnderThousand(num) {
+                if (num < 20) return units[num];
+                const digitTen = Math.floor(num / 10);
+                const digitUnit = num % 10;
+                return (tens[digitTen] + " " + units[digitUnit]).trim();
+            }
+
+            let words = "";
+            let val = num;
+
+            if (val >= 10000000) {
+                words += convertUnderThousand(Math.floor(val / 10000000)) + " Crore ";
+                val %= 10000000;
+            }
+
+            if (val >= 100000) {
+                words += convertUnderThousand(Math.floor(val / 100000)) + " Lakh ";
+                val %= 100000;
+            }
+
+            if (val >= 1000) {
+                words += convertUnderThousand(Math.floor(val / 1000)) + " Thousand ";
+                val %= 1000;
+            }
+
+            if (val >= 100) {
+                words += convertUnderThousand(Math.floor(val / 100)) + " Hundred ";
+                val %= 100;
+            }
+
+            if (val > 0) {
+                words += convertUnderThousand(val);
+            }
+
+            return words.trim();
+        }
+
+        // --- Components ---
+
+        const Section = ({ title, icon, color = "cyan", children, isOpen: defaultOpen = false }) => {
+            const [isOpen, setIsOpen] = useState(defaultOpen);
+
+            return (
+                <div className="bg-white border border-gray-200 rounded-xl overflow-hidden transition-all duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-md">
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className={`w-full flex items-center justify-between p-4 text-left transition-colors ${isOpen ? 'bg-blue-50/30' : 'bg-white hover:bg-gray-50'}`}
+                    >
+                        <div className="flex items-center gap-4">
+                            <div className={`clay-icon clay-${color}`}>
+                                <i className={`fa-solid ${icon}`}></i>
+                            </div>
+                            <span className={`font-semibold text-sm text-gray-700`}>{title}</span>
+                        </div>
+                        <i className={`fa-solid fa-chevron-down text-xs text-gray-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}></i>
+                    </button>
+
+                    <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                        <div className="overflow-hidden">
+                            <div className="p-4 pt-0">
+                                {children}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Input = ({ label, name, type = "text", value, onChange, fullWidth, placeholder = "", as = "input" }) => (
+            <div className={`${fullWidth ? 'col-span-2' : ''} mb-0`}>
+                <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
+                    {label}
+                </label>
+                {as === "textarea" ? (
+                    <textarea
+                        name={name}
+                        value={value}
+                        onChange={onChange}
+                        rows={3}
+                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-ui shadow-sm resize-none placeholder:text-gray-300 hover:border-gray-300"
+                        placeholder={placeholder}
+                    />
+                ) : (
+                    <input
+                        type={type}
+                        name={name}
+                        value={value}
+                        onChange={onChange}
+                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-ui shadow-sm placeholder:text-gray-300 hover:border-gray-300"
+                        placeholder={placeholder}
+                    />
+                )}
+            </div>
+        );
+
+        const Var = ({ children }) => (
+            <span className="highlight-var">{children}</span>
+        );
+
+        const FooterButton = ({ onClick, children, variant = "primary" }) => {
+            const styles = variant === "primary"
+                ? "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-blue-200 shadow-lg border-transparent"
+                : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 shadow-sm";
+
+            return (
+                <button
+                    onClick={onClick}
+                    className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 border ${styles}`}
+                >
+                    {children}
+                </button>
+            );
+        }
+
+        const Row = ({ label, value }) => (
+            <tr>
+                <td className="py-2 pr-4 w-1/2 border-b border-gray-200 text-gray-800">{label}</td>
+                <td className="py-2 pl-4 w-1/2 border-b border-gray-200 font-bold text-black">{value || '—'}</td>
+            </tr>
+        );
+
+        const SignatureBox = ({ title, name, role }) => (
+            <div className="border border-blue-100 rounded-lg p-3 bg-blue-50/30 text-center w-full break-inside-avoid shadow-sm">
+                <div className="font-bold uppercase mb-2 text-xs tracking-wider text-blue-900">{title}</div>
+                <div className="font-bold uppercase text-sm mb-1 text-gray-900 border-b border-blue-100 pb-1 mx-2">{name || '______________________'}</div>
+                <div className="text-[10px] text-gray-500 font-medium mt-1">({role})</div>
+            </div>
+        );
+
+        function Home() {
+            const [activeTab, setActiveTab] = useState('RENT'); // 'RENT' or 'ATS'
+
+            // --- RENT AGREEMENT STATE ---
+            const defaultRentData = {
+                agreementDate: '', // New single date field
+                agreementPlace: '',
+                stampPaperNumber: '',
+                showDraftedBy: true,
+                landlordName: '',
+                landlordAddress: '',
+                landlordPhone: '',
+                tenantName: '',
+                tenantAddress: '',
+                tenantPhone: '',
+                propertyAddress: '',
+                propertyType: 'Residential',
+                // Witness Details
+                witness1Name: '',
+                witness1Phone: '',
+                witness1Address: '',
+                witness2Name: '',
+                witness2Phone: '',
+                witness2Address: '',
+                rentAmount: '',
+                startDate: '',
+                endDate: '',
+                paymentDay: '',
+                advanceRent: '',
+                securityDeposit: '',
+                // Annexure Data - All Blank
+                tubeLights: '',
+                fans: '',
+                leds: '',
+                chimney: '',
+                roUnit: '',
+                ac: '',
+                keys: '',
+                exhaustFan: '',
+                bell: '',
+                mirror: '',
+                curtains: '',
+                wardrobe: '',
+                kitchenCupboard: '',
+                modularKitchen: '',
+                otherFixtures: ''
+            };
+
+            const [rentData, setRentData] = useState(defaultRentData);
+
+
+
+            // --- REGISTERED RENT AGREEMENT STATE ---
+            const defaultRegData = {
+                monthlyRent: '19,000',
+                leasePeriod: '11 Months',
+                securityAmount: '19,000',
+                totalAmount: '2,28,000',
+                stampDuty: '4,600',
+                stampPaperNumber: '',
+                executionDate: '2024-08-03',
+                // Lessor
+                lessorName: 'MRS. POONAM SHARMA',
+                lessorRelation: 'W/O MR. O. P. SHARMA',
+                lessorPan: 'AKUPS3332B',
+                lessorAadhar: '6177 2226 4984',
+                lessorPhone: '9873555858',
+                lessorAddress: 'RZ-40, RAGHU NAGAR, PANKHA ROAD, NEW DELHI-110045',
+                // Lessor 2 (Optional)
+                lessorCount: '1',
+                lessor2Name: '',
+                lessor2Relation: '',
+                lessor2Pan: '',
+                lessor2Aadhar: '',
+                lessor2Phone: '',
+                lessor2Address: '',
+
+                // Lessee
+                lesseeName: 'MR. SHOBHIT',
+                lesseeRelation: 'S/O MR. XYZ SHARMA',
+                lesseePan: 'FXZPS5239G',
+                lesseeAadhar: '2169 1484 3532',
+                lesseePhone: '9599932260',
+                lesseeAddress: 'FLAT NO.163 TOWER-5, PALM OLYMPIA, SECTOR-16C, GREATER NOIDA WEST, GAUTAM BUDDHA NAGAR, UTTAR PRADESH-201318',
+                // Lessee 2 (Optional)
+                lesseeCount: '1',
+                lessee2Name: '',
+                lessee2Relation: '',
+                lessee2Pan: '',
+                lessee2Aadhar: '',
+                lessee2Phone: '',
+                lessee2Address: '',
+                // Property
+                propertyAddress: 'RESIDENTIAL FLAT NO.163, TOWER-5, PALM OLYMPIA, PLOT NO.GH-02, SECTOR-16C, GREATER NOIDA WEST, GAUTAM BUDH NAGAR, UTTAR PRADESH',
+                // Terms
+                startDate: '2024-08-03',
+                endDate: '2025-07-02',
+                // Witness 1
+                witness1Name: 'Mr. Manish Sharma',
+                witness1Father: 'Mr. Om Prakash Sharm',
+                witness1Aadhar: '',
+                witness1Address: 'RZ-40, Gali No.3, Raghu Nagar, Palam Village, Dabri, South Delhi-110045',
+                // Witness 2
+                witness2Name: '',
+                witness2Father: '',
+                witness2Aadhar: '',
+                witness2Address: '',
+                drafterName: 'KAPEEL DEV, ADVOCATE'
+            };
+            const [regData, setRegData] = useState(defaultRegData);
+
+            // --- TM-48 (TRADEMARK) STATE ---
+            const defaultTM48Data = {
+                stampPaperNumber: '',
+                applicantName: 'Mohnish Nirwan',
+                fatherName: 'Ashok Kumar',
+                designation: 'Proprietor',
+                companyName: 'M/s Nirwan Legal Associates',
+                applicantAddress: 'C-50, Basement, Jangpura Extension, Jangpura, District South Delhi, Delhi – 110014',
+                place: 'Gautam Buddh Nagar',
+                date: new Date().toISOString().split('T')[0]
+            };
+            const [tm48Data, setTm48Data] = useState(defaultTM48Data);
+
+            // --- AGREEMENT TO SELL (ATS) STATE ---
+            const defaultATSData = {
+                stampPaperNumber: '',
+                executionDate: '2025-03-05',
+                executionPlace: 'Delhi',
+
+                // Sellers
+                sellerCount: '2',
+                seller1Name: 'Vanshraj Sehrawat',
+                seller1Relation: 'S/o',
+                seller1Father: 'Sunder Singh Sehrawat',
+                seller1Pan: 'BXPPS7948A',
+                seller1Aadhar: '8305 3494 6269',
+                seller1Address: '73-B, Chand Kaur Bhawan, Near Neel Gagan School, Mahipalpur, Malik Pur Kohi Alias Rang Puri, South West Delhi, Delhi-110037',
+                seller2Name: 'Darshan Devi',
+                seller2Relation: 'W/o',
+                seller2Father: 'Sunder Singh Sehrawat',
+                seller2Pan: 'AIGPS9478L',
+                seller2Aadhar: '4157 5477 4704',
+                seller2Address: '73-B, Chand Kaur Bhawan, Near Neel Gagan School, Mahipalpur, Malik Pur Kohi Alias Rang Puri, South West Delhi, Delhi-110037',
+
+                // Buyers
+                buyerCount: '2',
+                buyer1Name: 'Amit Kumar Singh',
+                buyer1Relation: 'S/o',
+                buyer1Father: 'Mahendra Singh Verma',
+                buyer1Pan: 'AQZPS9936L',
+                buyer1Aadhar: '5649 1506 2002',
+                buyer1Address: 'House No.219, Second Floor, Minto Road Complex, Block-C, Central Delhi, Delhi-110002',
+                buyer2Name: 'Geetanjali Singh',
+                buyer2Relation: 'W/o',
+                buyer2Father: 'Amit Kumar Singh',
+                buyer2Pan: 'BKIPS6914G',
+                buyer2Aadhar: '8425 6603 1556',
+                buyer2Address: 'House No.219, Second Floor, Minto Road Complex, Block-C, Central Delhi, Delhi-110002',
+
+                // Property
+                propertyDetails: 'Flat No.302, Tower-E, Spring Meadows, Area (148.64 Sq Mtr.), Sector-Techzone-IV, Greater Noida West, Gautm Buddha Nagar, Uttar Pradesh- 201306',
+
+                // Financials
+                totalConsideration: '80,00,000',
+                totalConsiderationWords: 'Eighty Lakh',
+                earnestMoney: '1,00,000',
+                earnestMoneyWords: 'One Lakh',
+                paymentTransactions: [
+                    { mode: 'Cheque', ref: '200751', date: '2025-03-16', amount: '1,00,000' }
+                ],
+                balanceAmount: '79,00,000',
+                balanceAmountWords: 'Seventy Nine Lakh',
+                completionDate: '2025-05-01',
+
+                // Witnesses
+                witness1Name: '',
+                witness1Address: '',
+                witness1Id: '',
+                witness2Name: '',
+                witness2Address: '',
+                witness2Id: ''
+            };
+            const [atsData, setAtsData] = useState(defaultATSData);
+
+            // Helpers for Date Formatting
+            const getOrdinal = (n) => {
+                const s = ["th", "st", "nd", "rd"];
+                const v = n % 100;
+                return n + (s[(v - 20) % 10] || s[v] || s[0]);
+            };
+
+            const formatDateParts = (dateStr) => {
+                if (!dateStr) return { day: '______', monthYear: '____________________' };
+                const d = new Date(dateStr);
+                const day = getOrdinal(d.getDate());
+                const monthYear = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                return { day, monthYear };
+            };
+
+            const formatAadhar = (str) => {
+                if (!str) return '________________';
+                const clean = str.replace(/\s/g, ''); // 1234 5678 1234 -> 123456781234
+                if (clean.length === 12) {
+                    return `XXXX XXXX ${clean.slice(-4)}`;
+                }
+                return str;
+            };
+
+            const formatPan = (str) => {
+                if (!str) return '__________';
+                // Request: Hide second digit mask (AxUxSx3x2x style)
+                // Replaces every character at an odd index (2nd, 4th, etc.) with 'x'
+                return str.toUpperCase().split('').map((c, i) => i % 2 === 1 ? 'x' : c).join('');
+            };
+
+            const { day: agreementDay, monthYear: agreementMonthYear } = formatDateParts(rentData.agreementDate);
+
+            const formattedPaymentDay = rentData.paymentDay && !isNaN(rentData.paymentDay)
+                ? getOrdinal(parseInt(rentData.paymentDay))
+                : rentData.paymentDay;
+
+            const rentInWords = numToWords(rentData.rentAmount);
+            const advanceInWords = numToWords(rentData.advanceRent);
+            const securityInWords = numToWords(rentData.securityDeposit);
+
+            useEffect(() => {
+                const saved = localStorage.getItem('madhav_legal_suite_v1');
+                if (saved) {
+                    try {
+                        const parsed = JSON.parse(saved);
+                        if (parsed.rent) setRentData(parsed.rent);
+                        if (parsed.ats) setAtsData(parsed.ats);
+                        if (parsed.reg) setRegData(parsed.reg);
+                        if (parsed.tab) setActiveTab(parsed.tab);
+                    } catch (e) { console.error(e); }
+                }
+            }, []);
+
+            useEffect(() => {
+                const suiteData = {
+                    rent: rentData,
+                    ats: atsData,
+                    reg: regData,
+                    tab: activeTab
+                };
+                localStorage.setItem('madhav_legal_suite_v1', JSON.stringify(suiteData));
+            }, [rentData, atsData, activeTab]);
+
+            const downloadJSON = () => {
+                let currentData, name;
+                if (activeTab === 'RENT') { currentData = rentData; name = rentData.tenantName || 'Draft'; }
+                else if (activeTab === 'ATS') { currentData = atsData; name = atsData.buyerName || 'Draft'; }
+                else { currentData = regData; name = regData.lesseeName || 'Draft'; }
+
+                const blob = new Blob([JSON.stringify(currentData, null, 2)], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = `Madhav_${activeTab}_${name}.json`;
+                link.click();
+            };
+
+            const uploadJSON = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const loaded = JSON.parse(event.target.result);
+                        if (activeTab === 'RENT') setRentData(prev => ({ ...prev, ...loaded }));
+                        else if (activeTab === 'ATS') setAtsData(prev => ({ ...prev, ...loaded }));
+                        else setRegData(prev => ({ ...prev, ...loaded }));
+                    } catch (err) {
+                        alert("Invalid JSON file");
+                    }
+                };
+                reader.readAsText(file);
+            };
+
+            const saveDefault = () => {
+                let currentData;
+                if (activeTab === 'RENT') currentData = rentData;
+                else if (activeTab === 'ATS') currentData = atsData;
+                else currentData = regData;
+                localStorage.setItem(`madhav_default_${activeTab}`, JSON.stringify(currentData));
+                alert(`Settings saved as your Default ${activeTab} Template!`);
+            };
+
+            const loadDefault = () => {
+                const saved = localStorage.getItem(`madhav_default_${activeTab}`);
+                if (saved) {
+                    if (confirm(`Load your Default ${activeTab} Template?`)) {
+                        const parsed = JSON.parse(saved);
+                        if (activeTab === 'RENT') setRentData(parsed);
+                        else if (activeTab === 'ATS') setAtsData(parsed);
+                        else setRegData(parsed);
+                    }
+                } else {
+                    alert("No default template found for this document type.");
+                }
+            };
+
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+
+                if (activeTab === 'ATS') {
+                    setAtsData(prev => ({ ...prev, [name]: value }));
+                    return;
+                }
+                if (activeTab === 'REG_RENT') {
+                    setRegData(prev => {
+                        const newData = { ...prev, [name]: value };
+
+                        // Parameters
+                        // Use newData for the triggering field, otherwise fall back to prev (to ensure latest state is used)
+                        let rentStr = newData.monthlyRent || '0';
+                        let periodStr = newData.leasePeriod || '0';
+                        let secMonths = parseInt(newData.securityMonths || '1'); // Default to 1
+
+                        const rent = parseFloat(rentStr.replace(/,/g, '')) || 0;
+                        const match = periodStr.match(/(\d+)/);
+                        const leaseMonths = match ? parseInt(match[0]) : 0;
+
+                        // Calculation Trigger (Rent, Lease, OR Security Months changed)
+                        if (['monthlyRent', 'leasePeriod', 'securityMonths', 'startDate'].includes(name)) {
+
+                            // 1. Auto-Calculate Security Amount
+                            const secAmount = rent * secMonths;
+                            newData.securityAmount = secAmount.toLocaleString('en-IN');
+
+                            // 2. Auto-Calculate Total Amount (Total Rent + Security)
+                            if (rent > 0 && leaseMonths > 0) {
+                                const totalRent = rent * leaseMonths;
+                                const totalConsideration = totalRent + secAmount;
+                                const duty = Math.round(totalConsideration * 0.02); // 2% of Total Consideration
+
+                                newData.totalAmount = totalConsideration.toLocaleString('en-IN');
+                                newData.stampDuty = duty.toLocaleString('en-IN');
+                            }
+
+                            // 3. Auto-Calculate End Date (Expiry)
+                            // Trigger if startDate or leasePeriod changes
+                            if (newData.startDate && leaseMonths > 0) {
+                                const parts = newData.startDate.split('-');
+                                if (parts.length === 3) {
+                                    const y = parseInt(parts[0], 10);
+                                    const m = parseInt(parts[1], 10) - 1;
+                                    const d = parseInt(parts[2], 10);
+                                    const start = new Date(y, m, d, 12, 0, 0);
+                                    const end = new Date(start);
+                                    end.setMonth(end.getMonth() + leaseMonths);
+                                    end.setDate(end.getDate() - 1);
+
+                                    const yyyy = end.getFullYear();
+                                    const mm = String(end.getMonth() + 1).padStart(2, '0');
+                                    const dd = String(end.getDate()).padStart(2, '0');
+                                    newData.endDate = `${yyyy}-${mm}-${dd}`;
+                                }
+                            }
+                        }
+                        return newData;
+                    });
+                    return;
+                }
+
+                // RENT LOGIC
+                if (name === 'startDate' && value) {
+                    const parts = value.split('-');
+                    if (parts.length === 3) {
+                        const y = parseInt(parts[0], 10);
+                        const m = parseInt(parts[1], 10) - 1;
+                        const d = parseInt(parts[2], 10);
+                        const start = new Date(y, m, d, 12, 0, 0);
+                        const end = new Date(start);
+                        end.setMonth(end.getMonth() + 11);
+                        end.setDate(end.getDate() - 1);
+                        const yyyy = end.getFullYear();
+                        const mm = String(end.getMonth() + 1).padStart(2, '0');
+                        const dd = String(end.getDate()).padStart(2, '0');
+                        const endStr = `${yyyy}-${mm}-${dd}`;
+                        setRentData(prev => ({ ...prev, [name]: value, endDate: endStr }));
+                        return;
+                    }
+                }
+
+                setRentData(prev => ({ ...prev, [name]: value }));
+            };
+
+            // --- Page Footer Component for Signatures on Every Page ---
+            // --- Page Footer Component for Signatures on Every Page ---
+            const PageBottomSignature = ({ isFinal = false, data, type = 'RENT' }) => {
+                const isReg = type === 'REG_RENT';
+                const name1 = isReg ? (data.lessorName || '__________________________') : (data.landlordName || '__________________________');
+                const role1 = isReg ? "LESSOR" : "OWNER/FIRST PARTY";
+
+                const name2 = isReg ? (data.lesseeName || '__________________________') : (data.tenantName || '__________________________');
+                const role2 = isReg ? "LESSEE" : "TENANT/SECOND PARTY";
+
+                // Absolute positioning for REG_RENT to ensure it sits at bottom of fixed page
+                const containerClass = isReg
+                    ? "absolute bottom-16 left-12 right-12 flex justify-between items-end text-sm pointer-events-none"
+                    : (isFinal ? "mt-8 border-t border-gray-300 pt-4" : "mt-auto pt-8 px-4 flex justify-between items-end");
+
+                const innerContent = (
+                    <>
+                        {/* Lessor Group (Left) */}
+                        <div className="flex items-end gap-4 text-center">
+                            <div className="flex flex-col items-center gap-1">
+                                <div className="font-bold uppercase">{name1}</div>
+                                <div className="text-[10px] font-bold text-gray-400">{role1} {isReg && data.lessorCount === '2' ? '1' : ''}</div>
+                            </div>
+                            {isReg && data.lessorCount === '2' && (
+                                <div className="flex flex-col items-center gap-1">
+                                    <div className="font-bold uppercase">{data.lessor2Name || '__________________'}</div>
+                                    <div className="text-[10px] font-bold text-gray-400">{role1} 2</div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Lessee Group (Right) */}
+                        <div className="flex items-end gap-4 text-center">
+                            <div className="flex flex-col items-center gap-1">
+                                <div className="font-bold uppercase">{name2}</div>
+                                <div className="text-[10px] font-bold text-gray-400">{role2} {isReg && data.lesseeCount === '2' ? '1' : ''}</div>
+                            </div>
+                            {isReg && data.lesseeCount === '2' && (
+                                <div className="flex flex-col items-center gap-1">
+                                    <div className="font-bold uppercase">{data.lessee2Name || '__________________'}</div>
+                                    <div className="text-[10px] font-bold text-gray-400">{role2} 2</div>
+                                </div>
+                            )}
+                        </div>
+                    </>
+                );
+
+                if (isReg) return <div className={containerClass}>{innerContent}</div>;
+
+                if (isFinal) {
+                    return (
+                        <div className={containerClass}>
+                            <div className="flex justify-between items-end px-4">{innerContent}</div>
+                        </div>
+                    );
+                }
+
+                return <div className={containerClass}>{innerContent}</div>;
+            };
+
+            return (
+                <div className="flex flex-col lg:flex-row h-screen font-ui overflow-hidden app-layout-container">
+                    {/* Left Sidebar */}
+                    <div className="w-full lg:w-[480px] bg-white border-r border-gray-200 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-10 app-sidebar h-full">
+                        {/* Header */}
+                        <div className="px-6 py-5 border-b border-gray-100 bg-white/95 backdrop-blur-sm sticky top-0 z-20">
+                            <div className="flex justify-between items-center mb-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-blue-200 shadow-lg">
+                                        <i className="fa-solid fa-scale-balanced text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h1 className="text-xl font-bold text-gray-900 tracking-tight">Madhav Legal</h1>
+                                        <p className="text-xs text-gray-500 font-medium">Drafting Suite</p>
+                                    </div>
+                                </div>
+                                {/* Toolbar Actions */}
+                                <div className="flex gap-1">
+                                    <button onClick={saveDefault} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-yellow-50 text-gray-400 hover:text-yellow-600 transition" title={`Save Default (${activeTab})`}>
+                                        <i className="fa-solid fa-star text-sm"></i>
+                                    </button>
+                                    <button onClick={loadDefault} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-yellow-50 text-gray-400 hover:text-yellow-600 transition" title={`Load Default (${activeTab})`}>
+                                        <i className="fa-regular fa-star text-sm"></i>
+                                    </button>
+                                    <div className="w-px h-6 bg-gray-200 mx-1 my-auto"></div>
+                                    <label className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition cursor-pointer" title="Load JSON">
+                                        <i className="fa-solid fa-folder-open text-sm"></i>
+                                        <input type="file" accept=".json" onChange={uploadJSON} className="hidden" />
+                                    </label>
+                                    <button onClick={downloadJSON} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition" title="Save JSON">
+                                        <i className="fa-solid fa-save text-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Tab Switcher */}
+                            <div className="flex p-1 bg-gray-100 rounded-lg">
+                                <button
+                                    onClick={() => setActiveTab('RENT')}
+                                    className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${activeTab === 'RENT' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                                >
+                                    Rent Agreement
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('ATS')}
+                                    className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${activeTab === 'ATS' ? 'bg-white text-purple-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                                >
+                                    Agreement to Sell
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('REG_RENT')}
+                                    className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${activeTab === 'REG_RENT' ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                                >
+                                    Reg. Rent Agreement
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('TM48')}
+                                    className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${activeTab === 'TM48' ? 'bg-white text-orange-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                                >
+                                    TM-48
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Scrollable Form Area */}
+                        <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50/50 scrollbar-thin scrollbar-thumb-gray-200">
+
+                            {activeTab === 'RENT' && (
+                                <>
+                                    <Section title="Agreement Details" icon="fa-calendar-days" color="cyan" isOpen={true}>
+                                        <Input label="Agreement Date" name="agreementDate" type="date" value={rentData.agreementDate} onChange={handleChange} />
+                                        <Input label="Place" name="agreementPlace" value={rentData.agreementPlace} onChange={handleChange} placeholder="e.g. New Delhi" />
+                                        <Input label="Stamp Paper No." name="stampPaperNumber" value={rentData.stampPaperNumber} onChange={handleChange} placeholder="e.g. IN-DL..." />
+                                        <div className="mt-4 flex items-center gap-3 p-3 bg-cyan-50 rounded-lg border border-cyan-100">
+                                            <input
+                                                type="checkbox"
+                                                checked={rentData.showDraftedBy}
+                                                onChange={(e) => setRentData(prev => ({ ...prev, showDraftedBy: e.target.checked }))}
+                                                className="w-4 h-4 text-cyan-600 rounded border-gray-300 focus:ring-cyan-500 cursor-pointer"
+                                            />
+                                            <label className="text-sm font-medium text-gray-700 cursor-pointer" onClick={() => setRentData(prev => ({ ...prev, showDraftedBy: !prev.showDraftedBy }))}>
+                                                Show "Drafted By" Signature
+                                            </label>
+                                        </div>
+                                    </Section>
+
+                                    <Section title="Landlord Details" icon="fa-user-tie" color="purple">
+                                        <Input label="Full Name" name="landlordName" value={rentData.landlordName} onChange={handleChange} placeholder="e.g. Ashok Kumar" />
+                                        <Input label="Address (R/o...)" name="landlordAddress" value={rentData.landlordAddress} onChange={handleChange} as="textarea" placeholder="Full residential address" />
+                                        <Input label="Phone Number" name="landlordPhone" value={rentData.landlordPhone} onChange={handleChange} placeholder="+91..." />
+                                    </Section>
+
+                                    <Section title="Tenant Details" icon="fa-user" color="pink">
+                                        <Input label="Full Name" name="tenantName" value={rentData.tenantName} onChange={handleChange} placeholder="e.g. Mohnish Nirwan" />
+                                        <Input label="Address (Permanent)" name="tenantAddress" value={rentData.tenantAddress} onChange={handleChange} as="textarea" placeholder="Permanent address" />
+                                        <Input label="Phone Number" name="tenantPhone" value={rentData.tenantPhone} onChange={handleChange} placeholder="+91..." />
+                                    </Section>
+
+                                    <Section title="Property Details" icon="fa-house-chimney" color="orange" isOpen={true}>
+                                        <div className="space-y-4">
+                                            <Input
+                                                label="Rented Property Address"
+                                                name="propertyAddress"
+                                                value={rentData.propertyAddress}
+                                                onChange={handleChange}
+                                                as="textarea"
+                                                placeholder="Full address of the flat/house"
+                                            />
+                                            {/* Property Purpose Selector */}
+                                            <div className="group">
+                                                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5 transition-colors group-focus-within:text-blue-600">
+                                                    Property Purpose
+                                                </label>
+                                                <select
+                                                    name="propertyType"
+                                                    value={rentData.propertyType}
+                                                    onChange={handleChange}
+                                                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 text-sm focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200"
+                                                >
+                                                    <option value="Residential">Residential</option>
+                                                    <option value="Commercial">Commercial</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </Section>
+
+                                    <Section title="Financials & Terms" icon="fa-indian-rupee-sign" color="green">
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <Input label="Rent Amount (₹)" name="rentAmount" type="number" value={rentData.rentAmount} onChange={handleChange} />
+                                            <Input label="Deposit (₹)" name="securityDeposit" type="number" value={rentData.securityDeposit} onChange={handleChange} />
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <Input label="Start Date" name="startDate" type="date" value={rentData.startDate} onChange={handleChange} />
+                                            <Input label="End Date" type="date" value={rentData.endDate} onChange={handleChange} />
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <Input label="Pay By (Day)" name="paymentDay" value={rentData.paymentDay} onChange={handleChange} placeholder="7th" />
+                                            <Input label="Advance Rent" name="advanceRent" type="number" value={rentData.advanceRent} onChange={handleChange} placeholder="0" />
+                                        </div>
+
+                                        <div className="mt-4 bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+                                            <label className="block text-xs font-bold text-blue-800 uppercase tracking-wider mb-3">Maintenance</label>
+                                            <div className="flex gap-4">
+                                                <label className="flex items-center gap-2 cursor-pointer group">
+                                                    <div className="relative flex items-center">
+                                                        <input
+                                                            type="radio"
+                                                            checked={rentData.maintenanceIncluded}
+                                                            onChange={() => setRentData(d => ({ ...d, maintenanceIncluded: true }))}
+                                                            className="peer sr-only"
+                                                        />
+                                                        <div className="w-5 h-5 border-2 border-gray-300 rounded-full peer-checked:border-blue-600 peer-checked:after:bg-blue-600 after:content-[''] after:absolute after:top-1 after:left-1 after:w-3 after:h-3 after:rounded-full after:scale-0 peer-checked:after:scale-100 transition-all"></div>
+                                                    </div>
+                                                    <span className="text-sm font-medium text-gray-700 group-hover:text-blue-700 transition">Included</span>
+                                                </label>
+                                                <label className="flex items-center gap-2 cursor-pointer group">
+                                                    <div className="relative flex items-center">
+                                                        <input
+                                                            type="radio"
+                                                            checked={!rentData.maintenanceIncluded}
+                                                            onChange={() => setRentData(d => ({ ...d, maintenanceIncluded: false }))}
+                                                            className="peer sr-only"
+                                                        />
+                                                        <div className="w-5 h-5 border-2 border-gray-300 rounded-full peer-checked:border-blue-600 peer-checked:after:bg-blue-600 after:content-[''] after:absolute after:top-1 after:left-1 after:w-3 after:h-3 after:rounded-full after:scale-0 peer-checked:after:scale-100 transition-all"></div>
+                                                    </div>
+                                                    <span className="text-sm font-medium text-gray-700 group-hover:text-blue-700 transition">Excluded</span>
+                                                </label>
+                                            </div>
+                                            <div className="mt-2 text-xs text-blue-600/80">
+                                                {rentData.maintenanceIncluded
+                                                    ? "Clause 6 will reflect that maintenance is NOT paid separately by tenant."
+                                                    : "Clause 6 will reflect that maintenance IS paid directly by tenant."}
+                                            </div>
+                                        </div>
+                                    </Section>
+
+                                    <Section title="Fixtures (Annexure)" icon="fa-couch" color="yellow">
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <Input label="Tube Lights/Bulbs" name="tubeLights" value={rentData.tubeLights} onChange={handleChange} />
+                                            <Input label="Ceiling Fans" name="fans" value={rentData.fans} onChange={handleChange} />
+                                            <Input label="LEDs" name="leds" value={rentData.leds} onChange={handleChange} />
+                                            <Input label="Chimney" name="chimney" value={rentData.chimney} onChange={handleChange} />
+                                            <Input label="RO Unit" name="roUnit" value={rentData.roUnit} onChange={handleChange} />
+                                            <Input label="Exhaust Fan" name="exhaustFan" value={rentData.exhaustFan} onChange={handleChange} />
+                                            <Input label="Bell" name="bell" value={rentData.bell} onChange={handleChange} />
+                                            <Input label="Wall Mirror" name="mirror" value={rentData.mirror} onChange={handleChange} />
+                                            <Input label="Curtain Rods" name="curtains" value={rentData.curtains} onChange={handleChange} />
+                                            <Input label="Wardrobe" name="wardrobe" value={rentData.wardrobe} onChange={handleChange} />
+                                            <Input label="Kitchen Cupboard" name="kitchenCupboard" value={rentData.kitchenCupboard} onChange={handleChange} />
+                                            <Input label="Modular Kitchen" name="modularKitchen" value={rentData.modularKitchen} onChange={handleChange} />
+                                            <Input label="ACs" name="ac" value={rentData.ac} onChange={handleChange} />
+                                            <Input label="Main Door Keys" name="keys" value={rentData.keys} onChange={handleChange} />
+                                            <Input label="Other" name="otherFixtures" value={rentData.otherFixtures} onChange={handleChange} placeholder="Misc items" />
+                                        </div>
+                                    </Section>
+
+                                    <Section title="Witness Details" icon="fa-users" color="gray">
+                                        <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Witness 1</h3>
+                                        <div className="space-y-3 mb-4">
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <Input label="Name" name="witness1Name" value={rentData.witness1Name} onChange={handleChange} />
+                                                <Input label="Phone" name="witness1Phone" value={rentData.witness1Phone} onChange={handleChange} />
+                                            </div>
+                                            <Input label="Address" name="witness1Address" value={rentData.witness1Address} onChange={handleChange} placeholder="Witness Address" />
+                                        </div>
+                                        <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Witness 2</h3>
+                                        <div className="space-y-3">
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <Input label="Name" name="witness2Name" value={rentData.witness2Name} onChange={handleChange} />
+                                                <Input label="Phone" name="witness2Phone" value={rentData.witness2Phone} onChange={handleChange} />
+                                            </div>
+                                            <Input label="Address" name="witness2Address" value={rentData.witness2Address} onChange={handleChange} placeholder="Witness Address" />
+                                        </div>
+                                    </Section>
+                                </>
+                            )}
+
+                            {activeTab === 'ATS' && (
+                                <>
+                                    {/* ATS Placeholder Sections */}
+                                    <div className="p-4 bg-purple-50 border border-purple-100 rounded-lg text-purple-700 text-sm mb-4">
+                                        <i className="fa-solid fa-person-digging mr-2"></i>
+                                        Agreement to Sell Draft Pending...
+                                    </div>
+                                    <Section title="Execution Details" icon="fa-calendar-check" color="purple" isOpen={true}>
+                                        <Input label="Stamp Paper No." name="stampPaperNumber" value={atsData.stampPaperNumber} onChange={handleChange} placeholder="e.g. IN-DL..." />
+                                        <Input label="Execution Date" name="executionDate" type="date" value={atsData.executionDate} onChange={handleChange} />
+                                    </Section>
+                                    <Section title="Party Details" icon="fa-users" color="purple">
+                                        <Input label="Seller Name" name="sellerName" value={atsData.sellerName} onChange={handleChange} />
+                                        <Input label="Buyer Name" name="buyerName" value={atsData.buyerName} onChange={handleChange} />
+                                    </Section>
+                                </>
+                            )}
+
+                            {activeTab === 'REG_RENT' && (
+                                <>
+                                    <Section title="Key Terms" icon="fa-file-invoice-dollar" color="cyan" isOpen={true}>
+                                        <Input label="Monthly Rent (Rs)" name="monthlyRent" value={regData.monthlyRent} onChange={handleChange} />
+                                        <Input label="Lease Period" name="leasePeriod" value={regData.leasePeriod} onChange={handleChange} />
+                                        <div className="flex gap-2">
+                                            <div className="w-1/2">
+                                                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Security Months</label>
+                                                <select name="securityMonths" value={regData.securityMonths || "1"} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-cyan-500 focus:outline-none text-sm bg-white">
+                                                    <option value="1">1 Month</option>
+                                                    <option value="2">2 Months</option>
+                                                    <option value="3">3 Months</option>
+                                                    <option value="0">None</option>
+                                                </select>
+                                            </div>
+                                            <div className="w-1/2">
+                                                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Deposit (Auto)</label>
+                                                <input type="text" name="securityAmount" value={regData.securityAmount} readOnly className="w-full p-2 border border-gray-200 bg-gray-50 rounded text-gray-600 font-bold outline-none text-sm" />
+                                            </div>
+                                        </div>
+                                        <div className="bg-gray-100 p-2 rounded border border-gray-200 mt-2">
+                                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Total Amount (Auto)</label>
+                                            <input type="text" value={regData.totalAmount} readOnly className="w-full bg-transparent font-bold text-gray-700 outline-none" />
+                                        </div>
+                                        <div className="bg-gray-100 p-2 rounded border border-gray-200 mt-2">
+                                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Stamp Duty (2% Auto)</label>
+                                            <input type="text" value={regData.stampDuty} readOnly className="w-full bg-transparent font-bold text-gray-700 outline-none" />
+                                        </div>
+                                        <Input label="Stamp Paper No." name="stampPaperNumber" value={regData.stampPaperNumber} onChange={handleChange} placeholder="e.g. IN-DL..." />
+                                        <Input label="Execution Date" name="executionDate" type="date" value={regData.executionDate} onChange={handleChange} />
+                                    </Section>
+
+                                    <Section title="Lessor (Owner)" icon="fa-user-tie" color="purple" isOpen={true}>
+                                        <div className="mb-4">
+                                            <label className="text-xs font-bold text-gray-500 uppercase">Number of Lessors</label>
+                                            <div className="flex gap-4 mt-1">
+                                                <label className="flex items-center space-x-2">
+                                                    <input type="radio" name="lessorCount" value="1" checked={regData.lessorCount === '1'} onChange={handleChange} className="accent-purple-600" />
+                                                    <span className="text-sm">One</span>
+                                                </label>
+                                                <label className="flex items-center space-x-2">
+                                                    <input type="radio" name="lessorCount" value="2" checked={regData.lessorCount === '2'} onChange={handleChange} className="accent-purple-600" />
+                                                    <span className="text-sm">Two</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div className="mb-4">
+                                            <div className="text-xs font-bold text-gray-400 uppercase mb-2">Lessor 1 Details</div>
+                                            <Input label="Name" name="lessorName" value={regData.lessorName} onChange={handleChange} />
+                                            <Input label="Relation (e.g. S/o...)" name="lessorRelation" value={regData.lessorRelation} onChange={handleChange} />
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <Input label="PAN" name="lessorPan" value={regData.lessorPan} onChange={handleChange} />
+                                                <Input label="Aadhar" name="lessorAadhar" value={regData.lessorAadhar} onChange={handleChange} />
+                                            </div>
+                                            <Input label="Phone" name="lessorPhone" value={regData.lessorPhone} onChange={handleChange} />
+                                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Address</label>
+                                            <textarea name="lessorAddress" value={regData.lessorAddress} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm" rows="2"></textarea>
+                                        </div>
+
+                                        {regData.lessorCount === '2' && (
+                                            <div className="pt-4 border-t border-purple-100">
+                                                <div className="text-xs font-bold text-gray-400 uppercase mb-2">Lessor 2 Details</div>
+                                                <Input label="Name" name="lessor2Name" value={regData.lessor2Name} onChange={handleChange} />
+                                                <Input label="Relation" name="lessor2Relation" value={regData.lessor2Relation} onChange={handleChange} />
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    <Input label="PAN" name="lessor2Pan" value={regData.lessor2Pan} onChange={handleChange} />
+                                                    <Input label="Aadhar" name="lessor2Aadhar" value={regData.lessor2Aadhar} onChange={handleChange} />
+                                                </div>
+                                                <Input label="Phone" name="lessor2Phone" value={regData.lessor2Phone} onChange={handleChange} />
+                                                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Address</label>
+                                                <textarea name="lessor2Address" value={regData.lessor2Address} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm" rows="2"></textarea>
+                                            </div>
+                                        )}
+                                    </Section>
+
+                                    <Section title="Lessee (Tenant)" icon="fa-user" color="pink">
+                                        <div className="mb-4">
+                                            <label className="text-xs font-bold text-gray-500 uppercase">Number of Lessees</label>
+                                            <div className="flex gap-4 mt-1">
+                                                <label className="flex items-center space-x-2">
+                                                    <input type="radio" name="lesseeCount" value="1" checked={regData.lesseeCount === '1'} onChange={handleChange} className="accent-pink-600" />
+                                                    <span className="text-sm">One</span>
+                                                </label>
+                                                <label className="flex items-center space-x-2">
+                                                    <input type="radio" name="lesseeCount" value="2" checked={regData.lesseeCount === '2'} onChange={handleChange} className="accent-pink-600" />
+                                                    <span className="text-sm">Two</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div className="mb-4">
+                                            <div className="text-xs font-bold text-gray-400 uppercase mb-2">Lessee 1 Details</div>
+                                            <Input label="Name" name="lesseeName" value={regData.lesseeName} onChange={handleChange} />
+                                            <Input label="Relation (e.g. S/o...)" name="lesseeRelation" value={regData.lesseeRelation} onChange={handleChange} />
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <Input label="PAN" name="lesseePan" value={regData.lesseePan} onChange={handleChange} />
+                                                <Input label="Aadhar" name="lesseeAadhar" value={regData.lesseeAadhar} onChange={handleChange} />
+                                            </div>
+                                            <Input label="Phone" name="lesseePhone" value={regData.lesseePhone} onChange={handleChange} />
+                                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Address</label>
+                                            <textarea name="lesseeAddress" value={regData.lesseeAddress} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm" rows="2"></textarea>
+                                        </div>
+
+                                        {regData.lesseeCount === '2' && (
+                                            <div className="pt-4 border-t border-pink-100">
+                                                <div className="text-xs font-bold text-gray-400 uppercase mb-2">Lessee 2 Details</div>
+                                                <Input label="Name" name="lessee2Name" value={regData.lessee2Name} onChange={handleChange} />
+                                                <Input label="Relation" name="lessee2Relation" value={regData.lessee2Relation} onChange={handleChange} />
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    <Input label="PAN" name="lessee2Pan" value={regData.lessee2Pan} onChange={handleChange} />
+                                                    <Input label="Aadhar" name="lessee2Aadhar" value={regData.lessee2Aadhar} onChange={handleChange} />
+                                                </div>
+                                                <Input label="Phone" name="lessee2Phone" value={regData.lessee2Phone} onChange={handleChange} />
+                                                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Address</label>
+                                                <textarea name="lessee2Address" value={regData.lessee2Address} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm" rows="2"></textarea>
+                                            </div>
+                                        )}
+                                    </Section>
+
+                                    <Section title="Property Details" icon="fa-house" color="orange">
+                                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Property Address</label>
+                                        <textarea name="propertyAddress" value={regData.propertyAddress} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm" rows="3"></textarea>
+                                    </Section>
+
+                                    <Section title="Dates" icon="fa-calendar-days" color="green">
+                                        <Input label="Start Date" name="startDate" type="date" value={regData.startDate} onChange={handleChange} />
+                                        <Input label="End Date" name="endDate" type="date" value={regData.endDate} onChange={handleChange} />
+                                    </Section>
+
+                                    <Section title="Witnesses" icon="fa-users-viewfinder" color="blue">
+                                        <div className="text-xs font-bold text-blue-800 uppercase mb-2">Witness 1</div>
+                                        <Input label="Name" name="witness1Name" value={regData.witness1Name} onChange={handleChange} />
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <Input label="Father's Name" name="witness1Father" value={regData.witness1Father} onChange={handleChange} />
+                                            <Input label="Aadhar No." name="witness1Aadhar" value={regData.witness1Aadhar} onChange={handleChange} />
+                                        </div>
+                                        <textarea name="witness1Address" value={regData.witness1Address} onChange={handleChange} placeholder="Address" className="w-full p-2 border border-blue-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm mb-4" rows="2"></textarea>
+
+                                        <div className="text-xs font-bold text-blue-800 uppercase mb-2">Witness 2</div>
+                                        <Input label="Name" name="witness2Name" value={regData.witness2Name} onChange={handleChange} />
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <Input label="Father's Name" name="witness2Father" value={regData.witness2Father} onChange={handleChange} />
+                                            <Input label="Aadhar No." name="witness2Aadhar" value={regData.witness2Aadhar} onChange={handleChange} />
+                                        </div>
+                                        <textarea name="witness2Address" value={regData.witness2Address} onChange={handleChange} placeholder="Address" className="w-full p-2 border border-blue-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" rows="2"></textarea>
+
+                                        <div className="mt-4 pt-4 border-t border-blue-100">
+                                            <Input label="Drafted By" name="drafterName" value={regData.drafterName} onChange={handleChange} />
+                                        </div>
+                                    </Section>
+                                </>
+
+                            )}
+
+                            {activeTab === 'TM48' && (
+                                <>
+                                    <Section title="Applicant Details" icon="fa-user" color="orange" isOpen={true}>
+                                        <Input label="Stamp Paper Number" name="stampPaperNumber" value={tm48Data.stampPaperNumber} onChange={(e) => setTm48Data(prev => ({ ...prev, stampPaperNumber: e.target.value }))} placeholder="e.g. IN-DL1234567890" />
+                                        <Input label="Applicant Name" name="applicantName" value={tm48Data.applicantName} onChange={(e) => setTm48Data(prev => ({ ...prev, applicantName: e.target.value }))} placeholder="Mohnish Nirwan" />
+                                        <Input label="Father's Name" name="fatherName" value={tm48Data.fatherName} onChange={(e) => setTm48Data(prev => ({ ...prev, fatherName: e.target.value }))} placeholder="Ashok Kumar" />
+                                        <div className="mb-2">
+                                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Designation</label>
+                                            <select
+                                                value={tm48Data.designation}
+                                                onChange={(e) => setTm48Data(prev => ({ ...prev, designation: e.target.value }))}
+                                                className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 text-sm focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all duration-200"
+                                            >
+                                                <option value="Proprietor">Proprietor</option>
+                                                <option value="Partner">Partner</option>
+                                                <option value="Director">Director</option>
+                                                <option value="Authorized Signatory">Authorized Signatory</option>
+                                            </select>
+                                        </div>
+                                        <Input label="Company/Proprietorship" name="companyName" value={tm48Data.companyName} onChange={(e) => setTm48Data(prev => ({ ...prev, companyName: e.target.value }))} placeholder="M/s Nirwan Legal Associates" />
+
+                                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Residential Address (R/o)</label>
+                                        <textarea name="applicantAddress" value={tm48Data.applicantAddress} onChange={(e) => setTm48Data(prev => ({ ...prev, applicantAddress: e.target.value }))} className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-orange-500 focus:outline-none text-sm" rows="3"></textarea>
+                                    </Section>
+
+                                    <Section title="Execution" icon="fa-calendar" color="orange">
+                                        <Input label="Place" name="place" value={tm48Data.place} onChange={(e) => setTm48Data(prev => ({ ...prev, place: e.target.value }))} />
+                                        <Input label="Date" name="date" type="date" value={tm48Data.date} onChange={(e) => setTm48Data(prev => ({ ...prev, date: e.target.value }))} />
+                                    </Section>
+                                </>
+                            )}
+
+                            {activeTab === 'ATS' && (
+                                <>
+                                    <Section title="Seller Details" icon="fa-user-tag" color="purple" isOpen={true}>
+                                        <div className="mb-2">
+                                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Number of Sellers</label>
+                                            <select value={atsData.sellerCount} onChange={(e) => setAtsData(prev => ({ ...prev, sellerCount: e.target.value }))} className="w-full p-2 border border-gray-300 rounded text-sm">
+                                                <option value="1">1 Seller</option>
+                                                <option value="2">2 Sellers</option>
+                                            </select>
+                                        </div>
+                                        <div className="mb-4 border-l-2 border-purple-200 pl-2">
+                                            <div className="text-xs font-bold text-purple-600 mb-2">Seller 1</div>
+                                            <Input label="Name" name="seller1Name" value={atsData.seller1Name} onChange={(e) => setAtsData(prev => ({ ...prev, seller1Name: e.target.value }))} />
+                                            <div className="flex gap-2">
+                                                <div className="w-1/3">
+                                                    <Input label="Rel." name="seller1Relation" value={atsData.seller1Relation} onChange={(e) => setAtsData(prev => ({ ...prev, seller1Relation: e.target.value }))} placeholder="S/o" />
+                                                </div>
+                                                <div className="w-2/3">
+                                                    <Input label="Father/Husband" name="seller1Father" value={atsData.seller1Father} onChange={(e) => setAtsData(prev => ({ ...prev, seller1Father: e.target.value }))} />
+                                                </div>
+                                            </div>
+                                            <Input label="PAN" name="seller1Pan" value={atsData.seller1Pan} onChange={(e) => setAtsData(prev => ({ ...prev, seller1Pan: e.target.value }))} />
+                                            <Input label="Aadhar" name="seller1Aadhar" value={atsData.seller1Aadhar} onChange={(e) => setAtsData(prev => ({ ...prev, seller1Aadhar: e.target.value }))} />
+                                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Address</label>
+                                            <textarea name="seller1Address" value={atsData.seller1Address} onChange={(e) => setAtsData(prev => ({ ...prev, seller1Address: e.target.value }))} className="w-full p-2 border border-gray-300 rounded text-sm mb-2" rows="2"></textarea>
+                                        </div>
+
+                                        {atsData.sellerCount === '2' && (
+                                            <div className="mb-4 border-l-2 border-purple-200 pl-2">
+                                                <div className="text-xs font-bold text-purple-600 mb-2">Seller 2</div>
+                                                <Input label="Name" name="seller2Name" value={atsData.seller2Name} onChange={(e) => setAtsData(prev => ({ ...prev, seller2Name: e.target.value }))} />
+                                                <div className="flex gap-2">
+                                                    <div className="w-1/3">
+                                                        <Input label="Rel." name="seller2Relation" value={atsData.seller2Relation} onChange={(e) => setAtsData(prev => ({ ...prev, seller2Relation: e.target.value }))} placeholder="W/o" />
+                                                    </div>
+                                                    <div className="w-2/3">
+                                                        <Input label="Father/Husband" name="seller2Father" value={atsData.seller2Father} onChange={(e) => setAtsData(prev => ({ ...prev, seller2Father: e.target.value }))} />
+                                                    </div>
+                                                </div>
+                                                <Input label="PAN" name="seller2Pan" value={atsData.seller2Pan} onChange={(e) => setAtsData(prev => ({ ...prev, seller2Pan: e.target.value }))} />
+                                                <Input label="Aadhar" name="seller2Aadhar" value={atsData.seller2Aadhar} onChange={(e) => setAtsData(prev => ({ ...prev, seller2Aadhar: e.target.value }))} />
+                                                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Address</label>
+                                                <textarea name="seller2Address" value={atsData.seller2Address} onChange={(e) => setAtsData(prev => ({ ...prev, seller2Address: e.target.value }))} className="w-full p-2 border border-gray-300 rounded text-sm mb-2" rows="2"></textarea>
+                                            </div>
+                                        )}
+                                    </Section>
+
+                                    <Section title="Buyer Details" icon="fa-shopping-cart" color="purple">
+                                        <div className="mb-2">
+                                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Number of Buyers</label>
+                                            <select value={atsData.buyerCount} onChange={(e) => setAtsData(prev => ({ ...prev, buyerCount: e.target.value }))} className="w-full p-2 border border-gray-300 rounded text-sm">
+                                                <option value="1">1 Buyer</option>
+                                                <option value="2">2 Buyers</option>
+                                            </select>
+                                        </div>
+                                        <div className="mb-4 border-l-2 border-purple-200 pl-2">
+                                            <div className="text-xs font-bold text-purple-600 mb-2">Buyer 1</div>
+                                            <Input label="Name" name="buyer1Name" value={atsData.buyer1Name} onChange={(e) => setAtsData(prev => ({ ...prev, buyer1Name: e.target.value }))} />
+                                            <div className="flex gap-2">
+                                                <div className="w-1/3">
+                                                    <Input label="Rel." name="buyer1Relation" value={atsData.buyer1Relation} onChange={(e) => setAtsData(prev => ({ ...prev, buyer1Relation: e.target.value }))} placeholder="S/o" />
+                                                </div>
+                                                <div className="w-2/3">
+                                                    <Input label="Father/Husband" name="buyer1Father" value={atsData.buyer1Father} onChange={(e) => setAtsData(prev => ({ ...prev, buyer1Father: e.target.value }))} />
+                                                </div>
+                                            </div>
+                                            <Input label="PAN" name="buyer1Pan" value={atsData.buyer1Pan} onChange={(e) => setAtsData(prev => ({ ...prev, buyer1Pan: e.target.value }))} />
+                                            <Input label="Aadhar" name="buyer1Aadhar" value={atsData.buyer1Aadhar} onChange={(e) => setAtsData(prev => ({ ...prev, buyer1Aadhar: e.target.value }))} />
+                                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Address</label>
+                                            <textarea name="buyer1Address" value={atsData.buyer1Address} onChange={(e) => setAtsData(prev => ({ ...prev, buyer1Address: e.target.value }))} className="w-full p-2 border border-gray-300 rounded text-sm mb-2" rows="2"></textarea>
+                                        </div>
+
+                                        {atsData.buyerCount === '2' && (
+                                            <div className="mb-4 border-l-2 border-purple-200 pl-2">
+                                                <div className="text-xs font-bold text-purple-600 mb-2">Buyer 2</div>
+                                                <Input label="Name" name="buyer2Name" value={atsData.buyer2Name} onChange={(e) => setAtsData(prev => ({ ...prev, buyer2Name: e.target.value }))} />
+                                                <div className="flex gap-2">
+                                                    <div className="w-1/3">
+                                                        <Input label="Rel." name="buyer2Relation" value={atsData.buyer2Relation} onChange={(e) => setAtsData(prev => ({ ...prev, buyer2Relation: e.target.value }))} placeholder="W/o" />
+                                                    </div>
+                                                    <div className="w-2/3">
+                                                        <Input label="Father/Husband" name="buyer2Father" value={atsData.buyer2Father} onChange={(e) => setAtsData(prev => ({ ...prev, buyer2Father: e.target.value }))} />
+                                                    </div>
+                                                </div>
+                                                <Input label="PAN" name="buyer2Pan" value={atsData.buyer2Pan} onChange={(e) => setAtsData(prev => ({ ...prev, buyer2Pan: e.target.value }))} />
+                                                <Input label="Aadhar" name="buyer2Aadhar" value={atsData.buyer2Aadhar} onChange={(e) => setAtsData(prev => ({ ...prev, buyer2Aadhar: e.target.value }))} />
+                                                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Address</label>
+                                                <textarea name="buyer2Address" value={atsData.buyer2Address} onChange={(e) => setAtsData(prev => ({ ...prev, buyer2Address: e.target.value }))} className="w-full p-2 border border-gray-300 rounded text-sm mb-2" rows="2"></textarea>
+                                            </div>
+                                        )}
+                                    </Section>
+
+                                    <Section title="Property & Financials" icon="fa-building" color="purple">
+                                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Property Details</label>
+                                        <textarea name="propertyDetails" value={atsData.propertyDetails} onChange={(e) => setAtsData(prev => ({ ...prev, propertyDetails: e.target.value }))} className="w-full p-2 border border-gray-300 rounded text-sm mb-4" rows="3"></textarea>
+
+                                        <Input label="Total Consideration (Rs.)" name="totalConsideration" value={atsData.totalConsideration} onChange={(e) => setAtsData(prev => ({ ...prev, totalConsideration: e.target.value }))} />
+                                        <Input label="Total In Words" name="totalConsiderationWords" value={atsData.totalConsiderationWords} onChange={(e) => setAtsData(prev => ({ ...prev, totalConsiderationWords: e.target.value }))} />
+
+                                        <div className="border-t border-gray-200 my-4 pt-4"></div>
+
+                                        <Input label="Earnest Money (Rs.)" name="earnestMoney" value={atsData.earnestMoney} onChange={(e) => setAtsData(prev => ({ ...prev, earnestMoney: e.target.value }))} />
+                                        <Input label="Earnest In Words" name="earnestMoneyWords" value={atsData.earnestMoneyWords} onChange={(e) => setAtsData(prev => ({ ...prev, earnestMoneyWords: e.target.value }))} />
+                                        <div className="bg-cyan-50 p-2 rounded -mx-2 mb-4">
+                                            <div className="flex justify-between items-center mb-2">
+                                                <div className="text-xs font-bold text-cyan-700 uppercase">Payment Transactions</div>
+                                                <button
+                                                    onClick={() => setAtsData(prev => ({
+                                                        ...prev,
+                                                        paymentTransactions: [...prev.paymentTransactions, { mode: 'Cheque', ref: '', date: '', amount: '' }]
+                                                    }))}
+                                                    className="text-xs bg-cyan-600 text-white px-2 py-1 rounded hover:bg-cyan-700"
+                                                >
+                                                    <i className="fa-solid fa-plus"></i> Add
+                                                </button>
+                                            </div>
+                                            {atsData.paymentTransactions.map((tx, i) => (
+                                                <div key={i} className="mb-2 pb-2 border-b border-cyan-200 last:border-0 relative">
+                                                    <div className="flex gap-2 mb-1">
+                                                        <select
+                                                            className="w-1/3 p-1 text-xs border border-gray-300 rounded"
+                                                            value={tx.mode}
+                                                            onChange={(e) => {
+                                                                const newTx = [...atsData.paymentTransactions];
+                                                                newTx[i].mode = e.target.value;
+                                                                setAtsData(prev => ({ ...prev, paymentTransactions: newTx }));
+                                                            }}
+                                                        >
+                                                            <option value="Cheque">Cheque</option>
+                                                            <option value="NEFT">NEFT</option>
+                                                            <option value="RTGS">RTGS</option>
+                                                            <option value="UPI">UPI</option>
+                                                            <option value="Cash">Cash</option>
+                                                        </select>
+                                                        <input
+                                                            className="w-2/3 p-1 text-xs border border-gray-300 rounded"
+                                                            placeholder={tx.mode === 'Cash' ? 'Receipt No.' : 'Ref/Cheque No.'}
+                                                            value={tx.ref}
+                                                            onChange={(e) => {
+                                                                const newTx = [...atsData.paymentTransactions];
+                                                                newTx[i].ref = e.target.value;
+                                                                setAtsData(prev => ({ ...prev, paymentTransactions: newTx }));
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        <input
+                                                            className="w-1/2 p-1 text-xs border border-gray-300 rounded"
+                                                            type="date"
+                                                            value={tx.date}
+                                                            onChange={(e) => {
+                                                                const newTx = [...atsData.paymentTransactions];
+                                                                newTx[i].date = e.target.value;
+                                                                setAtsData(prev => ({ ...prev, paymentTransactions: newTx }));
+                                                            }}
+                                                        />
+                                                        <input
+                                                            className="w-1/2 p-1 text-xs border border-gray-300 rounded"
+                                                            placeholder="Amount"
+                                                            value={tx.amount}
+                                                            onChange={(e) => {
+                                                                const newTx = [...atsData.paymentTransactions];
+                                                                newTx[i].amount = e.target.value;
+                                                                setAtsData(prev => ({ ...prev, paymentTransactions: newTx }));
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    {i > 0 && (
+                                                        <button
+                                                            onClick={() => {
+                                                                const newTx = atsData.paymentTransactions.filter((_, idx) => idx !== i);
+                                                                setAtsData(prev => ({ ...prev, paymentTransactions: newTx }));
+                                                            }}
+                                                            className="absolute -right-1 top-0 text-red-400 hover:text-red-600"
+                                                        >
+                                                            <i className="fa-solid fa-times-circle"></i>
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            ))}
+                                            <div className="text-[10px] text-gray-500 italic mt-1">
+                                                *These transactions will be listed in Payment Details. Verify Total Earnest Money below matches their sum.
+                                            </div>
+                                        </div>
+
+                                        <div className="border-t border-gray-200 my-4 pt-4"></div>
+
+                                        <Input label="Balance Amount (Rs.)" name="balanceAmount" value={atsData.balanceAmount} onChange={(e) => setAtsData(prev => ({ ...prev, balanceAmount: e.target.value }))} />
+                                        <Input label="Balance In Words" name="balanceAmountWords" value={atsData.balanceAmountWords} onChange={(e) => setAtsData(prev => ({ ...prev, balanceAmountWords: e.target.value }))} />
+                                    </Section>
+
+                                    <Section title="Execution" icon="fa-calendar" color="purple">
+                                        <Input label="Execution Date" name="executionDate" type="date" value={atsData.executionDate} onChange={(e) => setAtsData(prev => ({ ...prev, executionDate: e.target.value }))} />
+                                        <Input label="Completion/Registry Date" name="completionDate" type="date" value={atsData.completionDate} onChange={(e) => setAtsData(prev => ({ ...prev, completionDate: e.target.value }))} />
+                                    </Section>
+
+                                    <Section title="Witnesses" icon="fa-users-viewfinder" color="cyan">
+                                        <div className="text-xs font-bold text-cyan-800 uppercase mb-2">Witness 1</div>
+                                        <Input label="Name" name="witness1Name" value={atsData.witness1Name} onChange={(e) => setAtsData(prev => ({ ...prev, witness1Name: e.target.value }))} />
+                                        <Input label="Id Proof" name="witness1Id" value={atsData.witness1Id} onChange={(e) => setAtsData(prev => ({ ...prev, witness1Id: e.target.value }))} placeholder="AADHAR/PAN/VOTER ID" />
+                                        <textarea name="witness1Address" value={atsData.witness1Address} onChange={(e) => setAtsData(prev => ({ ...prev, witness1Address: e.target.value }))} placeholder="Address" className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-cyan-500 focus:outline-none text-sm mb-4" rows="2"></textarea>
+
+                                        <div className="border-t border-gray-200 my-2"></div>
+
+                                        <div className="text-xs font-bold text-cyan-800 uppercase mb-2">Witness 2</div>
+                                        <Input label="Name" name="witness2Name" value={atsData.witness2Name} onChange={(e) => setAtsData(prev => ({ ...prev, witness2Name: e.target.value }))} />
+                                        <Input label="Id Proof" name="witness2Id" value={atsData.witness2Id} onChange={(e) => setAtsData(prev => ({ ...prev, witness2Id: e.target.value }))} placeholder="AADHAR/PAN/VOTER ID" />
+                                        <textarea name="witness2Address" value={atsData.witness2Address} onChange={(e) => setAtsData(prev => ({ ...prev, witness2Address: e.target.value }))} placeholder="Address" className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-cyan-500 focus:outline-none text-sm" rows="2"></textarea>
+                                    </Section>
+                                </>
+                            )}
+                        </div>
+
+                        <div className="p-4 border-t border-gray-200 bg-white z-20">
+                            <FooterButton onClick={() => {
+                                let filename = 'Document';
+                                if (activeTab === 'RENT') {
+                                    const flatNo = rentData.propertyAddress ? rentData.propertyAddress.split(',')[0].trim() : 'Rent_Agreement';
+                                    const owner = rentData.landlordName ? rentData.landlordName.trim() : 'Owner';
+                                    filename = `${flatNo}_${owner}_${rentData.agreementDate || 'Date'}`;
+                                } else if (activeTab === 'ATS') {
+                                    filename = `ats_${atsData.executionDate || 'Date'}`;
+                                } else if (activeTab === 'REG_RENT') {
+                                    const flat = regData.propertyAddress ? regData.propertyAddress.split(',')[0].trim() : 'Reg_Agreement';
+                                    filename = `${flat}_${regData.lessorName.split(' ')[0]}_${regData.executionDate}`;
+                                } else if (activeTab === 'TM48') {
+                                    filename = `THE_TRADE_MARKS_ACT_${tm48Data.applicantName || 'Applicant'}`;
+                                }
+                                document.title = filename;
+                                window.print();
+                            }}>
+                                <i className="fa-solid fa-file-pdf"></i> Download PDF Agreement
+                            </FooterButton>
+                        </div>
+                    </div>
+
+                    {/* Right Preview Area */}
+                    <div className="flex-1 overflow-y-auto bg-dot-pattern p-8 lg:p-16 flex justify-center items-start paper-page-container">
+                        <div className="flex flex-col gap-8 w-full items-center">
+
+                            {activeTab === 'RENT' && (
+                                <>
+                                    {/* Page 1 (Clauses 1-10) */}
+                                    <div className="paper-page print-break text-[10pt] flex flex-col [&_p]:text-justify [&_li]:text-justify">
+                                        {rentData.stampPaperNumber && (
+                                            <div className="absolute top-4 left-0 right-0 text-center text-[8pt] font-mono text-gray-500">
+                                                Stamp Paper No: {rentData.stampPaperNumber}
+                                            </div>
+                                        )}
+                                        <h1 className="text-center font-bold text-xl mb-4 underline uppercase">RENT AGREEMENT</h1>
+                                        <p className="mb-2">
+                                            This Rent Agreement is made on this <Var>{agreementDay}</Var> Day of <Var>{agreementMonthYear}</Var> at <Var>{rentData.agreementPlace || '_________________'}</Var> between
+                                        </p>
+
+                                        <p className="mb-2">
+                                            <strong>MR./MRS. <Var>{rentData.landlordName || '____________________________________'}</Var></strong>, R/o <Var>{rentData.landlordAddress || '_______________________________________________________________________________________________________________________________________'}</Var>, Cont. No. - <Var>{rentData.landlordPhone || '________________'}</Var>. (Hereinafter called the First Party-Owner).
+                                        </p>
+
+                                        <p className="font-bold text-center mb-2">AND</p>
+
+                                        <p className="mb-2">
+                                            <strong>MR./MRS. <Var>{rentData.tenantName || '____________________________________'}</Var></strong>, R/o <Var>{rentData.tenantAddress || '_______________________________________________________________________________________________________________________________________'}</Var>, Cont. No. - <Var>{rentData.tenantPhone || '________________'}</Var>. (Hereinafter called the Second Party Tenant).
+                                        </p>
+
+                                        <p className="mb-2">
+                                            And whereas the First Party has agreed to let out <Var>{rentData.propertyAddress || '____________________________________________________'}</Var>. And the Second Party has agreed to take on rent the said premises mentioned as above the following terms and condition:-
+                                        </p>
+                                        <ol className="list-decimal pl-8 space-y-2">
+                                            <li>
+                                                That the monthly rent agreed between both the parties is Rs. <Var>{rentData.rentAmount || '________'}/-</Var> (Rupees <Var>{rentInWords || '________________________'}</Var> only) <strong>{rentData.maintenanceIncluded ? 'Including' : 'Excluding'}</strong> Maintenance charges.
+                                            </li>
+                                            <li>
+                                                That the tenancy has commenced from <Var>{rentData.startDate || '__________'}</Var> to <Var>{rentData.endDate || '__________'}</Var> for a period of 11 months.
+                                            </li>
+                                            <li>
+                                                The monthly Rent of Rs. <Var>{rentData.rentAmount || '________'}/-</Var> (Rupees <Var>{rentInWords || '________________________'}</Var> only) which shall be paid by the Second Party to the First Party by the <Var>{formattedPaymentDay || '____'}</Var> day of every English Calendar month.
+                                            </li>
+                                            <li>
+                                                If both the parties have agreed to continue further, then after 11 months of tenancy period its mandatory that the rent will be increased by 10%.
+                                            </li>
+                                            <li>
+                                                That the Second party shall not make any additions or alteration in the said premises without permission of the First party. That the Second party shall use the said premises only for <Var>{rentData.propertyType}</Var> purpose not for any other purpose. That the First party can visit the said premises at reasonable hours.
+                                            </li>
+                                            <li>
+                                                That electric charge, Gas charges, shall be paid by the Second party. Power backup, water charges
+                                                {rentData.maintenanceIncluded ? ' ' : ' & maintenance charges '}
+                                                with Club house will be borne by the Second party directly to the concerned authorities.
+                                            </li>
+                                            <li>
+                                                That the Second party will be giving Rs. <Var>{rentData.advanceRent || '____________'}/-</Var> (Rupees <Var>{advanceInWords || '________________________'}</Var> only) as one month advance rent giving and Rs. <Var>{rentData.securityDeposit || '____________'}/-</Var> (Rupees <Var>{securityInWords || '________________________'}</Var> only) as interest free security deposit.
+                                            </li>
+                                            <li>
+                                                If this agreement is not renewed after expiry of the tenancy period, the Second party will hand over the said premises to the First party in smooth manner.
+                                            </li>
+                                            <li>
+                                                All the keys which were handed over to the Second party at the time of possession should be handed over back to the First party otherwise the First party will get that lock replaced or will get the amount deducted from the security money in getting that lock replaced.
+                                            </li>
+                                            <li>
+                                                The security amount is not adjustable. The First party will refund the security amount to the Second party when the Second party will vacant the premises.
+                                            </li>
+                                        </ol>
+                                        <PageBottomSignature data={rentData} />
+                                        <div className="absolute bottom-4 left-0 right-0 text-center text-[8pt] text-gray-500">Page 1 of 3</div>
+                                    </div>
+
+                                    {/* Page 2 (Clauses 11-19 & Witnesses & Signatures) */}
+                                    <div className="paper-page print-break text-[10pt] flex flex-col [&_p]:text-justify [&_li]:text-justify">
+                                        {rentData.stampPaperNumber && (
+                                            <div className="absolute top-4 left-0 right-0 text-center text-[8pt] font-mono text-gray-500">
+                                                Stamp Paper No: {rentData.stampPaperNumber}
+                                            </div>
+                                        )}
+                                        <ol className="list-decimal pl-8 space-y-2" start="11">
+                                            <li>
+                                                That in case if the First party wants to evict the said premises prior to the completion of tenancy period, then the First party will give one-month prior notice to the Second party and if the Second party wants to vacate the said Premises prior to the completion of the tenancy period, then the Second party will also give one months’ notice in written or one month rent to the First party.
+                                            </li>
+                                            <li>
+                                                All furniture & fixtures as per annexure/if any should be taken due care of regular maintenance & servicing of furniture & fixture must be done be the Second party. Any damage/breakage to the property/furniture & fixtures will have to be borne by Second party or that will be deducted from the security deposit.
+                                            </li>
+                                            <li>
+                                                That the lease has been granted for exclusive <Var>{rentData.propertyType}</Var> use of the same family and under no circumstances Second party cannot sublet the premises for PG or to any other party.
+                                            </li>
+                                            <li>
+                                                That the First party shall not be responsible for any incident in the premises during the tenancy period.
+                                            </li>
+                                            <li>
+                                                In case the rent is not paid timely for consecutive two months and if the rent not paid for the running month by the Second party then, he/she shall be liable to vacate the premises immediately. In the First party shall not be liable to any refund of security deposit.
+                                            </li>
+                                            <li>
+                                                That the second party shall not use the said property for any illegal purpose, if the second party shall use the said property for illegal purpose he will liable himself for the same the first party and his property shall not be responsible for the same.
+                                            </li>
+                                            <li>
+                                                That the Tenant cannot make any addition / alteration to the said property / premises for any purposes, without the in written permission granted by the first party.
+                                            </li>
+                                            <li>
+                                                In no way the second party or his heir will claim for ownership of the said flat.
+                                            </li>
+                                            <li>
+                                                It has been agreed between both the parties that if tenant vacate before six months then one month of advance rent amount security will not be refundable and it shall be forfeited.
+                                            </li>
+                                        </ol>
+
+                                        <div className="mt-auto px-4">
+                                            <p className="font-bold mb-4 text-center">WITNESSES:-</p>
+                                            <div className="grid grid-cols-2 gap-x-20 gap-y-6 text-center">
+                                                <div>
+                                                    <p>1. __________________________</p>
+                                                    <p className="mt-1 text-sm text-gray-500">(Signature)</p>
+                                                    <p className="mt-2 text-sm">Name: <span className="font-bold">{rentData.witness1Name || '______________________'}</span></p>
+                                                    <p className="mt-1 text-sm">Ph: <span className="font-bold">{rentData.witness1Phone || '_______________________'}</span></p>
+                                                    <p className="mt-1 text-sm">Add: <span className="font-bold">{rentData.witness1Address || '_______________________'}</span></p>
+                                                </div>
+                                                <div>
+                                                    <p>2. __________________________</p>
+                                                    <p className="mt-1 text-sm text-gray-500">(Signature)</p>
+                                                    <p className="mt-2 text-sm">Name: <span className="font-bold">{rentData.witness2Name || '______________________'}</span></p>
+                                                    <p className="mt-1 text-sm">Ph: <span className="font-bold">{rentData.witness2Phone || '_______________________'}</span></p>
+                                                    <p className="mt-1 text-sm">Add: <span className="font-bold">{rentData.witness2Address || '_______________________'}</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <PageBottomSignature isFinal={true} data={rentData} />
+                                        <div className="absolute bottom-4 left-0 right-0 text-center text-[8pt] text-gray-500">Page 2 of 3</div>
+                                    </div>
+
+                                    {/* Page 3 - Annexure */}
+                                    <div className="paper-page text-[10pt] flex flex-col [&_p]:text-justify [&_li]:text-justify">
+                                        {rentData.stampPaperNumber && (
+                                            <div className="absolute top-4 left-0 right-0 text-center text-[8pt] font-mono text-gray-500">
+                                                Stamp Paper No: {rentData.stampPaperNumber}
+                                            </div>
+                                        )}
+                                        <h1 className="text-center font-bold text-xl mb-8 underline uppercase">ANNEXURE-I</h1>
+                                        <p className="mb-6">Detail of fixtures & fittings provided in the flat no. <Var>{rentData.propertyAddress}</Var></p>
+                                        <table className="w-full mb-12">
+                                            <tbody>
+                                                {[
+                                                    ['Tube Lights/Bulbs', rentData.tubeLights], ['Ceiling Fans', rentData.fans],
+                                                    ['LEDs', rentData.leds], ['Chimney', rentData.chimney],
+                                                    ['RO Unit', rentData.roUnit], ['Ac\'s', rentData.ac],
+                                                    ['Main Door Keys', rentData.keys], ['Exhaust Fan', rentData.exhaustFan],
+                                                    ['Bell', rentData.bell], ['Wall Mirror', rentData.mirror],
+                                                    ['Curtain Rods', rentData.curtains], ['Wardrobe', rentData.wardrobe],
+                                                    ['Kitchen Cupboard', rentData.kitchenCupboard], ['Modular Kitchen', rentData.modularKitchen],
+                                                    ['Any Other', rentData.otherFixtures]
+                                                ].map((item, i) => (
+                                                    <tr key={i} className="border-b border-gray-300">
+                                                        <td className="py-2 px-4 border-r border-gray-300 font-bold w-1/2">{item[0]}</td>
+                                                        <td className="py-2 px-4">{item[1] || '________________'}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+
+                                        <PageBottomSignature isFinal={true} data={rentData} />
+
+                                        {rentData.showDraftedBy && (
+                                            <div className="absolute bottom-8 right-8 text-right text-xs font-bold font-serif italic text-gray-400">
+                                                Advocate Madhav Maheshwari (8899999321)
+                                            </div>
+                                        )}
+                                        <div className="absolute bottom-4 left-0 right-0 text-center text-[8pt] text-gray-500">Page 3 of 3</div>
+                                    </div>
+                                </>
+                            )}
+
+                            {activeTab === 'ATS' && (
+                                <>
+                                    <div className="paper-page print-break text-justify text-gray-900 font-serif relative p-10 leading-relaxed flex flex-col justify-between">
+                                        {atsData.stampPaperNumber && (
+                                            <div className="absolute top-4 left-10 text-[8pt] font-mono text-gray-500 font-bold">
+                                                Stamp Paper No: {atsData.stampPaperNumber}
+                                            </div>
+                                        )}
+                                        <div>
+                                            <div className="text-center font-bold text-xl mb-6 underline decoration-2 underline-offset-4">AGREEMENT TO SELL</div>
+
+                                            <p className="mb-3">
+                                                This deed of Agreement to sell is executed on this <span className="font-bold bg-yellow-100 px-1 inline-block">{atsData.executionDate ? atsData.executionDate.split('-')[2] : '__'}th day {atsData.executionDate ? new Date(atsData.executionDate).toLocaleString('default', { month: 'long' }) : '_______'} of {atsData.executionDate ? atsData.executionDate.split('-')[0] : '____'}</span> between
+                                            </p>
+
+                                            <div className="mb-3 p-3 bg-gray-50/50 rounded border border-gray-100">
+                                                <Var>{atsData.seller1Name}</Var> (PAN NO.<Var>{atsData.seller1Pan}</Var>, AADHAR NO.<Var>{atsData.seller1Aadhar}</Var>) <Var>{atsData.seller1Relation}</Var> MR. <Var>{atsData.seller1Father}</Var>
+                                                {atsData.sellerCount === '2' && (
+                                                    <> AND <Var>{atsData.seller2Name}</Var> (PAN NO.<Var>{atsData.seller2Pan}</Var>, AADHAR NO.<Var>{atsData.seller2Aadhar}</Var>) <Var>{atsData.seller2Relation}</Var> MR. <Var>{atsData.seller2Father}</Var> BOTH</>
+                                                )}
+                                                {' '}RESIDENT OF <Var>{atsData.seller1Address}</Var>
+                                                <div className="text-right mt-1 text-xs font-bold text-gray-600">(hereinafter called the First Party/Seller)</div>
+                                            </div>
+
+                                            <div className="text-center font-bold mb-3 text-sm text-gray-400">- A N D -</div>
+
+                                            <div className="mb-3 p-3 bg-gray-50/50 rounded border border-gray-100">
+                                                <Var>{atsData.buyer1Name}</Var> (PAN NO.<Var>{atsData.buyer1Pan}</Var>, AADHAR NO.<Var>{atsData.buyer1Aadhar}</Var>) <Var>{atsData.buyer1Relation}</Var> MR. <Var>{atsData.buyer1Father}</Var>
+                                                {atsData.buyerCount === '2' && (
+                                                    <> AND <Var>{atsData.buyer2Name}</Var> (PAN NO.<Var>{atsData.buyer2Pan}</Var>, AADHAR NO.<Var>{atsData.buyer2Aadhar}</Var>) <Var>{atsData.buyer2Relation}</Var> MR. <Var>{atsData.buyer2Father}</Var> BOTH</>
+                                                )}
+                                                {' '}RESIDENT OF <Var>{atsData.buyer1Address}</Var>
+                                                <div className="text-right mt-1 text-xs font-bold text-gray-600">(hereinafter called the Second Party/Purchaser).</div>
+                                            </div>
+
+                                            <p className="mb-3 text-sm">
+                                                The expressions of both the parties shall mean and include their legal heirs, successors, executors, administrators, representatives and assigns etc. respectively.
+                                            </p>
+
+                                            <p className="mb-3">
+                                                WHEREAS the First Party is the actual allotted /owner of <Var>{atsData.propertyDetails}</Var>.
+                                            </p>
+
+                                            <p className="mb-3">
+                                                AND WHEREAS the First Party has agreed to sell the aforesaid Flat to the Second Party and the Second Party has agreed to purchase the same, in a total consideration amount of <Var>Rs.{atsData.totalConsideration}/- (Rupees {atsData.totalConsiderationWords} Only.)</Var> on the following terms and conditions:
+                                            </p>
+                                        </div>
+
+                                        <div className="mt-auto">
+                                            <div className="text-center font-bold underline mb-2 text-sm">Payment Details</div>
+                                            <div className="mb-4 text-justify">
+                                                {atsData.paymentTransactions.map((tx, i) => (
+                                                    <div key={i} className="flex justify-between mb-1 text-xs">
+                                                        <div className="flex-1 px-1">
+                                                            <Var>{tx.mode === 'Cash' ? 'Cash Payment' : `${tx.mode} No. ${tx.ref}`} {tx.date ? `Dated ${new Date(tx.date).toLocaleDateString('en-GB')}` : ''}</Var>
+                                                        </div>
+                                                        <div className="font-bold min-w-[80px] text-right px-1"><Var>Rs.{tx.amount}/-</Var></div>
+                                                    </div>
+                                                ))}
+                                                {atsData.paymentTransactions.length === 0 && (
+                                                    <div className="text-gray-400 italic text-center text-xs">No payment details added.</div>
+                                                )}
+                                                <div className="w-full my-2 border-b border-black"></div>
+                                            </div>
+
+                                            <div className="flex justify-between mt-8 mb-8 px-8">
+                                                <div className="text-center">
+                                                    <div className="font-bold uppercase mb-1">{atsData.seller1Name || '__________________________'}</div>
+                                                    <div className="text-xs font-bold">FIRST PARTY</div>
+                                                </div>
+                                                <div className="text-center">
+                                                    <div className="font-bold uppercase mb-1">{atsData.buyer1Name || '__________________________'}</div>
+                                                    <div className="text-xs font-bold">SECOND PARTY</div>
+                                                </div>
+                                            </div>
+                                            <div className="absolute bottom-4 left-0 right-0 text-center text-[8pt] text-gray-500">Page 1 of 3</div>
+                                        </div>
+                                    </div>
+
+                                    {/* Page 2 */}
+                                    {/* Page 2 */}
+                                    <div className="paper-page print-break text-justify text-gray-900 font-serif relative p-10 leading-relaxed flex flex-col justify-between">
+                                        <div>
+                                            <div className="text-center font-bold underline mb-6 decoration-2 underline-offset-4">NOW THIS AGREEMENT WITNESSETH AS UNDER:</div>
+
+                                            <ol className="list-decimal space-y-3 pl-8 marker:font-bold">
+                                                <li>
+                                                    That the first party has received a sum of <span className="font-bold bg-yellow-100 px-1">{atsData.earnestMoney}/- (Rupees {atsData.earnestMoneyWords} Only)</span> through above mention transactions.
+                                                </li>
+                                                <li>
+                                                    <span className="font-bold bg-yellow-100 px-1">Rs. {atsData.balanceAmount}/- (Rupees {atsData.balanceAmountWords} Only).</span> including applicable TDS will be paid by the second party to the first party at the time of registry in favor of the second party.
+                                                </li>
+                                                <li>
+                                                    That the earnest money paid can be forfeited by first party if second party fails to complete the full payment till <span className="font-bold bg-yellow-100 px-1">{atsData.completionDate ? new Date(atsData.completionDate).toLocaleDateString('en-GB') : '__/__/____'}</span>, and if first party fails to execute the deal on or before <span className="font-bold bg-yellow-100 px-1">{atsData.completionDate ? new Date(atsData.completionDate).toLocaleDateString('en-GB') : '__/__/____'}</span> then First party will return the earnest money. This date shall be subjected to extension by further 15 days on mutual consent.
+                                                </li>
+                                                <li>
+                                                    That the first party assures to the second party that the above said property under sale is free from all type of encumbrances, sale, mortgage, gift, lien, burden, decree, liabilities, attachments, acquisition, stay orders, injunction orders, legal flaws, surety, security, disputes, notification, litigation or transfer etc.
+                                                </li>
+                                                <li>
+                                                    That the no legal defect in the title of the First Party and if it proved otherwise or if the First Party is deprived off the said property under sale or part thereof owing to the above reason, the First Party will be liable to indemnify the Second Party to the extent of loss sustained by the Second Party with costs and damages etc. limited to a maximum of the earnest money amount.
+                                                </li>
+                                                <li>
+                                                    That the First Party will deliver/handover the vacant peaceful possession of the above said property along with its relevant documents, to the second party or his/her authorized person/nominee at the time of execution of the final sale documents.
+                                                </li>
+                                                <li>
+                                                    That by the time of execution of proper sale/transfer documents in favour of the second party or his/her authorized person/nominee and no later than <span className="font-bold bg-yellow-100 px-1">{atsData.completionDate ? new Date(atsData.completionDate).toLocaleDateString('en-GB') : '__/__/____'}</span>, the first party is bound to pay all the electricity, water, house tax and other bills if any regarding the above said property and thereafter the same Shall be paid by the second party.
+                                                </li>
+                                            </ol>
+                                        </div>
+
+                                        <div className="mt-auto">
+                                            <div className="flex justify-between mt-8 mb-8 px-4">
+                                                <div className="text-center">
+                                                    <div className="font-bold uppercase mb-1">{atsData.seller1Name || '__________________________'}</div>
+                                                    <div className="text-xs font-bold">FIRST PARTY</div>
+                                                </div>
+                                                <div className="text-center">
+                                                    <div className="font-bold uppercase mb-1">{atsData.buyer1Name || '__________________________'}</div>
+                                                    <div className="text-xs font-bold">SECOND PARTY</div>
+                                                </div>
+                                            </div>
+                                            <div className="absolute bottom-4 left-0 right-0 text-center text-[8pt] text-gray-500">Page 2 of 3</div>
+                                        </div>
+                                    </div>
+
+                                    {/* Page 3 */}
+                                    <div className="paper-page print-break text-justify text-gray-900 font-serif relative p-10 leading-relaxed flex flex-col justify-between">
+                                        <div className="text-justify mt-0">
+                                            <ol className="list-decimal space-y-2 pl-8 marker:font-bold" start="8">
+                                                <li>
+                                                    That after receiving the balance amount of the property the first party will execute the documents regarding the sale/transfer of the above said property in favor of the second party or its nominee/authorized person.
+                                                </li>
+                                                <li>
+                                                    The first party is bound to pay all the electricity, water, house tax and other bill if any Regarding the above said property with clear handholding of flat including all keys of flat, working condition of washrooms etc. thereafter Registry the same shall be paid by the second party.
+                                                </li>
+                                                <li>
+                                                    That the TRANSFER MEMORANDUM charges shall be borne by the 2nd Party/Buyer.
+                                                </li>
+                                                <li>
+                                                    That the any payment required for getting the Maintenance NOC & AOA office NOC from the AOA Management will be paid and borne by the first party/seller.
+                                                </li>
+                                                <li>
+                                                    If first party has any bank loan then the first party/seller liable to clear the bank loan and get the NOC from Bank.
+                                                </li>
+                                                <li>
+                                                    That the second party will deduct the T.D.S as per government rules from the first party as per the existing rules and the said T.D.S amount shall be adjusted against the total consideration amount to be paid to the first party by the second party.
+                                                </li>
+                                            </ol>
+
+                                            <p className="mt-4 mb-4 text-xs leading-normal font-sans text-gray-700">
+                                                IN WITNESSES WHEREOF both the parties have signed this Agreement to Sell, after understanding the contents which have been explained to each of them in vernacular which they admitted as true and correct, without any pressure, duress, undue influence, coercion from any side, while keeping in good health and sound disposing mind, on the date, month and year written hereinabove, in the presence of the following marginal witnesses.
+                                            </p>
+
+                                            <div className="mb-4 font-bold underline">WITNESSES</div>
+
+                                            <div className="flex justify-between items-start gap-4">
+                                                {/* Witnesses Left Column */}
+                                                <div className="w-1/2 flex flex-col gap-4">
+                                                    {/* Witness 1 */}
+                                                    <div className="border border-gray-300 rounded-lg p-2 bg-white shadow-sm flex flex-col h-full justify-between">
+                                                        <div>
+                                                            <div className="flex items-center gap-2 mb-1">
+                                                                <div className="w-4 h-4 rounded-full bg-gray-100 flex items-center justify-center text-[9px] font-bold text-gray-600 border border-gray-200">1</div>
+                                                                <div className="font-bold text-[9px] uppercase text-gray-500 tracking-wider">Witness</div>
+                                                            </div>
+
+                                                            <div className="space-y-1">
+                                                                <div>
+                                                                    <div className="text-[8px] text-gray-400 uppercase font-bold">Name</div>
+                                                                    <div className="font-bold text-[11px] text-gray-900 border-b border-gray-200 pb-0.5 min-h-[14px] uppercase tracking-wide">{atsData.witness1Name}</div>
+                                                                </div>
+                                                                <div>
+                                                                    <div className="text-[8px] text-gray-400 uppercase font-bold">ID Proof</div>
+                                                                    <div className="font-medium text-[10px] text-gray-900 border-b border-gray-200 pb-0.5 min-h-[14px] uppercase tracking-wide">{atsData.witness1Id}</div>
+                                                                </div>
+                                                                <div>
+                                                                    <div className="text-[8px] text-gray-400 uppercase font-bold">Address</div>
+                                                                    <div className="text-[10px] text-gray-600 border-b border-gray-200 pb-0.5 min-h-[22px] leading-tight break-words">{atsData.witness1Address}</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="mt-2 pt-1 border-t border-dashed border-gray-300">
+                                                            <div className="text-[9px] text-gray-400 italic text-right">Signature</div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Witness 2 */}
+                                                    <div className="border border-gray-300 rounded-lg p-2 bg-white shadow-sm flex flex-col h-full justify-between">
+                                                        <div>
+                                                            <div className="flex items-center gap-2 mb-1">
+                                                                <div className="w-4 h-4 rounded-full bg-gray-100 flex items-center justify-center text-[9px] font-bold text-gray-600 border border-gray-200">2</div>
+                                                                <div className="font-bold text-[9px] uppercase text-gray-500 tracking-wider">Witness</div>
+                                                            </div>
+
+                                                            <div className="space-y-1">
+                                                                <div>
+                                                                    <div className="text-[8px] text-gray-400 uppercase font-bold">Name</div>
+                                                                    <div className="font-bold text-[11px] text-gray-900 border-b border-gray-200 pb-0.5 min-h-[14px] uppercase tracking-wide">{atsData.witness2Name}</div>
+                                                                </div>
+                                                                <div>
+                                                                    <div className="text-[8px] text-gray-400 uppercase font-bold">ID Proof</div>
+                                                                    <div className="font-medium text-[10px] text-gray-900 border-b border-gray-200 pb-0.5 min-h-[14px] uppercase tracking-wide">{atsData.witness2Id}</div>
+                                                                </div>
+                                                                <div>
+                                                                    <div className="text-[8px] text-gray-400 uppercase font-bold">Address</div>
+                                                                    <div className="text-[10px] text-gray-600 border-b border-gray-200 pb-0.5 min-h-[22px] leading-tight break-words">{atsData.witness2Address}</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="mt-2 pt-1 border-t border-dashed border-gray-300">
+                                                            <div className="text-[9px] text-gray-400 italic text-right">Signature</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {/* Parties Right Column */}
+                                                <div className="w-1/2 flex flex-col gap-4">
+                                                    <SignatureBox title="FIRST PARTY" name={atsData.seller1Name} role="Seller" />
+                                                    <SignatureBox title="SECOND PARTY" name={atsData.buyer1Name} role="Purchaser" />
+                                                </div>
+                                            </div>
+                                            <div className="absolute bottom-4 left-0 right-0 text-center text-[8pt] text-gray-500">Page 3 of 3</div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
+                            {activeTab === 'REG_RENT' && (
+                                <>
+                                    <div className="paper-page print-break text-justify text-gray-900 leading-relaxed font-serif relative">
+                                        {regData.stampPaperNumber && (
+                                            <div className="absolute top-4 left-0 right-0 text-center text-[8pt] font-mono text-gray-500">
+                                                Stamp Paper No: {regData.stampPaperNumber}
+                                            </div>
+                                        )}
+                                        <div className="h-56"></div> {/* Increased margin for start */}
+                                        <h1 className="text-center font-bold text-xl underline mb-4 uppercase">RENT AGREEMENT FOR {regData.leasePeriod || '11 MONTHS'}</h1>
+
+                                        <div className="grid grid-cols-2 gap-x-8 gap-y-1 mb-4 font-bold border p-2 bg-gray-50/50 text-sm">
+                                            <div>Monthly Rent: Rs.{regData.monthlyRent}/-</div>
+                                            <div className="text-right">Period: {regData.leasePeriod}</div>
+                                            <div>Security: Rs.{regData.securityAmount}/- (Refundable)</div>
+                                            <div></div>
+                                            <div className="border-t border-gray-300 pt-1 mt-1">Total Amount: Rs.{regData.totalAmount}/-</div>
+                                            <div className="text-right border-t border-gray-300 pt-1 mt-1">Stamp Duty: Rs.{regData.stampDuty}/-</div>
+                                        </div>
+
+                                        <div className="mb-4 text-justify leading-relaxed">
+                                            This Deed of Lease is made on <span className="font-bold">{formatDateParts(regData.executionDate).day}</span> day of <span className="font-bold">{formatDateParts(regData.executionDate).monthYear}</span> between <span className="font-bold uppercase">{regData.lessorName} (PAN NO.{formatPan(regData.lessorPan)}, AADHAR NO.{formatAadhar(regData.lessorAadhar)}) {regData.lessorRelation} RESIDENT OF {regData.lessorAddress}, CONTACT NO.{regData.lessorPhone}</span>
+                                            {regData.lessorCount === '2' && (
+                                                <>
+                                                    <span className="font-bold"> AND </span>
+                                                    <span className="font-bold uppercase">{regData.lessor2Name} (PAN NO.{formatPan(regData.lessor2Pan)}, AADHAR NO.{formatAadhar(regData.lessor2Aadhar)}) {regData.lessor2Relation} RESIDENT OF {regData.lessor2Address}, CONTACT NO.{regData.lessor2Phone}</span>
+                                                </>
+                                            )}
+                                            , (hereinafter called the Lessor).
+                                        </div>
+
+                                        <div className="text-center mb-4">AND</div>
+
+                                        <div className="mb-8 text-justify leading-relaxed">
+                                            <span className="font-bold uppercase">{regData.lesseeName} (PAN NO.{formatPan(regData.lesseePan)}, AADHAR NO.{formatAadhar(regData.lesseeAadhar)}) {regData.lesseeRelation} RESIDENT OF {regData.lesseeAddress}, CONTACT NO.{regData.lesseePhone}</span>
+                                            {regData.lesseeCount === '2' && (
+                                                <>
+                                                    <span className="font-bold"> AND </span>
+                                                    <span className="font-bold uppercase">{regData.lessee2Name} (PAN NO.{formatPan(regData.lessee2Pan)}, AADHAR NO.{formatAadhar(regData.lessee2Aadhar)}) {regData.lessee2Relation} RESIDENT OF {regData.lessee2Address}, CONTACT NO.{regData.lessee2Phone}</span>
+                                                </>
+                                            )}
+                                            , (hereinafter called the Lessee).
+                                        </div>
+
+                                        <PageBottomSignature data={regData} type="REG_RENT" />
+                                        <div className="page-number-footer">Page 1 of 6</div>
+                                    </div>
+
+                                    {/* PAGE 2: Recitals & Start of Terms (1-7) */}
+                                    <div className="paper-page print-break text-justify text-gray-900 leading-relaxed font-serif relative">
+                                        {regData.stampPaperNumber && (
+                                            <div className="absolute top-4 left-0 right-0 text-center text-[8pt] font-mono text-gray-500">
+                                                Stamp Paper No: {regData.stampPaperNumber}
+                                            </div>
+                                        )}
+
+                                        <div className="mt-8"></div>
+
+                                        <p className="mb-6">
+                                            Whereas the Lessor is the owner of residential property bearing number <span className="font-bold uppercase text-black bg-gray-100 px-1">{regData.propertyAddress}</span> with absolute right to let out, on such terms and conditions as he may think fit along with fixtures and fittings.
+                                        </p>
+
+                                        <p className="font-bold underline mb-6 text-lg">AND THE TERMS AND CONDITIONS HEREIN SET BELOW:-</p>
+
+                                        <ol className="list-decimal space-y-4 pl-8 mb-8">
+                                            <li>
+                                                That the lessor has agreed to let and lessee has agreed to take on lease the aforesaid Residential property. The said lease to commence from <span className="font-bold">{regData.startDate}</span> to <span className="font-bold">{regData.endDate}</span> and shall be for the duration of {regData.leasePeriod}.
+                                            </li>
+                                            <li>
+                                                That the lessor declares that the property of this lease belongs to him/her and he/she is an absolute owner and is competent to execute this deed.
+                                            </li>
+                                            <li>
+                                                That the lessee has undertaken to pay the sum of <span className="font-bold">Rs.{regData.monthlyRent}/-</span> (Rupees {numToWords(regData.monthlyRent.replace(/,/g, ''))} Only) which shall be paid by the Second Party to the First Party by the 5th day of every English Calendar month.
+                                                <br />
+                                                AND <span className="font-bold">Rs.{regData.securityAmount}/-</span> (Rupees {numToWords(regData.securityAmount.replace(/,/g, ''))} Only) as interest-free security which is adjustable/refundable at the time of vacating of house.
+                                            </li>
+                                            <li>
+                                                That the Lessee shall pay electricity charges, water charges, and maintenance charges as per the bills received from the concerned authorities/society directly or via Lessor.
+                                            </li>
+                                            <li>
+                                                That the Lessee shall not sublet, assign, or part with the possession of the said premises or any part thereof to any person under any circumstances.
+                                            </li>
+                                            <li>
+                                                That the Lessee shall use the premises for residential purposes only and shall not use it for any commercial or illegal purposes.
+                                            </li>
+                                            <li>
+                                                That the Lessee shall not make any additions or alterations in the said premises without the prior written consent of the Lessor.
+                                            </li>
+                                        </ol>
+                                        <PageBottomSignature data={regData} type="REG_RENT" />
+                                        <div className="page-number-footer">Page 2 of 6</div>
+                                    </div>
+
+                                    {/* PAGE 3: Terms Continued (8-15) */}
+                                    <div className="paper-page print-break text-justify text-gray-900 leading-relaxed font-serif relative">
+                                        {regData.stampPaperNumber && (
+                                            <div className="absolute top-4 left-0 right-0 text-center text-[8pt] font-mono text-gray-500">
+                                                Stamp Paper No: {regData.stampPaperNumber}
+                                            </div>
+                                        )}
+                                        <div className="mt-8"></div>
+                                        <ol className="list-decimal space-y-4 pl-8 mb-8" start="8">
+                                            <li>
+                                                That the Lessee shall keep the said premises in good tenantable condition and shall not cause any damage to the sanitary, electrical, and other fittings and fixtures.
+                                            </li>
+                                            <li>
+                                                That the Lessee shall permit the Lessor or his authorized agents to enter upon the said premises for inspection and carrying out repairs, if any, at reasonable hours.
+                                            </li>
+                                            <li>
+                                                That the Lessee shall not do or permit to be done anything which may be a nuisance or annoyance to the neighbors or the Lessor.
+                                            </li>
+                                            <li>
+                                                That the Lessee shall be responsible for minor repairs such as replacement of fuses, bulbs, tubes, taps, washers, etc., at his own cost. Major repairs will be done by Lessor.
+                                            </li>
+                                            <li>
+                                                That the Lessor shall pay the House Tax and other taxes related to the property to the concerned authorities.
+                                            </li>
+                                            <li>
+                                                That if the Lessee commits any breach of the terms and conditions of this agreement, the Lessor shall be entitled to terminate the lease and re-enter the premises.
+                                            </li>
+                                            <li>
+                                                That the Lessee shall vacate the premises on the expiry of the lease period or earlier termination thereof and hand over peaceful possession to the Lessor.
+                                            </li>
+                                            <li>
+                                                That in case the Lessee fails to pay the rent for any two consecutive months, the Lessor shall have the right to terminate the lease immediately and evict the Lessee.
+                                            </li>
+                                        </ol>
+                                        <PageBottomSignature data={regData} type="REG_RENT" />
+                                        <div className="page-number-footer">Page 3 of 6</div>
+                                    </div>
+
+                                    {/* PAGE 4: Terms Continued (16-23) */}
+                                    <div className="paper-page print-break text-justify text-gray-900 leading-relaxed font-serif relative">
+                                        {regData.stampPaperNumber && (
+                                            <div className="absolute top-4 left-0 right-0 text-center text-[8pt] font-mono text-gray-500">
+                                                Stamp Paper No: {regData.stampPaperNumber}
+                                            </div>
+                                        )}
+                                        <div className="mt-8"></div>
+                                        <ol className="list-decimal space-y-4 pl-8 mb-8" start="16">
+                                            <li>
+                                                That either party can terminate this agreement by giving one month's notice in writing to the other party.
+                                            </li>
+                                            <li>
+                                                That the Lessee shall not store any hazardous, combustible, or inflammable articles in the said premises.
+                                            </li>
+                                            <li>
+                                                That the Lessee shall not cook in the rooms except in the kitchen provided for the purpose.
+                                            </li>
+                                            <li>
+                                                That the Lessee shall not drive nails, screws, etc., into the walls or woodwork without the Lessor's consent (except for hanging pictures/calendars).
+                                            </li>
+                                            <li>
+                                                That the Lessee shall abide by the rules and regulations of the Residents Welfare Association / Society.
+                                            </li>
+                                            <li>
+                                                That the Lessee shall subject himself and his family members to police verification as per the law of the land.
+                                            </li>
+                                            <li>
+                                                That upon vacating, the Lessee shall restore the premises to the Lessor in the same condition as it was at the commencement of the lease, normal wear and tear excepted.
+                                            </li>
+                                            <li>
+                                                That the Lessee shall not part with the keys of the premises to any other person except the Lessor upon termination.
+                                            </li>
+                                        </ol>
+                                        <PageBottomSignature data={regData} type="REG_RENT" />
+                                        <div className="page-number-footer">Page 4 of 6</div>
+                                    </div>
+
+                                    {/* PAGE 5: Terms Continued (24-31) */}
+                                    <div className="paper-page print-break text-justify text-gray-900 leading-relaxed font-serif relative">
+                                        {regData.stampPaperNumber && (
+                                            <div className="absolute top-4 left-0 right-0 text-center text-[8pt] font-mono text-gray-500">
+                                                Stamp Paper No: {regData.stampPaperNumber}
+                                            </div>
+                                        )}
+                                        <div className="mt-8"></div>
+                                        <ol className="list-decimal space-y-4 pl-8 mb-8" start="24">
+                                            <li>
+                                                That this lease may be renewed for a further period on mutually agreed terms and conditions and fresh rent agreement shall be executed.
+                                            </li>
+                                            <li>
+                                                That any notice required to be served under this agreement shall be deemed to be sufficiently served if delivered at the address of the parties mentioned herein.
+                                            </li>
+                                            <li>
+                                                That the Lessee indemnifies the Lessor against any loss or damage caused to the property or third parties due to the negligence of the Lessee.
+                                            </li>
+                                            <li>
+                                                That this agreement represents the entire understanding between the parties and supersedes all prior agreements, written or oral.
+                                            </li>
+                                            <li>
+                                                That any modification to this agreement must be in writing and signed by both parties.
+                                            </li>
+                                            <li>
+                                                That in the event of any dispute arising out of this agreement, the same shall be subject to the jurisdiction of the courts at {regData.agreementPlace || 'Gautam Buddha Nagar'}.
+                                            </li>
+                                            <li>
+                                                That both parties agree that in case of force majeure events, the terms may be renegotiated in good faith.
+                                            </li>
+                                            <li>
+                                                That the Lessee has received the premises with all fittings and fixtures intact and promises to hand them back in the same condition.
+                                            </li>
+                                        </ol>
+                                        <PageBottomSignature data={regData} type="REG_RENT" />
+                                        <div className="page-number-footer">Page 5 of 6</div>
+                                    </div>
+
+                                    {/* PAGE 6: Signatures */}
+                                    <div className="paper-page print-break text-justify text-gray-900 leading-relaxed font-serif relative">
+                                        {regData.stampPaperNumber && (
+                                            <div className="absolute top-4 left-0 right-0 text-center text-[8pt] font-mono text-gray-500">
+                                                Stamp Paper No: {regData.stampPaperNumber}
+                                            </div>
+                                        )}
+                                        <div className="mt-8"></div>
+
+                                        <p className="mb-8 mt-12 indent-8">
+                                            IN WITNESS WHEREOF, the LESSOR and the LESSEE have set their hands and signatures to this Registered Rent Agreement on the day, month and year first above written in the presence of the following witnesses:
+                                        </p>
+
+                                        <div className="flex justify-between items-start mt-12 gap-8">
+                                            <div className="w-1/2">
+                                                <div className="font-bold underline mb-6 uppercase tracking-wider">Witnesses</div>
+
+                                                <div className="mb-8 p-4 bg-gray-50 border border-gray-100 rounded">
+                                                    <div className="font-bold">1. {regData.witness1Name}</div>
+                                                    {regData.witness1Father && <div className="text-gray-600">S/o {regData.witness1Father}</div>}
+                                                    {regData.witness1Aadhar && <div className="text-gray-600">Aadhar: {regData.witness1Aadhar}</div>}
+                                                    <div className="mt-1 text-gray-600 leading-tight">{regData.witness1Address}</div>
+                                                    <div className="mt-4 border-t border-gray-300 pt-1 text-xs text-gray-400 italic">Signature</div>
+                                                </div>
+
+                                                <div className="p-4 bg-gray-50 border border-gray-100 rounded">
+                                                    <div className="font-bold">2. {regData.witness2Name || '__________________'}</div>
+                                                    {regData.witness2Father && <div className="text-gray-600">S/o {regData.witness2Father}</div>}
+                                                    {regData.witness2Aadhar && <div className="text-gray-600">Aadhar: {regData.witness2Aadhar}</div>}
+                                                    <div className="mt-1 text-gray-600 leading-tight">{regData.witness2Address || 'Address_________________'}</div>
+                                                    <div className="mt-4 border-t border-gray-300 pt-1 text-xs text-gray-400 italic">Signature</div>
+                                                </div>
+                                            </div>
+
+                                            <div className="w-1/2 flex flex-col gap-12 text-right">
+                                                <div className="p-4 bg-blue-50/50 border border-blue-100 rounded shadow-sm">
+                                                    <div className="font-bold mb-8 text-lg">LESSOR {regData.lessorCount === '2' ? '1' : ''}</div>
+                                                    <div className="font-bold text-sm uppercase">{regData.lessorName}</div>
+                                                    <div className="text-xs text-gray-500">(Owner/First Party)</div>
+                                                </div>
+
+                                                {regData.lessorCount === '2' && (
+                                                    <div className="p-4 bg-blue-50/50 border border-blue-100 rounded shadow-sm">
+                                                        <div className="font-bold mb-8 text-lg">LESSOR 2</div>
+                                                        <div className="font-bold text-sm uppercase">{regData.lessor2Name}</div>
+                                                        <div className="text-xs text-gray-500">(Owner/First Party)</div>
+                                                    </div>
+                                                )}
+
+                                                <div className="p-4 bg-blue-50/50 border border-blue-100 rounded shadow-sm">
+                                                    <div className="font-bold mb-8 text-lg">LESSEE {regData.lesseeCount === '2' ? '1' : ''}</div>
+                                                    <div className="font-bold text-sm uppercase">{regData.lesseeName}</div>
+                                                    <div className="text-xs text-gray-500">(Tenant/Second Party)</div>
+                                                </div>
+
+                                                {regData.lesseeCount === '2' && (
+                                                    <div className="p-4 bg-blue-50/50 border border-blue-100 rounded shadow-sm">
+                                                        <div className="font-bold mb-8 text-lg">LESSEE 2</div>
+                                                        <div className="font-bold text-sm uppercase">{regData.lessee2Name}</div>
+                                                        <div className="text-xs text-gray-500">(Tenant/Second Party)</div>
+                                                    </div>
+                                                )}
+
+                                                <div className="mt-4 pt-4 border-t border-gray-300 font-bold uppercase text-center text-xs text-gray-500">
+                                                    DRAFTED BY {regData.drafterName}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="page-number-footer">Page 6 of 6</div>
+                                    </div>
+                                </>
+                            )}
+
+                            {activeTab === 'TM48' && (
+                                <div className="paper-page print-break text-justify text-gray-900 font-serif relative p-16 text-[12pt] leading-1.5">
+                                    {tm48Data.stampPaperNumber && (
+                                        <div className="absolute top-4 left-0 right-0 text-center text-[8pt] font-mono text-gray-500">
+                                            Stamp Paper No: {tm48Data.stampPaperNumber}
+                                        </div>
+                                    )}
+                                    <div className="text-center font-bold text-lg mb-1">FORM TM-48</div>
+                                    <div className="text-center font-bold text-lg mb-1">THE TRADE MARKS ACT, 1999</div>
+
+                                    <div className="text-center font-bold text-lg mb-1">Authorization of Agent</div>
+                                    <div className="text-center font-bold text-lg mb-8">(Section 145 and rule 21)</div>
+
+                                    <div className="text-right font-bold text-lg mb-4">Attorney Code No: 48171</div>
+
+                                    <div className="mb-2 text-justify leading-relaxed">
+                                        I, <span className="font-bold bg-yellow-100">{tm48Data.applicantName}</span>, S/o <span className="font-bold bg-yellow-100">{tm48Data.fatherName}</span>, <span className="font-bold bg-yellow-100">{tm48Data.designation}</span> of <span className="font-bold bg-yellow-100">{tm48Data.companyName}</span>, R/o <span className="font-bold bg-yellow-100">{tm48Data.applicantAddress}</span> India, do hereby authorize <span className="font-bold">Advocate Madhav Maheshwari</span>, 1842, -Bluebell, Gaur Saundaryam Sector-Techzone-04, Greater Noida West, Gautam Buddha Nagar, Uttar Pradesh India, to act jointly and severally as my attorneys for registrations, oppositions, objections, assignments, rectifications, renewals and all such matters on my behalf and request that all notices, requisitions and communications relating thereto may be sent to Advocate Madhav Maheshwari at the address listed above. Advocate Madhav Maheshwari is authorized to appoint any person or persons on my behalf to attend and conduct the cases and/or proceedings. I hereby ratify and agree to the effect all acts and deeds done by my said attorneys.
+                                    </div>
+
+                                    <div className="mb-4 text-center font-bold">
+                                        All communications relating to my matters may be sent to the following address in India:
+                                    </div>
+
+                                    <div className="text-center font-bold mb-4">
+                                        Advocate Madhav Maheshwari<br />
+                                        1842, BlueBell, Gaur Saundaryam<br />
+                                        Sector-Techzone-04, Greater Noida West,<br />
+                                        Gautam Buddha Nagar, Uttar Pradesh.<br />
+                                        Phone Number: +91 8899999321<br />
+                                        Email Address: fcamadhav@gmail.com
+                                    </div>
+
+                                    <div className="mt-8 mb-8">
+                                        <div className="font-bold mb-24">For <span className="bg-yellow-100">{tm48Data.companyName}</span></div>
+
+                                        <div className="font-bold bg-yellow-100 inline-block mb-1">{tm48Data.applicantName}</div><br />
+
+                                        <div className="font-bold">Date: <span className="bg-yellow-100">{tm48Data.date ? new Date(tm48Data.date).toLocaleDateString('en-GB') : '___/___/_____'}</span></div>
+                                        <div className="font-bold">Place: <span className="bg-yellow-100">{tm48Data.place}</span></div>
+                                    </div>
+
+                                    <div className="mt-12">
+                                        To<br />
+                                        The Registrar of Trade Marks<br />
+                                        The Office of the Trade Marks Registry at New Delhi/ Kolkata/ Mumbai/Chennai/Ahmedabad
+                                    </div>
+                                </div>
+
+                            )}
+
+                        </div>
+                    </div>
+                </div >
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Home />);
+    </script>
+</body>
+
+</html>
