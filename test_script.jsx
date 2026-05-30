@@ -1711,7 +1711,11 @@
                 transferChargeDraftNo: '',
                 transferChargeDate: '',
                 transferChargeAmount: '',
-                transferChargeBank: ''
+                transferChargeBank: '',
+                // Page Inclusions
+                includeBuyerAffidavit: false,
+                includeSellerAffidavit: false,
+                includeJointAffidavit: false
             };
             const [tmAppData, setTmAppData] = useState(defaultTMAppData);
 
@@ -3773,6 +3777,204 @@
 
             return (
                 <ActiveFieldContext.Provider value={activeField}>
+                {activeTab === 'HOME' ? (
+                    /* ===== LANDING PAGE ===== */
+                    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 font-ui overflow-y-auto" style={{fontFamily:'Plus Jakarta Sans, Inter, sans-serif'}}>
+                        {/* Nav Bar */}
+                        <div className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100">
+                            <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+                                <div style={{display:'inline-flex',alignItems:'center',gap:'8px',userSelect:'none',textDecoration:'none'}}>
+                                    <div style={{width:'32px',height:'32px',borderRadius:'9px',background:'#2563EB',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,boxShadow:'0 3px 10px rgba(37,99,235,.32), inset 0 1px 0 rgba(255,255,255,.18)'}}>
+                                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:'16px',height:'16px'}}>
+                                            <rect x="3" y="2" width="11" height="14" rx="1.5" fill="rgba(255,255,255,0.2)" stroke="white" strokeWidth="1.3"/>
+                                            <line x1="6" y1="6" x2="11" y2="6" stroke="white" strokeWidth="1.1" strokeLinecap="round"/>
+                                            <line x1="6" y1="9" x2="11" y2="9" stroke="white" strokeWidth="1.1" strokeLinecap="round"/>
+                                            <line x1="6" y1="12" x2="9" y2="12" stroke="white" strokeWidth="1.1" strokeLinecap="round"/>
+                                            <path d="M13.5 13l3-3 1.5 1.5-3 3-2 .5.5-2z" fill="white" stroke="white" strokeWidth=".4" strokeLinejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <span style={{fontFamily:'Plus Jakarta Sans, sans-serif',fontWeight:900,fontSize:'1.35rem',letterSpacing:'-0.06em',lineHeight:1,display:'inline-flex',alignItems:'baseline',gap:0}}>
+                                        <span style={{color:'#0F172A'}}>insta</span><span style={{color:'#2563EB'}}>deed</span>
+                                        <span style={{fontFamily:'Plus Jakarta Sans, sans-serif',fontSize:'.6rem',fontWeight:800,color:'#fff',background:'#2563EB',width:'19px',height:'19px',borderRadius:'50%',marginLeft:'4px',alignSelf:'center',display:'inline-flex',alignItems:'center',justifyContent:'center',lineHeight:1,boxShadow:'0 2px 6px rgba(37,99,235,.25)'}}>in</span>
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    {user ? (
+                                        <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full py-1 pl-1 pr-3 shadow-sm text-xs text-slate-700">
+                                            <img src={user.picture} alt={user.name} className="w-6 h-6 rounded-full" />
+                                            <span className="font-semibold truncate max-w-[80px]">{user.name.split(' ')[0]}</span>
+                                            <button onClick={() => {localStorage.removeItem('instadeed_user_session');setUser(null);}} className="text-slate-400 hover:text-rose-600 transition ml-1" title="Sign Out">
+                                                <i className="fa-solid fa-right-from-bracket"></i>
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button onClick={() => setShowLogin(true)} style={{fontSize:'.72rem',fontWeight:700,color:'#2563EB',border:'1.5px solid #2563EB',borderRadius:'9999px',padding:'.32rem .85rem',background:'#EEF4FF',cursor:'pointer',fontFamily:'Inter,sans-serif'}}>Sign In</button>
+                                    )}
+                                    <button onClick={() => setActiveTab('CRM')} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition" title="Admin CRM Dashboard">
+                                        <i className="fa-solid fa-chart-line text-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Hero Section */}
+                        <div className="max-w-6xl mx-auto px-6 pt-16 pb-8 text-center">
+                            <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-4 py-1.5 mb-6">
+                                <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                                <span className="text-[11px] font-bold text-blue-700 uppercase tracking-wider">Legal Drafting Suite</span>
+                            </div>
+                            <h1 className="text-4xl lg:text-5xl font-extrabold text-slate-900 leading-tight mb-4">
+                                Draft Legal Documents<br/>
+                                <span className="text-blue-600">in Minutes, Not Days</span>
+                            </h1>
+                            <p className="text-slate-500 text-base max-w-2xl mx-auto mb-8 font-medium">
+                                Choose from our library of professionally drafted legal templates — Rent Agreements, 
+                                TM-48 Trademark Forms, GNIDA Registry documents, and more.
+                            </p>
+                            <div className="flex items-center justify-center gap-4 text-xs text-slate-400 font-semibold mb-2">
+                                <span><i className="fa-solid fa-check-circle text-emerald-500 mr-1"></i>Court-validated formats</span>
+                                <span><i className="fa-solid fa-check-circle text-emerald-500 mr-1"></i>Instant PDF export</span>
+                                <span><i className="fa-solid fa-check-circle text-emerald-500 mr-1"></i>eSign ready</span>
+                            </div>
+                        </div>
+
+                        {/* Document Selection */}
+                        <div className="max-w-5xl mx-auto px-6 pb-16">
+                            {/* Authority Tabs */}
+                            <div className="flex items-center justify-center gap-1.5 mb-8 bg-slate-100 p-1.5 rounded-2xl border border-slate-200/50 max-w-md mx-auto">
+                                {['ALL', 'GNIDA', 'NOIDA', 'GDA', 'YEIDA'].map(auth => (
+                                    <button key={auth} onClick={() => setActiveAuthority(auth)}
+                                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                                            activeAuthority === auth
+                                                ? 'bg-white text-slate-800 shadow-sm border border-slate-200/30'
+                                                : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50/50'
+                                        }`}
+                                    >
+                                        {auth === 'ALL' ? 'All Documents' : auth}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* Doc Grid */}
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                                {(activeAuthority === 'ALL') && (
+                                    <>
+                                        <button onClick={() => setActiveTab('RENT')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                <i className="fa-solid fa-file-signature"></i>
+                                            </div>
+                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-blue-700">Rent Agreement</h3>
+                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Standard residential rent agreement</p>
+                                        </button>
+                                        <button onClick={() => setActiveTab('ATS')} className="group bg-white border border-slate-100 hover:border-purple-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                <i className="fa-solid fa-file-contract"></i>
+                                            </div>
+                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-purple-700">Agreement to Sell</h3>
+                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Sale/purchase of property</p>
+                                        </button>
+                                        <button onClick={() => setActiveTab('REG_RENT')} className="group bg-white border border-slate-100 hover:border-indigo-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                <i className="fa-solid fa-stamp"></i>
+                                            </div>
+                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-indigo-700">Registered Rent</h3>
+                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Authority format rent deed</p>
+                                        </button>
+                                        <button onClick={() => setActiveTab('TM48')} className="group bg-white border border-slate-100 hover:border-orange-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                            <div className="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 group-hover:bg-orange-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                <i className="fa-solid fa-trademark"></i>
+                                            </div>
+                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-orange-700">TM-48 Auth</h3>
+                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Trademark authorization form</p>
+                                        </button>
+                                    </>
+                                )}
+                                {(activeAuthority === 'GNIDA') && (
+                                    <>
+                                        <button onClick={() => setActiveTab('GNIDA_PACKAGE')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2">
+                                            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                <i className="fa-solid fa-cubes"></i>
+                                            </div>
+                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-blue-700">GNIDA 5-in-1 Package <span className="ml-1.5 px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded font-black text-[8px] uppercase">Hot</span></h3>
+                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Fill all 5 documents in a single form</p>
+                                        </button>
+                                        <button onClick={() => setActiveTab('KYA')} className="group bg-white border border-slate-100 hover:border-yellow-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                            <div className="w-10 h-10 rounded-xl bg-yellow-50 text-yellow-600 group-hover:bg-yellow-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                <i className="fa-solid fa-id-card"></i>
+                                            </div>
+                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-yellow-700">Know Your Allottee</h3>
+                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">KYA Verification</p>
+                                        </button>
+                                        <button onClick={() => setActiveTab('TM_APP')} className="group bg-white border border-slate-100 hover:border-rose-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                            <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 group-hover:bg-rose-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                <i className="fa-solid fa-right-left"></i>
+                                            </div>
+                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-rose-700">Transfer Memo</h3>
+                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">TM Application</p>
+                                        </button>
+                                        <button onClick={() => setActiveTab('MUTATION')} className="group bg-white border border-slate-100 hover:border-indigo-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                <i className="fa-solid fa-file-pen"></i>
+                                            </div>
+                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-indigo-700">Mutation Form</h3>
+                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Property mutation</p>
+                                        </button>
+                                        <button onClick={() => setActiveTab('GNIDA_REGISTRY')} className="group bg-white border border-slate-100 hover:border-cyan-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                            <div className="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                <i className="fa-solid fa-book"></i>
+                                            </div>
+                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-cyan-700">Registry Format</h3>
+                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Official registry</p>
+                                        </button>
+                                        <button onClick={() => setActiveTab('GNIDA_PTM')} className="group bg-white border border-slate-100 hover:border-teal-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2">
+                                            <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 group-hover:bg-teal-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                <i className="fa-solid fa-file-contract"></i>
+                                            </div>
+                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-teal-700">Permission to Mortgage (PTM)</h3>
+                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Authority mortgage format</p>
+                                        </button>
+                                    </>
+                                )}
+                                {(activeAuthority === 'NOIDA') && (
+                                    <button onClick={() => setActiveTab('NOIDA_TRANSFER')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2 md:col-span-3 lg:col-span-4">
+                                        <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                            <i className="fa-solid fa-right-left"></i>
+                                        </div>
+                                        <h3 className="font-bold text-sm text-slate-800 group-hover:text-blue-700">NOIDA Transfer Application</h3>
+                                        <p className="text-[11px] text-slate-400 mt-1 leading-snug">Official NOIDA transfer document</p>
+                                    </button>
+                                )}
+                                {(activeAuthority === 'GDA') && (
+                                    <div className="col-span-full bg-slate-50 border border-slate-100 rounded-2xl p-8 text-center">
+                                        <i className="fa-solid fa-lock text-slate-300 text-2xl mb-2 block"></i>
+                                        <span className="font-bold text-sm text-slate-600 block">GDA Formats Locked</span>
+                                        <span className="text-xs text-slate-400">Drafting templates coming soon</span>
+                                    </div>
+                                )}
+                                {(activeAuthority === 'YEIDA') && (
+                                    <div className="col-span-full bg-slate-50 border border-slate-100 rounded-2xl p-8 text-center">
+                                        <i className="fa-solid fa-lock text-slate-300 text-2xl mb-2 block"></i>
+                                        <span className="font-bold text-sm text-slate-600 block">YEIDA Formats Locked</span>
+                                        <span className="text-xs text-slate-400">Drafting templates coming soon</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Footer */}
+                        <div className="border-t border-slate-100 py-6 text-center text-xs text-slate-400 font-medium">
+                            &copy; {new Date().getFullYear()} Instadeed &mdash; Legal Drafting Suite
+                        </div>
+
+                        {/* Login Modal */}
+                        <LoginModal
+                            isOpen={showLogin}
+                            onClose={() => setShowLogin(false)}
+                            onLogin={(u) => { setUser(u); setShowLogin(false); }}
+                        />
+                    </div>
+                ) : (
+                    /* ===== EXISTING SIDEBAR + PREVIEW LAYOUT ===== */
                     <div className="flex flex-col lg:flex-row h-screen font-ui overflow-hidden app-layout-container">
                     {/* Left Sidebar */}
                     {!viewOnlyMode && (
@@ -3782,7 +3984,7 @@
                             <div className="flex justify-between items-center mb-4">
                                 <div className="flex items-center gap-3">
                                     {/* INSTADEED Logo — matches landing page */}
-                                    <div style={{display:'inline-flex',alignItems:'center',gap:'8px',userSelect:'none',textDecoration:'none'}}>
+                                    <div style={{display:'inline-flex',alignItems:'center',gap:'8px',userSelect:'none',textDecoration:'none',cursor:'pointer'}} onClick={() => { setActiveTab('HOME'); setActiveAuthority('ALL'); }}>
                                         {/* Icon: blue rounded square + white document-pen */}
                                         <div style={{width:'32px',height:'32px',borderRadius:'9px',background:'#2563EB',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,boxShadow:'0 3px 10px rgba(37,99,235,.32), inset 0 1px 0 rgba(255,255,255,.18)'}}>
                                             <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:'16px',height:'16px'}}>
@@ -4523,6 +4725,41 @@
                                             <Input label="Amount (Rs.)" name="transferChargeAmount" value={tmAppData.transferChargeAmount} onChange={handleChange} />
                                         </div>
                                         <Input label="Bank Name" name="transferChargeBank" value={tmAppData.transferChargeBank} onChange={handleChange} />
+                                    </Section>
+
+                                    <Section title="Document Checklist / Page Inclusion" icon="fa-list-check" color="rose" isOpen={true}>
+                                        <div className="bg-rose-50/50 p-3 rounded-lg border border-rose-100 space-y-3">
+                                            <div className="text-[10px] font-bold text-rose-800 uppercase tracking-wider">Select pages to include in print:</div>
+                                            <div className="space-y-2">
+                                                <label className="flex items-center gap-2 text-xs font-semibold text-gray-700 cursor-pointer select-none">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={tmAppData.includeBuyerAffidavit === true}
+                                                        onChange={(e) => setTmAppData(prev => ({ ...prev, includeBuyerAffidavit: e.target.checked }))}
+                                                        className="rounded text-rose-600 focus:ring-rose-500 w-4 h-4"
+                                                    />
+                                                    <span>Buyer Signature Affidavit (Page 7)</span>
+                                                </label>
+                                                <label className="flex items-center gap-2 text-xs font-semibold text-gray-700 cursor-pointer select-none">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={tmAppData.includeSellerAffidavit === true}
+                                                        onChange={(e) => setTmAppData(prev => ({ ...prev, includeSellerAffidavit: e.target.checked }))}
+                                                        className="rounded text-rose-600 focus:ring-rose-500 w-4 h-4"
+                                                    />
+                                                    <span>Seller Signature Affidavit (Page 8)</span>
+                                                </label>
+                                                <label className="flex items-center gap-2 text-xs font-semibold text-gray-700 cursor-pointer select-none">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={tmAppData.includeJointAffidavit === true}
+                                                        onChange={(e) => setTmAppData(prev => ({ ...prev, includeJointAffidavit: e.target.checked }))}
+                                                        className="rounded text-rose-600 focus:ring-rose-500 w-4 h-4"
+                                                    />
+                                                    <span>Joint Stamp Paper Attachment (Page 9)</span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </Section>
                                 </>
                             )}
@@ -8411,7 +8648,7 @@
                                                     <span className="px-2.5 py-0.5 bg-rose-100 text-rose-800 rounded font-black text-[9px] uppercase tracking-wider">Transfer Memo</span>
                                                 </div>
                                             )}
-                                            <div className="paper-page print-break text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed">
+                                            <div className="paper-page print-break bg-white text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed min-h-[1123px]">
                                                 <EsignBadge type="TM_APP" />
                                                 <div className="flex items-center justify-center mb-2 gap-4">
                                                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAACgCAYAAAFyEh7HAAAACXBIWXMAAC4jAAAuIwF4pT92AAAABGdBTUEAALGOfPtRkwAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAABR2ElEQVR42mL4//8/AzGYYZL9f0JqAAIIp4T0vOCjMANA9NKbu61ANAxj0wMQQCwMaOD0yxtipuIar55+eWMF4jNOdvhfaBiWz8LE8gfIfQDECjBxmJ7/uQcYQTRAAGEYZrYq4yWU+QCoSBEmbrk6e/ntuKUqKvzSf6GG3Yca/ACmBiCA0MPlPrIXfvz5xQXif/39gwvZy+hhCcMAAYQh6LiuYD5MzGhF6lpsYXP65U0REG26Mh0lDAECCMMwYmMXmysBAgirBLLrSMEAAYThKmJcl3doUhE2cYAAYkKPTVg0w2Jsyc3d/xmIBAABxIRswJRL631g6WfLg+M6oKQRo+7KCDMYmhxQwO2PT1lhbIAAYjj6/PJ/YgIfWR7ZmyqLonbD2AABxGQlocOIbBNyykbmI3sfxWWxS11hbIAAwrC559zK/8xTHO+iJ2ZcrkX2FUAAMYIIu7X5iw8/uxgDc8HTr2/qpblFGkH8w88uydlK6T1CdxHIxbK8ogyPP7+GCT0ACCCsNsH4s65sxhqOCgsj9vPN8PyPrC9+d3sjQACBXYacFGCZF5bJXTYU/f/48ysDsCRhcJMzZSg9Op3hzoen8DBEDlOAAMJlGAO+QEeLnAdQtYoAAYRiGL5YxZa4QWqQLQQIIKIzNDHZDSCAqFb+gzBAADERCA84verOATMQG5/3AQIIa5ihawCFC8tUp7t///1TwlcwAAQQ3hQNw4WHp+RF7mxqx6Z20fWddjAxgADCGdC2a/MWJ+7p+P/g04vlIDGr1dn/kdTcx2Y5QACBvQnylq+i5ZTN94/nwKKcn52b4UPaVkZikg3MqwABhFErEVsXSM8LPYquDiCAGGZe2eyGHP3+W6r+40ki9/FZBBBAGAnSfFXGSkLFz6SLa/2wGQYQQCywMMKVFzlZ2H8QWwcABBATroBtOLUgAdxckNDox1cH7Hp0Wg3GBgggJmwNEBAwF9c8BaLVBGSvzLm21eVy9Hwd5LYHDJx4ec0CxgYIIJS8ByrwLry5I4AcXtgqZOQw23r/uBaMDRBAcAXr7x42ANHPvr6NQ9bou6VyMr6YRY5AgABigoVV4Naa8yC2zLzgeq7p7nCvX3pzVw/dax1nl0Wcj5wjiy4OEEA4yyxCCddubR6GWoAAwluhoBeIMDpkW103trwJEEDodQBynnuALfbwVc4AAURUeUaoLoCxAQIIZ4WCbvCV6AU8OksTvuCrtQACiIGcRh0IN5ycn0BMwaq/PHkjOa1SgAAi6Et8wYlcRhACfbbZwYUGoeuItQcggPA6DNZYEOcSPOUpb7FjwfXtdWhK8CYeYtIIrqgECCBCDoNLKvBJHrgfv9wRWd58VebKs69uhv39/w9sgdWa7P/Hn19liNVwY1jkWsWotTT+//V3Dxkm2+f55ugFbYHpU10cvRvYjHLBZqeusNKWS1HzfAECCGebAleagfEz9veC5SxXZy3Hl1bazy6NYJ3ijLXRg9LnQmBwfQMQQPjyOEpQw5phGM0xEgEoeYDbhEh2sbOw3fqRuUsdWR1AAKH4bvLFdT4wl6fv660AiVmtzloKoqXmBpGUqxZc3+Fw8sU1MVwNfo+NpdPx6QcIILztS1C1LjLbj+SsjitpkKIPIIDAtZI0j8gxbFEJ7JuHvU7ZyEhE0/0+oRI4zyC4ePKldX7ERjlAAIEd9iRxjTXKSAIQHHtxRerJl9cM4BDDkluRu5c6worzGagMAAKI6eKbux9BFgGzdzyyBB8b98d8gxCGfrscFA0O6/MXgkJBlV/6N0xMQ1DuHMzBhBr16KD97JKoFbf3WaCLAwQQzpYHLF18/vVNHD3+Ref4n/797w8zKIFDR0iKiRlmwNbMBNnttal8Kro4QADhbV+ALC4+PI1g4p92aYMXsCBlJ8dh6O06GAYIIHg5hqtvUHRkWt7N948mznIqaTj3+tZ6XwWrSyhRPtPr8qf0bbqklGPIfWJ0AExS9sCa4xBAAOHtSOMqYCtNYtLbLFNmkVG4/v+csV1CbE7AiwnAtMvKzOosySn07OPvrwIR2xuPI9e/AAFEVP8ZOSo5p7tdh8kVHZ4KFg/b0dCJTf+2hye1QGlIeWEkvCxL29eDeygQiPc9OacEEgcIIFJHCzBaExzT3W4ucq1Uu/HuEUP9yfkMCZoeDPNdKhhZpzr///PvL8Pz5HXx739+Xq0pKP+dmOYTLIYAAoii9hi+pk/s7tbmJTd2x+BLT/iaPQABxEKsg268f8SuuSQOo3NoJqF5Chhq/3/++UV0O5zQCBwIAAQQySGGL5cdCZkiay2p84TYIUB8ACCAyG7zo+OCw5MLQIkXfTiRHAwQQBSHFgioL4ndeev9YzdsIQMLTV42rivElnUAAcRCThmEMv+AZXwKWzkIrNJ4iLUDIIBYyEhDeC3HVWmT0lEBCCBiOqX3YQbiaSWAiwhQ06fp1II6YooFGGi0SIyvM41fhCwGEEBE9Yhw9RUvRs3l0xNW/kyM5aBCF1h8qCGLWUhorTgeOi0SXS1AAOF0FNtUl9vAJowKuri3ouW0LT7t2ejie5+cU+k6t7wU2LrlCFGxX5urF7QJXc3dT8+YVRZG/UEWY2Ziuvcne58yshhAABFd7WArb5Arb1yFZMyu1v+GoqqhxYZha4gZAAHpAQggJlJHRqAzEP9hDtrx6BTYghbLFLi8PK84JFQ3V/xf4lbN2Hd+5WqQ+v4Lq4OQzHuAKw0DBBADroFL9M4lCIN6x8tu7oG3JFbfOUCwV2O/Lm8hiAZ1aE1WpP0HzdeA+LsfnVHB1pkFyQEEEK6OLHxuFBZKlmuylzeaJUa4bywhq+qI3t3aeun1nSphDj6GvYH9zCxTnP7iquQBAghv7xpmuc/miqlszKxZv/7+BjXYJqz3ai4kp+Rff++wkTK/9H79ZUl8ktzCDM+/vsWaPAACCF+aAsc5qO196e29rDKjSIbvf3/NI9dBIBCoZHtOT1iJH8QGOQg08IIt1AECiGDrs/LYrP+g3g2pFS1Sb/o+qV19gADC29vx3VI1mZxuOnLGufvxGSPnNEizmlgMEEAs198/5NRaEv8NmADPIUcbCEywzREBpTNnWaN55ETXJPu8/FW394friyhfAFVByB1dfAAggBgKD0/NQ442/y1VE0GuvfPxKTOIX318zn9qtLdICW2AAMJIS7C0wwvs6226d/Q/tRqBpDgKIICY0KMM2DYCi31K26rrq2jF6LS+EGOgY+3dgyawsYWzr29R3kpEAwABxAKfqUUro2AjMzVmcYHI4i2nF8fUnpjbTMlIICEAEEAsaOWSAqwkf/vjE1jQSFTtHLIGoIMW43IQ13T369///OQgtnEnNS/4OLC8klATlL11M2axO0wcIIBYYHPb6KFVbBjOIM8nDprbDbOT0uuBiQN7LTh9CHSQBik9mFBVh9WTLqzNBbbvUdpZAAEES1MK6NHXY5PJCGwTMX769ZUfWdxmTQ4DgVrgAbHRFK/hsQBEqwhI30EWBwggFlytStu1uYuBZVfMBu9WRvT6ENgABJXy4NAFTSy6yZneIrUdDkkaqu9AdIy661JkcYAAAmfBTfeO6eEaWAveVvsf16gxdEDuPiVFAjb9AAHEgLzCCNdkgPbShK3klk833z9mJdVRAAGE0nSB9eFgCTVuT3vzIpfKWkKTAcg9HnLnepDbVAABBE7owdvqekEKYZ1KWP8O2UG4DILKU8NBDA3mCeAFPwABBHbUWq+mYjR5BZjDkKdNNIDdcwoHRP6rC8nilG84uQBcewAEELyRB1omiO4wUGEIYiRpe9UDHfTfX8nG7eaHxw+IGWvCFsXu8qYMN989BuvhZ+e5tM672fhQ8CR5dLUAAYSR8JBnRkHYa1MZeMg5emdzq/GK1P8KC8LBCTZhT0cjKQk+ckcTPBNxz/C4ChPnn+l9ET3nAwQQTkNADTOYwg33jhjAa3BgFKguioaPawrN8j2LywyLVZngaTuxOf7/QfpAbLeNJTNh8uzTXG9i680ABBDWzihogNR5fdFdXNEEqrPCVR0t+m1zwOmNg4WN4XvmLpSO6LWYRQ81BeUUxOYE/H/9/QPDo8TVDbI8oo3oOR1bHxMggLB2HNAdhJ5rniWttQQ5KHFvZ+PbtM1OwK46w5//f5mR1YMcpLY45r8cr9g6kEXIDgKlLyQHPQBWyLuQ9QIEEFlry9qsUqIrjWOWUTokidbVh5d1AAFE0khe4p7ORvRJcmwOBK0ai9rZtBzaYCR5pBgggIh2lMGKlI0XX9/xY6AMwIoTBXzFCUAAMRFrGtBBetgs2enfrU7AAbjG3nE2cQACiKrD1siWAwtZdo3FsT/QHeSyoWjunoC+ZHxmAgQQNRz1H1tIYFsqSiwACCCqDFlTE3hvLp+67cHJLGSxFZ71luEqjifw6bv36Tnjr7+/2TQE5X7Sym0AAUSXwCJmra7ALJ+LH39+0SNmMi3/8OQiUJ8DX4nDysRy51f2HlVq+gMggGgeWITWFRGa4CWnRCQ1exELAAKIZoFlvSZ76bHnV6Nw1TE0CCSaByxAAFEUWDwzPa5+/fVDi8LU8kCJX/Le3bjlzuS64+CziwoHnpx3WHFrX/iN9480SI0EYDm343rMIk9C6gACiKzA2nz/uJ7flsqLOFIMPgMfzHAszkzX8d1B6ySTvK+rbt7VbY245EErR7WFFL6SYiZAAJEVWMSkHGInbE+9uiFWfXx26/4n552kuUWUHiasAgd4uKoTwwqPOngvNP/Q5P+TLq6F7B+Y4vQftOQxWz+w9OPPr/yLXatqKXUveqQGKdut67BOr0AeTgYIICZSAwq6UEoBTxkAXt6GK6BAIyiw1Fd3ct5/85UZL3f796Y6yRgpPfr8CqxGmV+K4fAz1IR79+NTOBsUULsCehgK9EOCl9zYVfPr3x+uqZc3wBd9he1o6EYfYgS5aaFrpT2R3lRYd/dQkdqi6F8gMzfdPwaupQECiGDKMlqRuv5cxOxAQrGkL6qy6ULEHH908YU3djrEa7gfEJ8b8P/Vtw/glOG/tfr/pntHwWyVRVH/f/79zQAsMyR0lyetUOaTuldqHNHtLmt6A90s0MTBlIvrcoFllH29WXxj0Nbas6DhUdBoJMhT79O3aJ17dfua8/pChjLjSIZOq3RG7WXxW69GLfTGGASe6gQa6CE6kZhJaK4CCCCcgQUdBNZArjVAuxFS93bvJqYHBerDzncur+ee7v7/25+fYDXbHp78772pnOFS9Dy+vvOrS0Dy1CyngrbV9a+/e6jgV/Ze5otv7vw1XZnOEKbqyLDSo55RbkHYfwcZgxZgZNyFDfwQAqk6PtWzHEvaYHyAACJ7bxauqjd8e2PnSs/6ctcNxf/3PD7L8Clju8Sff3+FROf4b/mTvVeZXm0C0HbW46FTI4uOTP3ff341A2jwgZuF4yTHNNevzMzMDH///sXqn9nOpakpWt57sEkCBBC+wMJbKIao2Pes9mwshfE9N5dP3+7bmdl7ftX/kiPTGDzlzRm2+XUygsqoq9ELvAe6G8U0xRE8DqXAL8nw4ONzlAA6FjrV2lJC+xkhMwACCOciHVsp/SPAQlaB2IGLv//+ZgADOIOFiRksX3l8dgZInNYBBRpwCVNxOEVI3b+c/eByDRpQZLXyAQIIZ8q6+OYuv8Hy5A/4st1pYLU/+8qWl7OvQjYlrPFqYghWtmOkdSpBGuBWxManFQAIIPQ5+fu4Fg/UnpibhGtpa/nRmVSbACZ1slh8TsBJELv/wuoAED9lb1cNrewDCCBwykLutmADBYYhhf02OROQxbhnuP8/FjLtk76IMj+09vsPrN0Y6V0Wma3KWH365Y0QWNEAXWnGRotUBhBA4Ebpl/Qd2vgU7Xp02hWZ77C+YOHXjJ2M/Ozc20CLvEBlAbBAN6dG1iIVnAqbEYpchgK7UjNBFRMp+zWIBQABxEJMv+7a24coqe7gkwtxQLVx8BBnYrxHTCELA+de3xZy21C8++2PT0JI409/GAY5AAgglO7OzdglbKQawMnCzuAhZ06wYwzqCYBovple/41XpJ71V7bZeCh4kj2o2m62SK7lYGG7MtgDCyCAUJoOagIyv6c4FPjmHJiwGb2vBGPMv77dCb3psPPRaQ1CFsEWLQD7jBjlGrCNs2Tzg2Migz2wAAKI6dq7hw+Qy4ts3YAtoH4QLg0C7Dzg5sTvf3+ZXn//6Ajsrx1/+e29GC717htLZmYfnPB/lUdDKT6HiHDwPUcvw5B3RZFbphFbXsotCD1MSB1AALF8+/NDnoTuDXgBI7paXRGl0jgNt0PY1MdreiyM3tmSpiOk6JWp678Nl7lCHHxvcKVmegBT6I58fAAggFhMxNRB2YKk8R55PvFDDz+9tIPxL7+554NLbZSay7Fdj840/fn/FzQ0g7PlLMjO+4FQL4Ha4PiLq1Kwbo6FuNZJQuoBAogFrSVMVOqK1XBf3GyeBB4bWnxz1//kPV3g9VGHgyfHYlO/wKUCNLpQ/+jzyxzYinv02tdCAtx6oWs7Dbk/CBraJqQeIICY0GOz3CQqk5AmYEDNAa1xiNjR9D9W3Y3xV/YeRlspvZhTL6+L4dPXbZ05BbS9GJZqYAOFIBym6hAMEgOvUyUR3Pv0jOJA5mRm/0ZIDUAAYXSkOyzTZoAwdJEifPvo5bf3eHWFleD7NUBrL0AF48rb+8Cp42nS2ngpbuFXwAqDU0sIdfMbMYCPjQu88vL7n59cQOozKXq/gw4HY2D4SqqdoMFE0MQsiL314QkfFibmP1///OABLeb8+POrwNc/30HmMpQYRoB3VQAEENFHQ+DrqesvT/5/6Q1kXcvH9G0SzhuKppwGtqzJ7RjTqONNcoUBWpgFqtBgfIAAwggsIsotjEDLOjihbJp9QVfc7rb/i2/sYtjp38PgJmfCSIpHaFGg6y5L3Hzl7X1w5QPaD8HNxsFw5/1T0gcboG4DCCBKTjBBCbS9T86q2EkZ3GNiZGQA7R7REJQDjaszlhyZntNjkzkFn0GgeT+Htfn7we08vcCpU+zze6iQmsB+kOYRZXj+9Q3D35z9jNsfnvzvtakcWJhLMdz7+IxYo+D+BAggFnwhGbitpn/D3SMFOAwBL2MG1iL7QBOkzjLG4Ba6/TrI1nvQRgKQfKd1Okh4CogNWhOGvEgbBuyl9Kk65Q4sf3Tk+SQYHn56wfAkcTXjuruHwW4R4xLA2SQRmxtw+vW3DyYYnuSTfABjAwQQ3qmw9V4thcg1FjApY6xkuffxuRPIIbUn5oK3eR0MmhgP7TPGgvQ8/vwKHMv9tjkMoIACscN2NIBjHXSWHbUCSGxu4GnQ4r4tD47/99lUcflE6LT4N6mbwG5bf+8QQ6ymW8vL5A0YAQUangKpwRZQIFBsGNYLYwMEENnT94oLI/8/+PQcQ/xO/DIWZT4plNkAx/UF86c7FDlqLomTh822gBw43bGIIUXbm4V1ivMf0DTW9gcnr6Xt72XY4N3CEL2r+ZSesPKl9z8/C4A2JOqIKF1ZdXtf2J3YZaeA/dOIlbf2gTr+YHNOhE0H9QBOqC2Ktrgbv3wFFwv7dsm5QQvNJbRWAQMtHJv7cW2ORAdA85iU+CTBgQQQQEQHFqnrF/BlK2BA79cVVnTY5NPGCB0LA09ugNjR6q4MoD2HsJlo0KEAoGFrWCMWObDPR875Cz0KlBkk7wAsAkDVP76Vcrj8sd2vS9NzU9l2BhynL4AAQACRlLJwLZTFF2htVinVxCw7PfnyukTBoSn9wpx874KU7bKS93QyfM/axZ2yr/vr0hu7GV6nbnQSne2/T5xb8JSagNwtdUHZm7MdS1qo0XxosUyJrTaJWYLeVLoRu1hDXUAWvjgOIIAoXnIEOosA6FHL9XcPBW68d9SPyE4w0YFIKgAtWtlw/3DA0pt7okHDy4Tc46VgPm2rbyd8TzJo+yVy2woZAAQQzdZnAZP09B0PT2WQqO0BPUcdQEcSQU//IQoABBDVAws0LvT482ubQTBW9wBtqgwl8LHtSicEAAKIZikLrW/5AOi4f80WSbW4sh6xDWFgbasCqm0JbfXBUfM9OBA80RHUriPHTwABNOCrlSN2NnauvLW/DJfHz0bMNoZtXYMB5UWRe0HtO1JqYGoAgAAaVEu79zw+C273uMga3yGiK/MAqXpXpIf7AAJo0K2Dx5Yl6TFqSggABBDTIAyk+3hqR5xgxpVNHrR0F0AA0TWgQJOqoLPtSGkw6gorXcHXloLN/mTu79sOm/0BbRunttsBAojmWa/82MysrrPLS2EBYCiqugF5qSWhVjV6tgM1fHWWJVwj1HugdnYFCCAWWqciYCBNReZzsrChjG2DbrFAunwCJ4AeYaVGTOO0yzojnNr+AAggFjqXNyjndYMW4ibsbt9PSsFOCIDG0kqNIlZR2y8AAUSzMgpauGLEPgc0oEBZklAgkQMo2ZGBDwAEEM3KKFxlDmi96c+/vzhAJ+oPdA0ryyt65FHCalti1AIEEMUBJTLb7+yb1E3G5AycoQNQf+x6zGIN2K6Fo8+vyBx6dsFu2c29kVfe3tehUQeaqJY9QACRHVCglrTrhuLdDGg7PrFtLifk0OUedZERqk4nyB3+Off6lvGGe0cC1909FETiWBrYfmJWIgMEEFkBhbZRAKU6JnKk9EG8psci6HQ9VQFocNBiVeZxYtxwMWquHrEH+AEEENU2L3nIm804+/qWCa7BfBAAHQ7/Inm9OT3KH3wRpi+qwnAhYg5J7SyAACI3oP5TO2kjg4kX1wacfHnN/MXX9xKgqXF+du5PWkIKVx2kDQ74KaIedUyo/Hz745MRIff5K1lv6rLOLAEtzsOlCCCASA4oYDlgFLyt7iwhyzus0yvLjSJXEDIvaldT+71PL5ROPr8WBsq+oMtpFlzfAc7K6otj/r/49g40vQ+ebKg3T2CoMY0Fz+wUG4blHn522RZ0Gpq5uOYLXOY3nlqQQOy+G5jbQWtV5zqXJccirR8DCCCS21FhOxpWE+o6gAp2fIHUfX5lWOr+nhqQ5yfZ5e8q1A8NA4nvfXLuf6KWF1wdaMJTkJ0XzjcV02A4//o2eMFtj03WFHMJzTBgefT846+vmiYr09dis6veLGEBvlMlsQAFUI0dt7vtIHKDGSCASA4o2OFq2EC7VVokPr3hOxo7QYGz8tbelbDZlYz9vfvCVR3B5cX8a9sZ7KT04GWHHK84gyAHUkCJazideXkTzp98cR0D6NBIfjbu62df3QzSXhr/H3T2B44IVCQhsOCBBgssgAAip2WOqzZ5UGEchTUVgW60AS8v8qgvB5YDDGdfgc/qYgCWDQxr7yBWR664tRfOBq05leMRQ0lRYpwC+0+/usHgo2gJF1vr1czw4POL5eDRiYg53MBKpQ4UGRars1ZiCywbKd0lpPoXNC8AEEB4Awp0TgIyf9GNnXakNtqid7W0Jmt5gzq9CtMvb/wPmgEGifdfWP0f6EnworN/DP+ZItWdO/RElTfkHppUcjtuKQsrE/O/OrN4xn2B/fBFa2vuHjS5/eHJEnZmtr5Vdw6AC1d7aX3GgC3VEXxsXAzszKzfInZAEhRoFrnvwqr/kTub25HdA1pZuDewj6RJhsefX8sABBDOwrz1zJKYmuNzFiPPXuCqcuc4l7omY9lbh7wMKHZ36/8lN3aDPVx7Yu7/ltOLGRa6VtnfeP9Qo80ydRYZKZvh1ocnrKHb69ZcenPP73Hi6oZ3Pz8XgY5JPRcx+6+OsBIb21Rn8PR/mXFkdqdV+jRimg7oAHSB2Saf9lyAACJqQyVsIRa2ZgG2aaC4PW3Ni1yqai+8ufPHcHkKs6+iFQNset1aUgd0g8q8vQQOkCEVeG+umLrz0SkPY1F1pZNh0+HH5//J2cf8/OvbWmBWdHuSuNqahEBCySUAAYQ16wnN9j2PzA/aWrsWl2HogQTafL34+q4a0I52AxEVlgqTKIbN948xPPryavkC10rHIyFTGKkdSCCw1bcjG+QWZibmFcVHpoED6V3aFi1gDcYhOz+0wUJC0+rr7+/ixLTYG8wTEtGLEoAAwpqiCo9MKZhwfk0/Icdt8Gk19Fe0vgDjB2+v613hXl8Kchz3dPev2sIKDFeiFoDbQ7K84vP2BPRSPYBwgTV3DpiEqDicAaViTSF5hmvRCxmBfdD/9z4/R991SlRZCxBAWAMKmIQ1PDaWXcfnEPQLiFL2ddfMvbq1GcT+mb2H+9//f6Dj4L4CG4mJDcC2zEAMo4Bqq0+/vtmALkUsPToddCg2zgAClkP+wPIIZ6sfIIDI3fSNEfKfgcmal5XzJWy/8LesXdyczGzfGAYYOG0omJ+pE5AQtr0B2x5mUDvtwrvUzYaEzAEIILICCnT0IfINsGzTXG7//vtH5VLUvE+6wkr80LP3HtBrcpIQAG2wfP3jYwj6Ru/rMYs0iD0PCyCASG5wgmIAOZBAR6CdCpsBDhA9YNU8//r2/69SNjCeiZhlSo9AADVjCKkBba58+/0jfNrLWEwNdF6hIimHhgEEEFFX7mA7SB/pWMr/H35+0QSx51zdCt3LPCODhvuV4afegi7fBtmnsCBiP7F6ybUXIIAIHlOPDEADXSixeXZxDLCGYxCY6X0NdLJkspYXYwSwhd1hlT6DVilosn0++JQ00LpzEzG1N6Ajlh58eu4AulibYKKgoCgACCBCMQdPTaCr6JHlr7y9z33v43PwAaWX3tz9iCvF0QIDy5yVIPtW3d5vRswFutTAAAEETlE5ByeWgApvvy2Vk2EBiHZf7gP01WrAPtwypYUREaArXqV5RANAXRNLKZ0T9CiXToZODwf1CIA12UrkkQFabqYECCDYpczIzXrwwqvlN/dGzLyyCdyhvBe/gkmRTwKjFqw4Nut/51nIGjERTv4zr1M2mtKzNqPnoRQAAQS/vZrQYBx6N0WIna9khmMRWBx0oH/Wgf5VoJimd9UPChxg4/cXrPEL8ouVpPayoyFTo6lpD0AAMeEquPGBA08vOgBTG9hREnMD/4tw8K+gRiB1n1sRRqoe0PJHUCAhX0mJ62BESgBAAIEDylHG8AApml4lrzcFpbI5zmUMTIxMDEqLIs2o4RgOFrYfpOqBjbj++feHpusoAAIIbMm+wP5EYjWAdmuCuimg86BCVOy1niWtZQQ24M5RwzFsTKy/yNX7599fmgYUQADBDQed0krMNHjR4WkTwIfTnF8NwtdAYvuDJpBUeNadnJfUfGoR/CBB0DkLt2OXupKTomDg178/7Awk7jolBQAEEDygQEfZEjNf9+HXZwFyF2nBto8scq1iOBsx+68xdI8LzF42JhayUxSwr0nTFAUQQEyEWuPo4Ma7RxrIB0HILAglamIQdCcrbJAvfX/vjTsfn1oBO9F8G+8fNQCtKgEP3TCzkp2igLmBjZYBBRBAKLGwO6DX1XVD8W18Gr79+WkGmiKCD6/8JDySAmungdaJo6dGXWGlC/6K1uClN2zMpJdRvGxcXyBZ7zdNAwoggFACCrrG+wH6cOmVd/e5dYQUwTvI9wT0MZiJa8A9u/7eYbwpymdL5VRQAxB0jTq2GwlRC3PSsx4XC2Qb/++/tC3MAQIIw/BUHZ/Zs69saUUWe/P9oygDdKu9+Srw3iD0deC4x7LvH/ci9tYW5BS17cEJLe/NFVsJdXK5WTnAKernv98cJHWDXl6XSN3bPRuY/X1B7rsbv1zJd0vFFmxnhoIAQACB7mm6j7wEB3TmJXpAvfz+XgJWfgFrOAYHaQNG0Ijmh59fMrY/PNGAz0EZun4KMy5vIqpBCzufCtu5yLgqEG4WTnCK+vmXtKwHWq8ACiTQeBooB4F2guIKJBAACCDwVRILr+8Az67CZl+QrpYDg2df3kjB2B1nl8+qOTH3/4zLG1/seHiy4Q+B01mj1FxIaEdBsh4wkDaiy4HKN2x6OFkhWe/XX9LLKFAimWSfnwPrFYDuY8elFiCAULLe+x+fDbA1ER58fgEvs55+eS218yHquTFZuv44HWO3No/o7hErMySgQBc3n3pxHaWcLDAInYg9RXFAU9QvkrIeaGMjKOtOvbwBPI5FaCUxQAARNRR8/+MzePkCLBO+Ie9wJ9SmArXa57qUKaBPbWONNSbm37BhFOSmCmjGB9ttsZDhIDZoiiKteQCa0AXtfYYdkwIaCETuL6IDgABiAd3SuPfxuSR8ht7+8BTeYgedLSU0y/f/+5+IRnC2XmAprkMgzoTPCq4+MSdtxa29M7//+cG1wbs1n1AZRcpQCRc0Rf0gMUWBTji6H7/c8cKbOwIg/uWo+b7HXlyRUuWXxrrgDSCAmEA7vrGde4ASUB+fwC/Fy9Tx2wYKJDZmFoZl7rXgQvbND3CtiHsCwCIFtLbgwUqPhkpQw9N1Y8ls0EE5IDnQ+gHQHVSgW0JAO9BJLWdgA4ykFuagxRqgRWYdZ5dWwsorKwkdnKsCAQIInPVAp/6ARgwJ9dBhAHT+wM+sPYw+ilYSPpsr/q+8ta+MmPFq3hmeFz//+qbz88/vFHVB2Z/gq8kWx/wCVSagTi36mQpEjjiQfCoRDIAWma1wry8nJgUDBBA8AKDdC6IK3rAdDWwgT/LN8HyxDViwX4ic+6n3/KoQgh1XYH8SlAJ//vu1imWK012kbtMDcnv/aEPWNAMAAcSCHuvErPY4EzYzGDTUAszXD7WFFBRAhwxOvrS2Afnma7yNPSyDfKBzkIEUyamDgxky4vCf4R9Nt9QBBBALtixCTGAB+4WqwPaWFexQeWhZxqrKL/ObHIf8/veXlcwURZdpe4AAwnUyEHpgKWBphwS4rC8C368AO0ak9eySmGrjmCXkBRR5nVpYiiIHgHY9nHp5A7zu/cDTCwqff33n+/73J8eX3994QGxgecpTYxoL9g9AAOFdPo3c+MTWXuKe4fH/Q9pWZtAyQtCZxEtv7mZY49VoGqxsf4ZUR4NqQ5DDaDGDAt3r50aqvhgN15bFrtXgAUaAAMKbr0Hrn2Bs0OJ2dHlgn2/aiRdXwecRgAIpWdubgdRAAt2SBNI/07E4nRaB1HR6YRw5gQSqYGCBBAIAAYR+HT3esgm0uAHUgEQWgx0j/jx5XbwEl9Ai942l/y+/vXcC1OQgsr8FvzyZ2oEEOsFRdVE0WQdBW0horYhQc16Zrx+8AcQHCCCUFOUhb4b30OWzr24Foa/jPhU60wSULYGF6mmQp4+/uApul4HudxjoKh4YSPAzFFQEZBjYWdmJ1nvixbWIgkOT1+9/eh68WwsggFACartfF8EzPEEXXcI6kiAAOoYyaldLO2ihhoGoCvggZtBg3rV3D7y8NpVPJyaJo9/rTQ2AnDsWuVUxvPn+geHnb9KvBlTglQTPPgMEEEYZZSquQbAtBDrxGhjiEjD+MreaSj8l60nnI+YwFhye8j9oay3DM2BW3ObXmQnqUxFqsUvziDwDpUZQJ3XxjV12FFflU8GNWQUmJiYGEGZnZmV4n7aFEdiXZBDm5CfJLNhSAoAAwnXKIlFLjNFrQos1WStBm39AgSQJLK9Anudn52YoMYqIrTGJXcJABwA6j/3869sB4tyCDC+S1jPqLkv8f+XtfYbDIZMZbCR1wTM+9jIGizJ0/KaDBv24Wdm/gLK+1ersowx4jhMACCBCzQNCAYZRCN/99JxZmU8SfjIPeMfBnYP/Q7fXk7SRkBIAO0MUdi0UzC03Y5ecyD80+cJ2YEon1q+wgAIIICZC2eJS9Hw+PH1ABfSlNqBA4pvlfRnE/pq5kxvUvQEGEkOgsq0CKJBUl0TvplUAFR2ZmgcKlEWuVYyrPBtAZy6ARieOg66HAskXHp5yjpRAQgYAAUSwf6QrpPgZFGDQ/SMPiAmsT2lbdRO1POtBMyRic/z3gcTWeTWDt3ncef8UPDbstaVi+plXN6ly0r7t2rzFKouj9/bZZE+Ctvn+h6o4gI7NZFBfHGMBahDnGQQXgxbtk1vMAAQQ0R1JJxmje6AAA8aWPZYAwwisec7lTaB7q0Ds0+EzGb7//cUF2gsDOhURXMPeP5Hx8dfX10dfXJEBTWVte3hCi5TAAS3+B43xN51a+P9g8MT4ux+eOoH27V2Mmvfp7Y9PoGsU/oPWRXCysoNvdZtom9uHMmr76QVJV34CBBBZW2Vx7UTHti8GlGoYGRgZrNZkvf719w84z8Mu/AKxFRdG/H/29Q0DaHwLlG3uxa9YkbG/99Ptj4/V5HglHn34+UVAmlvkCWgm+PCzSynA7MzMPNnxL+SaqVn/O84sgx9NCardfmTtZgRdrAHsDoFr8FNYDoUG9fE0l8QR03aDl8EAAUTSGJDJyrS1wEanEa5YAK0rQD8HwURMHXzdQJyGe+1ryPwgeIFHkSFkKdSDTy8YFrhWghf0Q6vjSGBW+f/x51eGA3ETwAGwzbczfsO9wwt3PzrDwMTACJ72AR3H226ZxggMqP+gyxCnOBSAmi0MR55f/p+q45Pfa501CZsbcVxrRRAABBDRWQ/kYFDLnFBSBW12Bi2ARxef7VTassG7JT/zYH8FKHx6bbIYsw70g5NzvIY7Y+Kedvi+4JsfHoMmGuB6P//+1sTLxgXngxq2bWcQrY3YXa1fs3UDGEGXMYKaALgCCXQFAY5AegC6sQmfvwACiJTBrgfEKgRdw5S6r7sGm9x0+8IOWHI+9uLqJmB2BYsj7wS9+/EZAwsjUkD9+ibPywoJqJ9/f3NFqiGOX/FRspoCDG3wxAa2GythAHSaNrCthPVcb2CKTkS/1goE5PnE4RsPAAKIpDKK1JN3+Nl5Ln1I26JPjFrQBMOjzy/lPBXMt5cdmbFShkeU4UHCSmbQEeE7A7oZgNmWIWZnC4OngtmMr79/clUYR3V6yptfI8ZsXDfyopdDyIU7+qYogAAiKaBgl1OQU4WDAu1cxGwD2CHG9AKgC2YjdzQdxyWfruNXOcOxqANWEyotjPgHmpVCH/0ACCCKD7EBjQzufnzGbfGNnbGgvbe4RkTpEWigo+EOPr3gsPTm7mhopUPQLejdMFCFhT6UBAIAAUTTo9uIyarEBhpo9cm+J2edqHnyD66beLEBgACi+/lR+ACoXCDmgGRSAOhuhq+/fhCVmvABgABiGiyBBK7RIOWfArUCCXTi9Jf0HYw4AvAaKWYBBBDTYAkkagNHGcMFyMdyowNClzuiA4AAonpAyfKKPiGhXQbeEX42YrYwKe05US6BM4TGuwmsnX9Aqr8AAogmZdTVdw+4dZYmXEFKWQ9A1wc3mMfXgzrX5KZC0Mob0KIS0LrQrfePZxFbQMMmMIByl4gtvNEBQAAN+FnBG+4dMQjcWnMenxr0zi2ugMV19cq869uckjS99lHiToAAGvCAwpeadIQVt4DWLRHT7FDgkzwAWu9EK3cCBBDLQAYSrnODYRf4YJM7iOX2b1BLmpaBBAIAATSojukGneCBrXOKpRsFX6cALNjfvEreQPMNlQABNCjPMx9sAHS007Kbe6LwVTiktPKHOwAIoNFEhQeYr85ceerFdTMiWi8UL5+YfnmjV+OpBfXQS39B9j0AdiC+FRmE9YLWGJOzcnOgAEAADatEdf39Q85dj864z7i8Mf3G+0ew82cVdIWVtoA2dRBrDvTyFgkiO2QkHeQLGpRuP7OkcvP94z5kDAE8gDaermBrPA0WABBALEM9IYH2yukuTbyCL3JgG2fwgZsfHrPrL0++BG2DEB3RWsLy13AlqP4Lq4MaTy2s//jzCx+1RgwOh0y2tZHUfTKY4wQggIZ0ogItQaw/Mb+RUIRx4tngvf3hSS2vTeVbyY30VR6NYaCh8ZbTi2r3Pj7nREbpQ1QJBTrbGN9WmcEEAAJoyCYq7WXxW6+9fahFTASyM2Hu8QZt1ys7OqOT0gSgszThCy39CTp1AbQBZCjFDUAADclEReoANPLyWtDy3QXXt8cxDIIBbGLA739/WGhxAJS3ouW2LT7t2bRwM0AADZqG+oSLawIK9EM24FOz+s4BM+iJWyQlCNCiedCJFMeeX7UiMzGBT4j/jXl6jgLD0AbgGyT3BPQ5O0gbPKCWoQABNKCJKnZ3a/OSG7tjYF3oLL2A6VPtC7qwqQUdNwftMdEyIsEB6yZnsqvOLKHZWlKH4gYxaIvui6/vJO5/eq5048Mjjctv7ukCxQze//gsMMgS6AOQv3f696RTahBAANE9UUFnobxwBOKDxW7VsTHqrkeQBWFbcagdiKBxoGqTmFZaXLFMLdB5bnlExdGZ7TRKdA8MRVUvzHEuS0a/ipUSABBAdE1UxN5RdD5yjqGBiMqHs69viZisSDtNYYCCSx/QkRTN5km1bnKmt0ZC5wQXAC1EmOZQmEHS4cAkAoAAoluigk51VBGbEEBz9IefXbQhMQDBbZ98g+CJGbr+04fSKDQpALrMcDm57UMQAVpEEqvhvhiYyXaRexs2LgAQQHRLVFReMgQOBDVB2VttlinV5OxzxgVAR5PMvbYt5eb7R+pcrBzfZHnEHh9/fsXy+jvwCL1CpLoLA7Ddp8XDynlTZn7I31ff3oO6/Qw/sncz//n3l6Ps6IyvEy9Advt5KVgwOMkahZ5+dcP05df3Yt/+/OBSF5C9FaRstzZAyeYCNdzrtL5w/v4n5x2oXD2Cw1eJX/JetLrrUmdZ432kJDyAAKLLkELwtrpeCjwN9kySttf8AoPQftBeJ0rdAzo2pv7k/CZgwtH49f8P25HgySUCbDzXgaXpf2BpClf3JnWTkzAH3/6JF9f+LzgEOZb6/Y9PDILsPOBrK+R5xRlAiUqQgwe88YKNieXbt9+IITHQhUtp2r5rnn19yyU9Lxh8esupF9cZmi2SQWcHRW57ePK/96Zy0KlRd3RFlC4p8ko+AMrVaArKEX2eBmy5GGjphuv64t3QHiqlCQys/97H5wrNpxY5ATHWeEE+oRgZAAQQXe7IBl1OSW6CAp1SB5qsnetU1kROggKtMs/Y31ehsDD8YOXxWeCj/BT4JFgPPr1QAdpTevXNfa9N946CV34C2xpaoFIHBuZf3w5efZWg6QHvJDz6jLh8GZSoQAD5Ji7kg6VMxTTA1S+wpIKv7wHtFgLqAx+fCEuooJstmsySgtZ4NhYLcfCGgm7fAZXsyoui9ibt66wjxp+gkgR6So4i6GQHBjLWH5Ka8ECrc0HuBB0IjywBEEA0T1Tem8unkpFzHoDuEwAFEDkr/N03ls7MOQTx6Krb+/+BDnF/+OmlXceZZdNPvbzxH1SinAyb0cDMCPF+9oEJoFO9uEB31fXZIsYD51/bBqZB4iEq9mD2Q6REJQdNVEJIh5jCEhUoceqLqoDXMp1+Cd5fCDo3k6HVMoUbxJ5yaf3/2x8gIxbpOn4M3goW4KXOwVtrF/79D95tplBjGus0z6m86c//v8zyC8IPgi7FwXWHHjIAnYIBCrubsUvYQDeP0DiBKUy9tL4bujseDAACiKI2FegUMtA5CVRuSz0AXW+J6ww8XMB8dcZKEU6BN9vunwAvmgVtbTsdPpOFhZH573ZgNeO1CXz+Fmh0neFJ0honIXbe/TsenfrvuRFyplimrj+opAJHrMHy5P8X30DC6GDwJAZgu2rF7GtbInrOrbgjwSX4QktI8RqoffTl9w+ef///MYGrPmbWX6zMzL+A1aEY6MAcbjbOL1Ps8l1U+KVXZBzoi9jz6AwDaA8iaHsdaPesyCzfr6BTlaR5RBgeJqxiBibwf51nl/+vODYTMpRgnc5QZhQJdo/JyrT/sDsMmRgZGQ4FTwbNZwqXHp3e3WmVUQ7bQ4kPgI7bazu9pJLW43zA9uI6gAAiO1GBlmwefHIRfP4DaItcvIb7ARyNyARSHEXKuiSQ+UeeX7HxU7RUWePZBI6ADfeO/A/cWgMtQXhBu/6dRDj499/9+Gy59tL4iJ9/fzOoC8oyXItZxAxKDF3nlv8vPzrzgTAn/zt9YeULPMDEACw5ZnoRuSuOVLD78Vm1Ode2JIO2AL3+/kGsxybLJE7djfHquwcPdJYmyIPUlBiFM3RbZ4L947mp7P+Oh6fAenWEFUEZhZuDme0bMEM/MF6ZKv/jzy8GYAK+pi+idGG+c2UCvst0QYWA0crUb8Bqi+qJCdTrXuJeEx2m4nAKIIBITlTAolzMbFXGSbQUDx4COBQ8MRYmcPfTM2aVhVF3iMwZDywktE4QOqoZBEB32IKmXIClQA9ouzdoJzMsAV2JXgg+9+Pdz8+OuksT9gEbyOCcfSZ81l9DUVWWr39+iKstjl7Hxsz2y1RM/UyWbsBUak5PUAJAI+95BydP/v3/D8vxkKngcIAdjwECwAY86MJicEJrOLXgf+PJBXC9BQYhDP22OWC5kO31vcDa42qTedI8RNtwh1PSno651O4hgs4L3+TT5osehgABRFKiIrS9HXlGHXQIAuhMImIcR8wiN9CRspsfHPUDjawDczdDsWEYOBBX3dn/P3w7opkx36UC1LAGy6Xu6/4/5+pWcCmUqOk5v9s6Y8pQGo8CJqrm4y+vWky3L3JxkTUGV5smK1K/AkscSONcWp9hh383uOR6//OLpt3a3GugA2zA7US9wNKbHx6qfwJWxcAeZxi1EpIkt/CLHf5dbvjOnAEIIJISFeg4bEJH7YIs9lW03ELMPB0xyzqS93XVgXp+X35/F/fdUvniwJML8B7XqfAZJ4BtFktgw5bJd3MlqO0EqRZljOaBJkqBATsV+drOoQxAh3QEbatd//jzKxkZHlGFY6HTGmR5RBtBfo/a2fwX2CEBq7OR0mXYFdALvkASdCqJ1LygawaiqgzHnl0hOyGBFiLiO/4cHQAEEEmJasaVTR6Z+/u2UyPFeymYb8O3bzFsR2P3jocnPUAn7oaqOjAscavhBvXaQLk1aGvNV1g7I0DJhmGtdzO4feSwvmBhgX5IP7UGFgcrADbQc7SEFa69//F5b/FhyO3NUtzCDMCEtgI0XAG6XztmZ8vf5UgXkcvyioLutSY6fuxl9A8dCJwYT477AAKIpER1+d19Xr2liZcorJsf7PTvdsc1BwfaAXjt/UOtMqOIlQWHpvwBdlfhcn5K1gyrPBq4QZeJg87kCN/R8HXjvaMPQAF8NWqBN8MIBKCrsIEN+15HaUPwllPkgVoQ4GXnZhBi52F4+OklwXgJV3NcBTummhIAEEAkN9QpmW4BbS/Ht3MaNuUAbFQrbPZtb5DmFgE3ltbePfQ/ZlcLww9or8VVzoRhl38PoyNIPQmXdw1nYLoqY/XlN3f1gJkNfFyKPJ84w5sfnxi+/sI74gM6AWgiof2DpAKAACI5UUHPBtYhtXSK1XBbssi1qhabJGgXTPGRaX07H57K+IfkHtDJjWs8m0AXBIEb3qBhAe/N5RGKfJIziDl7dCQC1SUxu++8f6KCI+ODe2ndNhmlJYYRa2jlBoAAIjlRgYbkQSOopCSoU2EzzE3FNV5hk6w7OT/JXd50l7UEYkHczken/5cdnQG6+Baurt48ATRFUg86hm+oRTR0PRhXv11OIfLqVqTmBPiOD2qtRYee0rcXmrDAqzuBGTo2Ss3lGD38CxBAJCcq6A1VV4lRCzo/A982a9BRXQuv74CvFxflFAAnnlRtH3CjHCQGGlvqO7/K/ejzK9Y7/LrSh1qCAg04ai+Nv8aA4zgwtEWLD0JU7Nes9mwspYbdex6fVYFeA0dXABBAZI2oE3PWbqFhWH+fDfZT/sDtog3Fs3cH9KaC2KDjXBtOzrdYcXsfA7J7QN1jH0XLSEU+qXugkdqhXC2BhkbmXd2WCEs8oGvsQDe0weQFZvlc/PjzC+xO9wfnImYbG1JxNSY9AUAAoSSq869vCxmtSD0LWsC1zqs1EHRRPBmJ6sGN2MUa6gKyOFcWgm4v2vPoTApo0jVNx5eh2jQWPBIOkz/58vr/2hNzGS68uXsGdH3wcGrziM0NOP362wcRWOJCnpYClSzAzLYbJjfYdyLjAgABhJKo2Ka63Ea72Rdrww7XaDm+o1pgANggz7v45o4+sJeX9A+tlORj4wIdqQ66eU6i9cziwA7LtBnDsTF9+NklObu1eQdhiQd9wwHaNrIHS91rounVHqIGAAggeKKqOj47rf3M0pnEDIpxMrN/2wHsqSFLJGl71YNGvvFpBp0jcPXdA60ULW/4SjjQkpPVdw58nX55I8Px55CmmjAn/7k3KRuNh3tPDT3xnAybbm4mrgnv0CCf6QBawvIudbPhUPAXQADBExWly30TND2b5ruU1+NTAzrJGXRIMYxvLanDkKkbwABsnIIHNME9l6fnlUCHa2Tp+G8biAABraCk9pptQgC0oUGAjefDux+fhUCTtMhHu828stnj0NML23///wvaWDohTMVxdaSa86AutQACCL7Mkdhb1nCBOx+fKOGTbzmzOCZCzSnEQEQF1OUFn2AN7NGBccyuFvAdy6BFcxaS2suOBE+OHqgAcVibvx/WzgEdsFFoELqO5j3Etw+1kNtWoMNCYG3Sa+8faC1DTLcUOMkY7R/sJRVAAKGsUQf1OEANdXISFjAgNPDJb31w3HuTd7uTKCc/1kABrSfKOzRp796AvuTBEjjkXB9PDQBdZ/6TYYgCgABCSVSgLuxar6bg4G11a0lNWNAeDVYw5dJ6nxPPr0WIzfFHadyDSiYzCU3QqgLQ0lsGeV6JhwMdIKDF/DA2BzPrj4Fwwx8y78gcLAAggDB20wQp251rsUyprTk+p5mBSou6ltzcHQu53ujD3Dc/Pka8+f6R4dX39wyvvn1gePvjI3hHSseZpevOhs+i+mg5KEGXHJ3eCzp3Cug3hXku5Vo951ZcazkNueQMtPZ8jnOZVte55dfaTi9hYGVmhQ8WslNwPydFJRWJ14UPNgAQQFi3aFWbxCw59+qW4bq7h4qok/tZfwB7d19FOPkZRDiAGEirCciuEOMSKOBm4QBPnxuvTFtLLU+F7WjoXuXRUPr065v63IMTG2DioPVWjacWXltycxdStXwCRYyNmfnXgFd///8M6XPDAAIIp+OB1WCx5pI4LWBPzIMSC0CNTmCPz+zQE4zLTSKgGAwKDcMoPtDLbm3+YtiuZqMPqbBtQ+AlHU3myTWw9dt9NpgHisPElBdF9iBKKvokKuQqFwR+DfGSCiCA8OaI6zGLPEk5HAN0b6wKvzTKVvNr7x5qb/Pt1HCQNsB59QRoAvn9z88UTcPUnZyX1GiREOO+oRTU0AUtId6z278nlVRz+Nl44LMIbEwsdElUPCwcX1AT1e8hnagAAohgMQta/0TkUIPC+x+fhRn4GVBWIzz58lpm9Z0D4F0uuDSC9r9VmkSTfWwPyH15BsEKoGvbmJiYbv3PPqBOrlncrBwfENUf4UQF2uBB6ZkNXGhnkv76R9uSCrR/cKp9UbavouUlmBjoJt2Hn18oPEpYbQsT23j/qAE5y7EBAojl9senrFvuH/PFNx5D7BgWsCEO6gGiJCoeVs4v2+4fZ/jz/y94kR10oyQGyNEL5CMngMqPzQTVWwqTLqxlAGLQXJo6JQHOwYKIYDYmzOqP0Jnqwhx85/psswtBlz4SArEabuCr57hZOOlaUsESzpxrW10y9vfOBNYiB448uwxuNoCuigcdDjfbuTQVeeaDFAAQQCw//v56U3R4Kh8Qg9sf0KGFC5Pt83ORD/06HjrN0nJ11nF8CevZt7dSoBoPWUxdUPbGQrcqBmCKxxnKx19c/X/8xTUNTzL22gFLQH/YrU6gmX5KA5ybhR0ewaxo1R+wvbX33sfnTvj0v/3xSejCm7sG+FZooAP029lpXVJxTXe/7iRrtA90PCMw4SjDSnsQXWoU2Q1b4w9qoyJvuyMWAAQQC7D7yo1chYGI869vK9isyQmANXRBi7xKjCK6QWt91tw5WILLMFBVhy5mJaH9TGJu4KmAb9V419j4K1nbF5Exeu0hb7YT6fKVB5QGOAfSScaszCx/kOWACUqJCCMUzry8SdLKCmCVi1JS/fz7m4OWiepb5k5N5Grv9Kub8AsIYna3LgW2i++Abq8gJ0GBAEAAsQAbtcyEAunvv38MnWeWTSdk2INPL7DuLlbil7rnJmdqBhpKAC3EE+MUBGIgzSUIGmJYAaQLArZWt5HjAdAFyMBqLxcaKAqg0orY+zyxlhrMHN8RJRXzT7SOiwawR3wDX2nNy8Z1hdTI4GJBbVMBmwk0TVSgoy73PD7nssC1Mv5w8ORYpJJKYZV7faiXgsU10PVQaft6ZqPf50wMAAggUKKSBdKHqTHQefvDYxVs4sCE9Gq2Uyl40hh0rzGw7VX66tv72lffPzDf+fA04tX39xEczGzTTr28LoY8S08suBQ9X89wefIFWAAoLozcH6BsvZGcBf3IjWbQEl9kOdDpc7A5usBtNf3bH57yAg2qCnLwfgC2jxaj3/BNfvVH2zbVJp/2XBh72a09VnG72xfD4t97c8XWCXa5hfn6wRuSNL2UyTEfIIBYQLcHgAJKd1niZugVn2Qnrpvvsc//bfRuzce1YQJ0Eoq/kg1Dho5fVsaBfqlz4bMCSbUXdMQQKEGBejXQe2MVJpxf4zDz8uZ0UHXWapFSnalL3KoH5B4fC1qiQgbrvVpA91AXUiOSOVk46FpSbXlwXCdiZ+NKSwmdY6Bhlyg1F2VYSbXVt8MbVFKBGuz3P71QQr/klxgAEEDwIQXYCkPYIn1yEheokYpLzkBE9QIbM7NOuKoTQ7CKPfjUFTS9jk4yhtqr7x40C1W2J2vMCtarAVZR229/fKL2NnWTMQuwChOc7fMn60A/WM0O/y6GS2/uhUMP5mdAb0+C5iLvfHzKAhpvY2Fk/kOPcR1gKY3SIQDtOqalfT4KlleQt8qZrEyHz2bE7WlfDFrLdjRkKtkrRQACiAXbuNSZV7dETFdSfIArCljoWhm36s6+rcBqYtP2hye/rry1n2HT/aMM3/+gTsYDI3UVMFGFU2IXaNAWxgad4gfMJLAGvMK7H58Z3v78tBJngDAxgyZ0QeHyV5FPgi5nVwKr3K8DOVh5JnxmMKz3t8ilMpZS8wACCOvgJ2htOqhKBF0XBszhU6mRuEARBKqaOKe5wXfiMDIyMoC2tNeYxn3SE1bih4nbrctbfChoUiw1Agw03QSkipHFIhmcQTt2mN9+/ygMGk/iZ+d5D5vCAV0v8vv/X1CbBpza7316xqjEJ0XTxAVaScswjABAAOEdUQe1Q4BYEe0QfbLBFPv8nuMvrloucath1BSUg5sFbLA7Vhyb9X/KpXUMX6FnZlquzmY5Hjo1klYeB42CA/ErbEMKv//+gS89+fPvHyiMftMyEthZWH8hT3H9Z/jHNJQTFUAAEeV42HF/oEt6CY0FgUbo8cmfDZ8VnLy343jRkan/uaa7g862/C8+J2Bf59ll4AQF2vwAOiLxYPCkaFtgiUXvAAGNov9Bui7k9z/aT+6CSipolTssAEAAkeQRIhrzCu9/fBJk4JfGOyxwLGRapN6yJB5gewp8kaK2sAKwFCtgQJ50PvD0wn/QScDayxKE6Hn4Bqikgg0+wq4A0RZSuEHTkoqZ9Rc08WKs9nSWMd7DycIO3+JvJKp2Dp9ZSHFDDMCoeYjdKAwbmsS2PxEggMg+nhF0XpLpynSMxjz6DlxcALRzd9ntPdEt5slzwNXM/7/MUy9t+FN3Yi7Dp1/fkAZOJUHzh5suRs6j6f3E+YcnF0EHUcEAdLJfl3VGua2U3qOhUDoEbK2euPHeUT8GOt1xgy+eAQIIZ6LafP+43p//f1hAB6X+/f+fCVQl/AW2L0BnH/2GskF01fHZmz//wmhnPlDgk3xAzPXr1muzlx57djUKWQw08j7bqRR09hS45ALZGb69sRPYqF9N7Z3KoEnV1L3ds6GR8aDdKq2ywjhqxVCpakBjTr6bKzcz0PHCJFAP/WTodJw9dIAAwltSUeGWBoKHm0Eb5csvvrkT0WuTxZCu6wc+wAwkvubOwf/p+3sYQMMAoK7+DMdihgXXdyw5HEydniG6H9UEZXfdjFnsPlQSFNpWeTjgZuNk4GPlYnj+9S09nPFglWdDeChSZgcIILyJCtQjUV0UfYcKueBBlWlMe6tFyixcCmZc2eihCCzdOFk4rsftaoWfVy7LK8awxbcDPuRw4sW1/75bqs6IcPC9QR6PIheoLo7efefDUxeYOym9tZ0eALRcevXtAyHo8aIiIAPeTHLzPaTGlueTYHgIPWiXluB85BxB0AVVMD5AABFsU4HOjtJagji1hNLEtcGnNRDfwi/QYf7bHpzM8pA3Y1jp0SAB7A2CU9eEC2v+A3uM4AM8NIXkQddnxEtwCS3y2lw+fZtvJ0VnVaGdMf4AdOfNUrfaaFxnSQwU2P34jJrbhpKd6HEBSjxxmu4MTWaJ4ObCkeeX/7tvKGEAndPOzMzMIM8jznDv4zOalVToGREggIhqqIN6QYbLU85Tq95mZmK6dz1msYYqvzTW8Z/2s0ujgD2Kc8BG8vvonc0vgA1QsDjo/PP9QRPhh3mUHZ3xv/scuPnzwFZa70ijeVK9o7TBPUrcBjrb6fCzS3Z7H593vvT2rp6NlO4RB2n9/bQ8JIwYIDTb9zz04klwHHCycgDDQ4ZBU0CeAXa2J+jAk40+rQye8ubwk5sjdzQxgM6sUAB2eL7//snw8ts7micqgAAiufeHtP+fgdL2ljAH37s3qZtwnpkAOrtp16Mzbkp8Eir7AifES3ELgxMTsHPwv/3MUshAGyMjqHqEB2Ty3s66K+8eaONrSA5FAFpNkHGg76gavwzD+59fGOSAzYLdAb3gGy1ufnj8ANgTl4d1mEAnEB4ImvgXWCWBh4w6zy2LOPrssjXy6gRi25nEFBDoy2MAAoiia0TufXrOmLK3ax6FV4M9MBXXOIN8fgCWsZOpW307sutOzvuPfKNTlLoLw1K3GnBiuvjm7ker1Vl836BziRt92kCLDRO3PzrlOdE2J99cXPPFUExMN94/Yk/e1zUvVNlhdYFByIYX397F6SxNWPj2xyew/HrvFngvufTo9P895xDTmgr8EgcsJbRPLHOrrSSnNCQGgC6l3Id27ipAAFH1vr+TL69LxOxqWQxs+KqQkcgegK5fw3dyTMDWmomnXl43+/f/n8Xp8Fngc8R///vL5L6x5C8wYUMG/1g5QVeEgOVefn8fp7k4biH4EiJGxgdZun7Tb394prrLvzt1MCck0Lr7c69uG4I29Sbsbnt+A9rwBvayGIC9LHACitrZ/B9W7ekKKzEcD5smAdpDCUp0AduqvZX5pO8AM1w1MfZBlyXxkFMwADtg6egdMIAAouklkqDdGPG72xcCu718JDj4wXTHoswMHb8duBScfnVDrP7EvMZgFYe1wJJyN0zcSEyN4WTYdHCVsOfx2f+uGyDzyKCJ64uRcz8BA58fFOhKCyMXglZHAEvINf8Z/oNy2/4uq4xpA5GAak/MTdn84Jivn6L1Rnd5s102q3Meg3vDjsUM6Tq+4ATktrHk/+5HkHsyQcd+b/RuBYsjX+QECrcAZZsN0HVeRAHQWnVgOHBQ0oxZ6dlgjj52CBBAdL1DGbQFveDw5M2g5cnEJC7085qwgYidjZ2X397TcZEx8ZpolwsO7PqT8/83nVoIT1CXo+Y/1BZSUEBOUFrAHuTl6AXgMbGe8yv/lx6BrJaebJ/PIMMjCtqdHXzl3X0dThb2b3rCypetJXWOGIupndUUlCfqgkdQrxnoLt3DTy/bnX19yxi0QwZYYgqYiKmfmeZQuAN0OaXKoqj/oNNvVAVkGG7FLsFwe5lxJEOnVTpYPG1fz//ZV7dAShY2LpDbV8jxiEUGb6/rjVF3XRqoZHuOGHeBhomAvfkbaIfbUW04AQQAAoguiQq00bPjzLJKcm7NBEbqDeSF+vjAxItrA1bc3ht+4vk1C5A9yAnqOTBBKUMTlAA7D8PjxNUSwKryJbA0/R+wBVJLeCtYgBr94EgM2lb7f/3dwwyKfJIM9+KXg8WApe7/RTd2ghvCH9K2gsVyDk78D7tAAHaTKWj4o/Aw5BqcO3HLVijzS0Ui36FzAVhq6oso8wPbfH+MVqSC9wjk6AWCEjQjZDA46/+JF5CNRaClQas8GhihveL/VcdmP9AXVbmUpx80MUnTax+x4QjMINwGy5MvATO0EhWjFuu4HkAAUX1mvPHUgoT2s8sqQWu3qTEEAUwEGqDeiIqA9J3bsUtd8akFrasGYRg/cmdTe+PJ+SzFRhESjusKwAkK1Fs8GzF7BShBgY4vgiUoUHd8sVsNeCf2itv7wAkKMsqO2CB088MjuFoY+PMPsY/08+9vaaBExcuGmM8FtnsiakxjIwOV7JjZmVn/gq6GC91ezwcsmUBb4VgqTaLBPVlgKc4ArP7++yhYMgJ7aU5S84L2gcxeffvAA7NPmat1hBUuVxhHs1UaR5O0DAdYSoqYrCB+waU4lyDDmx8fGYisTbACgACieqICFq/K1EpQSEAB2PhXACUu0GVKxHaNl7vXwXs9wNKOcerlDT5zr21NXnpz9/ZwNUdW81UZ8jD5mU7F4LuRQRcrJe1BrDRWF5CDs2+9h2yDBLbZEInqP1Ki+vUNdHQ1Ay8bJ1Ki2gO6Ug20M+cf+I6dG7vBO7Krj8/532qZwthmmcoImo4CiYVsr2PI0w/OOvb8qnW3TWYg8pnrpAK0c0WJAqCdQC+S1+sSO6wA2rqHTRwggKieqEBrr8Q5hV72nl9ZzED9SU6FzfeP5wA97FNvntDYYJawgBTN2boBW0AYxv+SsYMRdEA+sPrKnndtm/aR55fqbrx/rI68xBk04AoCoIWE8KtsmRHB9vsvYhn7p1/fwLuseVkRJRXoGjXQcAeouotUcwEnKtDYztaHJ64ceX55IbDzcHm9dwsPsIpGXlJMdqdh56NTGh4by7aTGvYgN31K36YL44NmPoCl+Hpc5oDUnwidbo5NDiCAaNam6jm/IqT0yIxuBtrPnj+ADPjxfCo3jugMV3VeTs69y/jH454x3nz/WPPh55dy9z89V3r57Z34mx+fREBX3oJOaHn9/aOIHK/YI05m9h+iXPyvgZnqBYgPbIDfkeYWeQza2kXrduv6e4eNgrbWriUzvLG2jbDc7vEAFM6E9lUCBBDNG+o7Hp7SAEaGwp2PT1SuvL2vDazjTbCcukerhPeAloltMABQlZ5zYMJkSgaf8U2iQ7f6KxHTpoUBgACi65ACJSP3wNJB8vGX1zJ3gYkTWKVoAntHFkirC4ZcYgNdG/zkK8g/T5Wuv3+kdfH1Hf1Lb+7p/f6HceAZLUt6ghcpkAMAAmhIJCp0AOw9dQMbtyE0CHDwvcBlRpGdUeouS9ETG7bEfeH1HYPr7x9qAXtLTHRMDFTxK+jQFQsJLapPXwEE0JBKVLBjboZAhNEtYfgrWW+qMY1vJnGf5oONPm3+fopWl2jhKIAAGhI7ONSXxO689f6x2mhiQiQK9KtHSNE706kknVYJCgQAAmhQJyrQxk7o9vTRxARNEKD1XbCTWsjRDxqKSdP22UVLRwIE0JCp/kAz911nl5eSmMAewBigtVs+ilZbQJPH+iLKF9Dnq0BgwsU1AYWHpqyndkLwkDfbAbpJde3dgyYh2+pPk2OGsZjauTPhs4JxRiTuwUpwO7HTKr2c2ENKKAUAATQkG+pFR6bl9Z9fVSjOJfjKT8l6I+h4QV0R5cug018GQXvtgZWk9rG5zuVJ6ONTZGwkIfp6NqQTbxgydP1mTnco6hio+AEIoCGZqKgNOKa73fz555cauYkIdJzlAteKOD1hZZyJGnTPTdHhqcSeFf+AlHGhwQYAAmhEJyrQWJHZqoyTpJYewBLoxgLXykRSVpMSWUo9AF3giXxC8FAEAAE0WlIxQMafTry4arnq9v7wLQ+O+yCNOSnAInqRa3UssJp9QI75Gfv7KmZe2dSOLzGBqvIXyevNh0N4AgTQaKKiAwAts+ZkYbvJwcwuAjuyaDgDgAADAKOErXK2XJx9AAAAAElFTkSuQmCC" alt="GNIDA Logo" className="w-20 h-auto object-contain" />
@@ -8523,13 +8760,13 @@
                                             </div>
 
                                             {/* PAGE 2: ENCLOSURES */}
-                                            <div className="paper-page print-break text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed">
+                                            <div className="paper-page print-break bg-white text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed min-h-[1123px]">
                                                 <div className="font-bold text-lg mb-4 uppercase underline">LIST OF ENCLOSURES :-</div>
                                                 <div className="space-y-4">
                                                     <div className="flex items-start gap-4">
                                                         <span className="font-bold">1.</span>
                                                         <div className="leading-normal">
-                                                            Processing fee Rs. 1000/-(Rupees One Thousand) Non-refundable/non adjustable through Account's Payee Demand Draft/Pay Order No. <span className="inline-block min-w-[150px] border-b border-black text-center font-bold bg-rose-50 px-2"><Var name="processingFeeDraftNo">{tmAppData.processingFeeDraftNo}</Var></span> dated <span className="inline-block min-w-[120px] border-b border-black text-center font-bold bg-rose-50 px-2">{tmAppData.processingFeeDate ? new Date(tmAppData.processingFeeDate).toLocaleDateString('en-GB') : ''}</span> in favour of Greater of Noida Industrial Development Authority payable on <span className="inline-block min-w-[200px] border-b border-black text-center font-bold bg-rose-50 px-2"><Var name="processingFeeBank">{tmAppData.processingFeeBank}</Var></span> bank of Noida/Delhi/New Delhi.
+                                                            Processing fee Rs. 1000/-(Rupees One Thousand) Non-refundable/non adjustable through Account's Payee Demand Draft/Pay Order No. <span className="inline-block min-w-[150px] border-b border-black text-center font-bold bg-rose-50 px-2"><Var name="processingFeeDraftNo">{tmAppData.processingFeeDraftNo}</Var></span> dated <span className="inline-block min-w-[120px] border-b border-black text-center font-bold bg-rose-50 px-2">{tmAppData.processingFeeDate ? new Date(tmAppData.processingFeeDate).toLocaleDateString('en-GB') : ''}</span> in favour of Greater Noida Industrial Development Authority payable on <span className="inline-block min-w-[200px] border-b border-black text-center font-bold bg-rose-50 px-2"><Var name="processingFeeBank">{tmAppData.processingFeeBank}</Var></span> bank of Noida/Delhi/New Delhi.
                                                         </div>
                                                     </div>
 
@@ -8579,7 +8816,7 @@
                                             </div>
 
                                             {/* PAGE 3: AFFIDAVIT PART 1 */}
-                                            <div className="paper-page print-break text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed text-justify">
+                                            <div className="paper-page print-break bg-white text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed text-justify min-h-[1123px]">
                                                 <div className="text-[9.5pt] text-gray-700 text-justify mb-4 leading-tight">
                                                     <span className="font-bold underline">CAUTION</span>
                                                     <div className="mt-1">
@@ -8595,10 +8832,16 @@
                                                         We, Shri / Smt / Km. <span className="border-b border-black inline-block min-w-[300px] text-center font-bold bg-rose-50 px-2"><Var name="transferorName">{tmAppData.transferorName}</Var></span> (Name of Transferor)
                                                     </div>
                                                     <div>
-                                                        S/o, W/o, D/o Shri <span className="border-b border-black inline-block min-w-[300px] text-center font-bold bg-rose-50 px-2"><Var name="transferorParentName">{tmAppData.transferorParentName}</Var></span> and
+                                                        S/o, W/o, D/o Shri <span className="border-b border-black inline-block min-w-[300px] text-center font-bold bg-rose-50 px-2"><Var name="transferorParentName">{tmAppData.transferorParentName}</Var></span>
                                                     </div>
                                                     <div>
+                                                        R/o <span className="border-b border-black inline-block min-w-[500px] text-center font-bold bg-rose-50 px-2"><Var name="transferorAddress">{tmAppData.transferorAddress}</Var></span> and
+                                                    </div>
+                                                    <div className="pt-2">
                                                         Shri / Smt. / Km. <span className="border-b border-black inline-block min-w-[300px] text-center font-bold bg-rose-50 px-2"><Var name="transfereeName">{tmAppData.transfereeName}</Var></span> (Name of Transferee)
+                                                    </div>
+                                                    <div>
+                                                        S/o, W/o, D/o Shri <span className="border-b border-black inline-block min-w-[300px] text-center font-bold bg-rose-50 px-2"><Var name="transfereeParentName">{tmAppData.transfereeParentName}</Var></span>
                                                     </div>
                                                     <div>
                                                         R/o <span className="border-b border-black inline-block min-w-[500px] text-center font-bold bg-rose-50 px-2"><Var name="transfereeAddress">{tmAppData.transfereeAddress}</Var></span>
@@ -8621,7 +8864,7 @@
                                             </div>
 
                                             {/* PAGE 4: AFFIDAVIT PART 2 */}
-                                            <div className="paper-page print-break text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed text-justify">
+                                            <div className="paper-page print-break bg-white text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed text-justify min-h-[1123px]">
                                                 <div className="text-center font-bold mb-3">OR</div>
                                                 <div className="mb-4 pl-4">
                                                     A certified copy of valid extension letter till the date of filing of transfer application is enclosed.
@@ -8657,7 +8900,7 @@
                                             </div>
 
                                             {/* PAGE 5: AFFIDAVIT PART 3 */}
-                                            <div className="paper-page print-break text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed text-justify">
+                                            <div className="paper-page print-break bg-white text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed text-justify min-h-[1123px]">
                                                 <ol start="14" className="list-decimal list-outside ml-6 space-y-3">
                                                     <li className="pl-2">That the Transferee shall execute the Transfer Deed in 60 days from the date of issue of Transfer Memorandum, and thereafter of its acceptance by the Authority, shall be entitled to lease hold rights for the remaining period of 90 years from the date of execution of original lease document of possession of the PLOT/INDEPENDENT HOUSE / FLAT whichever is earlier. The Transfer Deed shall be executed between Transferor or Transferee. Transfer deed executed by other than Transferor shall not be accepted.</li>
                                                     <li className="pl-2">That the Transferee shall not transfer the property without prior permission of the Authority.</li>
@@ -8672,7 +8915,7 @@
                                             </div>
 
                                             {/* PAGE 6: SIGNATURES */}
-                                            <div className="paper-page print-break text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed text-justify">
+                                            <div className="paper-page print-break bg-white text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed text-justify min-h-[1123px]">
                                                 <div className="flex flex-col items-end gap-16 mt-16 mb-24">
                                                     <div className="text-center w-56">
                                                         <div className="font-bold mb-1">Deponent 1</div>
@@ -8703,7 +8946,20 @@
                                             </div>
 
                                             {/* PAGE 7: BUYER AFFIDAVIT */}
-                                            <div className="paper-page print-break text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed">
+                                            <div className={`paper-page print-break bg-white text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed min-h-[1123px] ${tmAppData.includeBuyerAffidavit !== true ? 'print:hidden border-2 border-dashed border-gray-300 opacity-60' : ''}`}>
+                                                <div className="w-full bg-rose-50 border border-rose-200 rounded-lg p-2 mb-2 flex items-center justify-between text-xs font-bold text-rose-700 print:hidden select-none">
+                                                    <label className="flex items-center gap-2 cursor-pointer">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={tmAppData.includeBuyerAffidavit === true}
+                                                            onChange={(e) => setTmAppData(prev => ({ ...prev, includeBuyerAffidavit: e.target.checked }))}
+                                                            className="rounded text-rose-600 focus:ring-rose-500 w-4 h-4"
+                                                        />
+                                                        <span>Buyer Signature Affidavit (Page 7)</span>
+                                                    </label>
+                                                    <span className="text-[10px] uppercase font-black tracking-wider text-rose-400">Rs. 10 Stamp</span>
+                                                </div>
+                                                {tmAppData.includeBuyerAffidavit !== true && <div className="bg-gray-100 border border-gray-300 text-gray-500 text-[8pt] text-center p-1 mb-2 print:hidden w-full rounded-md">⚠ Excluded from Print — check the box above to include</div>}
                                                 <div className="text-right text-[10px] uppercase mb-4 text-gray-500 font-sans tracking-widest font-bold">Buyer Signature Affidavit</div>
                                                 <div className="text-center font-bold text-xl mb-6 underline font-sans">शपथ पत्र</div>
 
@@ -8751,7 +9007,20 @@
                                             </div>
 
                                             {/* PAGE 8: SELLER AFFIDAVIT */}
-                                            <div className="paper-page print-break text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed">
+                                            <div className={`paper-page print-break bg-white text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed min-h-[1123px] ${tmAppData.includeSellerAffidavit !== true ? 'print:hidden border-2 border-dashed border-gray-300 opacity-60' : ''}`}>
+                                                <div className="w-full bg-rose-50 border border-rose-200 rounded-lg p-2 mb-2 flex items-center justify-between text-xs font-bold text-rose-700 print:hidden select-none">
+                                                    <label className="flex items-center gap-2 cursor-pointer">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={tmAppData.includeSellerAffidavit === true}
+                                                            onChange={(e) => setTmAppData(prev => ({ ...prev, includeSellerAffidavit: e.target.checked }))}
+                                                            className="rounded text-rose-600 focus:ring-rose-500 w-4 h-4"
+                                                        />
+                                                        <span>Seller Signature Affidavit (Page 8)</span>
+                                                    </label>
+                                                    <span className="text-[10px] uppercase font-black tracking-wider text-rose-400">Rs. 10 Stamp</span>
+                                                </div>
+                                                {tmAppData.includeSellerAffidavit !== true && <div className="bg-gray-100 border border-gray-300 text-gray-500 text-[8pt] text-center p-1 mb-2 print:hidden w-full rounded-md">⚠ Excluded from Print — check the box above to include</div>}
                                                 <div className="text-right text-[10px] uppercase mb-4 text-gray-500 font-sans tracking-widest font-bold">Seller Signature Affidavit</div>
                                                 <div className="text-center font-bold text-xl mb-6 underline font-sans">शपथ पत्र</div>
 
@@ -8804,19 +9073,34 @@
                                             </div>
 
                                             {/* PAGE 9: JOINT AFFIDAVIT */}
-                                            <div className="paper-page print-break text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed flex flex-col justify-center">
-                                                <div className="text-right text-[10px] uppercase mb-8 text-gray-500 font-sans tracking-widest font-bold absolute top-10 right-10">Seller AND Buyer Signature Affidavit</div>
+                                            <div className={`paper-page print-break bg-white text-gray-900 font-serif relative p-10 text-[10.5pt] leading-relaxed min-h-[1123px] flex flex-col justify-between ${tmAppData.includeJointAffidavit !== true ? 'print:hidden border-2 border-dashed border-gray-300 opacity-60' : ''}`}>
+                                                <div>
+                                                    <div className="w-full bg-rose-50 border border-rose-200 rounded-lg p-2 mb-2 flex items-center justify-between text-xs font-bold text-rose-700 print:hidden select-none">
+                                                        <label className="flex items-center gap-2 cursor-pointer">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={tmAppData.includeJointAffidavit === true}
+                                                                onChange={(e) => setTmAppData(prev => ({ ...prev, includeJointAffidavit: e.target.checked }))}
+                                                                className="rounded text-rose-600 focus:ring-rose-500 w-4 h-4"
+                                                            />
+                                                            <span>Seller & Buyer Signature Affidavit (Page 9)</span>
+                                                        </label>
+                                                        <span className="text-[10px] uppercase font-black tracking-wider text-rose-400">Joint Stamp</span>
+                                                    </div>
+                                                    {tmAppData.includeJointAffidavit !== true && <div className="bg-gray-100 border border-gray-300 text-gray-500 text-[8pt] text-center p-1 mb-2 print:hidden w-full rounded-md">⚠ Excluded from Print — check the box above to include</div>}
+                                                    <div className="text-right text-[10px] uppercase mb-8 text-gray-500 font-sans tracking-widest font-bold pt-4">Seller AND Buyer Signature Affidavit</div>
 
-                                                <div className="mb-16 mt-8 leading-loose text-center text-[12pt] font-sans">
-                                                    This stamp paper is attached with this transfer form for the residential Plot / Flat / Shop / Property No. <span className="font-bold bg-rose-50 px-1 underline decoration-dotted decoration-gray-500 decoration-1 underline-offset-4 decoration-clone"><Var name="plotNo">{tmAppData.plotNo || '........'}</Var></span>{' '}
-                                                    Type / Block <span className="font-bold bg-rose-50 px-1 underline decoration-dotted decoration-gray-500 decoration-1 underline-offset-4 decoration-clone"><Var name="block">{tmAppData.block || '........'}</Var></span>{' '}
-                                                    Sector <span className="font-bold bg-rose-50 px-1 underline decoration-dotted decoration-gray-500 decoration-1 underline-offset-4 decoration-clone"><Var name="sector">{tmAppData.sector || '........'}</Var></span>{' '}
-                                                    Area <span className="font-bold bg-rose-50 px-1 underline decoration-dotted decoration-gray-500 decoration-1 underline-offset-4 decoration-clone"><Var name="area">{tmAppData.area || '........'}</Var></span> Sq. Mtrs. Vide Allotment No.{' '}
-                                                    <span className="font-bold bg-rose-50 px-1 underline decoration-dotted decoration-gray-500 decoration-1 underline-offset-4 decoration-clone"><Var name="allotmentNo">{tmAppData.allotmentNo || '................'}</Var></span>{' '}
-                                                    Situated in Greater Noida, Distt. Gautam Buddha Nagar.
+                                                    <div className="mb-16 mt-16 leading-loose text-center text-[12pt] font-sans">
+                                                        This stamp paper is attached with this transfer form for the residential Plot / Flat / Shop / Property No. <span className="font-bold bg-rose-50 px-1 underline decoration-dotted decoration-gray-500 decoration-1 underline-offset-4 decoration-clone"><Var name="plotNo">{tmAppData.plotNo || '........'}</Var></span>{' '}
+                                                        Type / Block <span className="font-bold bg-rose-50 px-1 underline decoration-dotted decoration-gray-500 decoration-1 underline-offset-4 decoration-clone"><Var name="block">{tmAppData.block || '........'}</Var></span>{' '}
+                                                        Sector <span className="font-bold bg-rose-50 px-1 underline decoration-dotted decoration-gray-500 decoration-1 underline-offset-4 decoration-clone"><Var name="sector">{tmAppData.sector || '........'}</Var></span>{' '}
+                                                        Area <span className="font-bold bg-rose-50 px-1 underline decoration-dotted decoration-gray-500 decoration-1 underline-offset-4 decoration-clone"><Var name="area">{tmAppData.area || '........'}</Var></span> Sq. Mtrs. Vide Allotment No.{' '}
+                                                        <span className="font-bold bg-rose-50 px-1 underline decoration-dotted decoration-gray-500 decoration-1 underline-offset-4 decoration-clone"><Var name="allotmentNo">{tmAppData.allotmentNo || '................'}</Var></span>{' '}
+                                                        Situated in Greater Noida, Distt. Gautam Buddha Nagar.
+                                                    </div>
                                                 </div>
 
-                                                <div className="flex justify-between items-end mt-24 px-12 font-sans">
+                                                <div className="flex justify-between items-end mb-24 px-12 font-sans">
                                                     <div className="text-center w-48">
                                                         <div className="font-bold mb-1">Deponent-1</div>
                                                         <div className="text-gray-600 font-bold border-t border-black pt-2">Transferor</div>
@@ -9633,6 +9917,7 @@
                         />
 
                     </div >
+                    )}
                 </ActiveFieldContext.Provider>
             );
         }
