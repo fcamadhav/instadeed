@@ -2584,6 +2584,7 @@
             const [crmFilterType, setCrmFilterType] = useState('');
             const [crmSearch, setCrmSearch] = useState('');
             const [crmFilterToday, setCrmFilterToday] = useState(false);
+            const [confirmDoc, setConfirmDoc] = useState(null); // doc type string when showing confirm modal
 
             useEffect(() => {
                 const saved = localStorage.getItem('madhav_saved_drafts');
@@ -3920,28 +3921,28 @@
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                                 {(activeAuthority === 'ALL') && (
                                     <>
-                                        <button onClick={() => setActiveTab('RENT')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                        <button onClick={() => setConfirmDoc('RENT')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
                                             <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
                                                 <i className="fa-solid fa-file-signature"></i>
                                             </div>
                                             <h3 className="font-bold text-sm text-slate-800 group-hover:text-blue-700">Rent Agreement</h3>
                                             <p className="text-[11px] text-slate-400 mt-1 leading-snug">Standard residential rent agreement</p>
                                         </button>
-                                        <button onClick={() => setActiveTab('ATS')} className="group bg-white border border-slate-100 hover:border-purple-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                        <button onClick={() => setConfirmDoc('ATS')} className="group bg-white border border-slate-100 hover:border-purple-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
                                             <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
                                                 <i className="fa-solid fa-file-contract"></i>
                                             </div>
                                             <h3 className="font-bold text-sm text-slate-800 group-hover:text-purple-700">Agreement to Sell</h3>
                                             <p className="text-[11px] text-slate-400 mt-1 leading-snug">Sale/purchase of property</p>
                                         </button>
-                                        <button onClick={() => setActiveTab('REG_RENT')} className="group bg-white border border-slate-100 hover:border-indigo-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                        <button onClick={() => setConfirmDoc('REG_RENT')} className="group bg-white border border-slate-100 hover:border-indigo-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
                                             <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
                                                 <i className="fa-solid fa-stamp"></i>
                                             </div>
                                             <h3 className="font-bold text-sm text-slate-800 group-hover:text-indigo-700">Registered Rent</h3>
                                             <p className="text-[11px] text-slate-400 mt-1 leading-snug">Authority format rent deed</p>
                                         </button>
-                                        <button onClick={() => setActiveTab('TM48')} className="group bg-white border border-slate-100 hover:border-orange-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                        <button onClick={() => setConfirmDoc('TM48')} className="group bg-white border border-slate-100 hover:border-orange-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
                                             <div className="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 group-hover:bg-orange-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
                                                 <i className="fa-solid fa-trademark"></i>
                                             </div>
@@ -3952,42 +3953,42 @@
                                 )}
                                 {(activeAuthority === 'GNIDA') && (
                                     <>
-                                        <button onClick={() => setActiveTab('GNIDA_PACKAGE')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2">
+                                        <button onClick={() => setConfirmDoc('GNIDA_PACKAGE')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2">
                                             <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
                                                 <i className="fa-solid fa-cubes"></i>
                                             </div>
                                             <h3 className="font-bold text-sm text-slate-800 group-hover:text-blue-700">GNIDA 5-in-1 Package <span className="ml-1.5 px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded font-black text-[8px] uppercase">Hot</span></h3>
                                             <p className="text-[11px] text-slate-400 mt-1 leading-snug">Fill all 5 documents in a single form</p>
                                         </button>
-                                        <button onClick={() => setActiveTab('KYA')} className="group bg-white border border-slate-100 hover:border-yellow-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                        <button onClick={() => setConfirmDoc('KYA')} className="group bg-white border border-slate-100 hover:border-yellow-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
                                             <div className="w-10 h-10 rounded-xl bg-yellow-50 text-yellow-600 group-hover:bg-yellow-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
                                                 <i className="fa-solid fa-id-card"></i>
                                             </div>
                                             <h3 className="font-bold text-sm text-slate-800 group-hover:text-yellow-700">Know Your Allottee</h3>
                                             <p className="text-[11px] text-slate-400 mt-1 leading-snug">KYA Verification</p>
                                         </button>
-                                        <button onClick={() => setActiveTab('TM_APP')} className="group bg-white border border-slate-100 hover:border-rose-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                        <button onClick={() => setConfirmDoc('TM_APP')} className="group bg-white border border-slate-100 hover:border-rose-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
                                             <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 group-hover:bg-rose-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
                                                 <i className="fa-solid fa-right-left"></i>
                                             </div>
                                             <h3 className="font-bold text-sm text-slate-800 group-hover:text-rose-700">Transfer Memo</h3>
                                             <p className="text-[11px] text-slate-400 mt-1 leading-snug">TM Application</p>
                                         </button>
-                                        <button onClick={() => setActiveTab('MUTATION')} className="group bg-white border border-slate-100 hover:border-indigo-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                        <button onClick={() => setConfirmDoc('MUTATION')} className="group bg-white border border-slate-100 hover:border-indigo-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
                                             <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
                                                 <i className="fa-solid fa-file-pen"></i>
                                             </div>
                                             <h3 className="font-bold text-sm text-slate-800 group-hover:text-indigo-700">Mutation Form</h3>
                                             <p className="text-[11px] text-slate-400 mt-1 leading-snug">Property mutation</p>
                                         </button>
-                                        <button onClick={() => setActiveTab('GNIDA_REGISTRY')} className="group bg-white border border-slate-100 hover:border-cyan-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                        <button onClick={() => setConfirmDoc('GNIDA_REGISTRY')} className="group bg-white border border-slate-100 hover:border-cyan-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
                                             <div className="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
                                                 <i className="fa-solid fa-book"></i>
                                             </div>
                                             <h3 className="font-bold text-sm text-slate-800 group-hover:text-cyan-700">Registry Format</h3>
                                             <p className="text-[11px] text-slate-400 mt-1 leading-snug">Official registry</p>
                                         </button>
-                                        <button onClick={() => setActiveTab('GNIDA_PTM')} className="group bg-white border border-slate-100 hover:border-teal-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2">
+                                        <button onClick={() => setConfirmDoc('GNIDA_PTM')} className="group bg-white border border-slate-100 hover:border-teal-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2">
                                             <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 group-hover:bg-teal-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
                                                 <i className="fa-solid fa-file-contract"></i>
                                             </div>
@@ -3997,7 +3998,7 @@
                                     </>
                                 )}
                                 {(activeAuthority === 'NOIDA') && (
-                                    <button onClick={() => setActiveTab('NOIDA_TRANSFER')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2 md:col-span-3 lg:col-span-4">
+                                    <button onClick={() => setConfirmDoc('NOIDA_TRANSFER')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2 md:col-span-3 lg:col-span-4">
                                         <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
                                             <i className="fa-solid fa-right-left"></i>
                                         </div>
@@ -4095,6 +4096,49 @@
                         <div className="border-t border-slate-100 py-6 text-center text-xs text-slate-400 font-medium">
                             &copy; {new Date().getFullYear()} Instadeed &mdash; Legal Drafting Suite
                         </div>
+
+                        {/* Document Confirm Modal */}
+                        {confirmDoc && (() => {
+                            const docMap = {
+                                RENT: { label: 'Rent Agreement', icon: 'fa-file-signature', color: 'blue', desc: 'Standard residential rent agreement with landlord, tenant, deposit & tenancy clauses.', price: '₹499' },
+                                ATS: { label: 'Agreement to Sell', icon: 'fa-file-contract', color: 'purple', desc: 'Sale/purchase agreement for residential property with payment schedule.', price: '₹999' },
+                                REG_RENT: { label: 'Registered Rent Agreement', icon: 'fa-stamp', color: 'indigo', desc: 'Official registered lease deed in authority-prescribed format.', price: '₹1,499' },
+                                TM48: { label: 'TM-48 Trademark Proxy', icon: 'fa-trademark', color: 'orange', desc: 'Authorisation form to represent clients before the Trademark Registry.', price: '₹249' },
+                                GNIDA_PACKAGE: { label: 'GNIDA 5-in-1 Package', icon: 'fa-cubes', color: 'blue', desc: 'Fill KYA + TM App + Mutation + Registry + PTM in one form.', price: '₹1,999' },
+                                KYA: { label: 'Know Your Allottee', icon: 'fa-id-card', color: 'yellow', desc: 'GNIDA allottee verification datasheet.', price: '₹199' },
+                                TM_APP: { label: 'Transfer Memo Application', icon: 'fa-right-left', color: 'rose', desc: 'GNIDA transfer of leasehold rights application.', price: '₹499' },
+                                MUTATION: { label: 'Mutation Form', icon: 'fa-file-pen', color: 'indigo', desc: 'Property title mutation application for authority records.', price: '₹299' },
+                                GNIDA_REGISTRY: { label: 'GNIDA Registry Format', icon: 'fa-book', color: 'cyan', desc: 'Sub-lease transfer deed format for GNIDA flats.', price: '₹1,999' },
+                                GNIDA_PTM: { label: 'Permission to Mortgage (PTM)', icon: 'fa-file-shield', color: 'teal', desc: 'GNIDA mortgage permission application for bank loans.', price: '₹399' },
+                                NOIDA_TRANSFER: { label: 'NOIDA Transfer Application', icon: 'fa-right-left', color: 'sky', desc: 'Transfer of leasehold rights under NOIDA Authority.', price: '₹499' },
+                            };
+                            const info = docMap[confirmDoc] || { label: confirmDoc, icon: 'fa-file', color: 'slate', desc: '', price: '' };
+                            return (
+                                <div className="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setConfirmDoc(null)}>
+                                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden" onClick={e => e.stopPropagation()}>
+                                        <div className="p-6 text-center">
+                                            <div className="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 shadow-sm">
+                                                <i className={`fa-solid ${info.icon} text-2xl`}></i>
+                                            </div>
+                                            <h2 className="text-xl font-extrabold text-slate-800 mb-1">{info.label}</h2>
+                                            <p className="text-sm text-slate-500 mb-4 leading-relaxed">{info.desc}</p>
+                                            <div className="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-full px-4 py-1.5 mb-5">
+                                                <span className="text-xs font-bold text-slate-500">Fee:</span>
+                                                <span className="text-lg font-extrabold text-blue-600">{info.price}</span>
+                                            </div>
+                                            <div className="flex gap-3">
+                                                <button onClick={() => setConfirmDoc(null)} className="flex-1 py-3 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-xl font-bold text-sm transition cursor-pointer">
+                                                    Cancel
+                                                </button>
+                                                <button onClick={() => { setConfirmDoc(null); setActiveTab(confirmDoc); }} className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer">
+                                                    <i className="fa-solid fa-pen-to-square mr-1.5"></i> Start Drafting
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })()}
 
                         {/* Login Modal */}
                         <LoginModal
