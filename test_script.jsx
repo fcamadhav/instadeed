@@ -4022,6 +4022,75 @@
                             </div>
                         </div>
 
+                        {/* Expiring Rent Agreements */}
+                        {savedDrafts.filter(d => d.type === 'RENT' || d.type === 'REG_RENT').some(d => {
+                            let endDate = d.data?.endDate;
+                            if (!endDate && d.type === 'RENT' && d.data?.startDate) {
+                                const parts = d.data.startDate.split('-');
+                                if (parts.length === 3) {
+                                    const end = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                                    end.setMonth(end.getMonth() + 11);
+                                    end.setDate(end.getDate() - 1);
+                                    endDate = end.toISOString().split('T')[0];
+                                }
+                            }
+                            if (!endDate) return false;
+                            const days = Math.ceil((new Date(endDate) - new Date()) / 86400000);
+                            return days <= 30;
+                        }) && (
+                            <div className="max-w-5xl mx-auto px-6 pb-6">
+                                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
+                                    <div className="flex items-center gap-2 mb-4">
+                                        <div className="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center text-amber-700">
+                                            <i className="fa-solid fa-hourglass-half text-sm"></i>
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold text-sm text-amber-900">Rent Agreements Expiring Soon</h3>
+                                            <p className="text-xs text-amber-700 font-medium">These agreements need renewal attention</p>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        {savedDrafts.filter(d => d.type === 'RENT' || d.type === 'REG_RENT').map(draft => {
+                                            let endDate = draft.data?.endDate;
+                                            if (!endDate && draft.type === 'RENT' && draft.data?.startDate) {
+                                                const parts = draft.data.startDate.split('-');
+                                                if (parts.length === 3) {
+                                                    const end = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                                                    end.setMonth(end.getMonth() + 11);
+                                                    end.setDate(end.getDate() - 1);
+                                                    endDate = end.toISOString().split('T')[0];
+                                                }
+                                            }
+                                            if (!endDate) return null;
+                                            const today = new Date(); today.setHours(0,0,0,0);
+                                            const expDate = new Date(endDate); expDate.setHours(0,0,0,0);
+                                            const days = Math.ceil((expDate - today) / 86400000);
+                                            if (days > 30) return null;
+                                            return (
+                                                <div key={draft.id} className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-amber-100 hover:shadow-sm transition-all">
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="font-bold text-sm text-slate-800 truncate">{draft.name}</div>
+                                                        <div className="text-xs text-slate-500 mt-0.5">
+                                                            <span className="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase mr-2">{draft.type}</span>
+                                                            <span>Ends: {new Date(endDate).toLocaleDateString('en-GB')}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center gap-3 shrink-0 ml-3">
+                                                        <span className={`text-xs font-extrabold ${days < 0 ? 'text-red-600' : 'text-amber-600'}`}>
+                                                            {days < 0 ? 'Expired' : `${days} days left`}
+                                                        </span>
+                                                        <button onClick={() => { setActiveTab(draft.type); loadFromLibrary(draft); }} className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition shadow-sm cursor-pointer">
+                                                            Load
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                         {/* Footer */}
                         <div className="border-t border-slate-100 py-6 text-center text-xs text-slate-400 font-medium">
                             &copy; {new Date().getFullYear()} Instadeed &mdash; Legal Drafting Suite
