@@ -3900,195 +3900,245 @@
                             </div>
                         </div>
 
-                        {/* Document Selection */}
-                        <div className="max-w-5xl mx-auto px-6 pb-16">
-                            {/* Authority Tabs */}
-                            <div className="flex items-center justify-center gap-1.5 mb-8 bg-slate-100 p-1.5 rounded-2xl border border-slate-200/50 max-w-md mx-auto">
-                                {['ALL', 'GNIDA', 'NOIDA', 'GDA', 'YEIDA'].map(auth => (
-                                    <button key={auth} onClick={() => setActiveAuthority(auth)}
-                                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                                            activeAuthority === auth
-                                                ? 'bg-white text-slate-800 shadow-sm border border-slate-200/30'
-                                                : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50/50'
-                                        }`}
-                                    >
-                                        {auth === 'ALL' ? 'All Documents' : auth}
-                                    </button>
-                                ))}
-                            </div>
+                        {/* Document Selection OR Details Page */}
+                        {!confirmDoc ? (
+                            <div className="max-w-5xl mx-auto px-6 pb-16">
+                                {/* Authority Tabs */}
+                                <div className="flex items-center justify-center gap-1.5 mb-8 bg-slate-100 p-1.5 rounded-2xl border border-slate-200/50 max-w-md mx-auto">
+                                    {['ALL', 'GNIDA', 'NOIDA', 'GDA', 'YEIDA'].map(auth => (
+                                        <button key={auth} onClick={() => setActiveAuthority(auth)}
+                                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                                                activeAuthority === auth
+                                                    ? 'bg-white text-slate-800 shadow-sm border border-slate-200/30'
+                                                    : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50/50'
+                                            }`}
+                                        >
+                                            {auth === 'ALL' ? 'All Documents' : auth}
+                                        </button>
+                                    ))}
+                                </div>
 
-                            {/* Doc Grid */}
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                                {(activeAuthority === 'ALL') && (
-                                    <>
-                                        <button onClick={() => setConfirmDoc('RENT')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                {/* Doc Grid */}
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                                    {(activeAuthority === 'ALL') && (
+                                        <>
+                                            <button onClick={() => setConfirmDoc('RENT')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                    <i className="fa-solid fa-file-signature"></i>
+                                                </div>
+                                                <h3 className="font-bold text-sm text-slate-800 group-hover:text-blue-700">Rent Agreement</h3>
+                                                <p className="text-[11px] text-slate-400 mt-1 leading-snug">Standard residential rent agreement</p>
+                                            </button>
+                                            <button onClick={() => setConfirmDoc('ATS')} className="group bg-white border border-slate-100 hover:border-purple-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                                <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                    <i className="fa-solid fa-file-contract"></i>
+                                                </div>
+                                                <h3 className="font-bold text-sm text-slate-800 group-hover:text-purple-700">Agreement to Sell</h3>
+                                                <p className="text-[11px] text-slate-400 mt-1 leading-snug">Sale/purchase of property</p>
+                                            </button>
+                                            <button onClick={() => setConfirmDoc('REG_RENT')} className="group bg-white border border-slate-100 hover:border-indigo-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                                <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                    <i className="fa-solid fa-stamp"></i>
+                                                </div>
+                                                <h3 className="font-bold text-sm text-slate-800 group-hover:text-indigo-700">Registered Rent</h3>
+                                                <p className="text-[11px] text-slate-400 mt-1 leading-snug">Authority format rent deed</p>
+                                            </button>
+                                            <button onClick={() => setConfirmDoc('TM48')} className="group bg-white border border-slate-100 hover:border-orange-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                                <div className="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 group-hover:bg-orange-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                    <i className="fa-solid fa-trademark"></i>
+                                                </div>
+                                                <h3 className="font-bold text-sm text-slate-800 group-hover:text-orange-700">TM-48 Auth</h3>
+                                                <p className="text-[11px] text-slate-400 mt-1 leading-snug">Trademark authorization form</p>
+                                            </button>
+                                        </>
+                                    )}
+                                    {(activeAuthority === 'GNIDA') && (
+                                        <>
+                                            <button onClick={() => setConfirmDoc('GNIDA_PACKAGE')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2">
+                                                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                    <i className="fa-solid fa-cubes"></i>
+                                                </div>
+                                                <h3 className="font-bold text-sm text-slate-800 group-hover:text-blue-700">GNIDA 5-in-1 Package <span className="ml-1.5 px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded font-black text-[8px] uppercase">Hot</span></h3>
+                                                <p className="text-[11px] text-slate-400 mt-1 leading-snug">Fill all 5 documents in a single form</p>
+                                            </button>
+                                            <button onClick={() => setConfirmDoc('KYA')} className="group bg-white border border-slate-100 hover:border-yellow-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                                <div className="w-10 h-10 rounded-xl bg-yellow-50 text-yellow-600 group-hover:bg-yellow-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                    <i className="fa-solid fa-id-card"></i>
+                                                </div>
+                                                <h3 className="font-bold text-sm text-slate-800 group-hover:text-yellow-700">Know Your Allottee</h3>
+                                                <p className="text-[11px] text-slate-400 mt-1 leading-snug">KYA Verification</p>
+                                            </button>
+                                            <button onClick={() => setConfirmDoc('TM_APP')} className="group bg-white border border-slate-100 hover:border-rose-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                                <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 group-hover:bg-rose-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                    <i className="fa-solid fa-right-left"></i>
+                                                </div>
+                                                <h3 className="font-bold text-sm text-slate-800 group-hover:text-rose-700">Transfer Memo</h3>
+                                                <p className="text-[11px] text-slate-400 mt-1 leading-snug">TM Application</p>
+                                            </button>
+                                            <button onClick={() => setConfirmDoc('MUTATION')} className="group bg-white border border-slate-100 hover:border-indigo-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                                <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                    <i className="fa-solid fa-file-pen"></i>
+                                                </div>
+                                                <h3 className="font-bold text-sm text-slate-800 group-hover:text-indigo-700">Mutation Form</h3>
+                                                <p className="text-[11px] text-slate-400 mt-1 leading-snug">Property mutation</p>
+                                            </button>
+                                            <button onClick={() => setConfirmDoc('GNIDA_REGISTRY')} className="group bg-white border border-slate-100 hover:border-cyan-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                                                <div className="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                    <i className="fa-solid fa-book"></i>
+                                                </div>
+                                                <h3 className="font-bold text-sm text-slate-800 group-hover:text-cyan-700">Registry Format</h3>
+                                                <p className="text-[11px] text-slate-400 mt-1 leading-snug">Official registry</p>
+                                            </button>
+                                            <button onClick={() => setConfirmDoc('GNIDA_PTM')} className="group bg-white border border-slate-100 hover:border-teal-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2">
+                                                <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 group-hover:bg-teal-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
+                                                    <i className="fa-solid fa-file-contract"></i>
+                                                </div>
+                                                <h3 className="font-bold text-sm text-slate-800 group-hover:text-teal-700">Permission to Mortgage (PTM)</h3>
+                                                <p className="text-[11px] text-slate-400 mt-1 leading-snug">Authority mortgage format</p>
+                                            </button>
+                                        </>
+                                    )}
+                                    {(activeAuthority === 'NOIDA') && (
+                                        <button onClick={() => setConfirmDoc('NOIDA_TRANSFER')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2 md:col-span-3 lg:col-span-4">
                                             <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
-                                                <i className="fa-solid fa-file-signature"></i>
-                                            </div>
-                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-blue-700">Rent Agreement</h3>
-                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Standard residential rent agreement</p>
-                                        </button>
-                                        <button onClick={() => setConfirmDoc('ATS')} className="group bg-white border border-slate-100 hover:border-purple-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
-                                            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
-                                                <i className="fa-solid fa-file-contract"></i>
-                                            </div>
-                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-purple-700">Agreement to Sell</h3>
-                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Sale/purchase of property</p>
-                                        </button>
-                                        <button onClick={() => setConfirmDoc('REG_RENT')} className="group bg-white border border-slate-100 hover:border-indigo-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
-                                            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
-                                                <i className="fa-solid fa-stamp"></i>
-                                            </div>
-                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-indigo-700">Registered Rent</h3>
-                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Authority format rent deed</p>
-                                        </button>
-                                        <button onClick={() => setConfirmDoc('TM48')} className="group bg-white border border-slate-100 hover:border-orange-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
-                                            <div className="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 group-hover:bg-orange-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
-                                                <i className="fa-solid fa-trademark"></i>
-                                            </div>
-                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-orange-700">TM-48 Auth</h3>
-                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Trademark authorization form</p>
-                                        </button>
-                                    </>
-                                )}
-                                {(activeAuthority === 'GNIDA') && (
-                                    <>
-                                        <button onClick={() => setConfirmDoc('GNIDA_PACKAGE')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2">
-                                            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
-                                                <i className="fa-solid fa-cubes"></i>
-                                            </div>
-                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-blue-700">GNIDA 5-in-1 Package <span className="ml-1.5 px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded font-black text-[8px] uppercase">Hot</span></h3>
-                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Fill all 5 documents in a single form</p>
-                                        </button>
-                                        <button onClick={() => setConfirmDoc('KYA')} className="group bg-white border border-slate-100 hover:border-yellow-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
-                                            <div className="w-10 h-10 rounded-xl bg-yellow-50 text-yellow-600 group-hover:bg-yellow-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
-                                                <i className="fa-solid fa-id-card"></i>
-                                            </div>
-                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-yellow-700">Know Your Allottee</h3>
-                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">KYA Verification</p>
-                                        </button>
-                                        <button onClick={() => setConfirmDoc('TM_APP')} className="group bg-white border border-slate-100 hover:border-rose-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
-                                            <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 group-hover:bg-rose-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
                                                 <i className="fa-solid fa-right-left"></i>
                                             </div>
-                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-rose-700">Transfer Memo</h3>
-                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">TM Application</p>
+                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-blue-700">NOIDA Transfer Application</h3>
+                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Official NOIDA transfer document</p>
                                         </button>
-                                        <button onClick={() => setConfirmDoc('MUTATION')} className="group bg-white border border-slate-100 hover:border-indigo-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
-                                            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
-                                                <i className="fa-solid fa-file-pen"></i>
-                                            </div>
-                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-indigo-700">Mutation Form</h3>
-                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Property mutation</p>
-                                        </button>
-                                        <button onClick={() => setConfirmDoc('GNIDA_REGISTRY')} className="group bg-white border border-slate-100 hover:border-cyan-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
-                                            <div className="w-10 h-10 rounded-xl bg-cyan-50 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
-                                                <i className="fa-solid fa-book"></i>
-                                            </div>
-                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-cyan-700">Registry Format</h3>
-                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Official registry</p>
-                                        </button>
-                                        <button onClick={() => setConfirmDoc('GNIDA_PTM')} className="group bg-white border border-slate-100 hover:border-teal-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2">
-                                            <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 group-hover:bg-teal-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
-                                                <i className="fa-solid fa-file-contract"></i>
-                                            </div>
-                                            <h3 className="font-bold text-sm text-slate-800 group-hover:text-teal-700">Permission to Mortgage (PTM)</h3>
-                                            <p className="text-[11px] text-slate-400 mt-1 leading-snug">Authority mortgage format</p>
-                                        </button>
-                                    </>
-                                )}
-                                {(activeAuthority === 'NOIDA') && (
-                                    <button onClick={() => setConfirmDoc('NOIDA_TRANSFER')} className="group bg-white border border-slate-100 hover:border-blue-200 rounded-2xl p-4 text-left transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer col-span-2 md:col-span-3 lg:col-span-4">
-                                        <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition-all mb-3">
-                                            <i className="fa-solid fa-right-left"></i>
+                                    )}
+                                    {(activeAuthority === 'GDA') && (
+                                        <div className="col-span-full bg-slate-50 border border-slate-100 rounded-2xl p-8 text-center">
+                                            <i className="fa-solid fa-lock text-slate-300 text-2xl mb-2 block"></i>
+                                            <span className="font-bold text-sm text-slate-600 block">GDA Formats Locked</span>
+                                            <span className="text-xs text-slate-400">Drafting templates coming soon</span>
                                         </div>
-                                        <h3 className="font-bold text-sm text-slate-800 group-hover:text-blue-700">NOIDA Transfer Application</h3>
-                                        <p className="text-[11px] text-slate-400 mt-1 leading-snug">Official NOIDA transfer document</p>
-                                    </button>
-                                )}
-                                {(activeAuthority === 'GDA') && (
-                                    <div className="col-span-full bg-slate-50 border border-slate-100 rounded-2xl p-8 text-center">
-                                        <i className="fa-solid fa-lock text-slate-300 text-2xl mb-2 block"></i>
-                                        <span className="font-bold text-sm text-slate-600 block">GDA Formats Locked</span>
-                                        <span className="text-xs text-slate-400">Drafting templates coming soon</span>
-                                    </div>
-                                )}
-                                {(activeAuthority === 'YEIDA') && (
-                                    <div className="col-span-full bg-slate-50 border border-slate-100 rounded-2xl p-8 text-center">
-                                        <i className="fa-solid fa-lock text-slate-300 text-2xl mb-2 block"></i>
-                                        <span className="font-bold text-sm text-slate-600 block">YEIDA Formats Locked</span>
-                                        <span className="text-xs text-slate-400">Drafting templates coming soon</span>
+                                    )}
+                                    {(activeAuthority === 'YEIDA') && (
+                                        <div className="col-span-full bg-slate-50 border border-slate-100 rounded-2xl p-8 text-center">
+                                            <i className="fa-solid fa-lock text-slate-300 text-2xl mb-2 block"></i>
+                                            <span className="font-bold text-sm text-slate-600 block">YEIDA Formats Locked</span>
+                                            <span className="text-xs text-slate-400">Drafting templates coming soon</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Expiring Rent Agreements */}
+                                {savedDrafts.filter(d => d.type === 'RENT' || d.type === 'REG_RENT').some(d => {
+                                    let endDate = d.data?.endDate;
+                                    if (!endDate && d.type === 'RENT' && d.data?.startDate) {
+                                        const parts = d.data.startDate.split('-');
+                                        if (parts.length === 3) {
+                                            const end = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                                            end.setMonth(end.getMonth() + 11);
+                                            end.setDate(end.getDate() - 1);
+                                            endDate = end.toISOString().split('T')[0];
+                                        }
+                                    }
+                                    if (!endDate) return false;
+                                    const days = Math.ceil((new Date(endDate) - new Date()) / 86400000);
+                                    return days <= 30;
+                                }) && (
+                                    <div className="mt-6">
+                                        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
+                                            <div className="flex items-center gap-2 mb-4">
+                                                <div className="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center text-amber-700">
+                                                    <i className="fa-solid fa-hourglass-half text-sm"></i>
+                                                </div>
+                                                <div>
+                                                    <h3 className="font-bold text-sm text-amber-900">Rent Agreements Expiring Soon</h3>
+                                                    <p className="text-xs text-amber-700 font-medium">These agreements need renewal attention</p>
+                                                </div>
+                                            </div>
+                                            <div className="space-y-2">
+                                                {savedDrafts.filter(d => d.type === 'RENT' || d.type === 'REG_RENT').map(draft => {
+                                                    let endDate = draft.data?.endDate;
+                                                    if (!endDate && draft.type === 'RENT' && draft.data?.startDate) {
+                                                        const parts = draft.data.startDate.split('-');
+                                                        if (parts.length === 3) {
+                                                            const end = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                                                            end.setMonth(end.getMonth() + 11);
+                                                            end.setDate(end.getDate() - 1);
+                                                            endDate = end.toISOString().split('T')[0];
+                                                        }
+                                                    }
+                                                    if (!endDate) return null;
+                                                    const today = new Date(); today.setHours(0,0,0,0);
+                                                    const expDate = new Date(endDate); expDate.setHours(0,0,0,0);
+                                                    const days = Math.ceil((expDate - today) / 86400000);
+                                                    if (days > 30) return null;
+                                                    return (
+                                                        <div key={draft.id} className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-amber-100 hover:shadow-sm transition-all">
+                                                            <div className="flex-1 min-w-0">
+                                                                <div className="font-bold text-sm text-slate-800 truncate">{draft.name}</div>
+                                                                <div className="text-xs text-slate-500 mt-0.5">
+                                                                    <span className="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase mr-2">{draft.type}</span>
+                                                                    <span>Ends: {new Date(endDate).toLocaleDateString('en-GB')}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex items-center gap-3 shrink-0 ml-3">
+                                                                <span className={`text-xs font-extrabold ${days < 0 ? 'text-red-600' : 'text-amber-600'}`}>
+                                                                    {days < 0 ? 'Expired' : `${days} days left`}
+                                                                </span>
+                                                                <button onClick={() => { setActiveTab(draft.type); loadFromLibrary(draft); }} className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition shadow-sm cursor-pointer">
+                                                                    Load
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
                                     </div>
                                 )}
                             </div>
-                        </div>
-
-                        {/* Expiring Rent Agreements */}
-                        {savedDrafts.filter(d => d.type === 'RENT' || d.type === 'REG_RENT').some(d => {
-                            let endDate = d.data?.endDate;
-                            if (!endDate && d.type === 'RENT' && d.data?.startDate) {
-                                const parts = d.data.startDate.split('-');
-                                if (parts.length === 3) {
-                                    const end = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-                                    end.setMonth(end.getMonth() + 11);
-                                    end.setDate(end.getDate() - 1);
-                                    endDate = end.toISOString().split('T')[0];
-                                }
-                            }
-                            if (!endDate) return false;
-                            const days = Math.ceil((new Date(endDate) - new Date()) / 86400000);
-                            return days <= 30;
-                        }) && (
-                            <div className="max-w-5xl mx-auto px-6 pb-6">
-                                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <div className="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center text-amber-700">
-                                            <i className="fa-solid fa-hourglass-half text-sm"></i>
-                                        </div>
-                                        <div>
-                                            <h3 className="font-bold text-sm text-amber-900">Rent Agreements Expiring Soon</h3>
-                                            <p className="text-xs text-amber-700 font-medium">These agreements need renewal attention</p>
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        {savedDrafts.filter(d => d.type === 'RENT' || d.type === 'REG_RENT').map(draft => {
-                                            let endDate = draft.data?.endDate;
-                                            if (!endDate && draft.type === 'RENT' && draft.data?.startDate) {
-                                                const parts = draft.data.startDate.split('-');
-                                                if (parts.length === 3) {
-                                                    const end = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-                                                    end.setMonth(end.getMonth() + 11);
-                                                    end.setDate(end.getDate() - 1);
-                                                    endDate = end.toISOString().split('T')[0];
-                                                }
-                                            }
-                                            if (!endDate) return null;
-                                            const today = new Date(); today.setHours(0,0,0,0);
-                                            const expDate = new Date(endDate); expDate.setHours(0,0,0,0);
-                                            const days = Math.ceil((expDate - today) / 86400000);
-                                            if (days > 30) return null;
-                                            return (
-                                                <div key={draft.id} className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-amber-100 hover:shadow-sm transition-all">
-                                                    <div className="flex-1 min-w-0">
-                                                        <div className="font-bold text-sm text-slate-800 truncate">{draft.name}</div>
-                                                        <div className="text-xs text-slate-500 mt-0.5">
-                                                            <span className="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase mr-2">{draft.type}</span>
-                                                            <span>Ends: {new Date(endDate).toLocaleDateString('en-GB')}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex items-center gap-3 shrink-0 ml-3">
-                                                        <span className={`text-xs font-extrabold ${days < 0 ? 'text-red-600' : 'text-amber-600'}`}>
-                                                            {days < 0 ? 'Expired' : `${days} days left`}
-                                                        </span>
-                                                        <button onClick={() => { setActiveTab(draft.type); loadFromLibrary(draft); }} className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition shadow-sm cursor-pointer">
-                                                            Load
-                                                        </button>
+                        ) : (
+                            /* Document Details Page */
+                            <div className="max-w-3xl mx-auto px-6 pb-16">
+                                <button onClick={() => setConfirmDoc(null)} className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 font-bold mb-6 transition cursor-pointer">
+                                    <i className="fa-solid fa-arrow-left"></i> Back to Documents
+                                </button>
+                                {(() => {
+                                    const docMap = {
+                                        RENT: { label: 'Rent Agreement', icon: 'fa-file-signature', desc: 'Standard residential rent agreement with landlord, tenant, security deposit, and tenancy clauses. Valid for 11 months with renewal option.', price: '₹499', badge: 'Most Popular' },
+                                        ATS: { label: 'Agreement to Sell', icon: 'fa-file-contract', desc: 'Legal contract for sale/purchase of residential property outlining payment schedules, possession date, and registration terms.', price: '₹999', badge: '' },
+                                        REG_RENT: { label: 'Registered Rent Agreement', icon: 'fa-stamp', desc: 'Official format registered lease deed compliant with state registration department guidelines. Includes stamp paper & registration details.', price: '₹1,499', badge: 'Recommended' },
+                                        TM48: { label: 'TM-48 Trademark Proxy', icon: 'fa-trademark', desc: 'Official authorisation form (TM-48) to represent clients before the Indian Trademark Registry under the Trade Marks Act, 1999.', price: '₹249', badge: '' },
+                                        GNIDA_PACKAGE: { label: 'GNIDA 5-in-1 Package', icon: 'fa-cubes', desc: 'Complete GNIDA documentation set — KYA + TM Application + Mutation + Registry + PTM. Fill once, generate all 5 documents.', price: '₹1,999', badge: 'Best Value' },
+                                        KYA: { label: 'Know Your Allottee (KYA)', icon: 'fa-id-card', desc: 'Greater Noida Authority official allottee verification datasheet to update owner database records.', price: '₹199', badge: '' },
+                                        TM_APP: { label: 'Transfer Memo Application', icon: 'fa-right-left', desc: 'Application for transfer of leasehold rights and allotment details under GNIDA authority rules.', price: '₹499', badge: '' },
+                                        MUTATION: { label: 'Mutation Form', icon: 'fa-file-pen', desc: 'Application form for property title mutation in municipal or Greater Noida authority records.', price: '₹299', badge: '' },
+                                        GNIDA_REGISTRY: { label: 'GNIDA Registry Format', icon: 'fa-book', desc: 'Sub-lease transfer deed format for residential flats under Greater Noida Authority with all prescribed schedules.', price: '₹1,999', badge: '' },
+                                        GNIDA_PTM: { label: 'Permission to Mortgage (PTM)', icon: 'fa-file-shield', desc: 'Official application to GNIDA requesting mortgage permission for housing/property bank loans.', price: '₹399', badge: '' },
+                                        NOIDA_TRANSFER: { label: 'NOIDA Transfer Application', icon: 'fa-right-left', desc: 'Transfer of leasehold rights and allotment details under NOIDA Authority regulations.', price: '₹499', badge: '' },
+                                    };
+                                    const info = docMap[confirmDoc] || { label: confirmDoc, icon: 'fa-file', desc: '', price: '—', badge: '' };
+                                    return (
+                                        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                            <div className="p-8 text-center">
+                                                <div className="w-20 h-20 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-5 shadow-sm">
+                                                    <i className={'fa-solid ' + info.icon + ' text-3xl'}></i>
+                                                </div>
+                                                {info.badge && (
+                                                    <span className="inline-block bg-blue-100 text-blue-800 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full mb-3">{info.badge}</span>
+                                                )}
+                                                <h2 className="text-2xl font-extrabold text-slate-800 mb-2">{info.label}</h2>
+                                                <p className="text-sm text-slate-500 max-w-md mx-auto mb-6 leading-relaxed">{info.desc}</p>
+                                                <div className="flex items-center justify-center gap-6 mb-6 text-sm">
+                                                    <div className="text-center">
+                                                        <div className="text-2xl font-extrabold text-blue-600">{info.price}</div>
+                                                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">One-time fee</div>
                                                     </div>
                                                 </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
+                                                <div className="flex gap-3 max-w-sm mx-auto">
+                                                    <button onClick={() => { setConfirmDoc(null); setActiveTab(confirmDoc); }} className="flex-1 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer">
+                                                        <i className="fa-solid fa-pen-to-square mr-1.5"></i> Start Drafting
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
                             </div>
                         )}
 
