@@ -2061,7 +2061,7 @@
                     setViewOnlyMode(true);
                     setViewOrderId(viewParam);
                     setActiveTab(null); // Set to null while loading
-                    fetch(`http://localhost:8000/orders/${viewParam}`)
+                    fetch(`${API_BASE}/orders/${viewParam}`)
                         .then(r => {
                             if (!r.ok) throw new Error("Document not found");
                             return r.json();
@@ -2585,6 +2585,7 @@
             const [crmSearch, setCrmSearch] = useState('');
             const [crmFilterToday, setCrmFilterToday] = useState(false);
             const [confirmDoc, setConfirmDoc] = useState(null); // doc type string when showing confirm modal
+            const API_BASE = '';
 
             useEffect(() => {
                 const saved = localStorage.getItem('madhav_saved_drafts');
@@ -3065,7 +3066,7 @@
             // --- CRM Functions ---
             const fetchCrmOrders = async () => {
                 try {
-                    let url = 'http://localhost:8000/orders?';
+                    let url = '${API_BASE}/orders?';
                     if (crmFilterStatus) url += `status=${crmFilterStatus}&`;
                     if (crmFilterType) url += `agreement_type=${crmFilterType}&`;
                     if (crmFilterToday) url += `today=true&`;
@@ -3082,7 +3083,7 @@
 
             const fetchCrmAnalytics = async () => {
                 try {
-                    const res = await fetch('http://localhost:8000/analytics');
+                    const res = await fetch('${API_BASE}/analytics');
                     if (res.ok) {
                         const data = await res.json();
                         setCrmAnalytics(data);
@@ -3179,7 +3180,7 @@
                 const details = extractCustomerDetails();
                 const payload = getActiveDataPayload();
                 try {
-                    const res = await fetch('http://localhost:8000/create-offline-order', {
+                    const res = await fetch('${API_BASE}/create-offline-order', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -3208,7 +3209,7 @@
                 const payload = getActiveDataPayload();
                 try {
                     // 1. Create order on backend
-                    const res = await fetch('http://localhost:8000/create-order', {
+                    const res = await fetch('${API_BASE}/create-order', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -3228,7 +3229,7 @@
                     if (orderData.order_id.startsWith('MOCK_ORD_')) {
                         // Simulate payment processing
                         alert("Razorpay is in local Mock Mode. Simulating checkout...");
-                        const verifyRes = await fetch('http://localhost:8000/verify-payment', {
+                        const verifyRes = await fetch('${API_BASE}/verify-payment', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
@@ -3259,7 +3260,7 @@
                             description: 'Legal Agreement Drafting Fee',
                             order_id: orderData.order_id,
                             handler: async function (response) {
-                                const verifyRes = await fetch('http://localhost:8000/verify-payment', {
+                                const verifyRes = await fetch('${API_BASE}/verify-payment', {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({
@@ -3307,7 +3308,7 @@
 
             const handleUpdateStatus = async (orderId, newStatus) => {
                 try {
-                    const res = await fetch(`http://localhost:8000/orders/${orderId}/status`, {
+                    const res = await fetch(`${API_BASE}/orders/${orderId}/status`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ status: newStatus })
@@ -3758,7 +3759,7 @@
                                                             <button
                                                                 onClick={async () => {
                                                                     try {
-                                                                        const r = await fetch(`http://localhost:8000/orders/${order.id}/upload`, {
+                                                                        const r = await fetch(`${API_BASE}/orders/${order.id}/upload`, {
                                                                             method: 'POST'
                                                                         });
                                                                         if (r.ok) {

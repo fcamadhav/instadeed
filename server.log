@@ -1,0 +1,56 @@
+2026-05-30 23:27:53,637 | INFO     | Database initialized
+2026-05-30 23:27:53,640 | WARNING  | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\fcama\AppData\Local\Programs\Python\Python314\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-05-30 23:28:11,568 | INFO     | Database initialized
+2026-05-30 23:28:11,569 | WARNING  | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\fcama\AppData\Local\Programs\Python\Python314\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-05-30 23:28:11,795 | INFO     | Default admin created (admin@instadeed.local / admin123)
+2026-05-30 23:28:16,867 | INFO     | GET /api/health -> 200 (0ms)
+2026-05-30 23:28:17,028 | INFO     | GET / -> 200 (48ms)
+2026-05-30 23:28:26,849 | INFO     | Database initialized
+2026-05-30 23:28:32,378 | INFO     | GET /api/health -> 200 (0ms)
+2026-05-30 23:28:34,475 | WARNING  | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\fcama\AppData\Local\Programs\Python\Python314\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-05-30 23:28:34,723 | INFO     | User logged in: admin@instadeed.local
+2026-05-30 23:28:34,730 | INFO     | POST /api/auth/login -> 200 (284ms)
+2026-05-30 23:28:43,509 | INFO     | Database initialized
+2026-05-30 23:28:48,990 | WARNING  | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\fcama\AppData\Local\Programs\Python\Python314\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2026-05-30 23:28:49,285 | INFO     | User logged in: admin@instadeed.local
+2026-05-30 23:28:49,291 | INFO     | POST /api/auth/login -> 200 (297ms)
+2026-05-30 23:28:51,413 | INFO     | API key created for user 7ca15b91-b72e-4bee-a7a3-c15f6bfde5fa
+2026-05-30 23:28:51,419 | INFO     | POST /api/keys -> 200 (85ms)
+2026-05-30 23:28:53,454 | INFO     | GET /orders -> 200 (7ms)
+2026-05-30 23:28:55,497 | INFO     | GET /api/logs -> 200 (3ms)
+2026-05-30 23:29:43,522 | INFO     | Database initialized
+2026-05-30 23:29:49,022 | INFO     | GET /api/health -> 200 (1ms)
+2026-05-30 23:29:51,131 | INFO     | GET / -> 200 (39ms)
+2026-05-30 23:29:53,187 | INFO     | GET /out.js -> 200 (2ms)
+2026-05-30 23:29:55,249 | INFO     | POST /api/auth/login -> 401 (4ms)
+2026-05-30 23:30:23,349 | INFO     | Database initialized
+2026-05-30 23:30:23,391 | INFO     | Default admin created (admin@instadeed.local / admin123)
+2026-05-30 23:30:28,887 | INFO     | GET /api/health -> 200 (0ms)
+2026-05-30 23:30:30,952 | INFO     | GET / -> 200 (1ms)
+2026-05-30 23:30:33,019 | INFO     | User logged in: admin@instadeed.local
+2026-05-30 23:30:33,026 | INFO     | POST /api/auth/login -> 200 (14ms)
+2026-05-30 23:30:35,077 | INFO     | New user registered: test@test.com
+2026-05-30 23:30:35,083 | INFO     | POST /api/auth/signup -> 200 (11ms)
+2026-05-30 23:30:37,123 | INFO     | GET /orders -> 200 (4ms)
+2026-05-30 23:30:39,208 | INFO     | GET /orders -> 401 (0ms)
+2026-05-30 23:30:41,303 | INFO     | POST /api/auth/login -> 401 (3ms)
