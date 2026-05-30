@@ -1,0 +1,134 @@
+const renderHomeDashboard = () => {
+                const templates = [
+                    { type: 'RENT', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Rent Agreement', desc: 'Standard residential rent agreement detailing landlord, tenant, security deposit, and tenancy clauses.', icon: 'fa-file-signature', color: 'blue', price: '₹499' },
+                    { type: 'ATS', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Agreement to Sell', desc: 'Legal contract for sale/purchase of residential property outlining payment schedules and registration terms.', icon: 'fa-file-contract', color: 'purple', price: '₹999' },
+                    { type: 'REG_RENT', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Registered Rent Agreement', desc: 'Official format registered lease agreement compliant with state registration department guidelines.', icon: 'fa-stamp', color: 'indigo', price: '₹1,499' },
+                    { type: 'MUTATION', auth: 'GNIDA', cat: 'AUTHORITY', label: 'Mutation Form', desc: 'Application form for property title mutation in municipal or Greater Noida authority records.', icon: 'fa-file-pen', color: 'emerald', price: '₹299' },
+                    { type: 'GNIDA', auth: 'GNIDA', cat: 'AUTHORITY', label: 'Know Your Allottee (KYA)', desc: 'Greater Noida Authority official allottee verification datasheet to update owner database records.', icon: 'fa-id-card', color: 'yellow', price: '₹199' },
+                    { type: 'GNIDA_REGISTRY', auth: 'GNIDA', cat: 'AUTHORITY', label: 'GNIDA Flat Registry Deed', desc: 'Sub-lease transfer deed format for residential flats under Greater Noida Authority.', icon: 'fa-book', color: 'cyan', price: '₹1,999' },
+                    { type: 'GNIDA_PTM', auth: 'GNIDA', cat: 'AUTHORITY', label: 'Permission to Mortgage (PTM)', desc: 'Official application to GNIDA requesting mortgage permission for housing/property bank loans.', icon: 'fa-file-shield', color: 'teal', price: '₹399' },
+                    { type: 'NOIDA_TRANSFER', auth: 'NOIDA', cat: 'AUTHORITY', label: 'Noida Transfer Application', desc: 'Transfer of leasehold rights and allotment details under Noida Authority rules.', icon: 'fa-right-left', color: 'sky', price: '₹499' },
+                    { type: 'ECOMM_TC', auth: 'ECOMMERCE', cat: 'ECOMMERCE', label: 'Website Terms of Service', desc: 'Standard terms and conditions agreement for e-commerce websites and digital services.', icon: 'fa-globe', color: 'rose', price: '₹299' },
+                    { type: 'ECOMM_PP', auth: 'ECOMMERCE', cat: 'ECOMMERCE', label: 'Website Privacy Policy', desc: 'GDPR, CCPA, and Information Technology Act compliant web privacy policy.', icon: 'fa-user-shield', color: 'violet', price: '₹299' },
+                    { type: 'ECOMM_RP', auth: 'ECOMMERCE', cat: 'ECOMMERCE', label: 'Refund & Return Policy', desc: 'Clear customer return, shipping, refund and cancellation rules for online merchants.', icon: 'fa-rotate-left', color: 'amber', price: '₹199' },
+                    { type: 'TM48', auth: 'ALL', cat: 'TRADE', label: 'TM-48 Trademark Proxy', desc: 'Official authorisation form to represent clients before the Indian Trademark Registry.', icon: 'fa-trademark', color: 'orange', price: '₹249' }
+                ];
+
+                const filtered = templates.filter(t => {
+                    const matchesSearch = t.label.toLowerCase().includes(librarySearch.toLowerCase()) || 
+                                          t.desc.toLowerCase().includes(librarySearch.toLowerCase());
+                    const matchesCat = libraryFilter === 'ALL' || t.cat === libraryFilter;
+                    return matchesSearch && matchesCat;
+                });
+
+                return (
+                    <div className="w-full max-w-6xl mx-auto space-y-8 animate-in fade-in duration-200">
+                        {/* Hero Header Banner */}
+                        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-blue-950 to-slate-950 p-8 lg:p-12 shadow-xl border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div className="space-y-3 text-center md:text-left z-10">
+                                <span className="px-3 py-1 bg-blue-500/10 border border-blue-400/20 text-blue-300 rounded-full font-bold text-[10px] uppercase tracking-wider">
+                                    ★ Document Library Suite
+                                </span>
+                                <h1 className="text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
+                                    Instadeed Template Vault
+                                </h1>
+                                <p className="text-xs text-slate-300 max-w-lg leading-relaxed font-medium">
+                                    Select from our range of 12+ authority-approved tenancy, transfer, registry, and corporate formats. Start drafting instantly with real-time field validation.
+                                </p>
+                            </div>
+                            <div className="w-full max-w-md bg-white/5 border border-white/10 rounded-2xl p-2.5 backdrop-blur-md z-10">
+                                <div className="relative">
+                                    <i className="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                                    <input
+                                        type="text"
+                                        placeholder="Search legal & authority formats..."
+                                        value={librarySearch}
+                                        onChange={(e) => setLibrarySearch(e.target.value)}
+                                        className="w-full pl-10 pr-4 py-3 bg-white/10 text-white placeholder-slate-400 border border-white/10 rounded-xl focus:border-blue-500 focus:bg-white focus:text-slate-800 focus:outline-none text-xs font-bold transition duration-200"
+                                    />
+                                </div>
+                            </div>
+                            <div className="absolute right-0 bottom-0 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl -z-0"></div>
+                            <div className="absolute left-1/4 top-0 w-40 h-40 bg-sky-600/10 rounded-full blur-3xl -z-0"></div>
+                        </div>
+
+                        {/* Category filter pills */}
+                        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                            {[
+                                { key: 'ALL', label: 'All Templates', icon: 'fa-cubes' },
+                                { key: 'REAL_ESTATE', label: 'Tenancy & Property', icon: 'fa-house-chimney' },
+                                { key: 'AUTHORITY', label: 'Authority Forms', icon: 'fa-building-columns' },
+                                { key: 'ECOMMERCE', label: 'E-Commerce Policies', icon: 'fa-cart-shopping' },
+                                { key: 'TRADE', label: 'Business & Trade', icon: 'fa-briefcase' }
+                            ].map(cat => (
+                                <button
+                                    key={cat.key}
+                                    onClick={() => setLibraryFilter(cat.key)}
+                                    className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer border ${
+                                        libraryFilter === cat.key
+                                            ? 'bg-blue-600 border-indigo-600 text-white shadow-md'
+                                            : 'bg-white border-slate-100 text-slate-600 hover:bg-slate-50 hover:text-slate-800 shadow-sm'
+                                    }`}
+                                >
+                                    <i className={`fa-solid ${cat.icon}`}></i>
+                                    {cat.label}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Templates Card Bento Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {filtered.length === 0 ? (
+                                <div className="col-span-full bg-white rounded-2xl border border-slate-100 p-12 text-center text-slate-400 font-medium">
+                                    <i className="fa-solid fa-magnifying-glass-minus text-3xl mb-3 block opacity-30"></i>
+                                    No templates match your search query. Try another keyword.
+                                </div>
+                            ) : (
+                                filtered.map(t => (
+                                    <div 
+                                        key={t.type} 
+                                        className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm flex flex-col justify-between hover:shadow-md hover:border-blue-100 hover:-translate-y-1 transition duration-300"
+                                    >
+                                        <div className="space-y-4">
+                                            <div className="flex items-center justify-between">
+                                                <div className={`w-11 h-11 rounded-2xl bg-${t.color}-50 text-${t.color}-600 flex items-center justify-center shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]`}>
+                                                    <i className={`fa-solid ${t.icon} text-base`}></i>
+                                                </div>
+                                                <span className="px-2 py-0.5 bg-slate-50 border border-slate-100 text-slate-500 rounded-full font-extrabold text-[9px] uppercase tracking-wider">
+                                                    {t.price}
+                                                </span>
+                                            </div>
+                                            <div className="space-y-1">
+                                                <h3 className="font-extrabold text-slate-800 text-sm leading-tight hover:text-blue-600 transition duration-150">
+                                                    {t.label}
+                                                </h3>
+                                                <p className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">
+                                                    {t.cat.replace('_', ' ')}
+                                                </p>
+                                            </div>
+                                            <p className="text-[11px] text-slate-400 font-medium leading-relaxed">
+                                                {t.desc}
+                                            </p>
+                                        </div>
+                                        <div className="pt-6 border-t border-slate-50 mt-6">
+                                            <button
+                                                onClick={() => {
+                                                    setActiveTab(t.type);
+                                                    setActiveAuthority(t.auth);
+                                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                                }}
+                                                className={`w-full py-2.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-${t.color}-600 hover:border-${t.color}-600 hover:text-white text-slate-600 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer`}
+                                            >
+                                                Start Drafting
+                                                <i className="fa-solid fa-arrow-right text-[10px]"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                );
+            };
+
+            

@@ -1,0 +1,3582 @@
+Step 0: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+kindly check this is there any mistakes 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T21:04:55+05:30.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from Gemini 3.1 Pro (High) to Gemini 3.5 Flash (High). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
+================================================================================
+Step 7: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T15:35:03Z
+Completed At: 2026-05-22T15:35:03Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"543351"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"858"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"49951"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"829108"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"499021"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 2 subdirectories and 52 files.
+================================================================================
+Step 66: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T15:42:32Z
+Completed At: 2026-05-22T15:42:32Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"543351"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"858"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"49951"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"829108"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"533912"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 2 subdirectories and 53 files.
+================================================================================
+Step 132: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+want to see this how can i
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T21:16:29+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 138: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+name this platform INSTADEED 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T21:17:29+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 156: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+INSTADEED make a good logo of this and name only instadeed
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T21:18:49+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 168: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+no spelling logo i need
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T21:19:38+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 172: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+need spelling logo like good brands
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T21:20:32+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 176: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+in a document way logo should reflect like
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T21:21:51+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 180: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+before this one was better
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T21:22:35+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 192: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+can u see this is the page which is opening and list is coming here can u please make a better one
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T21:23:58+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 209: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T15:56:14Z
+Completed At: 2026-05-22T15:56:14Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"655179"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"49951"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"490286"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"645735"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 2 subdirectories and 54 files.
+================================================================================
+Step 233: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+ok
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T21:29:03+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 261: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+i am making this a b2c platform some one can come nd make a rent greement and any docuent it want 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T21:34:18+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 270: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T16:04:46Z
+Completed At: 2026-05-22T16:04:46Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"665454"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"49951"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 2 subdirectories and 54 files.
+================================================================================
+Step 313: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T16:08:31Z
+Completed At: 2026-05-22T16:08:31Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"665454"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"49951"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 54 files.
+================================================================================
+Step 364: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T16:17:09Z
+Completed At: 2026-05-22T16:17:09Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"665454"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"49951"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 54 files.
+================================================================================
+Step 458: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+i want a google sign in 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T21:57:48+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 466: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+do it
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T21:58:26+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 477: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T16:29:10Z
+Completed At: 2026-05-22T16:29:10Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"665454"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"54939"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 54 files.
+================================================================================
+Step 560: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T16:34:39Z
+Completed At: 2026-05-22T16:34:39Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"665454"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"54939"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 54 files.
+================================================================================
+Step 619: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T17:18:06Z
+Completed At: 2026-05-22T17:18:06Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"665454"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"54939"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 54 files.
+================================================================================
+Step 725: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+i want a website type and after login customer can make agreements 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T23:00:39+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 729: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+and make ecommerce website types
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T23:05:16+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 740: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T17:35:55Z
+Completed At: 2026-05-22T17:35:55Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"56524"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 54 files.
+================================================================================
+Step 855: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T17:39:24Z
+Completed At: 2026-05-22T17:39:24Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"56524"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 54 files.
+================================================================================
+Step 920: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T17:41:06Z
+Completed At: 2026-05-22T17:41:06Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"56524"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 54 files.
+================================================================================
+Step 990: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+ok proceed
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T23:16:00+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1005: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T17:46:46Z
+Completed At: 2026-05-22T17:46:46Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"57400"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 54 files.
+================================================================================
+Step 1034: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T17:48:01Z
+Completed At: 2026-05-22T17:48:01Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"81809"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 54 files.
+================================================================================
+Step 1085: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T17:49:35Z
+Completed At: 2026-05-22T17:49:35Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"89896"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 54 files.
+================================================================================
+Step 1174: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T17:52:02Z
+Completed At: 2026-05-22T17:52:02Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"89896"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 54 files.
+================================================================================
+Step 1226: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+do it
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T23:24:16+05:30.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from Gemini 3.5 Flash (High) to Claude Opus 4.6 (Thinking). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
+================================================================================
+Step 1257: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+want to see this
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T23:31:36+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1261: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+no i want a good landing page not this a motion graphic ui ux page
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T23:32:47+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1270: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+i need both in one landing page and deed is this good or not
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T23:39:32+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1272: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T18:09:40Z
+Completed At: 2026-05-22T18:09:40Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"621769"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce","sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"55768"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 55 files.
+================================================================================
+Step 1282: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+remove e commerce
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T23:42:26+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1283: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+and only open that doument which is selected dont open all 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T23:43:13+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1302: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+no all are opening i want only that specific to open and i want something like this in landing page make like this 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T23:49:30+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1325: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+a more goog ui ux i want little motion graphics 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-22T23:58:19+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1335: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+more good attractive ui ux 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-23T00:07:48+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1344: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+wantto add legality digital signature also for esigning of agreement can u do this? i will give u the api key..
+u have chnaged the theme and no graphics are there website must be soothing
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-23T00:15:50+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1350: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+Continue
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-23T00:37:18+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1356: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-22T19:14:03Z
+Completed At: 2026-05-22T19:14:04Z
+{"name":"GNIDA KYC.pdf","sizeBytes":"35263"}
+{"name":"GNIDA_logo.png","sizeBytes":"21090"}
+{"name":"MUTATION Form.docx","sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html","sizeBytes":"622206"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce","sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html","sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html","sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html","sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html","sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html","sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html","sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html","sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html","sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html","sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html","sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html","sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html","sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc","sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html","sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf","sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md","sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx","sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx","sizeBytes":"21375"}
+{"name":"ats.docx","sizeBytes":"24631"}
+{"name":"ats_content.txt","sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf","sizeBytes":"3359495"}
+{"name":"check_jsx.py","sizeBytes":"3690"}
+{"name":"check_jsx_output.txt","sizeBytes":"51098"}
+{"name":"check_syntax.py","sizeBytes":"1077"}
+{"name":"clauses.zip","sizeBytes":"24770"}
+{"name":"convert_img.py","sizeBytes":"735"}
+{"name":"embed_logo.py","sizeBytes":"2126"}
+{"name":"extract_doc_strings.py","sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py","sizeBytes":"2335"}
+{"name":"final_injector.py","sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt","sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt","sizeBytes":"29358"}
+{"name":"identify_file.py","sizeBytes":"713"}
+{"name":"landing.html","sizeBytes":"55031"}
+{"name":"node_modules","isDir":true}
+{"name":"out.js","sizeBytes":"496063"}
+{"name":"read_docx.py","sizeBytes":"498"}
+{"name":"read_pdf.py","sizeBytes":"605"}
+{"name":"registered rent agreement","isDir":true}
+{"name":"scratch","isDir":true}
+{"name":"scratch_clean_state.py","sizeBytes":"723"}
+{"name":"scratch_extract.py","sizeBytes":"317"}
+{"name":"scratch_inject_preview.py","sizeBytes":"646"}
+{"name":"scratch_install.py","sizeBytes":"19213"}
+{"name":"scratch_merge.py","sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py","sizeBytes":"1414"}
+{"name":"scratch_revert.py","sizeBytes":"781"}
+{"name":"server.py","sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt","sizeBytes":"4483"}
+{"name":"test_script.jsx","sizeBytes":"656010"}
+{"name":"tm_aff_out.txt","sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 55 files.
+================================================================================
+Step 1381: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+https://esahayak.io/ check thi webiste for ui ux and policybazaar and design frontend
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T19:35:02+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1393: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+can i see
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T20:55:10+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1400: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+Continue
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T20:59:15+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1409: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+Continue
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:09:03+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1431: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+make logo like policybazaar
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:11:43+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1443: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+make similar way dont copy
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:17:18+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1452: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+match it with theme and style 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:20:44+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1460: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+need login with google
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:28:46+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1473: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+give only sign with google or mobie with otp
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:31:50+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1486: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+Continue
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:36:33+05:30.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from Claude Sonnet 4.6 (Thinking) to Gemini 3.5 Flash (Medium). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
+================================================================================
+Step 1492: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-26T16:06:40Z
+Completed At: 2026-05-26T16:06:40Z
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"622206"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"112648"}
+{"name":"node_modules", "isDir":true}
+{"name":"out.js", "sizeBytes":"496063"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_script.jsx", "sizeBytes":"656010"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 55 files.
+================================================================================
+Step 1554: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+do it
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:39:20+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1612: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+check is there any errors or some thing and check this screenshot attcahed
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:43:53+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1628: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+?
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:46:47+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1644: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+in this drafter i want that mobile number cannot exceed 10 digits do this tye of thing in aadhaar and pan and other places where u think and tell me where it is done
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:48:05+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1672: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+anyother u think
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:50:07+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1686: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+any other changes u think like a high end developer?
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:51:19+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1691: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-26T16:21:39Z
+Completed At: 2026-05-26T16:21:40Z
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"633224"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"113166"}
+{"name":"node_modules", "isDir":true}
+{"name":"out.js", "sizeBytes":"496063"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_script.jsx", "sizeBytes":"656010"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 55 files.
+================================================================================
+Step 1745: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+do it
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:55:18+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1821: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+what i am filling must be highligted in yellow in all drafts in yellow like name than name must be highlighted and page must show exactly the same which data is being filled
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T21:58:53+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1905: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+autoscroll not happening pls check again
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T22:02:51+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1917: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+need like this in all agreements as this is god
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T22:05:34+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 1975: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+who said to update this ?
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T22:08:26+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2024: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-26T16:40:00Z
+Completed At: 2026-05-26T16:40:00Z
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"657727"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"113709"}
+{"name":"node_modules", "isDir":true}
+{"name":"out.js", "sizeBytes":"496063"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_script.jsx", "sizeBytes":"656010"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 3 subdirectories and 55 files.
+================================================================================
+Step 2049: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+?
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T22:38:51+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2057: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T22:40:14+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2109: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+earlier the variables were highlighted in blue do u understand why chnaged
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T22:43:42+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2119: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+why agin and again?
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T22:44:35+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2125: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+do this
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T22:46:09+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2128: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-26T17:16:14Z
+Completed At: 2026-05-26T17:16:15Z
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"657964"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"__pycache__", "isDir":true}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"113709"}
+{"name":"node_modules", "isDir":true}
+{"name":"out.js", "sizeBytes":"496063"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_script.jsx", "sizeBytes":"656010"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 4 subdirectories and 55 files.
+================================================================================
+Step 2194: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+update logo and theme according to landing page
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T22:50:41+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2219: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+You are a code originality and IP-infringement auditor. I will share code from my project. Conduct a thorough review and report on the following:
+
+Verbatim copying risk — Identify any blocks that look like they were copied from well-known open-source repositories, tutorials, Stack Overflow, or documentation. Flag distinctive variable names, comment styles, or unusual implementations that match known sources.
+License contamination — Flag any code patterns that resemble GPL, AGPL, or other copyleft-licensed projects, which could impose licensing obligations on my project. Note any code that appears to come from a specific library without proper attribution.
+Boilerplate vs. original logic — Distinguish between (a) generic boilerplate/standard patterns that cannot be owned by anyone, and (b) substantive, distinctive logic that, if copied, would create real infringement risk.
+Algorithmic similarity — Note any algorithms or data structures that closely mirror patented or proprietary implementations.
+Recommendations — For each flagged item, suggest how to rewrite it to be clearly original, or what attribution/license compliance step is needed.
+
+Be specific: cite line numbers, explain WHY something is a risk, and rate each finding as HIGH / MEDIUM / LOW risk. Do not reassure me that everything is fine unless it genuinely is.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T22:56:12+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2238: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+again and again
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T23:01:34+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2244: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+fix these issues page not loading
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T23:02:49+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2272: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+The 2 items that actually need action:
+MEDIUM — Finding 1: JWT Decode (Lines 729–731) The atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('') chain is a verbatim copy of Google's own documentation example, which is Apache 2.0 licensed — requiring attribution. Add a comment: // Adapted from Google Identity Services documentation or rewrite.
+
+MEDIUM — Finding 4: Legal Clause Text The rent agreement / ATS / registered rent agreement clause sequences need to be verified as advocate-drafted or derived from public domain statutory text — NOT transcribed from commercial legal precedent books (Taxmann, EBC, LexisNexis), which are copyrighted.
+
+Minor housekeeping (LOW):
+Font Awesome CC BY 4.0 → Add "Icons by Font Awesome" in footer
+btoa/escape() pair (Lines 992, 1027) → Replace with TextEncoder/TextDecoder (also removes a deprecated API)
+numToWords and getOrdinal → Add an // Original implementation comment
+
+
+if needed pls fix these
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T23:06:21+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2294: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+page is ot loading drafter page how can i work
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-26T23:08:53+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2355: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+do it
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T01:29:30+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2372: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+want to see thi
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T01:31:27+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2378: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+? what isthis ?
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T01:32:16+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2392: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+no kindlu check error is there  i m unable t load and my credits are wasting what are u doing
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T01:38:17+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2405: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+NOW CHECK
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T19:29:17+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2444: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+WHAT IS THE ISUE WITH MADHAV DRAFTING HUB HTML ? WHY IT IS NOT OPENING 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T19:33:18+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2460: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+NO
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T19:37:39+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2464: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+CHK
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T19:38:58+05:30.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from Claude Opus 4.6 (Thinking) to Gemini 3.5 Flash (Medium). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
+================================================================================
+Step 2470: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-27T14:09:03Z
+Completed At: 2026-05-27T14:09:04Z
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"661865"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"__pycache__", "isDir":true}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"babel_test.html", "sizeBytes":"1986"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"cdn_test.html", "sizeBytes":"2285"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"diagnose.py", "sizeBytes":"1994"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"113709"}
+{"name":"node_modules", "isDir":true}
+{"name":"out.js", "sizeBytes":"496063"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"2427"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_babel.html", "sizeBytes":"547"}
+{"name":"test_script.jsx", "sizeBytes":"656010"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 4 subdirectories and 59 files.
+================================================================================
+Step 2533: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+SEE AB C D ARE OVER LAPPING 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T19:45:21+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2581: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+NOT DONE YET
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T21:54:54+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2603: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+HOW CAN I USE THIS BEST IN A CRM WAY BACKEND OR SOME WHAT LIKE AS I WANT IT TO BE USE PERSNAL FOR DRFTING AND AS WELL AS B2C KINLDY TELL ME LIKE SOME ONE WANTS TOMAKE A AGREEMENT HE CAN PURCHASE OR MAKE ONLINE BUT IF SOMEONE COMES IN OFFICE NOT ONLINE I AM MAKING AGREEMENT THAN WHAT IS AND IF SOMEONE HAS MAKE A AGREEMENT I WANT TO TRACK THTA FILE AND MOROVER I WANT TO SEE HOW MUCH ORDERS OF A SPECIFIC AGREEMENT HAS COME. AND WHAT ARE PENDING ORDERS ARE U GETTING MY POINT
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T22:04:24+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2609: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+YES U CAN IMPLEMENT ALL PHASES
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T22:06:41+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2625: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+APPROVED
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T22:08:00+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2725: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-27T16:41:41Z
+Completed At: 2026-05-27T16:41:42Z
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"680619"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"__pycache__", "isDir":true}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"babel_test.html", "sizeBytes":"1986"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"cdn_test.html", "sizeBytes":"2285"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"diagnose.py", "sizeBytes":"1994"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"113709"}
+{"name":"madhav_crm.db", "sizeBytes":"12288"}
+{"name":"node_modules", "isDir":true}
+{"name":"out.js", "sizeBytes":"496063"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"10789"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_babel.html", "sizeBytes":"547"}
+{"name":"test_script.jsx", "sizeBytes":"656010"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 4 subdirectories and 60 files.
+================================================================================
+Step 2882: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+NO WHERE CAN I SEE WHOLE AGREEMENTS TOTAL ORDERS TODAY?
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T22:23:19+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2916: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+NO WANT IN A DIFFERENT WAY 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T22:24:24+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 2945: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-27T16:55:27Z
+Completed At: 2026-05-27T16:55:28Z
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"716821"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"__pycache__", "isDir":true}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"babel_test.html", "sizeBytes":"1986"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"cdn_test.html", "sizeBytes":"2285"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"diagnose.py", "sizeBytes":"1994"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"113709"}
+{"name":"madhav_crm.db", "sizeBytes":"12288"}
+{"name":"node_modules", "isDir":true}
+{"name":"out.js", "sizeBytes":"508737"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"11975"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_babel.html", "sizeBytes":"547"}
+{"name":"test_script.jsx", "sizeBytes":"705647"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 4 subdirectories and 60 files.
+================================================================================
+Step 2997: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+THEY WILL BE STORED ON CLOUD ONLINE AGREEMENTS 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T22:29:25+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 3009: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+PLS DO IT WE NEED TO ADD MORE PAGES TO IT LIKE THERE MUST BE A OPTION WHICH DOC WE WANT TO DRAFT THEN THAT DOUMENT MUST OPEN
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T22:30:58+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 3031: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+APPROVE
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T22:35:38+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 3108: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+OK
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T22:38:42+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 3110: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+IN GNIDA IF I WANT TO FILL ALL 5 DOCUMENTS AT ONCE FOR BUYER AND SELLER THERE MUT BE OPTION TO SLECT THOSE DOCUMENTS AND THEY ARE FILLED BY FILLING DEATILS IN A SINGLE FORM
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T22:40:17+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 3126: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+OK
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T22:42:29+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 3149: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-27T17:13:38Z
+Completed At: 2026-05-27T17:13:38Z
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"739695"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"__pycache__", "isDir":true}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"babel_test.html", "sizeBytes":"1986"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"cdn_test.html", "sizeBytes":"2285"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"diagnose.py", "sizeBytes":"1994"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"113709"}
+{"name":"madhav_crm.db", "sizeBytes":"12288"}
+{"name":"node_modules", "isDir":true}
+{"name":"out.js", "sizeBytes":"523098"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"14200"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_babel.html", "sizeBytes":"547"}
+{"name":"test_script.jsx", "sizeBytes":"728521"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 4 subdirectories and 60 files.
+================================================================================
+Step 3243: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+MATCH LANDING PAGE THEME AND ALL PAGES THEME WITH THE BACKEND FILES AND ALL FILES 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-27T22:47:49+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 3273: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+ok do it now
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T01:40:42+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 3359: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T01:45:37+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 3412: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+can u connect landing page with this madhav drafting hub?
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T01:48:34+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 3453: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-28T20:20:12Z
+Completed At: 2026-05-28T20:20:12Z
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"760791"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"__pycache__", "isDir":true}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"babel_test.html", "sizeBytes":"1986"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"cdn_test.html", "sizeBytes":"2285"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"diagnose.py", "sizeBytes":"1994"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"113709"}
+{"name":"madhav_crm.db", "sizeBytes":"12288"}
+{"name":"node_modules", "isDir":true}
+{"name":"out.js", "sizeBytes":"536208"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"14200"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_babel.html", "sizeBytes":"547"}
+{"name":"test_script.jsx", "sizeBytes":"749189"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 4 subdirectories and 60 files.
+================================================================================
+Step 3719: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-28T20:26:37Z
+Completed At: 2026-05-28T20:26:37Z
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"774413"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"__pycache__", "isDir":true}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"babel_test.html", "sizeBytes":"1986"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"cdn_test.html", "sizeBytes":"2285"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"diagnose.py", "sizeBytes":"1994"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"115095"}
+{"name":"madhav_crm.db", "sizeBytes":"12288"}
+{"name":"node_modules", "isDir":true}
+{"name":"out.js", "sizeBytes":"536208"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"14200"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_babel.html", "sizeBytes":"547"}
+{"name":"test_script.jsx", "sizeBytes":"749189"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 4 subdirectories and 60 files.
+================================================================================
+Step 3758: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+Create a smart multi-form system with 5 forms where users fill common details only once in a “Master Details” section. The system should automatically auto-fill shared information like name, mobile, email, address, PAN, Aadhaar, GST, bank details, etc. across all forms so users do not have to enter the same details repeatedly. If master details are updated, all forms should update automatically.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T02:03:23+05:30.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from None to Gemini 3.5 Flash (High). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
+================================================================================
+Step 3961: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+dont mention ai powered drafting 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T02:13:28+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 3995: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+check now
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T17:40:38+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4021: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-29T12:11:49Z
+Completed At: 2026-05-29T12:11:50Z
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"798300"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"__pycache__", "isDir":true}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"babel_test.html", "sizeBytes":"1986"}
+{"name":"browser_render.png", "sizeBytes":"1052147"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"cdn_test.html", "sizeBytes":"2285"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"diagnose.py", "sizeBytes":"1994"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"115111"}
+{"name":"madhav_crm.db", "sizeBytes":"12288"}
+{"name":"node_modules", "isDir":true}
+{"name":"out.js", "sizeBytes":"563365"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"14200"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_babel.html", "sizeBytes":"547"}
+{"name":"test_script.jsx", "sizeBytes":"786172"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 4 subdirectories and 61 files.
+================================================================================
+Step 4153: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+website loads slow... when clicked on documentas to create while creating any document and normalscrolling also
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T17:47:09+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4201: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+thi should be like document loading think hard
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T18:09:01+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4219: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+CIRCLE LOADING MUST BE LIKE A DOCUMENT OR SOME THING
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T18:10:40+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4227: Type=RUN_COMMAND, Source=MODEL
+Created At: 2026-05-29T12:41:04Z
+Completed At: 2026-05-29T12:41:06Z
+
+				The command completed successfully.
+				Output:
+				ats.docx []
+ats_content.txt []
+babel_test.html []
+browser_render.png []
+build.py []
+builder_tm (1).pdf []
+cdn_test.html []
+check_jsx.py []
+check_jsx_output.txt []
+check_syntax.py []
+clauses.zip []
+convert_img.py []
+diagnose.py []
+embed_logo.py []
+extract_doc_strings.py []
+extract_highlighted_docx.py []
+final_injector.py []
+GNIDA KYC.pdf []
+GNIDA_logo.png []
+gnida_logo_base64.txt []
+gnida_registry_text.txt []
+identify_file.py []
+landing.html []
+madhav_crm.db []
+Madhav_Drafting_Hub.html []
+Madhav_Drafting_Hub.html.bak_ecommerce []
+Madhav_Drafting_Hub_Backup_2025_12_25.html []
+Madhav_Drafting_Hub_Debug.html []
+Madhav_Drafting_Hub_dev.html []
+Madhav_Drafting_Hub_Final_Locked.html []
+Madhav_Drafting_Hub_Final_Registry.html []
+Madhav_Drafting_Hub_FINAL_V1.html []
+Madhav_Drafting_Hub_gnida_registry_working.html []
+Madhav_Drafting_Hub_Locked.html []
+Madhav_Drafting_Hub_Locked_2025_12_29.html []
+Madhav_Drafting_Hub_Locked_TM48.html []
+Madhav_Drafting_Hub_Locked_v1.html []
+Madhav_Drafting_Hub_Locked_v2.html []
+Madhav_Drafting_Hub_merged.html []
+Madhav_RentAgreement_Tool_v2.html []
+modify_sidebar.py []
+MUTATION Form.docx []
+out.js []
+read_docx.py []
+read_pdf.py []
+REGISTRY FORMAT GNIDA.doc []
+RentAgreement_Final.html []
+RentAgreement_Locked_Hard.html []
+RentAgreement_Sample.pdf []
+scratch_clean_state.py []
+scratch_extract.py []
+scratch_inject_preview.py []
+scratch_install.py []
+scratch_merge.py []
+scratch_merge_registry.py []
+scratch_revert.py []
+server.py []
+sync_to_html.py []
+TECHNICAL_DOCS.md []
+temp_ptm_inputs.txt []
+test_babel.html []
+test_script.jsx []
+THE TRADE MARKS ACT.docx []
+TM Affidavit (AutoRecovered).docx []
+tm_aff_out.txt []
+
+
+================================================================================
+Step 4243: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+WHAT IS THIS THEME KINDLY CHANGE ALL
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T18:13:18+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4261: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+MY DOCUMENTS ARE ALL U KNOW I WANT TO GET THOSE ONLY ON A LANDING PAGE AND THIS PLATFORM IS EXCLUSIVELY MADE FOR GAUTAM BUDDH NAGAR PEOPLE . 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T18:18:30+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4276: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-29T12:49:11Z
+Completed At: 2026-05-29T12:49:11Z
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"19792"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_dev.html", "sizeBytes":"811226"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"__pycache__", "isDir":true}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"babel_test.html", "sizeBytes":"1986"}
+{"name":"browser_render.png", "sizeBytes":"1052147"}
+{"name":"build.py", "sizeBytes":"2385"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"cdn_test.html", "sizeBytes":"2285"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"diagnose.py", "sizeBytes":"1994"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"115116"}
+{"name":"madhav_crm.db", "sizeBytes":"12288"}
+{"name":"modify_sidebar.py", "sizeBytes":"35034"}
+{"name":"node_modules", "isDir":true}
+{"name":"out.js", "sizeBytes":"564391"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"14200"}
+{"name":"sync_to_html.py", "sizeBytes":"937"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_babel.html", "sizeBytes":"547"}
+{"name":"test_script.jsx", "sizeBytes":"790936"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 4 subdirectories and 65 files.
+================================================================================
+Step 4322: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+APPROVE
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T18:21:05+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4340: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+4 AUTORITIES ARE THERE THERE MUST BE A PROPER 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T18:29:16+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4354: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+I HAVE A NOIDA AUTHORITY TM FORM HOW TO GIVE TO U THE FORMAT IN DOWNLOADS  NAME NOIDA AUTHORITY TM FORM
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T18:33:56+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4358: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+124578 NAME OF FIL NOW
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T18:34:41+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4378: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+UPDATE THIS FORM IN THIS
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T18:40:27+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4401: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-29T13:11:22Z
+Completed At: 2026-05-29T13:11:22Z
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"19792"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_dev.html", "sizeBytes":"811226"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"__pycache__", "isDir":true}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"babel_test.html", "sizeBytes":"1986"}
+{"name":"browser_render.png", "sizeBytes":"1052147"}
+{"name":"build.py", "sizeBytes":"2385"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"cdn_test.html", "sizeBytes":"2285"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"diagnose.py", "sizeBytes":"1994"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"115703"}
+{"name":"madhav_crm.db", "sizeBytes":"12288"}
+{"name":"modify_sidebar.py", "sizeBytes":"35034"}
+{"name":"node_modules", "isDir":true}
+{"name":"out.js", "sizeBytes":"564391"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"14200"}
+{"name":"sync_to_html.py", "sizeBytes":"937"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_babel.html", "sizeBytes":"547"}
+{"name":"test_script.jsx", "sizeBytes":"790936"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 4 subdirectories and 65 files.
+================================================================================
+Step 4419: Type=RUN_COMMAND, Source=MODEL
+Created At: 2026-05-29T13:11:52Z
+Completed At: 2026-05-29T13:11:52Z
+
+				The command completed successfully.
+				Output:
+				['1301 STELLAR JEEVAN PTM + MUTATION.docx', '1301 STELLAR JEEVAN PTM + MUTATION.pdf', '16058 TM.jpg', '1842 BlueBell Tower Gaur Saundaryam Greater Noida West Gautam Buddh Nagar Uttar Pradesh 201318_Madhav Maheshwari_2025-12-24.pdf', '1843 BlueBell Tower Gaur Saundaryam Greater Noida West gautam Buddh Nagar_madhav maheshwari_2025-12-23.pdf', '449633699-Registry-format-plot-greater-noida.doc', 'A Star Property 🌟NOIDA NCR🏬 (1).xlsx', 'A Star Property 🌟NOIDA NCR🏬 CSV Results.csv', 'A Star Property 🌟NOIDA NCR🏬.xlsx', 'A4_Agreement_Single_Page (1).html', 'A4_Agreement_Single_Page (2).html', 'A4_Agreement_Single_Page (3).html', 'A4_Agreement_Single_Page (4).html', 'A4_Agreement_Single_Page (5).html', 'A4_Agreement_Single_Page.html', 'A4_Document_1766169740343.html', 'Account_stmt.pdf', 'acp.html', 'AJANLI TM APPLICATION.pdf', 'AKASH TM.pdf', 'Allotment Letter_compressed.pdf', 'aman tm.jpeg', 'APPOINTMENT LETTER madhav.pdf', 'APPOINTMENT LETTER.docx', 'APPOINTMENT LETTER.pdf', 'bhupen bora tm charges.pdf', 'bhupen bora tm.pdf', 'builder_tm (1).pdf', 'builder_tm.pdf', 'Building byelaws 2010 of Greater Noida.pdf', 'complainteform.html_', 'Complaint_Form_OffLine.html', 'contracts-agreements_rental_property-rental-templates_apartment-rental-agreement-template.pdf', 'create a law website law firm name attoray.html', 'crm law firm.html', 'daljit ptm payment.pdf', 'Deepak tm.pdf', 'Document_1766169655665.html', 'download.htm', 'Employee_Verification_Form_OffLine.html', 'Exported_TM_search_results_DEG1qtv.xlsx.xlsx', 'Exported_TM_search_results_zPGOBuZ.xlsx.xlsx', 'fancy.parivahan.gov.in_fancy_faces_pdfprints_printReceivePaymentPDF.xhtml.pdf', 'fancy.parivahan.gov.in_fancy_faces_pdfprints_publicAllotmentLetter.xhtml.pdf', 'flat 1005 ptm.pdf', 'FORM TM NOIDA SEC 120.pdf', 'FORM-TM-A.pdf', 'gauhar ptm ref.pdf', 'Ghaziabad-Branch-Noida-Zone.docx', 'Gmail - Order placement proof required - (B
+<truncated 2284 bytes>
+posed Divestment of Entire Stake of PNB in Canara HSBC OBC Life Insurance Company Ltd (1).pdf', 'RFP for Selection of Legal Advisor for Proposed Divestment of Entire Stake of PNB in Canara HSBC OBC Life Insurance Company Ltd.pdf', 'ROHIT ANAND  AND   AAYUSHI  ANAL  TM_0001.pdf', 'RTI Online __ revenue department.pdf', 'RTI Online __ stamp department.pdf', 'Service Receipt ptm A STAR PROPERTY.pdf', 'Service Receipt PTM SUMIT.pdf', 'Service Receipt ptm.docx', 'Service Receipt ptm.pdf', 'Service Receipt TM 2073.pdf', 'Service Receipt TM aman .pdf', 'sharemarket.html', 'SHI1_1203760003804088ClientMaster_08-11-2024_10-59-13.pdf', 'SHI1_1203760003837099ClientMaster_08-11-2024_10-54-52 (1).pdf', 'SHI1_1203760003837099ClientMaster_08-11-2024_10-54-52 (2).pdf', 'SHI1_1203760003837099ClientMaster_08-11-2024_10-54-52.pdf', 'SHI1_1203760007381697ClientMaster_26-08-2025_04-57-20 (1).pdf', 'SHI1_1203760007381697ClientMaster_26-08-2025_04-57-20.pdf', 'showdocument.htm', 'sindhu foods TMA.pdf', 'SIP InvestmentSummary umar.xlsx', 'SIP_Investment_Summary.xlsx', 'STAR HEALTH APPOINTMENT.pdf', 'startupkaro.html', 'sumit  jain PTM FEES PAYMENT.pdf', 'sumit jain ptm.pdf', 'suresh kalra tm.pdf', 'suresh kalra tm_page-0001.jpg', 'TM 1524.jpg', 'TM 1524.pdf', 'TM 16050.pdf', 'TM 1842.jpg', 'tm 48 final.html', 'TM 48 RAJNADINI.pdf', 'tm 48.doc', 'TM A VINOD.pdf', 'TM Affidavit (AutoRecovered).docx', 'tm application umang taneja.pdf', 'TM SAMPLE FORM.pdf', 'TM SOSHAL form.pdf', 'TM SOSHAL.pdf', 'TM TRACKING.docx', 'TM-48_Authorization_Mohnish_Nirwan (1).pdf', 'TM-48_Authorization_Mohnish_Nirwan (2).pdf', 'TM-48_Authorization_Mohnish_Nirwan (3).pdf', 'TM-48_Authorization_Mohnish_Nirwan.pdf', 'TM-JOURNAL-2243.xlsx', 'tm48.html', 'TMA GF.pdf', 'TMMM.jpeg', 'TMR_Data_5000_Export.json', 'Updated_Investment_Portfolio.docx', 'up_apartment_act_2010.pdf', '~$ida tm form.docx', '~WRL0003.tmp', '~WRL0005.tmp', 'कर्मचारी_का_सत्यापन_प्रपत्र_OffLine.html', '🏫Dealers Noida Group 🚩 CSV Results.csv']
+
+
+================================================================================
+Step 4447: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+MAKE FORM FOT THE DETAILS TO FILL ALSO
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T18:45:46+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4507: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+THIS IS A 14 PAGE PDF
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T18:53:37+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4546: Type=RUN_COMMAND, Source=MODEL
+Created At: 2026-05-29T13:25:05Z
+Completed At: 2026-05-29T13:25:06Z
+
+				The command completed successfully.
+				Output:
+				<truncated 1 lines>
+  pages = len(re.findall(b'/Type\s*/Page\b', data))
+Matching files: ['1301 STELLAR JEEVAN PTM + MUTATION.pdf', '1842 BlueBell Tower Gaur Saundaryam Greater Noida West Gautam Buddh Nagar Uttar Pradesh 201318_Madhav Maheshwari_2025-12-24.pdf', '1843 BlueBell Tower Gaur Saundaryam Greater Noida West gautam Buddh Nagar_madhav maheshwari_2025-12-23.pdf', 'Account_stmt.pdf', 'AJANLI TM APPLICATION.pdf', 'AKASH TM.pdf', 'Allotment Letter_compressed.pdf', 'Amount Transferred to IEPF Account.pdf', 'APPOINTMENT LETTER madhav.pdf', 'APPOINTMENT LETTER.pdf', 'bhupen bora tm charges.pdf', 'bhupen bora tm.pdf', 'builder_tm (1).pdf', 'builder_tm.pdf', 'Building byelaws 2010 of Greater Noida.pdf', 'contracts-agreements_rental_property-rental-templates_apartment-rental-agreement-template.pdf', 'CustomQuickPayFundsTransferReceipt04-03-2024.pdf', 'daljit ptm payment.pdf', 'Deepak tm.pdf', 'fancy.parivahan.gov.in_fancy_faces_pdfprints_printReceivePaymentPDF.xhtml.pdf', 'fancy.parivahan.gov.in_fancy_faces_pdfprints_publicAllotmentLetter.xhtml.pdf', 'flat 1005 ptm.pdf', 'FORM TM NOIDA SEC 120.pdf', 'FORM-TM-A.pdf', 'gauhar ptm ref.pdf', 'GD CLOSURE CUM TRANSFER.pdf', 'Gmail - Order placement proof required - (BP-UP-NOIDA-BUDDHANA-BP8).pdf', 'Housing Flats (Flats allotted by Noida Authority directly) Transfer charges and Circle rates from 01.08.2016.pdf', 'https%2Ftmrsearch.ipindia.gov.in%2Feregister%2FShowOppRecDetails.aspxID=WFlaW1.pdf', 'Investment-Advisor.pdf', 'mohnish tm 48.pdf', 'MOHNISH TM.pdf', 'nitika shares transfer.pdf', 'noida affidavit.pdf', 'Noida Authority Circle Rate.pdf', 'noida registry.pdf', 'noida tm form.pdf', 'noidapolice.com_form.php_type=2.pdf', 'noidapolice.com_form.php_type=3.pdf', 'noida_tm_form deepak.pdf', 'Online Payment System PTM SOURABH.pdf', 'Payment Receipt prasson dayal tm form fees.pdf', 'Payment Receipt tm fees aman mishra.pdf', 'PNB TM TRACKING (1).pdf'
+<truncated 4039 bytes>
+a 70000 transfer charges.pdf: 0 pages
+PTM GAUHAR.pdf: 0 pages
+PTM Request Letter.pdf: 0 pages
+ptm.pdf: 0 pages
+resolution for director appointment signed.pdf: 0 pages
+resolution for director appointment.pdf: 0 pages
+RFP for Selection of Legal Advisor for Proposed Divestment of Entire Stake of PNB in Canara HSBC OBC Life Insurance Company Ltd (1).pdf: 0 pages
+RFP for Selection of Legal Advisor for Proposed Divestment of Entire Stake of PNB in Canara HSBC OBC Life Insurance Company Ltd.pdf: 0 pages
+ROHIT ANAND  AND   AAYUSHI  ANAL  TM_0001.pdf: 0 pages
+RTI Online __ revenue department.pdf: 0 pages
+RTI Online __ stamp department.pdf: 0 pages
+Service Receipt ptm A STAR PROPERTY.pdf: 0 pages
+Service Receipt PTM SUMIT.pdf: 0 pages
+Service Receipt ptm.pdf: 0 pages
+Service Receipt TM 2073.pdf: 0 pages
+Service Receipt TM aman .pdf: 0 pages
+SHI1_1203760003804088ClientMaster_08-11-2024_10-59-13.pdf: 0 pages
+SHI1_1203760003837099ClientMaster_08-11-2024_10-54-52 (1).pdf: 0 pages
+SHI1_1203760003837099ClientMaster_08-11-2024_10-54-52 (2).pdf: 0 pages
+SHI1_1203760003837099ClientMaster_08-11-2024_10-54-52.pdf: 0 pages
+SHI1_1203760007381697ClientMaster_26-08-2025_04-57-20 (1).pdf: 0 pages
+SHI1_1203760007381697ClientMaster_26-08-2025_04-57-20.pdf: 0 pages
+sindhu foods TMA.pdf: 0 pages
+STAR HEALTH APPOINTMENT.pdf: 0 pages
+sumit  jain PTM FEES PAYMENT.pdf: 0 pages
+sumit jain ptm.pdf: 0 pages
+suresh kalra tm.pdf: 0 pages
+TM 1524.pdf: 0 pages
+TM 16050.pdf: 0 pages
+TM 48 RAJNADINI.pdf: 0 pages
+TM A VINOD.pdf: 0 pages
+tm application umang taneja.pdf: 0 pages
+TM SAMPLE FORM.pdf: 0 pages
+TM SOSHAL form.pdf: 0 pages
+TM SOSHAL.pdf: 0 pages
+TM-48_Authorization_Mohnish_Nirwan (1).pdf: 0 pages
+TM-48_Authorization_Mohnish_Nirwan (2).pdf: 0 pages
+TM-48_Authorization_Mohnish_Nirwan (3).pdf: 0 pages
+TM-48_Authorization_Mohnish_Nirwan.pdf: 0 pages
+TMA GF.pdf: 0 pages
+transfer mail.pdf: 0 pages
+up_apartment_act_2010.pdf: 0 pages
+📝 Transfer Memorandum 1.pdf: 0 pages
+📝 Transfer Memorandum.pdf: 0 pages
+
+
+================================================================================
+Step 4605: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-29T13:27:31Z
+Completed At: 2026-05-29T13:27:31Z
+{"name":"124578_extracted.txt", "sizeBytes":"34928"}
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"19792"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_dev.html", "sizeBytes":"811226"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"__pycache__", "isDir":true}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes":"12208"}
+{"name":"babel_test.html", "sizeBytes":"1986"}
+{"name":"browser_render.png", "sizeBytes":"1052147"}
+{"name":"build.py", "sizeBytes":"2385"}
+{"name":"builder_tm (1).pdf", "sizeBytes":"3359495"}
+{"name":"cdn_test.html", "sizeBytes":"2285"}
+{"name":"check_jsx.py", "sizeBytes":"3690"}
+{"name":"check_jsx_output.txt", "sizeBytes":"51098"}
+{"name":"check_syntax.py", "sizeBytes":"1077"}
+{"name":"clauses.zip", "sizeBytes":"24770"}
+{"name":"convert_img.py", "sizeBytes":"735"}
+{"name":"count_pages.py", "sizeBytes":"462"}
+{"name":"diagnose.py", "sizeBytes":"1994"}
+{"name":"embed_logo.py", "sizeBytes":"2126"}
+{"name":"extract_doc_strings.py", "sizeBytes":"756"}
+{"name":"extract_highlighted_docx.py", "sizeBytes":"2335"}
+{"name":"final_injector.py", "sizeBytes":"4540"}
+{"name":"gnida_logo_base64.txt", "sizeBytes":"28142"}
+{"name":"gnida_registry_text.txt", "sizeBytes":"29358"}
+{"name":"identify_file.py", "sizeBytes":"713"}
+{"name":"landing.html", "sizeBytes":"115703"}
+{"name":"madhav_crm.db", "sizeBytes":"12288"}
+{"name":"modify_sidebar.py", "sizeBytes":"35034"}
+{"name":"node_modules", "isDir":true}
+{"name":"noida_tm_form_extracted.txt", "sizeBytes":"5856"}
+{"name":"noida_tm_form_full_extracted.txt", "sizeBytes":"24283"}
+{"name":"out.js", "sizeBytes":"609646"}
+{"name":"read_124578.py", "sizeBytes":"540"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"server.py", "sizeBytes":"14200"}
+{"name":"sync_to_html.py", "sizeBytes":"937"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_babel.html", "sizeBytes":"547"}
+{"name":"test_script.jsx", "sizeBytes":"856291"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 4 subdirectories and 70 files.
+================================================================================
+Step 4745: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+DO IT
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T19:18:45+05:30.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from Gemini 3.5 Flash (High) to Claude Opus 4.6 (Thinking). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
+================================================================================
+Step 4790: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+NEED EXACTLY THE SAME AS THE PDF IS AS THAT IS A GOVERMENT ONE U CAN UNDERSTAND
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-29T19:38:18+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4793: Type=PLANNER_RESPONSE, Source=MODEL
+I see there's `noida_tm_form_full_extracted.txt` and `124578_extracted.txt` - these likely contain the extracted PDF text. Also `builder_tm (1).pdf` is the original PDF. Let me read the extracted content to understand the exact structure:
+================================================================================
+Step 4811: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+ok do it now
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-30T17:33:44+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4834: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+want to see this share me the link
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-30T17:45:34+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4838: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+give page 11 13 15 also 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-30T17:46:56+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4854: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+dont hite give a tick button in form GPA yes no and same with other pages 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-30T17:47:59+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 4865: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+do now
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-30T17:50:21+05:30.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from Claude Opus 4.6 (Thinking) to Gemini 3.5 Flash (Medium). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>
+================================================================================
+Step 4977: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+is it done?
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-30T17:58:31+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 5221: Type=USER_INPUT, Source=USER_EXPLICIT
+<USER_REQUEST>
+pdf is not exactly like as it was given check pls
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-05-30T18:06:43+05:30.
+</ADDITIONAL_METADATA>
+================================================================================
+Step 5226: Type=PLANNER_RESPONSE, Source=MODEL
+I will create and run a python script to inspect the content and metadata of the PDFs in the repository (`builder_tm (1).pdf`, `GNIDA KYC.pdf`, etc.) to see which layout the user is referring to.
+================================================================================
+Step 5229: Type=RUN_COMMAND, Source=MODEL
+Created At: 2026-05-30T12:36:57Z
+Completed At: 2026-05-30T12:36:58Z
+
+				The command completed successfully.
+				Output:
+				Ignoring wrong pointing object 43 0 (offset 0)
+Found PDFs: ['builder_tm (1).pdf', 'GNIDA KYC.pdf', 'RentAgreement_Sample.pdf']
+
+=== Inspecting builder_tm (1).pdf ===
+Number of pages: 6
+Page 1 preview:
+
+
+=== Inspecting GNIDA KYC.pdf ===
+Number of pages: 2
+Page 1 preview:
+GREATER NOIDA INDUSTRIAL DEVELOPMENT AUTHORITY 
+169, CHITVAN ESTATE, SECTOR GAMMA-II, GREATER NOIDA, 
+DISTRICT GAUTAM BUDH NAGAR, UTTAR PRADESH 201306 
+Website: www.greaternoidaauthority.in 
+ 
+KNOW YOUR ALLOTTEE (KYA) FORM 
+ 
+( ENTIRE FORM IS TO BE FILLED IN BLOCK LETTERS ONLY ) 
+ 
+Dated:  D D M M Y Y Y Y 
+ 
+The Manager (Property), 
+169, Chitvan Estate, Sector Gamma-II, 
+Greater Noida, District Gautam Budh Nagar, 
+Uttar Pradesh 201306 
+ 
+Allottee Name 
+   Plot/Flat/Property No   
+     
+Father/Spouse Name    Block/Estate   
+     
+Scheme Name    Sector   
+     
+Scheme Code    Allotment Date  D D M M Y Y Y Y 
+     
+Allotment No    Plot Size (Sq Mt)   
+ 
+1 ALLOTTEE NAME 
+ Allottee No. 1:                      
+                      
+                      
+ Allottee No. 2:                      
+
+
+=== Inspecting RentAgreement_Sample.pdf ===
+Number of pages: 1
+Page 1 preview:
+Error reading RentAgreement_Sample.pdf: 'charmap' codec can't encode character '\uedd9' in position 0: character maps to <undefined>
+
+
+================================================================================
+Step 5230: Type=PLANNER_RESPONSE, Source=MODEL
+I will write a python script to dump extracted text for all pages of `builder_tm (1).pdf` to see if there is readable text on any of the pages.
+================================================================================
+Step 5231: Type=CODE_ACTION, Source=MODEL
+Created At: 2026-05-30T12:37:01Z
+Completed At: 2026-05-30T12:37:01Z
+Created file file:///c:/Users/fcama/.gemini/antigravity/scratch/madhav-legal-drafter/dump_builder_tm.py with requested content.
+If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+================================================================================
+Step 5232: Type=PLANNER_RESPONSE, Source=MODEL
+I will run the script to dump text from `builder_tm (1).pdf`.
+================================================================================
+Step 5233: Type=RUN_COMMAND, Source=MODEL
+Created At: 2026-05-30T12:37:03Z
+Completed At: 2026-05-30T12:37:03Z
+
+				The command completed successfully.
+				Output:
+				Ignoring wrong pointing object 43 0 (offset 0)
+Pages in builder_tm (1).pdf: 6
+
+--- Page 1 ---
+[No text extracted]
+
+--- Page 2 ---
+[No text extracted]
+
+--- Page 3 ---
+[No text extracted]
+
+--- Page 4 ---
+[No text extracted]
+
+--- Page 5 ---
+[No text extracted]
+
+--- Page 6 ---
+[No text extracted]
+
+
+================================================================================
+Step 5247: Type=RUN_COMMAND, Source=MODEL
+Created At: 2026-05-30T12:37:23Z
+Completed At: 2026-05-30T12:37:24Z
+
+				The command completed successfully.
+				Output:
+				On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   out.js
+	modified:   test_script.jsx
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	dump_builder_tm.py
+	inspect_noida_pages.py
+	inspect_txt_templates.py
+	read_pdf_info.py
+	rewrite_noida_preview.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+
+================================================================================
+Step 5256: Type=PLANNER_RESPONSE, Source=MODEL
+I will write a python script to search for references to "builder" inside `test_script.jsx` to see if there is any code relating to `builder_tm`.
+================================================================================
+Step 5278: Type=PLANNER_RESPONSE, Source=MODEL
+I will run a python command to see what pdf rendering or image conversion libraries are installed on the system (like `fitz`, `pdf2image`, or `matplotlib`). This will help us inspect `builder_tm (1).pdf` visually if needed.
+================================================================================
+Step 5282: Type=PLANNER_RESPONSE, Source=MODEL
+I will write a python script `inspect_pdf_pages.py` using `pypdfium2` and `pdfplumber` to extract text and render the first page of `builder_tm (1).pdf` to an image. This will let us visually inspect the layout of the reference PDF.
+================================================================================
+Step 5284: Type=PLANNER_RESPONSE, Source=MODEL
+I will execute the script to analyze `builder_tm (1).pdf`.
+================================================================================
+Step 5285: Type=RUN_COMMAND, Source=MODEL
+Created At: 2026-05-30T12:38:26Z
+Completed At: 2026-05-30T12:38:28Z
+
+				The command completed successfully.
+				Output:
+				--- Extracting text using pdfplumber ---
+Total pages: 6
+Page 1 character count: 0
+Page 2 character count: 0
+Page 3 character count: 0
+Page 4 character count: 0
+Page 5 character count: 0
+Page 6 character count: 0
+
+--- Rendering Page 1 to Image ---
+Page 1 saved to: C:/Users/fcama/.gemini/antigravity/brain/09be3ae1-8f8d-432b-a4c7-5513355cac8d\builder_tm_p1.png
+
+
+================================================================================
+Step 5286: Type=PLANNER_RESPONSE, Source=MODEL
+I will update the script to render all six pages of `builder_tm (1).pdf` to images so we can view them to understand the layout requirements.
+================================================================================
+Step 5287: Type=CODE_ACTION, Source=MODEL
+Created At: 2026-05-30T12:38:30Z
+Completed At: 2026-05-30T12:38:31Z
+Created file file:///c:/Users/fcama/.gemini/antigravity/scratch/madhav-legal-drafter/render_all_pdf_pages.py with requested content.
+If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+================================================================================
+Step 5289: Type=RUN_COMMAND, Source=MODEL
+Created At: 2026-05-30T12:38:34Z
+Completed At: 2026-05-30T12:38:36Z
+
+				The command completed successfully.
+				Output:
+				Page 1 saved to: C:/Users/fcama/.gemini/antigravity/brain/09be3ae1-8f8d-432b-a4c7-5513355cac8d\builder_tm_p1.png
+Page 2 saved to: C:/Users/fcama/.gemini/antigravity/brain/09be3ae1-8f8d-432b-a4c7-5513355cac8d\builder_tm_p2.png
+Page 3 saved to: C:/Users/fcama/.gemini/antigravity/brain/09be3ae1-8f8d-432b-a4c7-5513355cac8d\builder_tm_p3.png
+Page 4 saved to: C:/Users/fcama/.gemini/antigravity/brain/09be3ae1-8f8d-432b-a4c7-5513355cac8d\builder_tm_p4.png
+Page 5 saved to: C:/Users/fcama/.gemini/antigravity/brain/09be3ae1-8f8d-432b-a4c7-5513355cac8d\builder_tm_p5.png
+Page 6 saved to: C:/Users/fcama/.gemini/antigravity/brain/09be3ae1-8f8d-432b-a4c7-5513355cac8d\builder_tm_p6.png
+
+
+================================================================================
+Step 5290: Type=PLANNER_RESPONSE, Source=MODEL
+I will use `view_file` to inspect the first rendered page image of the reference PDF `builder_tm (1).pdf`.
+================================================================================
+Step 5296: Type=PLANNER_RESPONSE, Source=MODEL
+I will write a python script `inspect_gnida_tm.py` to examine the structure of the Greater Noida Transfer application tab in `test_script.jsx`. We'll print the activeTab condition, how many pages it contains, and the page headers and numbers to see if they align with the pages in `builder_tm (1).pdf`.
+================================================================================
+Step 5300: Type=PLANNER_RESPONSE, Source=MODEL
+I will write a python script `inspect_tm_app_full.py` to print all page starts, footers, and outlines of the `TM_APP` activeTab block. This will tell us if the pages in `TM_APP` correspond to the reference PDF `builder_tm (1).pdf` and what the exact page count is.
+================================================================================
+Step 5332: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-30T12:40:02Z
+Completed At: 2026-05-30T12:40:02Z
+{"name":".git", "isDir":true}
+{"name":".gitignore", "sizeBytes":"86"}
+{"name":"124578_extracted.txt", "sizeBytes":"34928"}
+{"name":"GNIDA KYC.pdf", "sizeBytes":"35263"}
+{"name":"GNIDA_logo.png", "sizeBytes":"21090"}
+{"name":"MUTATION Form.docx", "sizeBytes":"13653"}
+{"name":"Madhav_Drafting_Hub.html", "sizeBytes":"19792"}
+{"name":"Madhav_Drafting_Hub.html.bak_ecommerce", "sizeBytes":"566156"}
+{"name":"Madhav_Drafting_Hub_Backup_2025_12_25.html", "sizeBytes":"335659"}
+{"name":"Madhav_Drafting_Hub_Debug.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_FINAL_V1.html", "sizeBytes":"445220"}
+{"name":"Madhav_Drafting_Hub_Final_Locked.html", "sizeBytes":"172988"}
+{"name":"Madhav_Drafting_Hub_Final_Registry.html", "sizeBytes":"325830"}
+{"name":"Madhav_Drafting_Hub_Locked.html", "sizeBytes":"281952"}
+{"name":"Madhav_Drafting_Hub_Locked_2025_12_29.html", "sizeBytes":"451763"}
+{"name":"Madhav_Drafting_Hub_Locked_TM48.html", "sizeBytes":"124692"}
+{"name":"Madhav_Drafting_Hub_Locked_v1.html", "sizeBytes":"240726"}
+{"name":"Madhav_Drafting_Hub_Locked_v2.html", "sizeBytes":"326002"}
+{"name":"Madhav_Drafting_Hub_dev.html", "sizeBytes":"811226"}
+{"name":"Madhav_Drafting_Hub_gnida_registry_working.html", "sizeBytes":"508519"}
+{"name":"Madhav_Drafting_Hub_merged.html", "sizeBytes":"490224"}
+{"name":"Madhav_RentAgreement_Tool_v2.html", "sizeBytes":"55437"}
+{"name":"README.md", "sizeBytes":"1833"}
+{"name":"REGISTRY FORMAT GNIDA.doc", "sizeBytes":"83456"}
+{"name":"RentAgreement_Final.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Locked_Hard.html", "sizeBytes":"55437"}
+{"name":"RentAgreement_Sample.pdf", "sizeBytes":"175501"}
+{"name":"TECHNICAL_DOCS.md", "sizeBytes":"1846"}
+{"name":"THE TRADE MARKS ACT.docx", "sizeBytes":"15931"}
+{"name":"TM Affidavit (AutoRecovered).docx", "sizeBytes":"21375"}
+{"name":"__pycache__", "isDir":true}
+{"name":"add_all_ages.py", "sizeBytes":"2965"}
+{"name":"ats.docx", "sizeBytes":"24631"}
+{"name":"ats_content.txt", "sizeBytes"
+<truncated 2078 bytes>
+"madhav_crm.db", "sizeBytes":"12288"}
+{"name":"modify_sidebar.py", "sizeBytes":"35034"}
+{"name":"node_modules", "isDir":true}
+{"name":"noida_tm_form_extracted.txt", "sizeBytes":"5856"}
+{"name":"noida_tm_form_full_extracted.txt", "sizeBytes":"24283"}
+{"name":"out.js", "sizeBytes":"680668"}
+{"name":"print_noida_transfer_pages.py", "sizeBytes":"603"}
+{"name":"read_124578.py", "sizeBytes":"540"}
+{"name":"read_docx.py", "sizeBytes":"498"}
+{"name":"read_pdf.py", "sizeBytes":"605"}
+{"name":"read_pdf_info.py", "sizeBytes":"507"}
+{"name":"read_sidebar.py", "sizeBytes":"331"}
+{"name":"registered rent agreement", "isDir":true}
+{"name":"render_all_pdf_pages.py", "sizeBytes":"435"}
+{"name":"replace_all.py", "sizeBytes":"4956"}
+{"name":"replace_noida_preview.py", "sizeBytes":"111099"}
+{"name":"replace_noida_transfer.py", "sizeBytes":"112779"}
+{"name":"rewrite_noida_preview.py", "sizeBytes":"89898"}
+{"name":"scratch", "isDir":true}
+{"name":"scratch_clean_state.py", "sizeBytes":"723"}
+{"name":"scratch_extract.py", "sizeBytes":"317"}
+{"name":"scratch_inject_preview.py", "sizeBytes":"646"}
+{"name":"scratch_install.py", "sizeBytes":"19213"}
+{"name":"scratch_merge.py", "sizeBytes":"3419"}
+{"name":"scratch_merge_registry.py", "sizeBytes":"1414"}
+{"name":"scratch_revert.py", "sizeBytes":"781"}
+{"name":"search_all_pages.py", "sizeBytes":"492"}
+{"name":"search_builder.py", "sizeBytes":"299"}
+{"name":"search_forms.py", "sizeBytes":"774"}
+{"name":"search_forms_output.txt", "sizeBytes":"77103"}
+{"name":"search_noida_form.py", "sizeBytes":"717"}
+{"name":"search_page_one_tm.py", "sizeBytes":"327"}
+{"name":"search_three_months.py", "sizeBytes":"266"}
+{"name":"server.py", "sizeBytes":"14200"}
+{"name":"sync_to_html.py", "sizeBytes":"937"}
+{"name":"temp_ptm_inputs.txt", "sizeBytes":"4483"}
+{"name":"test_babel.html", "sizeBytes":"547"}
+{"name":"test_script.jsx", "sizeBytes":"934177"}
+{"name":"test_script.jsx.bak", "sizeBytes":"856291"}
+{"name":"tm_aff_out.txt", "sizeBytes":"10611"}
+
+Summary: This directory contains 5 subdirectories and 110 files.
+================================================================================
+Step 5334: Type=LIST_DIRECTORY, Source=MODEL
+Created At: 2026-05-30T12:40:04Z
+Completed At: 2026-05-30T12:40:04Z
+{"name":".agents", "isDir":true}
+{"name":".system_generated", "isDir":true}
+{"name":".tempmediaStorage", "isDir":true}
+{"name":"browser", "isDir":true}
+{"name":"builder_tm_p1.png", "sizeBytes":"330503"}
+{"name":"builder_tm_p2.png", "sizeBytes":"390088"}
+{"name":"builder_tm_p3.png", "sizeBytes":"452503"}
+{"name":"builder_tm_p4.png", "sizeBytes":"518855"}
+{"name":"builder_tm_p5.png", "sizeBytes":"422561"}
+{"name":"builder_tm_p6.png", "sizeBytes":"81884"}
+{"name":"crm_architecture_report.md", "sizeBytes":"4965"}
+{"name":"crm_architecture_report.md.metadata.json", "sizeBytes":"306"}
+{"name":"fetch_error_log_1775936993574.webp", "sizeBytes":"1273686"}
+{"name":"final_check_blank_page_1775938678361.png", "sizeBytes":"21804"}
+{"name":"final_file_protocol_check_1775936759903.webp", "sizeBytes":"529806"}
+{"name":"final_gnida_registry_check_1775935994197.webp", "sizeBytes":"1024310"}
+{"name":"final_gnida_registry_check_v2_1775936146754.webp", "sizeBytes":"11800"}
+{"name":"final_server_check_1775936842203.webp", "sizeBytes":"1005840"}
+{"name":"gnida_registry_check_1775935543317.webp", "sizeBytes":"11800"}
+{"name":"implementation_plan.md", "sizeBytes":"8045"}
+{"name":"implementation_plan.md.metadata.json", "sizeBytes":"486"}
+{"name":"initial_load_blank_page_1775938125838.png", "sizeBytes":"22963"}
+{"name":"instadeed_docmark_1779465130618.png", "sizeBytes":"94454"}
+{"name":"instadeed_logo_1779464945759.png", "sizeBytes":"153732"}
+{"name":"instadeed_symbol_logo_1779464999534.png", "sizeBytes":"283291"}
+{"name":"instadeed_wordmark_1779465048423.png", "sizeBytes":"84117"}
+{"name":"ip_audit_report.md", "sizeBytes":"14522"}
+{"name":"ip_audit_report.md.metadata.json", "sizeBytes":"554"}
+{"name":"madhav_hub_crash_1775937021407.png", "sizeBytes":"24940"}
+{"name":"media__1779465164692.png", "sizeBytes":"228052"}
+{"name":"media__1779465221529.png", "sizeBytes":"22505"}
+{"name":"media__1779473535572.png", "sizeBytes":"5013"}
+{"name":"media__1779473950436.png", "sizeBytes":"458765"}
+{"name":"media__1779812019689.png", "sizeBytes":"135466"}
+{"name":"media__1779812204934.png", "sizeBytes":"24375"}
+{"name":"media__1779812234520.png", "sizeBytes":"6519"}
+{"name":"media__1779813315601.png", "sizeBytes":"26915"}
+{"name":"media__1779813324821.png", "sizeBytes":"30613"}
+{"name":"media__1779813395287.png", "sizeBytes":"17501"}
+{"name":"media__1779815413245.png", "sizeBytes":"18579"}
+{"name":"media__1779815669655.png", "sizeBytes":"18455"}
+{"name":"media__1779816419959.png", "sizeBytes":"19440"}
+{"name":"media__1779825730067.png", "sizeBytes":"48557"}
+{"name":"media__1779891309308.png", "sizeBytes":"9666"}
+{"name":"media__1779999336707.png", "sizeBytes":"21743"}
+{"name":"media__1780000259790.png", "sizeBytes":"67698"}
+{"name":"media__1780001022424.png", "sizeBytes":"139537"}
+{"name":"media__1780057011554.png", "sizeBytes":"155321"}
+{"name":"media__1780058326112.png", "sizeBytes":"12286"}
+{"name":"media__1780058428675.png", "sizeBytes":"12286"}
+{"name":"media__1780058586970.png", "sizeBytes":"434988"}
+{"name":"media__1780059533317.png", "sizeBytes":"41792"}
+{"name":"media__1780060219557.png", "sizeBytes":"22269"}
+{"name":"registry_crash_check_1775936072570.png", "sizeBytes":"122344"}
+{"name":"registry_tab_verification_1775936179401.png", "sizeBytes":"124713"}
+{"name":"scratch", "isDir":true}
+{"name":"screenshot_tm_aff_registry_1775938053270.webp", "sizeBytes":"26982736"}
+{"name":"task.md", "sizeBytes":"936"}
+{"name":"task.md.metadata.json", "sizeBytes":"222"}
+{"name":"walkthrough.md", "sizeBytes":"3875"}
+{"name":"walkthrough.md.metadata.json", "sizeBytes":"400"}
+
+Summary: This directory contains 5 subdirectories and 56 files.
+================================================================================
+Step 5368: Type=VIEW_FILE, Source=MODEL
+Created At: 2026-05-30T12:40:40Z
+Completed At: 2026-05-30T12:40:41Z
+File Path: `file:///c:/Users/fcama/.gemini/antigravity/scratch/madhav-legal-drafter/inspect_pdf_pages.py`
+Total Lines: 28
+Total Bytes: 972
+Showing lines 1 to 28
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: import pdfplumber
+2: import pypdfium2 as pdfium
+3: import os
+4: 
+5: print("--- Extracting text using pdfplumber ---")
+6: with pdfplumber.open("builder_tm (1).pdf") as pdf:
+7:     print("Total pages:", len(pdf.pages))
+8:     for i, page in enumerate(pdf.pages):
+9:         text = page.extract_text()
+10:         print(f"Page {i+1} character count:", len(text) if text else 0)
+11:         if text:
+12:             print(f"Page {i+1} first 200 chars:")
+13:             print(repr(text[:200]))
+14: 
+15: print("\n--- Rendering Page 1 to Image ---")
+16: try:
+17:     pdf = pdfium.PdfDocument("builder_tm (1).pdf")
+18:     page = pdf[0]
+19:     bitmap = page.render(scale=2)
+20:     pil_img = bitmap.to_pil()
+21:     # Save the image to the artifacts folder
+22:     artifact_dir = "C:/Users/fcama/.gemini/antigravity/brain/09be3ae1-8f8d-432b-a4c7-5513355cac8d"
+23:     dest_path = os.path.join(artifact_dir, "builder_tm_p1.png")
+24:     pil_img.save(dest_path)
+25:     print("Page 1 saved to:", dest_path)
+26: except Exception as e:
+27:     print("Error rendering page:", e)
+28: 
+The above content shows the entire, complete file contents of the requested file.
+
+================================================================================
+Step 5370: Type=VIEW_FILE, Source=MODEL
+Created At: 2026-05-30T12:40:42Z
+Completed At: 2026-05-30T12:40:43Z
+File Path: `file:///c:/Users/fcama/.gemini/antigravity/scratch/madhav-legal-drafter/render_all_pdf_pages.py`
+Total Lines: 14
+Total Bytes: 435
+Showing lines 1 to 14
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: import pypdfium2 as pdfium
+2: import os
+3: 
+4: pdf = pdfium.PdfDocument("builder_tm (1).pdf")
+5: artifact_dir = "C:/Users/fcama/.gemini/antigravity/brain/09be3ae1-8f8d-432b-a4c7-5513355cac8d"
+6: 
+7: for i in range(len(pdf)):
+8:     page = pdf[i]
+9:     bitmap = page.render(scale=1.5)
+10:     pil_img = bitmap.to_pil()
+11:     dest_path = os.path.join(artifact_dir, f"builder_tm_p{i+1}.png")
+12:     pil_img.save(dest_path)
+13:     print(f"Page {i+1} saved to: {dest_path}")
+14: 
+The above content shows the entire, complete file contents of the requested file.
+
+================================================================================
+Step 5398: Type=RUN_COMMAND, Source=MODEL
+Created At: 2026-05-30T12:41:18Z
+Completed At: 2026-05-30T12:41:20Z
+
+				The command completed successfully.
+				Output:
+				--- Extracting text using pdfplumber ---
+Total pages: 6
+Page 1 character count: 0
+Page 2 character count: 0
+Page 3 character count: 0
+Page 4 character count: 0
+Page 5 character count: 0
+Page 6 character count: 0
+
+--- Rendering Page 1 to Image ---
+Page 1 saved to: C:/Users/fcama/.gemini/antigravity/brain/09be3ae1-8f8d-432b-a4c7-5513355cac8d\builder_tm_p1.png
+
+
+================================================================================

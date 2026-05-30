@@ -935,11 +935,12 @@
             );
         };
 
-        const ShareModal = ({ isOpen, onClose, data, onImport }) => {
-            const [mode, setMode] = useState('SHARE'); // SHARE or IMPORT
+        const ShareModal = ({ isOpen, onClose, data, onImport, activeTab: shareActiveTab }) => {
+            const [mode, setMode] = useState('SHARE'); // SHARE, IMPORT, or APP
             const [importText, setImportText] = useState('');
             const [generatedCode, setGeneratedCode] = useState('');
             const [copyStatus, setCopyStatus] = useState('Copy Code');
+            const [shareDocType, setShareDocType] = useState('');
 
             useEffect(() => {
                 if (isOpen && mode === 'SHARE') {
@@ -1015,6 +1016,12 @@
                                 <i className="fa-solid fa-share-nodes mr-2"></i> Share / Send
                             </button>
                             <button
+                                onClick={() => setMode('APP')}
+                                className={`flex-1 py-4 text-sm font-bold transition-colors ${mode === 'APP' ? 'bg-blue-50 text-blue-700 border-b-2 border-emerald-600' : 'text-gray-500 hover:bg-gray-50'}`}
+                            >
+                                <i className="fa-solid fa-globe mr-2"></i> Share App
+                            </button>
+                            <button
                                 onClick={() => setMode('IMPORT')}
                                 className={`flex-1 py-4 text-sm font-bold transition-colors ${mode === 'IMPORT' ? 'bg-blue-50 text-blue-700 border-b-2 border-indigo-600' : 'text-gray-500 hover:bg-gray-50'}`}
                             >
@@ -1042,6 +1049,60 @@
                                             <i className="fa-regular fa-copy mr-1"></i> {copyStatus}
                                         </button>
                                     </div>
+                                </div>
+                            ) : mode === 'APP' ? (
+                                <div className="space-y-4">
+                                    <div className="p-3 bg-emerald-50 text-emerald-800 text-xs rounded-lg border border-emerald-100">
+                                        <strong>Share the App:</strong> Send someone the link to Instadeed so they can create their own agreements from scratch.
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-gray-600 mb-1.5">Preselect document type (optional)</label>
+                                        <select value={shareDocType} onChange={e => setShareDocType(e.target.value)}
+                                            className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+                                        >
+                                            <option value="">None (show landing page)</option>
+                                            <option value="rent">Rent Agreement</option>
+                                            <option value="reg_rent">Registered Rent</option>
+                                            <option value="ats">Agreement to Sell</option>
+                                            <option value="tm48">TM-48 Trademark</option>
+                                            <option value="package">GNIDA 5-in-1 Package</option>
+                                            <option value="kya">Know Your Allottee</option>
+                                            <option value="mutation">Mutation Form</option>
+                                            <option value="gnida_registry">GNIDA Registry</option>
+                                            <option value="gnida_ptm">Permission to Mortgage</option>
+                                            <option value="noida_transfer">NOIDA Transfer</option>
+                                            <option value="tm_app">TM Application</option>
+                                            <option value="ecomm_tc">E-Commerce T&amp;C</option>
+                                            <option value="ecomm_pp">Privacy Policy</option>
+                                            <option value="ecomm_rp">Refund Policy</option>
+                                        </select>
+                                    </div>
+                                    {(() => {
+                                        const baseUrl = window.location.href.split('?')[0].split('#')[0];
+                                        const appLink = shareDocType ? `${baseUrl}?doc=${shareDocType}` : baseUrl;
+                                        return (
+                                            <div className="space-y-3">
+                                                <div className="bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs font-mono text-gray-600 break-all select-all">
+                                                    {appLink}
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <button onClick={() => {
+                                                        const text = `Create your legal agreement using Instadeed:\n\n${appLink}`;
+                                                        const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+                                                        window.open(url, '_blank');
+                                                    }} className="flex-1 bg-[#25D366] hover:bg-[#128C7E] text-white py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm flex items-center justify-center gap-2">
+                                                        <i className="fa-brands fa-whatsapp text-lg"></i> Share Link
+                                                    </button>
+                                                    <button onClick={() => {
+                                                        navigator.clipboard.writeText(appLink);
+                                                        alert('App link copied!');
+                                                    }} className="flex-1 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm">
+                                                        <i className="fa-regular fa-copy mr-1"></i> Copy Link
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        );
+                                    })()}
                                 </div>
                             ) : (
                                 <div className="space-y-4">
@@ -9880,6 +9941,7 @@
                         <ShareModal
                             isOpen={showShare}
                             onClose={() => setShowShare(false)}
+                            activeTab={activeTab}
                             data={
                                 activeTab === 'RENT' ? rentData :
                                     activeTab === 'ATS' ? atsData :
