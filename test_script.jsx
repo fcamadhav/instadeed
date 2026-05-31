@@ -4060,65 +4060,89 @@
                                     </div>
                                 </div>
 
-                                {/* Expiring Rent Agreements */}
-                                {savedDrafts.filter(d => d.type === 'RENT' || d.type === 'REG_RENT').some(d => {
-                                    let endDate = d.data?.endDate;
-                                    if (!endDate && d.type === 'RENT' && d.data?.startDate) {
-                                        const parts = d.data.startDate.split('-');
-                                        if (parts.length === 3) {
-                                            const end = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-                                            end.setMonth(end.getMonth() + 11);
-                                            end.setDate(end.getDate() - 1);
-                                            endDate = end.toISOString().split('T')[0];
-                                        }
-                                    }
-                                    if (!endDate) return false;
-                                    const days = Math.ceil((new Date(endDate) - new Date()) / 86400000);
-                                    return days <= 30;
-                                }) && (
+                                {/* My Saved Drafts */}
+                                {savedDrafts.length > 0 && (
                                     <div className="mt-6">
-                                        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
-                                            <div className="flex items-center gap-2 mb-4">
-                                                <div className="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center text-amber-700">
-                                                    <i className="fa-solid fa-hourglass-half text-sm"></i>
+                                        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                            <div className="px-5 py-3.5 border-b border-slate-50 flex items-center gap-2.5">
+                                                <div className="w-8 h-8 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center">
+                                                    <i className="fa-solid fa-folder-open text-sm"></i>
                                                 </div>
                                                 <div>
-                                                    <h3 className="font-bold text-sm text-amber-900">Rent Agreements Expiring Soon</h3>
-                                                    <p className="text-xs text-amber-700 font-medium">These agreements need renewal attention</p>
+                                                    <h3 className="font-bold text-sm text-slate-800">My Saved Drafts</h3>
+                                                    <p className="text-[10px] text-slate-400 font-medium">{savedDrafts.length} document{savedDrafts.length !== 1 ? 's' : ''} saved</p>
                                                 </div>
                                             </div>
-                                            <div className="space-y-2">
-                                                {savedDrafts.filter(d => d.type === 'RENT' || d.type === 'REG_RENT').map(draft => {
-                                                    let endDate = draft.data?.endDate;
-                                                    if (!endDate && draft.type === 'RENT' && draft.data?.startDate) {
-                                                        const parts = draft.data.startDate.split('-');
-                                                        if (parts.length === 3) {
-                                                            const end = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-                                                            end.setMonth(end.getMonth() + 11);
-                                                            end.setDate(end.getDate() - 1);
-                                                            endDate = end.toISOString().split('T')[0];
+                                            <div className="p-4 space-y-2 max-h-80 overflow-y-auto">
+                                                {savedDrafts.map(draft => {
+                                                    const typeColors = {
+                                                        RENT: 'bg-blue-100 text-blue-800',
+                                                        REG_RENT: 'bg-indigo-100 text-indigo-800',
+                                                        ATS: 'bg-purple-100 text-purple-800',
+                                                        TM48: 'bg-orange-100 text-orange-800',
+                                                        GNIDA_PACKAGE: 'bg-amber-100 text-amber-800',
+                                                        KYA: 'bg-yellow-100 text-yellow-800',
+                                                        TM_APP: 'bg-rose-100 text-rose-800',
+                                                        MUTATION: 'bg-indigo-100 text-indigo-800',
+                                                        GNIDA_REGISTRY: 'bg-cyan-100 text-cyan-800',
+                                                        GNIDA_PTM: 'bg-teal-100 text-teal-800',
+                                                        NOIDA_TRANSFER: 'bg-sky-100 text-sky-800',
+                                                    };
+                                                    const typeLabels = {
+                                                        RENT: 'Rent', REG_RENT: 'Reg Rent', ATS: 'ATS',
+                                                        TM48: 'TM-48', GNIDA_PACKAGE: '5-in-1', KYA: 'KYA',
+                                                        TM_APP: 'TM App', MUTATION: 'Mutation',
+                                                        GNIDA_REGISTRY: 'Registry', GNIDA_PTM: 'PTM',
+                                                        NOIDA_TRANSFER: 'Noida TF',
+                                                    };
+                                                    let expiryInfo = null;
+                                                    if (draft.type === 'RENT' || draft.type === 'REG_RENT') {
+                                                        let endDate = draft.data?.endDate;
+                                                        if (!endDate && draft.type === 'RENT' && draft.data?.startDate) {
+                                                            const parts = draft.data.startDate.split('-');
+                                                            if (parts.length === 3) {
+                                                                const end = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                                                                end.setMonth(end.getMonth() + 11);
+                                                                end.setDate(end.getDate() - 1);
+                                                                endDate = end.toISOString().split('T')[0];
+                                                            }
+                                                        }
+                                                        if (endDate) {
+                                                            const today = new Date(); today.setHours(0,0,0,0);
+                                                            const expDate = new Date(endDate); expDate.setHours(0,0,0,0);
+                                                            const days = Math.ceil((expDate - today) / 86400000);
+                                                            if (days <= 30) {
+                                                                expiryInfo = { days, endDate };
+                                                            }
                                                         }
                                                     }
-                                                    if (!endDate) return null;
-                                                    const today = new Date(); today.setHours(0,0,0,0);
-                                                    const expDate = new Date(endDate); expDate.setHours(0,0,0,0);
-                                                    const days = Math.ceil((expDate - today) / 86400000);
-                                                    if (days > 30) return null;
                                                     return (
-                                                        <div key={draft.id} className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-amber-100 hover:shadow-sm transition-all">
-                                                            <div className="flex-1 min-w-0">
-                                                                <div className="font-bold text-sm text-slate-800 truncate">{draft.name}</div>
-                                                                <div className="text-xs text-slate-500 mt-0.5">
-                                                                    <span className="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase mr-2">{draft.type}</span>
-                                                                    <span>Ends: {new Date(endDate).toLocaleDateString('en-GB')}</span>
+                                                        <div key={draft.id} className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-slate-100 hover:shadow-sm hover:border-slate-200 transition-all group">
+                                                            <div className="flex items-center gap-3 min-w-0 flex-1">
+                                                                <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
+                                                                    <i className="fa-solid fa-file-lines text-xs"></i>
+                                                                </div>
+                                                                <div className="min-w-0 flex-1">
+                                                                    <div className="flex items-center gap-2">
+                                                                        <span className="font-bold text-sm text-slate-800 truncate">{draft.name}</span>
+                                                                        {expiryInfo && (
+                                                                            <span className={`shrink-0 text-[10px] font-extrabold ${expiryInfo.days < 0 ? 'text-red-600' : 'text-amber-600'}`}>
+                                                                                {expiryInfo.days < 0 ? 'Expired' : `${expiryInfo.days}d`}
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="flex items-center gap-2 mt-0.5">
+                                                                        <span className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${typeColors[draft.type] || 'bg-slate-100 text-slate-700'}`}>{typeLabels[draft.type] || draft.type}</span>
+                                                                        <span className="text-[10px] text-slate-400">{draft.date}</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="flex items-center gap-3 shrink-0 ml-3">
-                                                                <span className={`text-xs font-extrabold ${days < 0 ? 'text-red-600' : 'text-amber-600'}`}>
-                                                                    {days < 0 ? 'Expired' : `${days} days left`}
-                                                                </span>
+                                                            <div className="flex items-center gap-1.5 shrink-0 ml-3">
                                                                 <button onClick={() => { setActiveTab(draft.type); loadFromLibrary(draft); }} className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition shadow-sm cursor-pointer">
                                                                     Load
+                                                                </button>
+                                                                <button onClick={() => deleteFromLibrary(draft.id)} className="px-2.5 py-1.5 border border-slate-200 hover:border-red-200 hover:bg-red-50 text-slate-400 hover:text-red-600 text-xs rounded-lg transition cursor-pointer">
+                                                                    <i className="fa-solid fa-trash-can"></i>
                                                                 </button>
                                                             </div>
                                                         </div>
