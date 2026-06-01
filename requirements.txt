@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+razorpay
+pyjwt
+slowapi
+fpdf2
+requests
+python-multipart
