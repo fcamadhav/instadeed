@@ -734,47 +734,54 @@
                     onClick={handleClose}
                 >
                     <div
-                        className="bg-[#FCFAF5] w-full max-w-sm p-2 border-2 border-[#D8C7A5] relative animate-in fade-in zoom-in duration-200"
+                        className="bg-white w-full max-w-sm rounded-2xl border border-slate-100 shadow-lg relative animate-in fade-in zoom-in duration-200"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="border border-[#D8C7A5] p-6 relative flex flex-col items-center">
+                        <div className="p-6 relative flex flex-col items-center">
                             <button
                                 onClick={handleClose}
-                                className="absolute top-2 right-2 text-xl font-bold text-gray-800 hover:text-red-500 transition-colors"
+                                className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors text-sm"
                             >
-                                ×
+                                <i className="fa-solid fa-xmark"></i>
                             </button>
                             
-                            <div className="mb-6 text-center w-full border-b border-[#D8C7A5] pb-4">
-                                <h3 className="font-serif text-xl font-bold text-gray-800 uppercase tracking-widest">Signee Access</h3>
+                            <div className="mb-6 text-center w-full pb-4">
+                                <div className="w-12 h-12 mx-auto rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
+                                    <i className="fa-solid fa-fingerprint text-lg"></i>
+                                </div>
+                                <h3 className="font-extrabold text-slate-800 text-lg">Signee Access</h3>
+                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1">Authenticate to Access Document</p>
                             </div>
 
                             {step === 1 ? (
                                 <div className="space-y-4 w-full flex flex-col items-center">
-                                    {/* Google Sign-in block */}
                                     <div id="google-signin-btn-hub" className="w-full flex justify-center py-1 min-h-[40px]"></div>
                                     
                                     <button
                                         onClick={triggerGoogleMock}
-                                        className="w-full py-3 bg-transparent border border-gray-800 hover:bg-gray-800 hover:text-[#FCFAF5] text-gray-800 transition-all uppercase font-semibold text-xs tracking-wider"
+                                        className="w-full py-3 bg-slate-50 border border-slate-200 hover:bg-blue-50 hover:border-blue-100 hover:text-blue-600 text-slate-600 transition-all font-bold text-xs rounded-xl flex items-center justify-center gap-2"
                                     >
+                                        <i className="fa-brands fa-google text-sm"></i>
                                         Access via Google (Mock)
                                     </button>
 
-                                    <div className="w-full text-center text-xs text-gray-400 font-serif my-2">— OR —</div>
+                                    <div className="w-full flex items-center gap-3 text-xs text-slate-300 font-bold">
+                                        <div className="flex-1 h-px bg-slate-100"></div>
+                                        <span>OR</span>
+                                        <div className="flex-1 h-px bg-slate-100"></div>
+                                    </div>
 
-                                    {/* Mobile entry */}
                                     <div className="w-full space-y-3">
                                         <div className="text-left">
-                                            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Mobile Number</label>
-                                            <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden focus-within:border-blue-500 transition-all bg-white">
-                                                <span className="bg-gray-100 px-3 py-2.5 text-sm font-semibold text-gray-600 border-r border-gray-300">+91</span>
+                                            <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Mobile Number</label>
+                                            <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-50 transition-all bg-white">
+                                                <span className="bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-500 border-r border-slate-200">+91</span>
                                                 <input
                                                     type="tel"
                                                     value={phone}
                                                     onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
                                                     placeholder="98765 43210"
-                                                    className="w-full px-3 py-2.5 text-sm font-medium text-gray-800 focus:outline-none"
+                                                    className="w-full px-3 py-2.5 text-sm font-medium text-slate-800 focus:outline-none"
                                                 />
                                             </div>
                                         </div>
@@ -782,7 +789,7 @@
                                         <button
                                             onClick={handleSendOtp}
                                             disabled={phone.length !== 10}
-                                            className="w-full py-3 bg-[#1a1a1a] hover:bg-[#8B0000] text-[#FCFAF5] font-serif font-bold tracking-widest uppercase transition-all text-xs cursor-pointer text-center disabled:opacity-40 disabled:pointer-events-none"
+                                            className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all text-xs cursor-pointer text-center disabled:opacity-40 disabled:pointer-events-none shadow-sm"
                                         >
                                             Send OTP via SMS
                                         </button>
@@ -792,17 +799,16 @@
                                 <div className="space-y-4 w-full flex flex-col items-center">
                                     <button
                                         onClick={() => setStep(1)}
-                                        className="self-start text-[11px] font-bold text-gray-500 hover:text-gray-800 flex items-center gap-1.5"
+                                        className="self-start text-[11px] font-bold text-slate-400 hover:text-slate-700 flex items-center gap-1.5"
                                     >
                                         <i className="fa-solid fa-arrow-left"></i> Edit mobile number
                                     </button>
 
                                     <div className="text-center w-full">
-                                        <p className="text-xs text-gray-500">We sent a 6-digit code to</p>
-                                        <p className="text-sm font-bold text-gray-800">+91 {phone.slice(0, 5)} {phone.slice(5)}</p>
+                                        <p className="text-xs text-slate-400 font-medium">We sent a 6-digit code to</p>
+                                        <p className="text-sm font-bold text-slate-800">+91 {phone.slice(0, 5)} {phone.slice(5)}</p>
                                     </div>
 
-                                    {/* OTP Digits */}
                                     <div className="flex gap-2 justify-center py-2">
                                         {otp.map((digit, i) => (
                                             <input
@@ -813,12 +819,12 @@
                                                 value={digit}
                                                 onChange={(e) => handleOtpInput(e.target.value, i)}
                                                 onKeyDown={(e) => handleOtpKeyDown(e, i)}
-                                                className="w-10 h-12 text-center border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 rounded-lg text-lg font-bold outline-none bg-white transition-all"
+                                                className="w-10 h-12 text-center border-2 border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 rounded-xl text-lg font-bold outline-none bg-white transition-all"
                                             />
                                         ))}
                                     </div>
 
-                                    <div className="text-xs text-gray-400">
+                                    <div className="text-xs text-slate-400 font-medium">
                                         {timer > 0 ? (
                                             <span>Resend in {timer}s</span>
                                         ) : (
@@ -834,7 +840,7 @@
                                     <button
                                         onClick={handleVerifyOtp}
                                         disabled={!isOtpComplete || isVerifying}
-                                        className="w-full py-3 bg-[#1a1a1a] hover:bg-[#8B0000] text-[#FCFAF5] font-serif font-bold tracking-widest uppercase transition-all text-xs cursor-pointer text-center disabled:opacity-40 disabled:pointer-events-none"
+                                        className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all text-xs cursor-pointer text-center shadow-sm disabled:opacity-40 disabled:pointer-events-none"
                                     >
                                         {isVerifying ? (
                                             <span>
@@ -861,62 +867,65 @@
                     onClick={onClose}
                 >
                     <div
-                        className="bg-[#FCFAF5] w-full max-w-sm p-2 border-2 border-[#D8C7A5] relative animate-in fade-in zoom-in duration-200"
+                        className="bg-white w-full max-w-sm rounded-2xl border border-slate-100 shadow-lg relative animate-in fade-in zoom-in duration-200"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="border border-[#D8C7A5] p-6 relative flex flex-col">
+                        <div className="p-6 relative flex flex-col">
                             <button
                                 onClick={onClose}
-                                className="absolute top-2 right-2 text-xl font-bold text-gray-800 hover:text-red-500 transition-colors"
+                                className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors text-sm"
                             >
-                                ×
+                                <i className="fa-solid fa-xmark"></i>
                             </button>
                             
-                            <div className="mb-6 text-center w-full border-b border-[#D8C7A5] pb-4">
-                                <h3 className="font-serif text-xl font-bold text-gray-800 uppercase tracking-widest">Online Checkout</h3>
-                                <p className="text-[10px] text-gray-400 mt-1 uppercase tracking-wider font-semibold">B2C Agreement Drafting Suite</p>
+                            <div className="mb-6 text-center w-full pb-4">
+                                <div className="w-12 h-12 mx-auto rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
+                                    <i className="fa-solid fa-credit-card text-lg"></i>
+                                </div>
+                                <h3 className="font-extrabold text-slate-800 text-lg">Online Checkout</h3>
+                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1">B2C Agreement Drafting Suite</p>
                             </div>
 
                             <div className="space-y-4 w-full">
-                                <div className="p-3 bg-blue-50 border border-blue-100 rounded-xl text-center text-xs text-blue-800 font-medium">
-                                    <i className="fa-solid fa-stamp text-blue-600 mr-1.5"></i>
+                                <div className="p-3 bg-blue-50 border border-blue-100 rounded-xl text-center text-xs text-blue-800 font-medium flex items-center justify-center gap-1.5">
+                                    <i className="fa-solid fa-stamp text-blue-600"></i>
                                     Drafting Fee: <strong>Rs. 499</strong> (Inclusive of all taxes)
                                 </div>
 
                                 <div className="space-y-3">
                                     <div>
-                                        <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Full Name</label>
+                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Full Name</label>
                                         <input
                                             type="text"
                                             value={checkoutDetails.name}
                                             onChange={(e) => setCheckoutDetails(prev => ({ ...prev, name: e.target.value }))}
                                             placeholder="e.g. Madhav Sharma"
-                                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none bg-white text-gray-800"
+                                            className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-50 focus:outline-none bg-white text-slate-800"
                                         />
                                     </div>
 
                                     <div>
-                                        <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Mobile Number</label>
-                                        <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden focus-within:border-blue-500 bg-white">
-                                            <span className="bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-600 border-r border-gray-300">+91</span>
+                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Mobile Number</label>
+                                        <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-50 bg-white">
+                                            <span className="bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-500 border-r border-slate-200">+91</span>
                                             <input
                                                 type="tel"
                                                 value={checkoutDetails.phone}
                                                 onChange={(e) => setCheckoutDetails(prev => ({ ...prev, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))}
                                                 placeholder="98765 43210"
-                                                className="w-full px-3 py-2 text-sm focus:outline-none text-gray-800"
+                                                className="w-full px-3 py-2.5 text-sm focus:outline-none text-slate-800"
                                             />
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wide mb-1">Email Address</label>
+                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Email Address</label>
                                         <input
                                             type="email"
                                             value={checkoutDetails.email}
                                             onChange={(e) => setCheckoutDetails(prev => ({ ...prev, email: e.target.value }))}
                                             placeholder="name@example.com"
-                                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none bg-white text-gray-800"
+                                            className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-50 focus:outline-none bg-white text-slate-800"
                                         />
                                     </div>
                                 </div>
@@ -924,7 +933,7 @@
                                 <button
                                     onClick={onSubmit}
                                     disabled={!checkoutDetails.name || checkoutDetails.phone.length !== 10}
-                                    className="w-full py-3 bg-[#1a1a1a] hover:bg-[#8B0000] text-[#FCFAF5] font-serif font-bold tracking-widest uppercase transition-all text-xs cursor-pointer text-center disabled:opacity-40 disabled:pointer-events-none mt-2"
+                                    className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all text-xs cursor-pointer text-center disabled:opacity-40 disabled:pointer-events-none mt-2 shadow-sm"
                                 >
                                     Proceed to Pay Rs. 499
                                 </button>
@@ -1277,6 +1286,15 @@
             const [showLogin, setShowLogin] = useState(false); 
             const [saveStatus, setSaveStatus] = useState('Auto-saved');
             const [activeField, setActiveField] = useState(null);
+            const [myDocs, setMyDocs] = useState([]);
+            const [myDocsPhone, setMyDocsPhone] = useState('');
+            const [myDocsLoading, setMyDocsLoading] = useState(false);
+            const [showLeegalityModal, setShowLeegalityModal] = useState(false);
+            const [leegalityOrderId, setLeegalityOrderId] = useState('');
+            const [leegalitySignee, setLeegalitySignee] = useState({ name: '', email: '', phone: '' });
+            const [leegalityResult, setLeegalityResult] = useState(null);
+            const [leegalitySending, setLeegalitySending] = useState(false);
+            const [bannerIdx, setBannerIdx] = useState(0);
 
             const [signedDocs, setSignedDocs] = useState(() => {
                 const initial = {};
@@ -1346,6 +1364,12 @@
                 if (signedDocs[tabName]) return signedDocs[tabName];
                 return null;
             };
+
+            // Auto-rotate e-commerce carousel banner
+            useEffect(() => {
+                const iv = setInterval(() => setBannerIdx(i => (i + 1) % 3), 4000);
+                return () => clearInterval(iv);
+            }, []);
 
             // Auto-scroll the highlighted variable into view
             useEffect(() => {
@@ -2585,6 +2609,8 @@
             const [crmSearch, setCrmSearch] = useState('');
             const [crmFilterToday, setCrmFilterToday] = useState(false);
             const [confirmDoc, setConfirmDoc] = useState(null); // doc type string when showing confirm modal
+            const [flowStep, setFlowStep] = useState(1); // 1 = CRM intake, 2 = doc selection, 3 = drafting
+            const [customerInfo, setCustomerInfo] = useState({ name: '', phone: '', email: '', address: '' });
             const API_BASE = '';
 
             useEffect(() => {
@@ -2648,6 +2674,7 @@
                     else if (draft.type === 'ECOMM_RP') setEcommRPData(draft.data);
                     else setRegData(draft.data);
                     setShowLibrary(false);
+                    setFlowStep(3);
                 }
             };
 
@@ -3252,8 +3279,17 @@
                             return;
                         }
                         
+                        let razorpayKey = 'rzp_test_YOUR_KEY_HERE';
+                        try {
+                            const cfgRes = await fetch('${API_BASE}/api/config');
+                            if (cfgRes.ok) {
+                                const cfg = await cfgRes.json();
+                                if (cfg.razorpay_key) razorpayKey = cfg.razorpay_key;
+                            }
+                        } catch(e) {}
+                        
                         const options = {
-                            key: 'rzp_test_YOUR_KEY_HERE', // Match backend
+                            key: razorpayKey,
                             amount: orderData.amount,
                             currency: orderData.currency,
                             name: 'INSTADEED',
@@ -3345,111 +3381,110 @@
                     return matchesSearch && matchesCat;
                 });
 
+                const banners = [
+                    { title: 'Rent Agreement', subtitle: 'Most Popular — 11-month tenancy contract', price: '₹499', color: 'blue', icon: 'fa-file-signature', type: 'RENT' },
+                    { title: 'GNIDA Registry Deed', subtitle: 'Flat sub-lease transfer format', price: '₹1,999', color: 'cyan', icon: 'fa-book', type: 'GNIDA_REGISTRY' },
+                    { title: 'E-Commerce Bundle', subtitle: 'Terms, Privacy, Refund & more', price: 'From ₹199', color: 'rose', icon: 'fa-cart-shopping', type: 'ECOMM_TC' },
+                ];
+
                 return (
-                    <div className="w-full max-w-6xl mx-auto space-y-8 animate-in fade-in duration-200">
-                        {/* Hero Header Banner */}
-                        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-blue-950 to-slate-950 p-8 lg:p-12 shadow-xl border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
-                            <div className="space-y-3 text-center md:text-left z-10">
-                                <span className="px-3 py-1 bg-blue-500/10 border border-blue-400/20 text-blue-300 rounded-full font-bold text-[10px] uppercase tracking-wider">
-                                    ★ Document Library Suite
-                                </span>
-                                <h1 className="text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
-                                    Instadeed Template Vault
-                                </h1>
-                                <p className="text-xs text-slate-300 max-w-lg leading-relaxed font-medium">
-                                    Select from our range of 12+ authority-approved tenancy, transfer, registry, and corporate formats. Start drafting instantly with real-time field validation.
-                                </p>
+                    <div className="w-full space-y-6 animate-in fade-in duration-200">
+                        {/* Search Bar */}
+                        <div className="w-full max-w-md mx-auto bg-white border border-slate-100 rounded-2xl p-2 shadow-sm">
+                            <div className="relative">
+                                <i className="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                                <input type="text" placeholder="Search templates..." value={librarySearch} onChange={(e) => setLibrarySearch(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl focus:border-blue-500 focus:outline-none text-xs font-bold text-slate-700" />
                             </div>
-                            <div className="w-full max-w-md bg-white/5 border border-white/10 rounded-2xl p-2.5 backdrop-blur-md z-10">
-                                <div className="relative">
-                                    <i className="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                                    <input
-                                        type="text"
-                                        placeholder="Search legal & authority formats..."
-                                        value={librarySearch}
-                                        onChange={(e) => setLibrarySearch(e.target.value)}
-                                        className="w-full pl-10 pr-4 py-3 bg-white/10 text-white placeholder-slate-400 border border-white/10 rounded-xl focus:border-blue-500 focus:bg-white focus:text-slate-800 focus:outline-none text-xs font-bold transition duration-200"
-                                    />
-                                </div>
-                            </div>
-                            <div className="absolute right-0 bottom-0 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl -z-0"></div>
-                            <div className="absolute left-1/4 top-0 w-40 h-40 bg-sky-600/10 rounded-full blur-3xl -z-0"></div>
                         </div>
 
-                        {/* Category filter pills */}
+                        {/* Featured Product Strip */}
+                        <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-100 shadow-sm p-4">
+                            <div className="flex items-center gap-3 transition-all duration-500" style={{ transform: `translateX(-${bannerIdx * 100}%)` }}>
+                                <div className="flex gap-4 min-w-full">
+                                    {banners.map((b, i) => (
+                                                    <div key={i} className="flex-1 flex items-center gap-4 bg-slate-50 rounded-xl p-4 cursor-pointer hover:shadow-sm transition" onClick={() => { setActiveTab(b.type); setActiveAuthority('ALL'); setFlowStep(3); }}>
+                                            <div className={`w-12 h-12 rounded-xl bg-${b.color}-100 text-${b.color}-600 flex items-center justify-center shrink-0`}>
+                                                <i className={`fa-solid ${b.icon} text-lg`}></i>
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="font-extrabold text-sm text-slate-800">{b.title}</div>
+                                                <div className="text-[10px] text-slate-400 font-medium">{b.subtitle}</div>
+                                            </div>
+                                            <div className="text-right shrink-0">
+                                                <div className="font-black text-blue-600">{b.price}</div>
+                                                <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Shop Now</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="flex justify-center gap-1.5 mt-3">
+                                {banners.map((_, i) => (
+                                    <button key={i} onClick={() => setBannerIdx(i)} className={`w-2 h-2 rounded-full transition-all ${i === bannerIdx ? 'bg-blue-600 w-5' : 'bg-slate-200 hover:bg-slate-300'}`} />
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Category Nav */}
                         <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
                             {[
-                                { key: 'ALL', label: 'All Templates', icon: 'fa-cubes' },
+                                { key: 'ALL', label: 'All Products', icon: 'fa-cubes' },
                                 { key: 'REAL_ESTATE', label: 'Tenancy & Property', icon: 'fa-house-chimney' },
                                 { key: 'AUTHORITY', label: 'Authority Forms', icon: 'fa-building-columns' },
-                                { key: 'ECOMMERCE', label: 'E-Commerce Policies', icon: 'fa-cart-shopping' },
+                                { key: 'ECOMMERCE', label: 'E-Commerce', icon: 'fa-cart-shopping' },
                                 { key: 'TRADE', label: 'Business & Trade', icon: 'fa-briefcase' }
                             ].map(cat => (
-                                <button
-                                    key={cat.key}
-                                    onClick={() => setLibraryFilter(cat.key)}
-                                    className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer border ${
-                                        libraryFilter === cat.key
-                                            ? 'bg-blue-600 border-indigo-600 text-white shadow-md'
-                                            : 'bg-white border-slate-100 text-slate-600 hover:bg-slate-50 hover:text-slate-800 shadow-sm'
-                                    }`}
-                                >
-                                    <i className={`fa-solid ${cat.icon}`}></i>
-                                    {cat.label}
+                                <button key={cat.key} onClick={() => setLibraryFilter(cat.key)} className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer border whitespace-nowrap ${libraryFilter === cat.key ? 'bg-blue-600 border-indigo-600 text-white shadow-md' : 'bg-white border-slate-100 text-slate-600 hover:bg-slate-50 hover:text-slate-800 shadow-sm'}`}>
+                                    <i className={`fa-solid ${cat.icon}`}></i> {cat.label}
                                 </button>
                             ))}
                         </div>
 
-                        {/* Templates Card Bento Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {/* Product Grid */}
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             {filtered.length === 0 ? (
                                 <div className="col-span-full bg-white rounded-2xl border border-slate-100 p-12 text-center text-slate-400 font-medium">
                                     <i className="fa-solid fa-magnifying-glass-minus text-3xl mb-3 block opacity-30"></i>
-                                    No templates match your search query. Try another keyword.
+                                    No templates match your search.
                                 </div>
                             ) : (
                                 filtered.map(t => (
-                                    <div 
-                                        key={t.type} 
-                                        className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm flex flex-col justify-between hover:shadow-md hover:border-blue-100 hover:-translate-y-1 transition duration-300"
-                                    >
-                                        <div className="space-y-4">
-                                            <div className="flex items-center justify-between">
-                                                <div className={`w-11 h-11 rounded-2xl bg-${t.color}-50 text-${t.color}-600 flex items-center justify-center shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]`}>
-                                                    <i className={`fa-solid ${t.icon} text-base`}></i>
-                                                </div>
-                                                <span className="px-2 py-0.5 bg-slate-50 border border-slate-100 text-slate-500 rounded-full font-extrabold text-[9px] uppercase tracking-wider">
-                                                    {t.price}
-                                                </span>
+                                    <div key={t.type} className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group flex flex-col">
+                                        <div className={`h-28 bg-gradient-to-br from-${t.color}-50 to-white p-5 flex items-center justify-center relative`}>
+                                            <div className={`w-16 h-16 rounded-2xl bg-white shadow-sm border border-${t.color}-100 text-${t.color}-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                                                <i className={`fa-solid ${t.icon} text-2xl`}></i>
                                             </div>
-                                            <div className="space-y-1">
-                                                <h3 className="font-extrabold text-slate-800 text-sm leading-tight hover:text-blue-600 transition duration-150">
-                                                    {t.label}
-                                                </h3>
-                                                <p className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">
-                                                    {t.cat.replace('_', ' ')}
-                                                </p>
-                                            </div>
-                                            <p className="text-[11px] text-slate-400 font-medium leading-relaxed">
-                                                {t.desc}
-                                            </p>
+                                            <span className="absolute top-3 right-3 px-2 py-0.5 bg-white border border-slate-100 text-slate-600 rounded-full font-extrabold text-[9px] shadow-sm">{t.price}</span>
+                                            {t.type === 'RENT' && <span className="absolute top-3 left-3 px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded font-black text-[8px] uppercase tracking-wider">Best Seller</span>}
+                                            {t.type === 'GNIDA_REGISTRY' && <span className="absolute top-3 left-3 px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded font-black text-[8px] uppercase tracking-wider">Popular</span>}
                                         </div>
-                                        <div className="pt-6 border-t border-slate-50 mt-6">
-                                            <button
-                                                onClick={() => {
-                                                    setActiveTab(t.type);
-                                                    setActiveAuthority(t.auth);
-                                                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                                                }}
-                                                className={`w-full py-2.5 rounded-xl bg-slate-50 border border-slate-200 hover:bg-${t.color}-600 hover:border-${t.color}-600 hover:text-white text-slate-600 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer`}
-                                            >
-                                                Start Drafting
-                                                <i className="fa-solid fa-arrow-right text-[10px]"></i>
+                                        <div className="p-4 flex flex-col flex-1">
+                                            <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">{t.cat.replace('_', ' ')}</div>
+                                            <h3 className="font-extrabold text-sm text-slate-800 group-hover:text-blue-600 transition-colors leading-tight mb-1.5">{t.label}</h3>
+                                            <p className="text-[10px] text-slate-400 font-medium leading-relaxed flex-1">{t.desc}</p>
+                                            <button onClick={() => { setActiveTab(t.type); setActiveAuthority(t.auth); setFlowStep(3); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="mt-3 w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-sm cursor-pointer flex items-center justify-center gap-1.5">
+                                                <i className="fa-solid fa-file-pen text-[10px]"></i> Draft Now
                                             </button>
                                         </div>
                                     </div>
                                 ))
                             )}
+                        </div>
+
+                        {/* Footer Stats */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pb-4">
+                            {[
+                                { icon: 'fa-file', label: 'Templates', value: '12+' },
+                                { icon: 'fa-gavel', label: 'Court Validated', value: '100%' },
+                                { icon: 'fa-clock', label: 'Instant Download', value: 'Yes' },
+                                { icon: 'fa-shield', label: 'Secure', value: 'SSL' },
+                            ].map((s, i) => (
+                                <div key={i} className="bg-white rounded-xl border border-slate-100 p-4 text-center shadow-sm">
+                                    <i className={`fa-solid ${s.icon} text-blue-600 text-lg mb-1.5 block`}></i>
+                                    <div className="font-black text-slate-800 text-lg">{s.value}</div>
+                                    <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">{s.label}</div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 );
@@ -3800,32 +3835,53 @@
                                                         </select>
                                                     </td>
                                                     <td className="px-5 py-4 text-right">
-                                                        {order.form_data && (
-                                                            <button
-                                                                onClick={() => {
-                                                                    const tPayload = order.form_data;
-                                                                    setActiveTab(tPayload.type);
-                                                                    if (tPayload.type === 'RENT') setRentData(tPayload.payload);
-                                                                    else if (tPayload.type === 'ATS') setAtsData(tPayload.payload);
-                                                                    else if (tPayload.type === 'MUTATION') setMutationData(tPayload.payload);
-                                                                    else if (tPayload.type === 'GNIDA') setGnidaData(tPayload.payload);
-                                                                    else if (tPayload.type === 'TM48') setTm48Data(tPayload.payload);
-                                                                    else if (tPayload.type === 'TM_APP') setTmAppData(tPayload.payload);
-                                                                    else if (tPayload.type === 'GNIDA_REGISTRY') setGnidaRegistryData(tPayload.payload);
-                                                                    else if (tPayload.type === 'GNIDA_PTM') setGnidaPtmData(tPayload.payload);
-                                                                    else if (tPayload.type === 'ECOMM_TC') setEcommTCData(tPayload.payload);
-                                                                    else if (tPayload.type === 'ECOMM_PP') setEcommPPData(tPayload.payload);
-                                                                    else if (tPayload.type === 'ECOMM_RP') setEcommRPData(tPayload.payload);
-                                                                    else setRegData(tPayload.payload);
-
-                                                                    alert("Draft successfully loaded into form fields!");
-                                                                }}
-                                                                className="px-2.5 py-1.5 bg-blue-50 border border-blue-100 hover:bg-blue-100 hover:border-indigo-200 text-blue-600 text-[10px] font-bold rounded-lg transition cursor-pointer"
-                                                            >
-                                                                <i className="fa-solid fa-cloud-arrow-down mr-1"></i>
-                                                                Load Draft
-                                                            </button>
-                                                        )}
+                                                        <div className="flex items-center justify-end gap-1.5">
+                                                            {order.form_data && (
+                                                                <button
+                                                                    onClick={() => {
+                                                                        const tPayload = order.form_data;
+                                                                        setActiveTab(tPayload.type);
+                                                                        if (tPayload.type === 'RENT') setRentData(tPayload.payload);
+                                                                        else if (tPayload.type === 'ATS') setAtsData(tPayload.payload);
+                                                                        else if (tPayload.type === 'MUTATION') setMutationData(tPayload.payload);
+                                                                        else if (tPayload.type === 'GNIDA') setGnidaData(tPayload.payload);
+                                                                        else if (tPayload.type === 'TM48') setTm48Data(tPayload.payload);
+                                                                        else if (tPayload.type === 'TM_APP') setTmAppData(tPayload.payload);
+                                                                        else if (tPayload.type === 'GNIDA_REGISTRY') setGnidaRegistryData(tPayload.payload);
+                                                                        else if (tPayload.type === 'GNIDA_PTM') setGnidaPtmData(tPayload.payload);
+                                                                        else if (tPayload.type === 'ECOMM_TC') setEcommTCData(tPayload.payload);
+                                                                        else if (tPayload.type === 'ECOMM_PP') setEcommPPData(tPayload.payload);
+                                                                        else if (tPayload.type === 'ECOMM_RP') setEcommRPData(tPayload.payload);
+                                                                        else setRegData(tPayload.payload);
+                                                                        alert("Draft successfully loaded into form fields!");
+                                                                    }}
+                                                                    className="px-2.5 py-1.5 bg-blue-50 border border-blue-100 hover:bg-blue-100 hover:border-indigo-200 text-blue-600 text-[10px] font-bold rounded-lg transition cursor-pointer"
+                                                                >
+                                                                    <i className="fa-solid fa-cloud-arrow-down mr-1"></i>
+                                                                    Load
+                                                                </button>
+                                                            )}
+                                                            {(order.status === 'PAID' || order.status === 'DRAFTED' || order.status === 'COMPLETED') && (
+                                                                <button
+                                                                    onClick={() => {
+                                                                        setLeegalityOrderId(order.id);
+                                                                        setLeegalitySignee({ name: order.customer_name || '', email: order.customer_email || '', phone: order.customer_phone || '' });
+                                                                        setLeegalityResult(null);
+                                                                        setShowLeegalityModal(true);
+                                                                    }}
+                                                                    className="px-2.5 py-1.5 bg-indigo-50 border border-indigo-100 hover:bg-indigo-100 hover:border-indigo-200 text-indigo-600 text-[10px] font-bold rounded-lg transition cursor-pointer"
+                                                                >
+                                                                    <i className="fa-solid fa-fingerprint mr-1"></i>
+                                                                    e-Sign
+                                                                </button>
+                                                            )}
+                                                            {order.leegality_sign_url && (
+                                                                <a href={order.leegality_sign_url} target="_blank" className="px-2.5 py-1.5 bg-emerald-50 border border-emerald-100 hover:bg-emerald-100 text-emerald-700 text-[10px] font-bold rounded-lg transition cursor-pointer inline-flex items-center gap-1">
+                                                                    <i className="fa-solid fa-external-link-alt"></i>
+                                                                    Sign Link
+                                                                </a>
+                                                            )}
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))
@@ -3837,6 +3893,40 @@
                     </div>
                 );
             };
+
+            const shareDocTypes = [
+                { value: '', label: 'None (show landing page)' },
+                { value: 'rent', label: 'Rent Agreement' },
+                { value: 'reg_rent', label: 'Registered Rent' },
+                { value: 'ats', label: 'Agreement to Sell' },
+                { value: 'tm48', label: 'TM-48 Trademark' },
+                { value: 'package', label: 'GNIDA 5-in-1 Package' },
+                { value: 'kya', label: 'Know Your Allottee' },
+                { value: 'mutation', label: 'Mutation Form' },
+                { value: 'gnida_registry', label: 'GNIDA Registry' },
+                { value: 'gnida_ptm', label: 'Permission to Mortgage' },
+                { value: 'noida_transfer', label: 'NOIDA Transfer' },
+                { value: 'tm_app', label: 'TM Application' },
+                { value: 'ecomm_tc', label: 'E-Commerce T&C' },
+                { value: 'ecomm_pp', label: 'Privacy Policy' },
+                { value: 'ecomm_rp', label: 'Refund Policy' },
+            ];
+            const [shareMode, setShareMode] = useState('SHARE');
+            const [shareGeneratedCode, setShareGeneratedCode] = useState('');
+            const [shareCopyStatus, setShareCopyStatus] = useState('Copy Code');
+            const [shareDocType, setShareDocType] = useState('');
+
+            React.useEffect(() => {
+                if (activeTab === 'SHARE' && shareMode === 'SHARE') {
+                    try {
+                        const payload = { type: activeTab === 'SHARE' ? 'RENT' : activeTab, payload: {} };
+                        const json = JSON.stringify(payload);
+                        const code = btoa(unescape(encodeURIComponent(json)));
+                        const baseUrl = window.location.href.split('#')[0];
+                        setShareGeneratedCode(`${baseUrl}#data=${code}`);
+                    } catch (e) {}
+                }
+            }, [activeTab, shareMode]);
 
             return (
                 <ActiveFieldContext.Provider value={activeField}>
@@ -3873,6 +3963,9 @@
                                     ) : (
                                         <button onClick={() => setShowLogin(true)} style={{fontSize:'.72rem',fontWeight:700,color:'#2563EB',border:'1.5px solid #2563EB',borderRadius:'9999px',padding:'.32rem .85rem',background:'#EEF4FF',cursor:'pointer',fontFamily:'Inter,sans-serif'}}>Sign In</button>
                                     )}
+                                    <button onClick={() => setActiveTab('SHARE')} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-green-50 text-gray-400 hover:text-green-600 transition" title="Share Documents">
+                                        <i className="fa-brands fa-whatsapp text-sm"></i>
+                                    </button>
                                     <button onClick={() => setActiveTab('CRM')} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition" title="Admin CRM Dashboard">
                                         <i className="fa-solid fa-chart-line text-sm"></i>
                                     </button>
@@ -3901,10 +3994,39 @@
                             </div>
                         </div>
 
-                        {/* Document Selection OR Details Page */}
-                        {!confirmDoc ? (
-                            <div className="max-w-5xl mx-auto px-6 pb-16">
-                                {/* Category Tiles */}
+                        {/* Step Indicator */}
+                        {flowStep > 1 && (
+                            <div className="max-w-3xl mx-auto px-6 pb-8">
+                                <div className="flex items-center justify-center gap-0">
+                                    {[{n:1,l:'Customer Info'},{n:2,l:'Choose Document'},{n:3,l:'Draft & Preview'}].map((s,i) => (
+                                        <div key={s.n} className="flex items-center">
+                                            <div className="flex items-center gap-2.5">
+                                                <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-extrabold transition-all duration-300 shadow-sm ${
+                                                    flowStep === s.n ? 'bg-blue-600 text-white shadow-blue-200 scale-110' :
+                                                    flowStep > s.n ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-400'
+                                                }`}>
+                                                    {flowStep > s.n ? <i className="fa-solid fa-check"></i> : s.n}
+                                                </div>
+                                                <span className={`text-xs font-bold hidden sm:block ${flowStep === s.n ? 'text-slate-800' : 'text-slate-400'}`}>{s.l}</span>
+                                            </div>
+                                            {i < 2 && <div className={`w-16 sm:w-24 h-0.5 mx-2.5 rounded-full ${flowStep > s.n ? 'bg-emerald-300' : 'bg-slate-200'}`}></div>}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Step 1: Browse All Products */}
+                        {flowStep === 1 && (
+                            <div className="max-w-6xl mx-auto px-6 pb-12">
+                                {renderHomeDashboard()}
+                            </div>
+                        )}
+
+                        {/* Step 2: Document Selection */}
+                                    {flowStep === 2 && !confirmDoc && (
+                                        <div className="max-w-5xl mx-auto px-6 pb-16">
+                                            {/* Category Tiles */}
                                 <div className="space-y-6">
 
                                     {/* Rent & Lease */}
@@ -4152,9 +4274,97 @@
                                         </div>
                                     </div>
                                 )}
+
+                                {/* My Documents Portal */}
+                                <div className="mt-6">
+                                    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                        <div className="px-5 py-3.5 border-b border-slate-50 flex items-center gap-2.5">
+                                            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                                                <i className="fa-solid fa-cloud-arrow-down text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <h3 className="font-bold text-sm text-slate-800">My Documents</h3>
+                                                <p className="text-[10px] text-slate-400 font-medium">Access your signed & completed documents</p>
+                                            </div>
+                                        </div>
+                                        <div className="p-4">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-50 transition-all bg-white flex-1">
+                                                    <input
+                                                        type="tel"
+                                                        value={myDocsPhone}
+                                                        onChange={(e) => setMyDocsPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                                                        placeholder="Enter your mobile number"
+                                                        className="w-full px-3 py-2.5 text-sm font-medium text-slate-800 focus:outline-none"
+                                                    />
+                                                </div>
+                                                <button
+                                                    onClick={async () => {
+                                                        if (myDocsPhone.length !== 10) return;
+                                                        setMyDocsLoading(true);
+                                                        try {
+                                                            const res = await fetch(`${API_BASE}/api/customer/documents?phone=${myDocsPhone}`);
+                                                            if (res.ok) {
+                                                                const data = await res.json();
+                                                                setMyDocs(data);
+                                                            } else {
+                                                                setMyDocs([]);
+                                                                alert('Could not fetch documents. Please try again.');
+                                                            }
+                                                        } catch (e) {
+                                                            setMyDocs([]);
+                                                            alert('Error fetching your documents.');
+                                                        }
+                                                        setMyDocsLoading(false);
+                                                    }}
+                                                    disabled={myDocsPhone.length !== 10 || myDocsLoading}
+                                                    className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition shadow-sm disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
+                                                >
+                                                    {myDocsLoading ? <i className="fa-solid fa-circle-notch fa-spin"></i> : <><i className="fa-solid fa-search mr-1"></i> Search</>}
+                                                </button>
+                                            </div>
+                                            {myDocs.length > 0 && (
+                                                <div className="space-y-2 max-h-72 overflow-y-auto">
+                                                    {myDocs.map((doc) => (
+                                                        <div key={doc.id} className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-slate-100 hover:shadow-sm hover:border-slate-200 transition-all group">
+                                                            <div className="flex items-center gap-3 min-w-0 flex-1">
+                                                                <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
+                                                                    <i className="fa-solid fa-file-lines text-xs"></i>
+                                                                </div>
+                                                                <div className="min-w-0 flex-1">
+                                                                    <div className="font-bold text-sm text-slate-800 truncate">{doc.agreement_type}</div>
+                                                                    <div className="flex items-center gap-2 mt-0.5">
+                                                                        <span className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${
+                                                                            doc.status === 'SIGNED' || doc.status === 'COMPLETED' ? 'bg-emerald-100 text-emerald-800' :
+                                                                            doc.status === 'PAID' ? 'bg-purple-100 text-purple-800' : 'bg-amber-100 text-amber-800'
+                                                                        }`}>{doc.status}</span>
+                                                                        <span className="text-[10px] text-slate-400">{new Date(doc.created_at).toLocaleDateString('en-IN')}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex items-center gap-1.5 shrink-0 ml-3">
+                                                                <a href={`${API_BASE}/api/customer/documents/${doc.id}/download`} target="_blank" className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 text-slate-600 text-xs font-bold rounded-lg transition cursor-pointer inline-flex items-center gap-1">
+                                                                    <i className="fa-solid fa-download"></i> PDF
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                            {myDocs.length === 0 && !myDocsLoading && myDocsPhone.length === 10 && (
+                                                <div className="text-center py-6 text-slate-400 text-xs font-medium">
+                                                    <i className="fa-solid fa-folder-open text-lg mb-2 block opacity-40"></i>
+                                                    No documents found for this number.
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        ) : (
-                            /* Document Details Page */
+                        )}
+
+                        {/* Document Details Page (step 2) */}
+                        {flowStep === 2 && confirmDoc && (
                             <div className="max-w-3xl mx-auto px-6 pb-16">
                                 <button onClick={() => setConfirmDoc(null)} className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 font-bold mb-6 transition cursor-pointer">
                                     <i className="fa-solid fa-arrow-left"></i> Back to Documents
@@ -4192,7 +4402,7 @@
                                                     </div>
                                                 </div>
                                                 <div className="flex gap-3 max-w-sm mx-auto">
-                                                    <button onClick={() => { setConfirmDoc(null); setActiveTab(confirmDoc); }} className="flex-1 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer">
+                                                    <button onClick={() => { setConfirmDoc(null); setActiveTab(confirmDoc); setFlowStep(3); }} className="flex-1 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer">
                                                         <i className="fa-solid fa-pen-to-square mr-1.5"></i> Start Drafting
                                                     </button>
                                                 </div>
@@ -4241,7 +4451,7 @@
                                                 <button onClick={() => setConfirmDoc(null)} className="flex-1 py-3 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-xl font-bold text-sm transition cursor-pointer">
                                                     Cancel
                                                 </button>
-                                                <button onClick={() => { setConfirmDoc(null); setActiveTab(confirmDoc); }} className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer">
+                                                <button onClick={() => { setConfirmDoc(null); setActiveTab(confirmDoc); setFlowStep(3); }} className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer">
                                                     <i className="fa-solid fa-pen-to-square mr-1.5"></i> Start Drafting
                                                 </button>
                                             </div>
@@ -4257,6 +4467,123 @@
                             onClose={() => setShowLogin(false)}
                             onLogin={(u) => { setUser(u); setShowLogin(false); }}
                         />
+                    </div>
+                ) : activeTab === 'SHARE' ? (
+                    /* ===== SHARE PAGE ===== */
+                    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 font-ui" style={{fontFamily:'Plus Jakarta Sans, Inter, sans-serif'}}>
+                        <div className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100">
+                            <div className="max-w-4xl mx-auto px-6 py-3 flex items-center justify-between">
+                                <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('HOME')}>
+                                    <div style={{width:'32px',height:'32px',borderRadius:'9px',background:'#2563EB',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,boxShadow:'0 3px 10px rgba(37,99,235,.32), inset 0 1px 0 rgba(255,255,255,.18)'}}>
+                                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:'16px',height:'16px'}}>
+                                            <rect x="3" y="2" width="11" height="14" rx="1.5" fill="rgba(255,255,255,0.2)" stroke="white" strokeWidth="1.3"/>
+                                            <line x1="6" y1="6" x2="11" y2="6" stroke="white" strokeWidth="1.1" strokeLinecap="round"/>
+                                            <line x1="6" y1="9" x2="11" y2="9" stroke="white" strokeWidth="1.1" strokeLinecap="round"/>
+                                            <line x1="6" y1="12" x2="9" y2="12" stroke="white" strokeWidth="1.1" strokeLinecap="round"/>
+                                            <path d="M13.5 13l3-3 1.5 1.5-3 3-2 .5.5-2z" fill="white" stroke="white" strokeWidth=".4" strokeLinejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <span style={{fontWeight:900,fontSize:'1.2rem',letterSpacing:'-0.06em',color:'#0F172A'}}>insta<span style={{color:'#2563EB'}}>deed</span></span>
+                                </div>
+                                <button onClick={() => setActiveTab('HOME')} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-sm cursor-pointer">
+                                    <i className="fa-solid fa-arrow-left mr-1.5"></i> Back to Home
+                                </button>
+                            </div>
+                        </div>
+                        <div className="max-w-3xl mx-auto px-6 py-12">
+                            <div className="text-center mb-10">
+                                <div className="w-16 h-16 mx-auto rounded-2xl bg-green-50 text-green-600 flex items-center justify-center mb-4 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
+                                    <i className="fa-brands fa-whatsapp text-2xl"></i>
+                                </div>
+                                <h1 className="text-3xl font-extrabold text-slate-800">Share Documents</h1>
+                                <p className="text-sm text-slate-500 mt-2">Send agreement data or share the Instadeed app with anyone</p>
+                            </div>
+                            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                <div className="flex border-b border-gray-100">
+                                    <button onClick={() => setShareMode('SHARE')} className={`flex-1 py-4 text-sm font-bold transition-colors ${shareMode === 'SHARE' ? 'bg-green-50 text-green-700 border-b-2 border-green-600' : 'text-gray-500 hover:bg-gray-50'}`}>
+                                        <i className="fa-solid fa-share-nodes mr-2"></i> Share / Send
+                                    </button>
+                                    <button onClick={() => setShareMode('APP')} className={`flex-1 py-4 text-sm font-bold transition-colors ${shareMode === 'APP' ? 'bg-green-50 text-green-700 border-b-2 border-emerald-600' : 'text-gray-500 hover:bg-gray-50'}`}>
+                                        <i className="fa-solid fa-globe mr-2"></i> Share App
+                                    </button>
+                                    <button onClick={() => setShareMode('IMPORT')} className={`flex-1 py-4 text-sm font-bold transition-colors ${shareMode === 'IMPORT' ? 'bg-green-50 text-green-700 border-b-2 border-indigo-600' : 'text-gray-500 hover:bg-gray-50'}`}>
+                                        <i className="fa-solid fa-download mr-2"></i> Receive / Load
+                                    </button>
+                                </div>
+                                <div className="p-6">
+                                    {shareMode === 'SHARE' ? (
+                                        <div className="space-y-4">
+                                            <div className="p-4 bg-green-50 border border-green-100 rounded-xl text-sm text-green-800 font-medium">
+                                                <i className="fa-solid fa-link mr-2"></i>
+                                                Generate a Magic Link to share your current agreement data. When opened, it auto-fills the form.
+                                            </div>
+                                            <div className="flex gap-3">
+                                                <select value="RENT" className="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-3 text-sm font-medium text-slate-700 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-500/10">
+                                                    <option>Select document type to share</option>
+                                                    {shareDocTypes.filter(d => d.value).map(d => (
+                                                        <option key={d.value} value={d.value}>{d.label}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs font-mono text-slate-500 break-all">
+                                                Select a document type and enter data to generate a shareable link.
+                                            </div>
+                                            <div className="flex gap-3">
+                                                <button className="flex-1 bg-[#25D366] hover:bg-[#128C7E] text-white py-3 rounded-xl font-bold text-sm transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+                                                    <i className="fa-brands fa-whatsapp text-lg"></i> Share on WhatsApp
+                                                </button>
+                                                <button className="flex-1 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 py-3 rounded-xl font-bold text-sm transition-all shadow-sm cursor-pointer">
+                                                    <i className="fa-regular fa-copy mr-1"></i> Copy Link
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : shareMode === 'APP' ? (
+                                        <div className="space-y-4">
+                                            <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-xl text-sm text-emerald-800 font-medium">
+                                                <i className="fa-solid fa-globe mr-2"></i>
+                                                Share the Instadeed app link so others can create their own agreements from scratch.
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-slate-600 mb-1.5">Preselect document type (optional)</label>
+                                                <select value={shareDocType} onChange={e => setShareDocType(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10">
+                                                    {shareDocTypes.map(d => (
+                                                        <option key={d.value} value={d.value}>{d.label}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            {(() => {
+                                                const baseUrl = window.location.href.split('?')[0].split('#')[0];
+                                                const appLink = shareDocType ? `${baseUrl}?doc=${shareDocType}` : baseUrl;
+                                                return (
+                                                    <div className="space-y-3">
+                                                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-mono text-slate-600 break-all select-all">{appLink}</div>
+                                                        <div className="flex gap-3">
+                                                            <button onClick={() => { const text = `Create your legal agreement using Instadeed:\n\n${appLink}`; window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'); }} className="flex-1 bg-[#25D366] hover:bg-[#128C7E] text-white py-3 rounded-xl font-bold text-sm transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+                                                                <i className="fa-brands fa-whatsapp text-lg"></i> Share on WhatsApp
+                                                            </button>
+                                                            <button onClick={() => { navigator.clipboard.writeText(appLink); alert('App link copied!'); }} className="flex-1 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 py-3 rounded-xl font-bold text-sm transition-all shadow-sm cursor-pointer">
+                                                                <i className="fa-regular fa-copy mr-1"></i> Copy Link
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })()}
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            <div className="p-4 bg-indigo-50 border border-indigo-100 rounded-xl text-sm text-indigo-800 font-medium">
+                                                <i className="fa-solid fa-download mr-2"></i>
+                                                Paste a shared code or link below to load agreement data into the drafting form.
+                                            </div>
+                                            <textarea placeholder="Paste the shared Magic Link or code here..." className="w-full h-32 bg-white border border-slate-200 rounded-xl p-3 text-xs font-mono text-slate-600 outline-none resize-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10" />
+                                            <button className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all text-sm shadow-sm cursor-pointer">
+                                                <i className="fa-solid fa-upload mr-1.5"></i> Load Data
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 ) : (
                     /* ===== EXISTING SIDEBAR + PREVIEW LAYOUT ===== */
@@ -10201,6 +10528,112 @@
                                 else setRegData(data);
                             }}
                         />
+
+                        {/* Leegality e-Sign Modal */}
+                        {showLeegalityModal && (
+                            <div className="fixed inset-0 bg-black/60 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm transition-all" onClick={() => setShowLeegalityModal(false)}>
+                                <div className="bg-white w-full max-w-sm rounded-2xl border border-slate-100 shadow-lg relative animate-in fade-in zoom-in duration-200" onClick={e => e.stopPropagation()}>
+                                    <div className="p-6 relative flex flex-col">
+                                        <button onClick={() => setShowLeegalityModal(false)} className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors text-sm">
+                                            <i className="fa-solid fa-xmark"></i>
+                                        </button>
+                                        <div className="mb-5 text-center w-full pb-4">
+                                            <div className="w-12 h-12 mx-auto rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-3 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
+                                                <i className="fa-solid fa-fingerprint text-lg"></i>
+                                            </div>
+                                            <h3 className="font-extrabold text-slate-800 text-lg">Send for e-Sign</h3>
+                                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1">Leegality Digital Signature</p>
+                                        </div>
+                                        {leegalityResult ? (
+                                            <div className="space-y-4 text-center">
+                                                <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-xl">
+                                                    <i className="fa-solid fa-circle-check text-emerald-500 text-2xl mb-2 block"></i>
+                                                    <p className="font-bold text-emerald-800 text-sm">Document Sent!</p>
+                                                    <p className="text-xs text-emerald-600 mt-1">{leegalityResult.message}</p>
+                                                </div>
+                                                {leegalityResult.sign_url && (
+                                                    <div>
+                                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Signing URL</label>
+                                                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-mono text-slate-600 break-all select-all">
+                                                            {leegalityResult.sign_url}
+                                                        </div>
+                                                        <button
+                                                            onClick={() => { navigator.clipboard.writeText(leegalityResult.sign_url); alert('Signing URL copied!'); }}
+                                                            className="mt-2 w-full py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-bold rounded-xl transition cursor-pointer"
+                                                        >
+                                                            <i className="fa-regular fa-copy mr-1"></i> Copy Sign URL
+                                                        </button>
+                                                        <a href={leegalityResult.sign_url} target="_blank" className="mt-2 w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition cursor-pointer inline-flex items-center justify-center gap-1.5">
+                                                            <i className="fa-solid fa-external-link-alt"></i> Open Signing Page
+                                                        </a>
+                                                    </div>
+                                                )}
+                                                <button onClick={() => setShowLeegalityModal(false)} className="w-full py-2.5 bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-600 text-xs font-bold rounded-xl transition cursor-pointer">
+                                                    Close
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div className="space-y-4 w-full">
+                                                <div className="p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs text-indigo-800 font-medium flex items-center gap-2">
+                                                    <i className="fa-solid fa-info-circle text-indigo-600"></i>
+                                                    Order: <strong>{leegalityOrderId}</strong>
+                                                </div>
+                                                <div className="space-y-3">
+                                                    <div>
+                                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Signee Name</label>
+                                                        <input type="text" value={leegalitySignee.name} onChange={e => setLeegalitySignee(p => ({ ...p, name: e.target.value }))} placeholder="Full name of signee" className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-50 focus:outline-none bg-white text-slate-800" />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Signee Email</label>
+                                                        <input type="email" value={leegalitySignee.email} onChange={e => setLeegalitySignee(p => ({ ...p, email: e.target.value }))} placeholder="email@example.com" className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-50 focus:outline-none bg-white text-slate-800" />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Signee Phone</label>
+                                                        <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-50 bg-white">
+                                                            <span className="bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-500 border-r border-slate-200">+91</span>
+                                                            <input type="tel" value={leegalitySignee.phone} onChange={e => setLeegalitySignee(p => ({ ...p, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))} placeholder="98765 43210" className="w-full px-3 py-2.5 text-sm focus:outline-none text-slate-800" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    onClick={async () => {
+                                                        if (!leegalitySignee.name || leegalitySignee.phone.length !== 10) return;
+                                                        setLeegalitySending(true);
+                                                        try {
+                                                            const res = await fetch(`${API_BASE}/api/sign/leegality/send`, {
+                                                                method: 'POST',
+                                                                headers: { 'Content-Type': 'application/json' },
+                                                                body: JSON.stringify({
+                                                                    order_id: leegalityOrderId,
+                                                                    signee_name: leegalitySignee.name,
+                                                                    signee_email: leegalitySignee.email,
+                                                                    signee_phone: leegalitySignee.phone
+                                                                })
+                                                            });
+                                                            if (res.ok) {
+                                                                const data = await res.json();
+                                                                setLeegalityResult(data);
+                                                                fetchCrmOrders();
+                                                            } else {
+                                                                const err = await res.json();
+                                                                alert('Failed: ' + (err.detail || 'Unknown error'));
+                                                            }
+                                                        } catch (e) {
+                                                            alert('Error sending for e-sign: ' + e.message);
+                                                        }
+                                                        setLeegalitySending(false);
+                                                    }}
+                                                    disabled={!leegalitySignee.name || leegalitySignee.phone.length !== 10 || leegalitySending}
+                                                    className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all text-xs cursor-pointer text-center shadow-sm disabled:opacity-40 disabled:pointer-events-none"
+                                                >
+                                                    {leegalitySending ? <><i className="fa-solid fa-circle-notch fa-spin mr-2"></i> Sending...</> : <><i className="fa-solid fa-paper-plane mr-1.5"></i> Send for e-Sign</>}
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
                     </div >
                     )}

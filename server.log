@@ -54,3 +54,106 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2026-05-30 23:30:37,123 | INFO     | GET /orders -> 200 (4ms)
 2026-05-30 23:30:39,208 | INFO     | GET /orders -> 401 (0ms)
 2026-05-30 23:30:41,303 | INFO     | POST /api/auth/login -> 401 (3ms)
+2026-05-31 20:20:56,897 | INFO     | Database initialized
+2026-05-31 20:20:58,354 | INFO     | GET / -> 200 (65ms)
+2026-05-31 20:20:58,420 | INFO     | GET /out.js -> 200 (9ms)
+2026-05-31 20:20:59,466 | INFO     | GET /favicon.ico -> 404 (0ms)
+2026-05-31 20:21:05,843 | INFO     | GET /landing.html -> 404 (0ms)
+2026-05-31 20:21:16,412 | INFO     | Database initialized
+2026-05-31 20:21:24,986 | INFO     | Database initialized
+2026-05-31 20:27:52,691 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-05-31 20:27:52,729 | INFO     | Database initialized
+2026-06-01 00:12:37,148 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-01 00:12:37,181 | INFO     | Database initialized
+2026-06-01 00:13:32,536 | INFO     | GET / -> 200 (55ms)
+2026-06-01 00:13:32,674 | INFO     | GET /out.js -> 200 (2ms)
+2026-06-01 00:14:42,727 | INFO     | GET / -> 200 (1ms)
+2026-06-01 00:14:47,530 | INFO     | GET / -> 200 (0ms)
+2026-06-01 00:14:55,165 | INFO     | GET / -> 200 (1ms)
+2026-06-01 00:15:05,284 | INFO     | GET / -> 200 (1ms)
+2026-06-01 00:15:18,893 | INFO     | GET / -> 200 (1ms)
+2026-06-01 00:15:23,883 | INFO     | GET / -> 200 (1ms)
+2026-06-01 00:15:46,128 | INFO     | GET /out.js -> 200 (2ms)
+2026-06-01 00:16:14,698 | INFO     | GET / -> 200 (0ms)
+2026-06-01 00:16:14,949 | INFO     | GET /out.js -> 200 (0ms)
+2026-06-01 00:18:26,390 | INFO     | GET / -> 200 (1ms)
+2026-06-01 02:22:51,736 | INFO     | GET / -> 200 (1ms)
+2026-06-01 02:22:51,811 | INFO     | GET /out.js -> 200 (1ms)
+2026-06-01 23:54:17,282 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-01 23:54:17,381 | INFO     | Database initialized
+2026-06-01 23:54:23,206 | INFO     | GET / -> 200 (78ms)
+2026-06-01 23:54:23,313 | INFO     | GET /out.js -> 200 (6ms)
+2026-06-01 23:54:25,259 | INFO     | GET /favicon.ico -> 404 (0ms)
+2026-06-01 23:54:38,212 | INFO     | GET / -> 200 (0ms)
+2026-06-01 23:54:51,700 | INFO     | GET /landing.html -> 404 (0ms)
+2026-06-01 23:56:25,665 | INFO     | GET / -> 200 (1ms)
+2026-06-01 23:58:40,157 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-01 23:58:40,229 | INFO     | Database initialized
+2026-06-01 23:58:41,396 | INFO     | GET / -> 200 (78ms)
+2026-06-02 00:00:55,390 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 00:00:55,493 | INFO     | Database initialized
+2026-06-02 00:00:57,781 | INFO     | GET / -> 200 (1ms)
+2026-06-02 00:01:15,594 | INFO     | GET /api/health -> 200 (1ms)
+2026-06-02 00:01:20,514 | INFO     | GET /api/config -> 200 (1ms)
+2026-06-02 00:01:48,604 | INFO     | GET / -> 200 (49ms)
+2026-06-02 00:01:48,636 | INFO     | GET /out.js -> 200 (3ms)
+2026-06-02 00:07:05,511 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 00:07:05,566 | INFO     | Database initialized
+2026-06-02 00:09:44,798 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 00:09:44,844 | INFO     | Database initialized
+2026-06-02 00:10:23,104 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 00:10:23,148 | INFO     | Database initialized
+2026-06-02 00:10:52,809 | INFO     | GET / -> 200 (48ms)
+2026-06-02 00:10:52,854 | INFO     | GET /out.js -> 200 (3ms)
+2026-06-02 00:11:12,350 | INFO     | GET / -> 200 (0ms)
+2026-06-02 00:15:20,200 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 00:15:20,253 | INFO     | Database initialized
+2026-06-02 00:15:28,152 | INFO     | GET /api/health -> 200 (1ms)
+2026-06-02 00:15:28,436 | INFO     | GET /api/customer/documents -> 200 (6ms)
+2026-06-02 00:15:34,451 | INFO     | GET /api/customer/documents/MDH-C1A667D9/download -> 500 (5ms)
+2026-06-02 00:15:43,973 | INFO     | GET /api/customer/documents/MDH-C1A667D9/download -> 500 (3ms)
+2026-06-02 00:15:56,430 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 00:15:56,471 | INFO     | Database initialized
+2026-06-02 00:15:58,472 | INFO     | GET /api/customer/documents/MDH-C1A667D9/download -> 200 (4ms)
+2026-06-02 00:16:09,685 | INFO     | GET / -> 200 (44ms)
+2026-06-02 00:16:09,715 | INFO     | GET /out.js -> 200 (2ms)
+2026-06-02 00:26:42,885 | INFO     | GET / -> 200 (2ms)
+2026-06-02 00:28:56,736 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 00:28:56,771 | INFO     | Database initialized
+2026-06-02 00:29:00,027 | INFO     | GET / -> 200 (46ms)
+2026-06-02 00:29:00,089 | INFO     | GET /out.js -> 200 (2ms)
+2026-06-02 01:26:37,402 | INFO     | GET / -> 200 (83ms)
+2026-06-02 01:26:37,445 | INFO     | GET /out.js -> 200 (1ms)
+2026-06-02 01:27:17,481 | INFO     | GET / -> 200 (1ms)
+2026-06-02 01:28:36,737 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 01:28:36,799 | INFO     | Database initialized
+2026-06-02 01:28:37,582 | INFO     | GET / -> 200 (55ms)
+2026-06-02 01:30:19,070 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 01:30:19,105 | INFO     | Database initialized
+2026-06-02 01:32:21,142 | INFO     | GET / -> 200 (46ms)
+2026-06-02 01:35:22,203 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 01:35:22,238 | INFO     | Database initialized
+2026-06-02 01:35:37,867 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 01:35:37,910 | INFO     | Database initialized
+2026-06-02 01:35:45,857 | INFO     | GET / -> 200 (44ms)
+2026-06-02 01:36:41,056 | INFO     | GET / -> 200 (1ms)
+2026-06-02 01:36:53,797 | INFO     | GET / -> 200 (0ms)
+2026-06-02 01:38:35,920 | INFO     | GET / -> 200 (1ms)
+2026-06-02 01:38:37,759 | INFO     | GET / -> 200 (0ms)
+2026-06-02 01:39:12,662 | INFO     | GET / -> 200 (1ms)
+2026-06-02 01:40:06,638 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 01:40:06,685 | INFO     | Database initialized
+2026-06-02 01:40:15,890 | INFO     | GET / -> 200 (38ms)
+2026-06-02 01:40:33,341 | INFO     | GET / -> 200 (2ms)
+2026-06-02 01:52:04,324 | INFO     | GET / -> 200 (3ms)
+2026-06-02 01:52:05,948 | INFO     | GET / -> 200 (0ms)
+2026-06-02 01:52:07,467 | INFO     | GET / -> 200 (1ms)
+2026-06-02 01:53:42,949 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 01:53:42,990 | INFO     | Database initialized
+2026-06-02 01:53:51,539 | INFO     | GET / -> 200 (46ms)
+2026-06-02 02:01:44,427 | INFO     | GET / -> 200 (2ms)
+2026-06-02 02:03:29,591 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-02 02:03:29,630 | INFO     | Database initialized
+2026-06-02 02:03:38,148 | INFO     | GET / -> 200 (35ms)
+2026-06-02 03:24:22,086 | INFO     | GET / -> 200 (2ms)
+2026-06-02 03:24:22,136 | INFO     | GET /out.js -> 200 (2ms)

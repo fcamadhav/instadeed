@@ -6,18 +6,23 @@ import time
 import logging
 import os
 import hashlib
+import io
+import base64
 from contextlib import asynccontextmanager
 from typing import Optional
 
+import requests as http_requests
+
 from fastapi import FastAPI, Request, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, Response
 from pydantic import BaseModel
 import razorpay
 import jwt
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
+from fpdf import FPDF
 
 # --- Configuration ---
 JWT_SECRET = os.environ.get("JWT_SECRET", "instadeed-dev-secret-change-in-production")
@@ -25,6 +30,12 @@ JWT_ALGORITHM = "HS256"
 JWT_EXPIRY_HOURS = 24
 DATABASE_FILE = "madhav_crm.db"
 STATIC_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# --- Leegality e-Sign Configuration ---
+LEEGALITY_AUTH_TOKEN = os.environ.get("LEEGALITY_AUTH_TOKEN", "awuvjhZrH0QxTFN1d2VhDX1ZUFF50E6z")
+LEEGALITY_PRIVATE_SALT = os.environ.get("LEEGALITY_PRIVATE_SALT", "YsZ0GTAGVREIF1fchgyWQkgarempLluT")
+LEEGALITY_BASE_URL = os.environ.get("LEEGALITY_BASE_URL", "https://sandbox.leegality.com/api")
+LEEGALITY_PROFILE_ID = os.environ.get("LEEGALITY_PROFILE_ID", "")
 
 # --- Logging Setup ---
 logging.basicConfig(
@@ -85,6 +96,14 @@ def init_db():
     """)
     try:
         cursor.execute("ALTER TABLE orders ADD COLUMN cloud_url TEXT")
+    except Exception:
+        pass
+    try:
+        cursor.execute("ALTER TABLE orders ADD COLUMN leegality_doc_id TEXT")
+    except Exception:
+        pass
+    try:
+        cursor.execute("ALTER TABLE orders ADD COLUMN leegality_sign_url TEXT")
     except Exception:
         pass
     cursor.execute("""
@@ -661,11 +680,261 @@ async def get_logs(request: Request, user: dict = Depends(get_current_user)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# === Config Endpoint ===
+
+@app.get("/api/config")
+async def get_config():
+    return {
+        "razorpay_key": RAZORPAY_KEY_ID,
+        "version": "2.0.0",
+        "app_name": "Instadeed Legal Drafting Suite"
+    }
+
 # === Health Check ===
 
 @app.get("/api/health")
 async def health():
     return {"status": "ok", "version": "2.0.0", "timestamp": datetime.datetime.now().isoformat()}
+
+# === Customer Document Portal ===
+
+@app.get("/api/customer/documents")
+async def customer_documents(phone: str = "", email: str = ""):
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        if phone:
+            cursor.execute("SELECT id, agreement_type, status, amount, created_at, updated_at, cloud_url, leegality_sign_url, form_data FROM orders WHERE customer_phone = ? ORDER BY created_at DESC", (phone,))
+        elif email:
+            cursor.execute("SELECT id, agreement_type, status, amount, created_at, updated_at, cloud_url, leegality_sign_url, form_data FROM orders WHERE customer_email = ? ORDER BY created_at DESC", (email,))
+        else:
+            conn.close()
+            return []
+        rows = cursor.fetchall()
+        conn.close()
+        docs = []
+        for r in rows:
+            d = dict(r)
+            try:
+                d["form_data"] = json.loads(d["form_data"]) if isinstance(d["form_data"], str) else d["form_data"]
+            except:
+                d["form_data"] = {}
+            d.pop("form_data", None)
+            docs.append(d)
+        return docs
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/customer/documents/{order_id}/download")
+async def customer_download(order_id: str):
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM orders WHERE id = ?", (order_id,))
+        row = cursor.fetchone()
+        conn.close()
+        if not row:
+            raise HTTPException(status_code=404, detail="Document not found")
+        order = dict(row)
+        try:
+            order["form_data"] = json.loads(order["form_data"]) if isinstance(order["form_data"], str) else order["form_data"]
+        except:
+            order["form_data"] = {}
+        pdf_bytes = generate_document_pdf(order.get("form_data", {}))
+        filename = f"{order.get('agreement_type', 'document')}_{order_id[:8]}.pdf"
+        return Response(content=pdf_bytes, media_type="application/pdf", headers={"Content-Disposition": f"attachment; filename={filename}"})
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# === PDF Generation ===
+
+def generate_document_pdf(form_data: dict) -> bytes:
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.set_font("Courier", "B", 16)
+    title = form_data.get("type", "Legal Document")
+    pdf.cell(0, 10, str(title), ln=True, align="C")
+    pdf.ln(5)
+    pdf.set_font("Courier", "", 9)
+    pdf.cell(0, 6, "Generated by Instadeed Legal Suite", ln=True, align="C")
+    pdf.cell(0, 6, f"Date: {datetime.date.today().strftime('%d %B %Y')}", ln=True, align="C")
+    pdf.ln(8)
+    pdf.set_draw_color(200, 200, 200)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(8)
+    payload = form_data.get("payload") or form_data
+    if isinstance(payload, dict):
+        pdf.set_font("Courier", "B", 12)
+        pdf.cell(0, 8, "Document Details", ln=True)
+        pdf.ln(3)
+        pdf.set_font("Courier", "", 10)
+        for key, value in payload.items():
+            if value is None or value == "":
+                continue
+            label = key.replace("_", " ").replace("-", " ").title()
+            val_str = str(value)
+            pdf.set_font("Courier", "B", 9)
+            pdf.cell(60, 5, label + ":", ln=False)
+            pdf.set_font("Courier", "", 9)
+            pdf.multi_cell(0, 5, val_str)
+            pdf.ln(1)
+    pdf.ln(10)
+    pdf.set_draw_color(200, 200, 200)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(5)
+    pdf.set_font("Courier", "", 7)
+    pdf.cell(0, 4, "This document was generated electronically by Instadeed.", ln=True, align="C")
+    pdf.cell(0, 4, "Digitally signed via Leegality e-Sign Platform.", ln=True, align="C")
+    return bytes(pdf.output(dest="S"))
+
+
+# === Leegality e-Sign Endpoints ===
+
+class LeegalitySignRequest(BaseModel):
+    order_id: str
+    signee_name: str
+    signee_email: str
+    signee_phone: str
+
+@app.post("/api/sign/leegality/send")
+async def leegality_send(request: Request, body: LeegalitySignRequest, user: dict = Depends(get_current_user)):
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM orders WHERE id = ?", (body.order_id,))
+        row = cursor.fetchone()
+        conn.close()
+        if not row:
+            raise HTTPException(status_code=404, detail="Order not found")
+        order = dict(row)
+        try:
+            order["form_data"] = json.loads(order["form_data"]) if isinstance(order["form_data"], str) else order["form_data"]
+        except:
+            order["form_data"] = {}
+        pdf_bytes = generate_document_pdf(order.get("form_data", {}))
+        pdf_b64 = base64.b64encode(pdf_bytes).decode("ascii")
+        profile_id = LEEGALITY_PROFILE_ID or "default"
+        payload = {
+            "profileId": profile_id,
+            "document": {
+                "content": pdf_b64,
+                "fileName": f"{order.get('agreement_type', 'document')}_{body.order_id}.pdf"
+            },
+            "invitees": [
+                {
+                    "name": body.signee_name,
+                    "email": body.signee_email,
+                    "phone": body.signee_phone
+                }
+            ],
+            "sendInvite": True,
+            "expiryInDays": 7,
+            "notifyVia": ["email", "sms"]
+        }
+        headers = {
+            "X-Auth-Token": LEEGALITY_AUTH_TOKEN,
+            "Content-Type": "application/json"
+        }
+        resp = http_requests.post(f"{LEEGALITY_BASE_URL}/v3.0/sign/request", json=payload, headers=headers, timeout=30)
+        if resp.status_code != 200:
+            logger.error(f"Leegality API error: {resp.status_code} {resp.text}")
+            raise HTTPException(status_code=502, detail=f"Leegality API error: {resp.text}")
+        result = resp.json()
+        if result.get("status") != 1:
+            msgs = result.get("messages", [])
+            err_msg = msgs[0].get("message", "Unknown error") if msgs else "Unknown error"
+            logger.error(f"Leegality request failed: {err_msg}")
+            raise HTTPException(status_code=502, detail=f"Leegality signing failed: {err_msg}")
+        data = result.get("data", {})
+        leegality_doc_id = data.get("documentId", "")
+        sign_url = ""
+        invitees = data.get("invitees", [])
+        if invitees:
+            sign_url = invitees[0].get("signUrl", "")
+        now = datetime.datetime.now().isoformat()
+        conn2 = sqlite3.connect(DATABASE_FILE)
+        c2 = conn2.cursor()
+        c2.execute("UPDATE orders SET leegality_doc_id = ?, leegality_sign_url = ?, updated_at = ? WHERE id = ?",
+                   (leegality_doc_id, sign_url, now, body.order_id))
+        conn2.commit()
+        conn2.close()
+        logger.info(f"Leegality signing request created for order {body.order_id} -> doc {leegality_doc_id}")
+        return {
+            "status": "success",
+            "document_id": leegality_doc_id,
+            "sign_url": sign_url,
+            "message": "Document sent for e-signing successfully!"
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Leegality send error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/sign/leegality/status/{order_id}")
+async def leegality_status(order_id: str, request: Request, user: dict = Depends(get_current_user)):
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT leegality_doc_id, leegality_sign_url FROM orders WHERE id = ?", (order_id,))
+        row = cursor.fetchone()
+        conn.close()
+        if not row:
+            raise HTTPException(status_code=404, detail="Order not found")
+        leegality_doc_id, sign_url = row
+        if not leegality_doc_id:
+            return {"status": "not_sent", "message": "Document has not been sent for e-signing yet."}
+        headers = {"X-Auth-Token": LEEGALITY_AUTH_TOKEN}
+        resp = http_requests.get(f"{LEEGALITY_BASE_URL}/v3.2/sign/request?documentId={leegality_doc_id}", headers=headers, timeout=15)
+        if resp.status_code != 200:
+            raise HTTPException(status_code=502, detail=f"Leegality status check failed: {resp.text}")
+        result = resp.json()
+        tx_data = result.get("data", {})
+        requests_list = tx_data.get("requests", [])
+        signed = any(r.get("signed") for r in requests_list)
+        return {
+            "status": "signed" if signed else "pending",
+            "document_id": leegality_doc_id,
+            "sign_url": sign_url,
+            "leegality_data": tx_data
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/sign/leegality/webhook")
+async def leegality_webhook(request: Request):
+    try:
+        body = await request.json()
+        logger.info(f"Leegality webhook received: {json.dumps(body)[:500]}")
+        event = body.get("event", "")
+        document_id = body.get("documentId", "")
+        if event in ("document.signed", "document.completed") and document_id:
+            conn = sqlite3.connect(DATABASE_FILE)
+            cursor = conn.cursor()
+            cursor.execute("SELECT id FROM orders WHERE leegality_doc_id = ?", (document_id,))
+            row = cursor.fetchone()
+            if row:
+                order_id = row[0]
+                now = datetime.datetime.now().isoformat()
+                cursor.execute("UPDATE orders SET status = 'SIGNED', updated_at = ? WHERE id = ?", (now, order_id))
+                conn.commit()
+                logger.info(f"Order {order_id} marked as SIGNED via Leegality webhook")
+            conn.close()
+        return {"status": "ok"}
+    except Exception as e:
+        logger.error(f"Leegality webhook error: {e}")
+        return {"status": "error", "message": str(e)}
+
 
 if __name__ == "__main__":
     import uvicorn
