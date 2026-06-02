@@ -3586,15 +3586,44 @@
                                     </div>
                                 </div>
                                 <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between h-[100px]">
-                                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Completed Docs</span>
+                                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Total Users</span>
                                     <div className="flex items-baseline justify-between mt-2">
-                                        <span className="text-2xl font-black text-slate-800">
-                                            {(crmAnalytics.status_breakdown?.COMPLETED || 0) + (crmAnalytics.status_breakdown?.SIGNED || 0) + (crmAnalytics.status_breakdown?.PAID || 0)}
-                                        </span>
-                                        <i className="fa-solid fa-circle-check bg-purple-50 text-purple-600 p-2 rounded-lg text-xs"></i>
+                                        <span className="text-2xl font-black text-indigo-600">{crmAnalytics.total_users || 0}</span>
+                                        <i className="fa-solid fa-users bg-indigo-50 text-indigo-600 p-2 rounded-lg text-xs"></i>
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Recent Users */}
+                            {crmAnalytics.recent_users && crmAnalytics.recent_users.length > 0 && (
+                                <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+                                    <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2 mb-4">
+                                        <i className="fa-solid fa-user-plus text-indigo-600"></i> Recent User Registrations
+                                    </h3>
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr className="bg-slate-50 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                                                    <th className="px-4 py-2.5">Name</th>
+                                                    <th className="px-4 py-2.5">Email</th>
+                                                    <th className="px-4 py-2.5">Registered</th>
+                                                    <th className="px-4 py-2.5">Last Login</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-slate-50 text-xs">
+                                                {crmAnalytics.recent_users.map((u, i) => (
+                                                    <tr key={i} className="hover:bg-slate-50/50 transition">
+                                                        <td className="px-4 py-3 font-bold text-slate-700">{u.name}</td>
+                                                        <td className="px-4 py-3 text-slate-500">{u.email}</td>
+                                                        <td className="px-4 py-3 text-slate-500">{new Date(u.created_at).toLocaleString('en-IN')}</td>
+                                                        <td className="px-4 py-3 text-slate-500">{u.last_login ? new Date(u.last_login).toLocaleString('en-IN') : '—'}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            )}
                         )}
 
                         {/* Agreement Type Breakdown */}

@@ -650,6 +650,10 @@ async def get_analytics(request: Request, user: dict = Depends(get_current_user)
         agreement_breakdown = dict(cursor.fetchall())
         cursor.execute("SELECT source, COUNT(*) FROM orders GROUP BY source")
         source_breakdown = dict(cursor.fetchall())
+        cursor.execute("SELECT COUNT(*) FROM users")
+        total_users = cursor.fetchone()[0]
+        cursor.execute("SELECT name, email, created_at, last_login FROM users ORDER BY created_at DESC LIMIT 20")
+        recent_users = [{"name": r[0], "email": r[1], "created_at": r[2], "last_login": r[3]} for r in cursor.fetchall()]
         conn.close()
         return {
             "total_orders": total_orders,
@@ -658,7 +662,9 @@ async def get_analytics(request: Request, user: dict = Depends(get_current_user)
             "status_breakdown": status_breakdown,
             "agreement_breakdown": agreement_breakdown,
             "source_breakdown": source_breakdown,
-            "agreement_details": agreement_details
+            "agreement_details": agreement_details,
+            "total_users": total_users,
+            "recent_users": recent_users
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
