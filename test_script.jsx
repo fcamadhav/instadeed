@@ -2605,6 +2605,8 @@
             const [crmOrders, setCrmOrders] = useState([]);
             const [crmAnalytics, setCrmAnalytics] = useState(null);
             const [crmFilterStatus, setCrmFilterStatus] = useState('');
+            const [crmView, setCrmView] = useState('orders');
+            const [crmCustomers, setCrmCustomers] = useState([]);
             const [crmFilterType, setCrmFilterType] = useState('');
             const [crmSearch, setCrmSearch] = useState('');
             const [crmFilterToday, setCrmFilterToday] = useState(false);
@@ -3120,10 +3122,23 @@
                 }
             };
 
+            const fetchCrmCustomers = async () => {
+                try {
+                    const res = await fetch('${API_BASE}/api/customers');
+                    if (res.ok) {
+                        const data = await res.json();
+                        setCrmCustomers(data.customers || []);
+                    }
+                } catch (e) {
+                    console.error("Failed to fetch customers:", e);
+                }
+            };
+
             useEffect(() => {
                 if (activeTab === 'CRM' && isAdminLoggedIn) {
                     fetchCrmOrders();
                     fetchCrmAnalytics();
+                    fetchCrmCustomers();
                 }
             }, [activeTab, crmFilterStatus, crmFilterType, crmFilterToday, crmSearch, isAdminLoggedIn]);
 
@@ -3546,10 +3561,20 @@
                                 <p className="text-xs text-slate-400 font-medium">B2C and In-Office Document Drafting Tracking Engine</p>
                             </div>
                             <div className="flex gap-2">
-                                <button onClick={() => { fetchCrmOrders(); fetchCrmAnalytics(); }} className="px-3.5 py-2 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-800 text-xs font-bold rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-sm">
+                                <button onClick={() => { fetchCrmOrders(); fetchCrmAnalytics(); fetchCrmCustomers(); }} className="px-3.5 py-2 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-800 text-xs font-bold rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-sm">
                                     <i className="fa-solid fa-arrows-rotate"></i> Refresh Data
                                 </button>
                             </div>
+                        </div>
+
+                        {/* CRM Tab Bar */}
+                        <div className="flex gap-1 bg-slate-100 rounded-xl p-1 max-w-xs">
+                            <button onClick={() => setCrmView('orders')} className={`flex-1 px-4 py-2 rounded-lg text-xs font-bold transition cursor-pointer ${crmView === 'orders' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
+                                <i className="fa-solid fa-file-invoice mr-1.5"></i> Orders
+                            </button>
+                            <button onClick={() => setCrmView('customers')} className={`flex-1 px-4 py-2 rounded-lg text-xs font-bold transition cursor-pointer ${crmView === 'customers' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
+                                <i className="fa-solid fa-users mr-1.5"></i> Customers
+                            </button>
                         </div>
 
                         {/* Analytics widgets */}
@@ -3916,6 +3941,46 @@
                                 </table>
                             </div>
                         </div>
+
+                        {/* Customers Section */}
+                        {crmView === 'customers' && crmCustomers.length > 0 && (
+                            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                <div className="px-5 py-4 border-b border-slate-50 flex items-center justify-between">
+                                    <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                        <i className="fa-solid fa-users text-indigo-600"></i>
+                                        All Customers ({crmCustomers.length})
+                                    </h3>
+                                </div>
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr className="bg-slate-50 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                                                <th className="px-5 py-3">Name</th>
+                                                <th className="px-5 py-3">Phone</th>
+                                                <th className="px-5 py-3">Email</th>
+                                                <th className="px-5 py-3 text-center">Orders</th>
+                                                <th className="px-5 py-3 text-right">Total Spent</th>
+                                                <th className="px-5 py-3">Last Order</th>
+                                                <th className="px-5 py-3">Documents</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-50 text-xs">
+                                            {crmCustomers.map((c, i) => (
+                                                <tr key={i} className="hover:bg-slate-50/50 transition">
+                                                    <td className="px-5 py-4 font-bold text-slate-800">{c.name}</td>
+                                                    <td className="px-5 py-4 text-slate-500">{c.phone}</td>
+                                                    <td className="px-5 py-4 text-slate-500">{c.email}</td>
+                                                    <td className="px-5 py-4 text-center"><span className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full font-bold text-[10px]">{c.order_count}</span></td>
+                                                    <td className="px-5 py-4 text-right font-black text-slate-700">\u20B9{parseFloat(c.total_spent).toFixed(0)}</td>
+                                                    <td className="px-5 py-4 text-slate-500">{new Date(c.last_order).toLocaleString('en-IN')}</td>
+                                                    <td className="px-5 py-4 text-slate-500 text-[9px] font-medium max-w-[150px] truncate">{c.orders_breakdown}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 );
             };

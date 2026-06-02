@@ -688,6 +688,38 @@ async def get_logs(request: Request, user: dict = Depends(get_current_user)):
 
 # === Config Endpoint ===
 
+@app.get("/api/customers")
+async def get_customers(request: Request, user: dict = Depends(get_current_user)):
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT customer_name, customer_phone, customer_email,
+                COUNT(*) as order_count,
+                SUM(amount) as total_spent,
+                MAX(created_at) as last_order,
+                GROUP_CONCAT(agreement_type || ':' || status, ';') as orders_breakdown
+            FROM orders
+            WHERE customer_phone IS NOT NULL AND customer_phone != ''
+            GROUP BY customer_phone
+            ORDER BY last_order DESC
+        """)
+        customers = []
+        for r in cursor.fetchall():
+            customers.append({
+                "name": r[0],
+                "phone": r[1],
+                "email": r[2] or '',
+                "order_count": r[3],
+                "total_spent": r[4] or 0,
+                "last_order": r[5],
+                "orders_breakdown": r[6] or ''
+            })
+        conn.close()
+        return {"customers": customers, "total": len(customers)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/api/config")
 async def get_config():
     return {
