@@ -64,8 +64,8 @@ def verify_password(password: str, stored: str) -> bool:
 limiter = Limiter(key_func=get_remote_address)
 
 # --- Razorpay ---
-RAZORPAY_KEY_ID = os.environ.get("RAZORPAY_KEY_ID", "rzp_test_YOUR_KEY_HERE")
-RAZORPAY_KEY_SECRET = os.environ.get("RAZORPAY_KEY_SECRET", "YOUR_SECRET_HERE")
+RAZORPAY_KEY_ID = os.environ.get("RAZORPAY_KEY_ID", "rzp_live_SwmTpRiDct3TaU")
+RAZORPAY_KEY_SECRET = os.environ.get("RAZORPAY_KEY_SECRET", "W071YhfOXIXyODVIZ5f7unOz")
 is_razorpay_valid = not ("YOUR_KEY" in RAZORPAY_KEY_ID or RAZORPAY_KEY_ID == "")
 client = None
 if is_razorpay_valid:

@@ -3319,7 +3319,7 @@
                             return;
                         }
                         
-                        let razorpayKey = 'rzp_test_YOUR_KEY_HERE';
+                        let razorpayKey = 'rzp_live_SwmTpRiDct3TaU';
                         try {
                             const cfgRes = await fetch('${API_BASE}/api/config');
                             if (cfgRes.ok) {
@@ -4213,36 +4213,88 @@
                                     ) : (
                                         <button onClick={() => setShowLogin(true)} style={{fontSize:'.72rem',fontWeight:700,color:'#2563EB',border:'1.5px solid #2563EB',borderRadius:'9999px',padding:'.32rem .85rem',background:'#EEF4FF',cursor:'pointer',fontFamily:'Inter,sans-serif'}}>Sign In</button>
                                     )}
-                                    <button onClick={() => setActiveTab('SHARE')} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-green-50 text-gray-400 hover:text-green-600 transition" title="Share Documents">
-                                        <i className="fa-brands fa-whatsapp text-sm"></i>
-                                    </button>
-                                    <button onClick={() => setActiveTab('CRM')} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition" title="Admin CRM Dashboard">
-                                        <i className="fa-solid fa-chart-line text-sm"></i>
-                                    </button>
                                 </div>
                             </div>
                         </div>
 
                         {/* Hero Section */}
-                        <div className="max-w-6xl mx-auto px-6 pt-16 pb-8 text-center">
-                            <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-4 py-1.5 mb-6">
-                                <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-                                <span className="text-[11px] font-bold text-blue-700 uppercase tracking-wider">Legal Drafting Suite</span>
-                            </div>
-                            <h1 className="text-4xl lg:text-5xl font-extrabold text-slate-900 leading-tight mb-4">
-                                Draft Legal Documents<br/>
-                                <span className="text-blue-600">in Minutes, Not Days</span>
-                            </h1>
-                            <p className="text-slate-500 text-base max-w-2xl mx-auto mb-8 font-medium">
-                                Choose from our library of professionally drafted legal templates — Rent Agreements, 
-                                TM-48 Trademark Forms, GNIDA Registry documents, and more.
-                            </p>
-                            <div className="flex items-center justify-center gap-4 text-xs text-slate-400 font-semibold mb-2">
-                                <span><i className="fa-solid fa-check-circle text-emerald-500 mr-1"></i>Court-validated formats</span>
-                                <span><i className="fa-solid fa-check-circle text-emerald-500 mr-1"></i>Instant PDF export</span>
-                                <span><i className="fa-solid fa-check-circle text-emerald-500 mr-1"></i>eSign ready</span>
+                        <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-slate-950">
+                            <div className="absolute inset-0 bg-dot-pattern opacity-20"></div>
+                            <div className="absolute top-20 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+                            <div className="absolute bottom-0 left-20 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl"></div>
+                            <div className="max-w-6xl mx-auto px-6 py-20 lg:py-28 text-center relative z-10">
+                                <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-400/20 rounded-full px-4 py-1.5 mb-6">
+                                    <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                                    <span className="text-[11px] font-bold text-blue-300 uppercase tracking-wider">Legal Drafting Suite</span>
+                                </div>
+                                <h1 className="text-4xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
+                                    Draft Legal Documents<br/>
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">in Minutes, Not Days</span>
+                                </h1>
+                                <p className="text-slate-300 text-lg max-w-2xl mx-auto mb-10 font-medium">
+                                    Choose from 12+ court-validated legal templates — Rent Agreements, TM-48 Trademark Forms, 
+                                    GNIDA Registry documents, and more. Fill, download, and eSign instantly.
+                                </p>
+                                <div className="flex items-center justify-center gap-3 flex-wrap">
+                                    <button onClick={() => document.querySelector('.template-grid-section')?.scrollIntoView({behavior:'smooth'})} className="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-500/25 cursor-pointer">
+                                        <i className="fa-solid fa-file-circle-plus mr-2"></i> Browse Templates
+                                    </button>
+                                    <button onClick={() => setShowLogin(true)} className="px-8 py-3.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-xl font-bold text-sm transition cursor-pointer">
+                                        <i className="fa-solid fa-user-plus mr-2"></i> Sign In
+                                    </button>
+                                </div>
+                                <div className="flex items-center justify-center gap-6 mt-10 text-xs text-slate-400 font-semibold">
+                                    <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i className="fa-solid fa-check-circle text-emerald-400"></i>Court-validated</span>
+                                    <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i className="fa-solid fa-check-circle text-emerald-400"></i>Instant PDF</span>
+                                    <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i className="fa-solid fa-check-circle text-emerald-400"></i>eSign ready</span>
+                                </div>
                             </div>
                         </div>
+
+                        {/* Stats Strip */}
+                        <div className="max-w-6xl mx-auto px-6 -mt-8 relative z-20">
+                            <div className="bg-white rounded-2xl border border-slate-100 shadow-lg p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
+                                {[
+                                    { icon: 'fa-file', label: 'Legal Templates', value: '12+' },
+                                    { icon: 'fa-gavel', label: 'Court Validated', value: '100%' },
+                                    { icon: 'fa-clock', label: 'Instant Delivery', value: '< 5 min' },
+                                    { icon: 'fa-shield', label: 'Secure & SSL', value: 'Encrypted' },
+                                ].map((s, i) => (
+                                    <div key={i} className="text-center">
+                                        <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-2">
+                                            <i className={`fa-solid ${s.icon} text-base`}></i>
+                                        </div>
+                                        <div className="font-black text-slate-800 text-xl">{s.value}</div>
+                                        <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">{s.label}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* How It Works */}
+                        <div className="max-w-6xl mx-auto px-6 pt-20 pb-12 text-center">
+                            <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full font-bold text-[10px] uppercase tracking-wider">Simple Process</span>
+                            <h2 className="text-2xl lg:text-3xl font-extrabold text-slate-900 mt-3 mb-10">How It Works</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {[
+                                    { step: '1', icon: 'fa-file-circle-plus', title: 'Choose Template', desc: 'Browse our library of 12+ court-validated legal templates and select the one you need.' },
+                                    { step: '2', icon: 'fa-pen-to-square', title: 'Fill & Review', desc: 'Complete the smart form fields. Our system validates every entry in real-time.' },
+                                    { step: '3', icon: 'fa-file-pdf', title: 'Download & Sign', desc: 'Export as PDF, eSign digitally via Leegality, or print instantly.' },
+                                ].map((h, i) => (
+                                    <div key={i} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 text-center hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+                                        <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 relative">
+                                            <i className={`fa-solid ${h.icon} text-xl`}></i>
+                                            <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-blue-600 text-white text-[10px] font-black flex items-center justify-center shadow-sm">{h.step}</div>
+                                        </div>
+                                        <h3 className="font-extrabold text-slate-800 text-sm mb-2">{h.title}</h3>
+                                        <p className="text-[11px] text-slate-400 font-medium leading-relaxed">{h.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Template Grid Anchor */}
+                        <div className="template-grid-section"></div>
 
                         {/* Step Indicator */}
                         {flowStep > 1 && (
@@ -7031,7 +7083,55 @@
                         {activeTab === 'DASHBOARD' && user ? (
                             renderClientDashboard()
                         ) : activeTab === 'HOME' ? (
-                            renderHomeDashboard()
+                            <>
+                                {renderHomeDashboard()}
+                                {/* Footer */}
+                                <footer className="w-full mt-16 border-t border-slate-100 bg-white">
+                                    <div className="max-w-6xl mx-auto px-6 py-12">
+                                        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                                            <div>
+                                                <div className="flex items-center gap-2 mb-3">
+                                                    <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs font-black">MD</div>
+                                                    <span className="font-extrabold text-slate-800 text-sm">Madhav Drafting</span>
+                                                </div>
+                                                <p className="text-[11px] text-slate-400 font-medium leading-relaxed">Professional legal document drafting platform. Court-validated templates with instant PDF export and digital eSign.</p>
+                                            </div>
+                                            <div>
+                                                <h4 className="font-extrabold text-xs text-slate-800 mb-3 uppercase tracking-wider">Templates</h4>
+                                                <div className="flex flex-col gap-1.5">
+                                                    {['Rent Agreement','Registered Rent','Agreement to Sell','TM-48 Trademark','GNIDA Package','KYC Forms'].map((t,i) => (
+                                                        <button key={i} onClick={() => { setActiveTab(btoa('HOME')); setActiveAuthority('ALL'); }} className="text-[11px] text-slate-400 hover:text-blue-600 font-medium transition text-left cursor-pointer">{t}</button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 className="font-extrabold text-xs text-slate-800 mb-3 uppercase tracking-wider">Support</h4>
+                                                <div className="flex flex-col gap-2 text-[11px] text-slate-400 font-medium">
+                                                    <span><i className="fa-regular fa-envelope mr-1.5 text-blue-400"></i>support@instadeed.io</span>
+                                                    <span><i className="fa-brands fa-whatsapp mr-1.5 text-emerald-400"></i>+91-9876543210</span>
+                                                    <span><i className="fa-regular fa-clock mr-1.5 text-blue-400"></i>Mon–Sat, 10 AM – 7 PM</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 className="font-extrabold text-xs text-slate-800 mb-3 uppercase tracking-wider">Legal</h4>
+                                                <div className="flex flex-col gap-1.5 text-[11px] text-slate-400 font-medium">
+                                                    <span className="hover:text-blue-600 transition cursor-pointer">Terms of Service</span>
+                                                    <span className="hover:text-blue-600 transition cursor-pointer">Privacy Policy</span>
+                                                    <span className="hover:text-blue-600 transition cursor-pointer">Refund Policy</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="pt-6 border-t border-slate-50 flex items-center justify-between">
+                                            <span className="text-[10px] text-slate-300 font-bold">&copy; 2026 Madhav Drafting Hub. All rights reserved.</span>
+                                            <div className="flex items-center gap-2 text-slate-300">
+                                                <i className="fa-brands fa-google text-xs"></i>
+                                                <i className="fa-brands fa-whatsapp text-xs"></i>
+                                                <i className="fa-brands fa-instagram text-xs"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </footer>
+                            </>
                         ) : activeTab === 'CRM' ? (
                             renderCrmDashboard()
                         ) : (
