@@ -1279,6 +1279,7 @@
             const [gnidaPackageData, setGnidaPackageData] = useState(defaultGnidaPackageData);
             const [librarySearch, setLibrarySearch] = useState('');
             const [libraryFilter, setLibraryFilter] = useState('ALL');
+            const [landingAuth, setLandingAuth] = useState('ALL');
             const [viewOnlyMode, setViewOnlyMode] = useState(false);
             const [viewOrderId, setViewOrderId] = useState('');
             const [activeAuthority, setActiveAuthority] = useState('ALL');
@@ -3387,7 +3388,8 @@
                     const matchesSearch = t.label.toLowerCase().includes(librarySearch.toLowerCase()) || 
                                           t.desc.toLowerCase().includes(librarySearch.toLowerCase());
                     const matchesCat = libraryFilter === 'ALL' || t.cat === libraryFilter;
-                    return matchesSearch && matchesCat;
+                    const matchesAuth = landingAuth === 'ALL' ? t.auth === 'ALL' : t.auth === landingAuth;
+                    return matchesSearch && matchesCat && matchesAuth;
                 });
 
                 const banners = [
@@ -3402,6 +3404,22 @@
                             <div className="relative">
                                 <i className="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
                                 <input type="text" placeholder="Search templates..." value={librarySearch} onChange={(e) => setLibrarySearch(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl focus:border-blue-500 focus:outline-none text-xs font-bold text-slate-700" />
+                            </div>
+                        </div>
+
+                        {/* Authority Dropdown */}
+                        <div className="w-full max-w-xs mx-auto">
+                            <div className="relative">
+                                <select value={landingAuth} onChange={e => setLandingAuth(e.target.value)} className="w-full appearance-none px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 focus:outline-none cursor-pointer shadow-sm">
+                                    <option value="ALL">All Docs — Rent, ATS, TM48</option>
+                                    <option value="GNIDA">GNIDA (Greater Noida)</option>
+                                    <option value="NOIDA">NOIDA Authority</option>
+                                    <option value="YEIDA">YEIDA (Yamuna Expressway)</option>
+                                    <option value="GDA">Ghaziabad (GDA)</option>
+                                </select>
+                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
+                                    <i className="fa-solid fa-chevron-down text-xs"></i>
+                                </div>
                             </div>
                         </div>
 
@@ -3452,7 +3470,8 @@
                             {filtered.length === 0 ? (
                                 <div className="col-span-full bg-white rounded-2xl border border-slate-100 p-12 text-center text-slate-400 font-medium">
                                     <i className="fa-solid fa-magnifying-glass-minus text-3xl mb-3 block opacity-30"></i>
-                                    No templates match your search.
+                                    <div className="font-bold text-slate-600 mb-1">No templates yet for this authority</div>
+                                    <div className="text-xs">Select "All Docs" for Rent Agreement, ATS, and TM-48</div>
                                 </div>
                             ) : (
                                 filtered.map(t => (
