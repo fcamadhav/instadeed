@@ -107,6 +107,10 @@ def init_db():
         cursor.execute("ALTER TABLE orders ADD COLUMN leegality_sign_url TEXT")
     except Exception:
         pass
+    try:
+        cursor.execute("ALTER TABLE orders ADD COLUMN is_favorite INTEGER DEFAULT 0")
+    except Exception:
+        pass
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS users (
         id TEXT PRIMARY KEY,
@@ -672,6 +676,36 @@ async def update_order_status(order_id: str, body: StatusUpdateRequest, request:
         conn.commit()
         conn.close()
         return {"status": "success"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/orders/{order_id}")
+async def delete_order(order_id: str, request: Request, user: dict = Depends(get_current_user)):
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM orders WHERE id = ?", (order_id,))
+        conn.commit()
+        conn.close()
+        return {"status": "success", "message": "Order deleted"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.put("/orders/{order_id}/favorite")
+async def toggle_favorite(order_id: str, request: Request, user: dict = Depends(get_current_user)):
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT is_favorite FROM orders WHERE id = ?", (order_id,))
+        row = cursor.fetchone()
+        if not row:
+            conn.close()
+            raise HTTPException(status_code=404, detail="Order not found")
+        new_val = 0 if row[0] else 1
+        cursor.execute("UPDATE orders SET is_favorite = ?, updated_at = ? WHERE id = ?", (new_val, datetime.datetime.now().isoformat(), order_id))
+        conn.commit()
+        conn.close()
+        return {"status": "success", "is_favorite": new_val}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

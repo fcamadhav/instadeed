@@ -3700,13 +3700,20 @@
                             </div>
                         </div>
 
-                        {/* CRM Tab Bar */}
-                        <div className="flex gap-1 bg-slate-100 rounded-xl p-1 max-w-xs">
-                            <button onClick={() => setCrmView('orders')} className={`flex-1 px-4 py-2 rounded-lg text-xs font-bold transition cursor-pointer ${crmView === 'orders' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
-                                <i className="fa-solid fa-file-invoice mr-1.5"></i> Orders
+                        {/* Admin Toolbar */}
+                        <div className="flex items-center gap-2 bg-white border border-slate-100 rounded-2xl p-2 shadow-sm flex-wrap">
+                            <button onClick={() => setActiveTab('HOME')} className="px-3.5 py-2 bg-slate-50 hover:bg-blue-50 hover:text-blue-600 text-slate-600 text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5">
+                                <i className="fa-solid fa-house"></i> Home
                             </button>
-                            <button onClick={() => setCrmView('customers')} className={`flex-1 px-4 py-2 rounded-lg text-xs font-bold transition cursor-pointer ${crmView === 'customers' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
-                                <i className="fa-solid fa-users mr-1.5"></i> Customers
+                            <div className="w-px h-6 bg-slate-200"></div>
+                            <button onClick={() => setCrmView('orders')} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'orders' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
+                                <i className="fa-solid fa-file-invoice"></i> Orders
+                            </button>
+                            <button onClick={() => setCrmView('customers')} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'customers' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
+                                <i className="fa-solid fa-users"></i> Customers
+                            </button>
+                            <button onClick={() => setCrmView('analytics')} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'analytics' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
+                                <i className="fa-solid fa-chart-pie"></i> Reports
                             </button>
                         </div>
 
@@ -4020,6 +4027,20 @@
                                                     </td>
                                                     <td className="px-5 py-4 text-right">
                                                         <div className="flex items-center justify-end gap-1.5">
+                                                            <button onClick={async () => {
+                                                                try {
+                                                                    const r = await fetch('${API_BASE}/orders/${order.id}/favorite', { method: 'PUT' });
+                                                                    if (r.ok) fetchCrmOrders();
+                                                                } catch(e) {}
+                                                            }} className={`px-2 py-1.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${order.is_favorite ? 'bg-amber-50 text-amber-500' : 'bg-slate-50 text-slate-300 hover:text-amber-400'}`} title="Star">
+                                                                <i className="fa-solid fa-star"></i>
+                                                            </button>
+                                                            <button onClick={() => { const msg = encodeURIComponent('Instadeed Document - ' + order.agreement_type + ' (Order: ' + order.id + ')'); window.open('https://wa.me/?text=' + msg, '_blank'); }} className="px-2 py-1.5 bg-green-50 text-green-600 hover:bg-green-100 text-[10px] font-bold rounded-lg transition cursor-pointer" title="WhatsApp Share">
+                                                                <i className="fa-brands fa-whatsapp"></i>
+                                                            </button>
+                                                            <button onClick={async () => { if (!confirm('Delete order ' + order.id + '?')) return; try { const r = await fetch('${API_BASE}/orders/${order.id}', { method: 'DELETE' }); if (r.ok) fetchCrmOrders(); else alert('Failed to delete'); } catch(e) { alert('Error'); } }} className="px-2 py-1.5 bg-rose-50 text-rose-500 hover:bg-rose-100 text-[10px] font-bold rounded-lg transition cursor-pointer" title="Delete">
+                                                                <i className="fa-solid fa-trash-can"></i>
+                                                            </button>
                                                             {order.form_data && (
                                                                 <button
                                                                     onClick={() => {
