@@ -60,8 +60,14 @@ def verify_password(password: str, stored: str) -> bool:
     salt, expected = stored.split(":", 1)
     return hashlib.sha256((salt + password).encode()).hexdigest() == expected
 
-# --- Rate Limiter ---
-limiter = Limiter(key_func=get_remote_address)
+# --- Rate Limiter (use X-Forwarded-For behind reverse proxy) ---
+def get_client_ip(request: Request) -> str:
+    forwarded = request.headers.get("X-Forwarded-For", "")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return get_remote_address(request)
+
+limiter = Limiter(key_func=get_client_ip)
 
 # --- Razorpay ---
 RAZORPAY_KEY_ID = os.environ.get("RAZORPAY_KEY_ID", "rzp_live_SwmTpRiDct3TaU")
@@ -487,7 +493,7 @@ async def revoke_api_key(key_id: str, request: Request, user: dict = Depends(get
 # === CRM / ORDER ENDPOINTS (protected by optional auth - backward compatible) ===
 
 @app.post("/create-order")
-@limiter.limit("20/minute")
+@limiter.limit("60/minute")
 async def create_order(request: Request, body: OrderRequest):
     amount_in_paise = body.amount * 100
     order_id = ""
