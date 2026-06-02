@@ -1081,9 +1081,9 @@
                                             <option value="gnida_ptm">Permission to Mortgage</option>
                                             <option value="noida_transfer">NOIDA Transfer</option>
                                             <option value="tm_app">TM Application</option>
-                                            <option value="ecomm_tc">E-Commerce T&amp;C</option>
-                                            <option value="ecomm_pp">Privacy Policy</option>
-                                            <option value="ecomm_rp">Refund Policy</option>
+                                            
+                                            
+                                            
                                         </select>
                                     </div>
                                     {(() => {
@@ -1336,9 +1336,6 @@
                     else if (tabName === 'GNIDA_PTM' && (docLower.includes('ptm mortgage') || docLower.includes('gnida_ptm'))) isMatch = true;
                     else if (tabName === 'TM_APP' && (docLower.includes('tm application') || docLower.includes('tm_app'))) isMatch = true;
                     else if (tabName === 'GNIDA_REGISTRY' && (docLower.includes('transfer deed registry') || docLower.includes('gnida_registry'))) isMatch = true;
-                    else if (tabName === 'ECOMM_TC' && (docLower.includes('e-commerce terms') || docLower.includes('ecomm_tc') || docLower.includes('website-tos'))) isMatch = true;
-                    else if (tabName === 'ECOMM_PP' && (docLower.includes('e-commerce privacy') || docLower.includes('ecomm_pp') || docLower.includes('privacy'))) isMatch = true;
-                    else if (tabName === 'ECOMM_RP' && (docLower.includes('refund') || docLower.includes('ecomm_rp') || docLower.includes('cancellation'))) isMatch = true;
 
                     if (isMatch && signedDocs[docParam]) {
                         return signedDocs[docParam];
@@ -1355,10 +1352,7 @@
                     'TM_APP': 'gnida-tm_app',
                     'MUTATION': 'gnida-mutation',
                     'GNIDA_REGISTRY': 'gnida_registry',
-                    'GNIDA_PTM': 'gnida_ptm',
-                    'ECOMM_TC': 'website-tos',
-                    'ECOMM_PP': 'e-commerce-privacy',
-                    'ECOMM_RP': 'ecomm_rp'
+                    'GNIDA_PTM': 'gnida_ptm'
                 };
                 
                 const docId = map[tabName];
@@ -1369,7 +1363,7 @@
 
             // Auto-rotate e-commerce carousel banner
             useEffect(() => {
-                const iv = setInterval(() => setBannerIdx(i => (i + 1) % 3), 4000);
+                const iv = setInterval(() => setBannerIdx(i => (i + 1) % 2), 4000);
                 return () => clearInterval(iv);
             }, []);
 
@@ -1672,7 +1666,6 @@
             const [rentData, setRentData] = useState(defaultRentData);
 
 
-
             // --- REGISTERED RENT AGREEMENT STATE ---
             const defaultRegData = {
                 monthlyRent: '',
@@ -1863,8 +1856,6 @@
             });
 
 
-
-
             const defaultATSData = {
                 stampPaperNumber: '',
                 executionDate: new Date().toISOString().split('T')[0],
@@ -1945,58 +1936,6 @@
             };
             const [atsData, setAtsData] = useState(defaultATSData);
             const [gnidaPtmData, setGnidaPtmData] = useState(defaultGnidaPtmData);
-            // --- E-COMMERCE DOCUMENT STATES ---
-            const defaultEcommTCData = {
-                companyName: '',
-                websiteUrl: '',
-                contactEmail: '',
-                contactPhone: '',
-                governingState: 'Uttar Pradesh',
-                governingCountry: 'India',
-                minimumAge: '18',
-                returnWindow: '7',
-                disputeResolution: 'Arbitration',
-                effectiveDate: new Date().toISOString().split('T')[0],
-                lastUpdated: new Date().toISOString().split('T')[0],
-                paymentMethods: 'Credit Card, Debit Card, UPI, Net Banking',
-                shippingPolicy: 'Standard shipping within 5-7 business days',
-                intellectualPropertyNotice: ''
-            };
-            const defaultEcommPPData = {
-                companyName: '',
-                websiteUrl: '',
-                contactEmail: '',
-                dpoName: '',
-                dpoEmail: '',
-                governingState: 'Uttar Pradesh',
-                governingCountry: 'India',
-                dataRetentionPeriod: '24 months',
-                cookieTypes: 'Essential, Analytics, Marketing',
-                thirdPartyServices: 'Google Analytics, Razorpay, Facebook Pixel',
-                effectiveDate: new Date().toISOString().split('T')[0],
-                lastUpdated: new Date().toISOString().split('T')[0],
-                dataCollectionTypes: 'Name, Email, Phone, Address, Payment Information',
-                legalBasis: 'Consent, Contractual Necessity, Legitimate Interest'
-            };
-            const defaultEcommRPData = {
-                companyName: '',
-                websiteUrl: '',
-                contactEmail: '',
-                contactPhone: '',
-                returnWindow: '7',
-                refundProcessingDays: '5-7',
-                exchangeWindow: '15',
-                nonReturnableItems: 'Perishable goods, Intimate apparel, Customized products, Digital downloads',
-                refundMethod: 'Original payment method',
-                shippingCostRefundable: 'No',
-                governingState: 'Uttar Pradesh',
-                effectiveDate: new Date().toISOString().split('T')[0],
-                cancellationWindow: '24 hours',
-                partialRefundConditions: 'Items with visible signs of use or missing tags'
-            };
-            const [ecommTCData, setEcommTCData] = useState(defaultEcommTCData);
-            const [ecommPPData, setEcommPPData] = useState(defaultEcommPPData);
-            const [ecommRPData, setEcommRPData] = useState(defaultEcommRPData);
 
 
             // Helpers for Date Formatting
@@ -2103,9 +2042,6 @@
                                 else if (tPayload.type === 'TM_APP') setTmAppData(tPayload.payload);
                                 else if (tPayload.type === 'GNIDA_REGISTRY') setGnidaRegistryData(tPayload.payload);
                                 else if (tPayload.type === 'GNIDA_PTM') setGnidaPtmData(tPayload.payload);
-                                else if (tPayload.type === 'ECOMM_TC') setEcommTCData(tPayload.payload);
-                                else if (tPayload.type === 'ECOMM_PP') setEcommPPData(tPayload.payload);
-                                else if (tPayload.type === 'ECOMM_RP') setEcommRPData(tPayload.payload);
                                 else setRegData(tPayload.payload);
                                 
                                 setActiveTab(tPayload.type);
@@ -2167,15 +2103,6 @@
                     } else if (docLower.includes('transfer application') || docLower.includes('noida_transfer')) {
                         routedTab = 'NOIDA_TRANSFER';
                         routedAuth = routedAuth || 'NOIDA';
-                    } else if (docLower.includes('e-commerce terms') || docLower.includes('ecomm_tc') || docLower.includes('website-tos')) {
-                        routedTab = 'ECOMM_TC';
-                        routedAuth = routedAuth || 'ECOMMERCE';
-                    } else if (docLower.includes('e-commerce privacy') || docLower.includes('ecomm_pp') || docLower.includes('privacy')) {
-                        routedTab = 'ECOMM_PP';
-                        routedAuth = routedAuth || 'ECOMMERCE';
-                    } else if (docLower.includes('refund') || docLower.includes('ecomm_rp') || docLower.includes('cancellation') || docLower.includes('cancellation policy')) {
-                        routedTab = 'ECOMM_RP';
-                        routedAuth = routedAuth || 'ECOMMERCE';
                     } else if (docLower.includes('custom affidavit') || docLower.includes('coming_soon')) {
                         routedTab = 'COMING_SOON';
                         routedAuth = routedAuth || 'ALL';
@@ -2196,9 +2123,6 @@
                         if (parsed.gnidaRegistry) setGnidaRegistryData(prev => ({ ...prev, ...parsed.gnidaRegistry }));
                         if (parsed.gnidaPtm) setGnidaPtmData(prev => ({ ...prev, ...parsed.gnidaPtm }));
                         if (parsed.noidaTransfer) setNoidaTransferData(prev => ({ ...prev, ...parsed.noidaTransfer }));
-                        if (parsed.ecommTC) setEcommTCData(prev => ({ ...prev, ...parsed.ecommTC }));
-                        if (parsed.ecommPP) setEcommPPData(prev => ({ ...prev, ...parsed.ecommPP }));
-                        if (parsed.ecommRP) setEcommRPData(prev => ({ ...prev, ...parsed.ecommRP }));
                         if (parsed.gnidaPackage) setGnidaPackageData(prev => ({ ...prev, ...parsed.gnidaPackage }));
                         if (parsed.gnidaPackageDocs) setGnidaPackageDocs(prev => ({ ...prev, ...parsed.gnidaPackageDocs }));
 
@@ -2237,9 +2161,6 @@
                         gnidaRegistry: gnidaRegistryData,
                         gnidaPtm: gnidaPtmData,
                         noidaTransfer: noidaTransferData,
-                        ecommTC: ecommTCData,
-                        ecommPP: ecommPPData,
-                        ecommRP: ecommRPData,
                         gnidaPackage: gnidaPackageData,
                         gnidaPackageDocs: gnidaPackageDocs,
                         tab: activeTab,
@@ -2250,7 +2171,7 @@
                 }, 1000);
                 
                 return () => clearTimeout(timer);
-            }, [rentData, atsData, regData, tm48Data, gnidaData, mutationData, tmAppData, gnidaRegistryData, gnidaPtmData, noidaTransferData, ecommTCData, ecommPPData, ecommRPData, gnidaPackageData, gnidaPackageDocs, activeTab, activeAuthority]);
+            }, [rentData, atsData, regData, tm48Data, gnidaData, mutationData, tmAppData, gnidaRegistryData, gnidaPtmData, noidaTransferData, gnidaPackageData, gnidaPackageDocs, activeTab, activeAuthority]);
 
 
             // Sync GNIDA Package Data to individual template states
@@ -2480,9 +2401,6 @@
                 else if (activeTab === 'NOIDA_TRANSFER') { currentData = noidaTransferData; name = noidaTransferData.allotteeName || 'Draft'; }
                 else if (activeTab === 'GNIDA_REGISTRY') { currentData = gnidaRegistryData; name = gnidaRegistryData.projectName || 'Draft'; }
                 else if (activeTab === 'GNIDA_PTM') { currentData = gnidaPtmData; name = gnidaPtmData.allotteeName || 'Draft'; }
-                else if (activeTab === 'ECOMM_TC') { currentData = ecommTCData; name = ecommTCData.companyName || 'Draft'; }
-                else if (activeTab === 'ECOMM_PP') { currentData = ecommPPData; name = ecommPPData.companyName || 'Draft'; }
-                else if (activeTab === 'ECOMM_RP') { currentData = ecommRPData; name = ecommRPData.companyName || 'Draft'; }
                 else if (activeTab === 'GNIDA_PACKAGE') { currentData = gnidaPackageData; name = (gnidaPackageData.transferee1Name || 'Package') + '_5_in_1'; }
                 else { currentData = regData; name = regData.lesseeName || 'Draft'; }
 
@@ -2511,9 +2429,6 @@
 
                         else if (activeTab === 'GNIDA_REGISTRY') setGnidaRegistryData(prev => ({ ...prev, ...loaded }));
                         else if (activeTab === 'GNIDA_PTM') setGnidaPtmData(prev => ({ ...prev, ...loaded }));
-                        else if (activeTab === 'ECOMM_TC') setEcommTCData(prev => ({ ...prev, ...loaded }));
-                        else if (activeTab === 'ECOMM_PP') setEcommPPData(prev => ({ ...prev, ...loaded }));
-                        else if (activeTab === 'ECOMM_RP') setEcommRPData(prev => ({ ...prev, ...loaded }));
                         else if (activeTab === 'GNIDA_PACKAGE') setGnidaPackageData(prev => ({ ...prev, ...loaded }));
                         else setRegData(prev => ({ ...prev, ...loaded }));
                     } catch (err) {
@@ -2533,9 +2448,6 @@
                     setTmAppData(defaultTMAppData);
                     setAtsData(defaultATSData);
                     setGnidaPtmData(defaultGnidaPtmData);
-                    setEcommTCData(defaultEcommTCData);
-                    setEcommPPData(defaultEcommPPData);
-                    setEcommRPData(defaultEcommRPData);
                     setGnidaPackageData(defaultGnidaPackageData);
 
                     localStorage.removeItem('madhav_legal_suite_v4_clean');
@@ -2555,9 +2467,6 @@
                 else if (activeTab === 'TM48') currentData = tm48Data;
                 else if (activeTab === 'TM_APP') currentData = tmAppData;
                 else if (activeTab === 'NOIDA_TRANSFER') currentData = noidaTransferData;
-                else if (activeTab === 'ECOMM_TC') currentData = ecommTCData;
-                else if (activeTab === 'ECOMM_PP') currentData = ecommPPData;
-                else if (activeTab === 'ECOMM_RP') currentData = ecommRPData;
                 else if (activeTab === 'GNIDA_PACKAGE') currentData = gnidaPackageData;
 
                 else currentData = regData;
@@ -2585,9 +2494,6 @@
                 else if (activeTab === 'TM_APP') name = buildDocumentName(tmAppData.plotNo, tmAppData.transferorName, 'TM App');
                 else if (activeTab === 'NOIDA_TRANSFER') name = buildDocumentName(noidaTransferData.plotNo, noidaTransferData.allotteeName, 'NOIDA Transfer');
                 else if (activeTab === 'GNIDA_PTM') name = buildDocumentName(gnidaPtmData.plotNo, gnidaPtmData.allotteeName, 'GNIDA PTM');
-                else if (activeTab === 'ECOMM_TC') name = buildDocumentName('', ecommTCData.companyName, 'E-Commerce T&C');
-                else if (activeTab === 'ECOMM_PP') name = buildDocumentName('', ecommPPData.companyName, 'E-Commerce Privacy');
-                else if (activeTab === 'ECOMM_RP') name = buildDocumentName('', ecommRPData.companyName, 'Refund Policy');
                 else if (activeTab === 'GNIDA_PACKAGE') name = buildDocumentName(gnidaPackageData.flatNo, gnidaPackageData.transferee1Name, 'GNIDA_5in1_Package');
 
                 else name = buildDocumentName(regData.propertyAddress ? regData.propertyAddress.split(',')[0] : '', regData.lessorName, 'Reg Rent Agreement');
@@ -2643,9 +2549,6 @@
                 else if (activeTab === 'NOIDA_TRANSFER') { currentData = noidaTransferData; defaultName = buildDocumentName(noidaTransferData.plotNo, noidaTransferData.allotteeName, "NOIDA Transfer"); }
                 else if (activeTab === 'GNIDA_REGISTRY') { currentData = gnidaRegistryData; defaultName = buildDocumentName(gnidaRegistryData.flatNo, gnidaRegistryData.projectName, "GNIDA Registry"); }
                 else if (activeTab === 'GNIDA_PTM') { currentData = gnidaPtmData; defaultName = buildDocumentName(gnidaPtmData.plotNo, gnidaPtmData.allotteeName, "GNIDA PTM"); }
-                else if (activeTab === 'ECOMM_TC') { currentData = ecommTCData; defaultName = buildDocumentName('', ecommTCData.companyName, "E-Commerce T&C"); }
-                else if (activeTab === 'ECOMM_PP') { currentData = ecommPPData; defaultName = buildDocumentName('', ecommPPData.companyName, "E-Commerce Privacy"); }
-                else if (activeTab === 'ECOMM_RP') { currentData = ecommRPData; defaultName = buildDocumentName('', ecommRPData.companyName, "Refund Policy"); }
                 else { currentData = regData; defaultName = buildDocumentName(regData.propertyAddress ? regData.propertyAddress.split(',')[0] : '', regData.lessorName, "Reg Rent Agreement"); }
 
                 const name = prompt("Enter a name for this draft:", defaultName);
@@ -2677,9 +2580,6 @@
                     else if (draft.type === 'NOIDA_TRANSFER') setNoidaTransferData(draft.data);
                     else if (draft.type === 'GNIDA_REGISTRY') setGnidaRegistryData(draft.data);
                     else if (draft.type === 'GNIDA_PTM') setGnidaPtmData(draft.data);
-                    else if (draft.type === 'ECOMM_TC') setEcommTCData(draft.data);
-                    else if (draft.type === 'ECOMM_PP') setEcommPPData(draft.data);
-                    else if (draft.type === 'ECOMM_RP') setEcommRPData(draft.data);
                     else setRegData(draft.data);
                     setShowLibrary(false);
                     setFlowStep(3);
@@ -2708,9 +2608,6 @@
                         else if (activeTab === 'NOIDA_TRANSFER') setNoidaTransferData(parsed);
                         else if (activeTab === 'GNIDA_REGISTRY') setGnidaRegistryData(parsed);
                         else if (activeTab === 'GNIDA_PTM') setGnidaPtmData(parsed);
-                        else if (activeTab === 'ECOMM_TC') setEcommTCData(parsed);
-                        else if (activeTab === 'ECOMM_PP') setEcommPPData(parsed);
-                        else if (activeTab === 'ECOMM_RP') setEcommRPData(parsed);
                         else if (activeTab === 'GNIDA_PACKAGE') setGnidaPackageData(parsed);
 
                         else setRegData(parsed);
@@ -2752,18 +2649,6 @@
                     value = value.replace(/\D/g, '');
                 }
 
-                if (activeTab === 'ECOMM_TC') {
-                    setEcommTCData(prev => ({ ...prev, [name]: value }));
-                    return;
-                }
-                if (activeTab === 'ECOMM_PP') {
-                    setEcommPPData(prev => ({ ...prev, [name]: value }));
-                    return;
-                }
-                if (activeTab === 'ECOMM_RP') {
-                    setEcommRPData(prev => ({ ...prev, [name]: value }));
-                    return;
-                }
                 if (activeTab === 'TM_APP') {
                     setTmAppData(prev => ({ ...prev, [name]: value }));
                     return;
@@ -2778,8 +2663,6 @@
                     setGnidaPtmData(prev => ({ ...prev, [name]: value }));
                     return;
                 }
-
-
 
 
                 if (activeTab === 'NOIDA_TRANSFER') {
@@ -3178,9 +3061,6 @@
                 else if (activeTab === 'TM_APP') payload = tmAppData;
                 else if (activeTab === 'GNIDA_REGISTRY') payload = gnidaRegistryData;
                 else if (activeTab === 'GNIDA_PTM') payload = gnidaPtmData;
-                else if (activeTab === 'ECOMM_TC') payload = ecommTCData;
-                else if (activeTab === 'ECOMM_PP') payload = ecommPPData;
-                else if (activeTab === 'ECOMM_RP') payload = ecommRPData;
                 return { type: activeTab, payload };
             };
 
@@ -3207,8 +3087,6 @@
                     name = tm48Data.applicantName || '';
                 } else if (activeTab === 'TM_APP') {
                     name = tmAppData.transferorName || '';
-                } else if (activeTab === 'ECOMM_TC' || activeTab === 'ECOMM_PP' || activeTab === 'ECOMM_RP') {
-                    name = ecommTCData.companyName || '';
                 }
                 return { name, phone, email };
             };
@@ -3275,12 +3153,28 @@
             const handleOnlinePayment = async () => {
                 const payload = getActiveDataPayload();
                 try {
+                    // Dynamic pricing based on document type
+                    const docPrices = {
+                        RENT: 300,
+                        ATS: 300,
+                        REG_RENT: 5000,
+                        MUTATION: 4000,
+                        KYA: 0,
+                        GNIDA: 0,
+                        GNIDA_REGISTRY: 10000,
+                        GNIDA_PTM: 7500,
+                        GNIDA_PACKAGE: 40000,
+                        TM_APP: 2000,
+                        TM48: 500,
+                        NOIDA_TRANSFER: 2000,
+                    };
+                    const orderAmount = docPrices[activeTab] || 499;
                     // 1. Create order on backend
                     const res = await fetch('${API_BASE}/create-order', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            amount: 499, // INR
+                            amount: orderAmount,
                             service_type: activeTab,
                             customer_name: checkoutDetails.name || 'B2C Client',
                             customer_phone: checkoutDetails.phone || '0000000000',
@@ -3476,18 +3370,17 @@
 
             const renderHomeDashboard = () => {
                 const templates = [
-                    { type: 'RENT', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Rent Agreement', desc: 'Standard residential rent agreement detailing landlord, tenant, security deposit, and tenancy clauses.', icon: 'fa-file-signature', color: 'blue', price: '₹499' },
-                    { type: 'ATS', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Agreement to Sell', desc: 'Legal contract for sale/purchase of residential property outlining payment schedules and registration terms.', icon: 'fa-file-contract', color: 'purple', price: '₹999' },
-                    { type: 'REG_RENT', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Registered Rent Agreement', desc: 'Official format registered lease agreement compliant with state registration department guidelines.', icon: 'fa-stamp', color: 'indigo', price: '₹1,499' },
-                    { type: 'MUTATION', auth: 'GNIDA', cat: 'AUTHORITY', label: 'Mutation Form', desc: 'Application form for property title mutation in municipal or Greater Noida authority records.', icon: 'fa-file-pen', color: 'emerald', price: '₹299' },
-                    { type: 'GNIDA', auth: 'GNIDA', cat: 'AUTHORITY', label: 'Know Your Allottee (KYA)', desc: 'Greater Noida Authority official allottee verification datasheet to update owner database records.', icon: 'fa-id-card', color: 'yellow', price: '₹199' },
-                    { type: 'GNIDA_REGISTRY', auth: 'GNIDA', cat: 'AUTHORITY', label: 'GNIDA Flat Registry Deed', desc: 'Sub-lease transfer deed format for residential flats under Greater Noida Authority.', icon: 'fa-book', color: 'cyan', price: '₹1,999' },
-                    { type: 'GNIDA_PTM', auth: 'GNIDA', cat: 'AUTHORITY', label: 'Permission to Mortgage (PTM)', desc: 'Official application to GNIDA requesting mortgage permission for housing/property bank loans.', icon: 'fa-file-shield', color: 'teal', price: '₹399' },
-                    { type: 'NOIDA_TRANSFER', auth: 'NOIDA', cat: 'AUTHORITY', label: 'Noida Transfer Application', desc: 'Transfer of leasehold rights and allotment details under Noida Authority rules.', icon: 'fa-right-left', color: 'sky', price: '₹499' },
-                    { type: 'ECOMM_TC', auth: 'ECOMMERCE', cat: 'ECOMMERCE', label: 'Website Terms of Service', desc: 'Standard terms and conditions agreement for e-commerce websites and digital services.', icon: 'fa-globe', color: 'rose', price: '₹299' },
-                    { type: 'ECOMM_PP', auth: 'ECOMMERCE', cat: 'ECOMMERCE', label: 'Website Privacy Policy', desc: 'GDPR, CCPA, and Information Technology Act compliant web privacy policy.', icon: 'fa-user-shield', color: 'violet', price: '₹299' },
-                    { type: 'ECOMM_RP', auth: 'ECOMMERCE', cat: 'ECOMMERCE', label: 'Refund & Return Policy', desc: 'Clear customer return, shipping, refund and cancellation rules for online merchants.', icon: 'fa-rotate-left', color: 'amber', price: '₹199' },
-                    { type: 'TM48', auth: 'ALL', cat: 'TRADE', label: 'TM-48 Trademark Proxy', desc: 'Official authorisation form to represent clients before the Indian Trademark Registry.', icon: 'fa-trademark', color: 'orange', price: '₹249' }
+                    { type: 'RENT', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Rent Agreement', desc: 'Standard residential rent agreement detailing landlord, tenant, security deposit, and tenancy clauses.', icon: 'fa-file-signature', color: 'blue', price: '₹300' },
+                    { type: 'ATS', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Agreement to Sell', desc: 'Legal contract for sale/purchase of residential property outlining payment schedules and registration terms.', icon: 'fa-file-contract', color: 'purple', price: '₹300' },
+                    { type: 'REG_RENT', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Registered Rent Agreement', desc: 'Official format registered lease agreement compliant with state registration department guidelines.', icon: 'fa-stamp', color: 'indigo', price: '₹5000' },
+                    { type: 'MUTATION', auth: 'GNIDA', cat: 'AUTHORITY', label: 'Mutation Form', desc: 'Application form for property title mutation in municipal or Greater Noida authority records.', icon: 'fa-file-pen', color: 'emerald', price: '₹4000' },
+                    { type: 'GNIDA', auth: 'GNIDA', cat: 'AUTHORITY', label: 'Know Your Allottee (KYA)', desc: 'Greater Noida Authority official allottee verification datasheet to update owner database records.', icon: 'fa-id-card', color: 'yellow', price: 'FREE' },
+                    { type: 'GNIDA_REGISTRY', auth: 'GNIDA', cat: 'AUTHORITY', label: 'GNIDA Flat Registry Deed', desc: 'Sub-lease transfer deed format for residential flats under Greater Noida Authority.', icon: 'fa-book', color: 'cyan', price: '₹10000' },
+                    { type: 'GNIDA_PTM', auth: 'GNIDA', cat: 'AUTHORITY', label: 'Permission to Mortgage (PTM)', desc: 'Official application to GNIDA requesting mortgage permission for housing/property bank loans.', icon: 'fa-file-shield', color: 'teal', price: '₹7500' },
+                    { type: 'GNIDA_PACKAGE', auth: 'GNIDA', cat: 'AUTHORITY', label: 'GNIDA 5-in-1 Package', desc: 'Complete GNIDA documentation set — KYA + TM Application + Mutation + Registry + PTM. Fill once, generate all 5 documents.', icon: 'fa-cubes', color: 'amber', price: '₹40000' },
+                    { type: 'TM_APP', auth: 'GNIDA', cat: 'AUTHORITY', label: 'Transfer Memo Application', desc: 'Application for transfer of leasehold rights and allotment details under GNIDA authority rules.', icon: 'fa-right-left', color: 'rose', price: '₹2000' },
+                    { type: 'NOIDA_TRANSFER', auth: 'NOIDA', cat: 'AUTHORITY', label: 'Noida Transfer Application', desc: 'Transfer of leasehold rights and allotment details under Noida Authority rules.', icon: 'fa-right-left', color: 'sky', price: '₹2000' },
+                    { type: 'TM48', auth: 'ALL', cat: 'TRADE', label: 'TM-48 Trademark Proxy', desc: 'Official authorisation form to represent clients before the Indian Trademark Registry.', icon: 'fa-trademark', color: 'orange', price: '₹500' }
                 ];
 
                 const filtered = templates.filter(t => {
@@ -3498,9 +3391,8 @@
                 });
 
                 const banners = [
-                    { title: 'Rent Agreement', subtitle: 'Most Popular — 11-month tenancy contract', price: '₹499', color: 'blue', icon: 'fa-file-signature', type: 'RENT' },
-                    { title: 'GNIDA Registry Deed', subtitle: 'Flat sub-lease transfer format', price: '₹1,999', color: 'cyan', icon: 'fa-book', type: 'GNIDA_REGISTRY' },
-                    { title: 'E-Commerce Bundle', subtitle: 'Terms, Privacy, Refund & more', price: 'From ₹199', color: 'rose', icon: 'fa-cart-shopping', type: 'ECOMM_TC' },
+                    { title: 'Rent Agreement', subtitle: 'Most Popular — 11-month tenancy contract', price: '₹300', color: 'blue', icon: 'fa-file-signature', type: 'RENT' },
+                    { title: 'GNIDA Registry Deed', subtitle: 'Flat sub-lease transfer format', price: '₹10000', color: 'cyan', icon: 'fa-book', type: 'GNIDA_REGISTRY' },
                 ];
 
                 return (
@@ -3547,7 +3439,6 @@
                                 { key: 'ALL', label: 'All Products', icon: 'fa-cubes' },
                                 { key: 'REAL_ESTATE', label: 'Tenancy & Property', icon: 'fa-house-chimney' },
                                 { key: 'AUTHORITY', label: 'Authority Forms', icon: 'fa-building-columns' },
-                                { key: 'ECOMMERCE', label: 'E-Commerce', icon: 'fa-cart-shopping' },
                                 { key: 'TRADE', label: 'Business & Trade', icon: 'fa-briefcase' }
                             ].map(cat => (
                                 <button key={cat.key} onClick={() => setLibraryFilter(cat.key)} className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer border whitespace-nowrap ${libraryFilter === cat.key ? 'bg-blue-600 border-indigo-600 text-white shadow-md' : 'bg-white border-slate-100 text-slate-600 hover:bg-slate-50 hover:text-slate-800 shadow-sm'}`}>
@@ -4054,9 +3945,6 @@
                                                                         else if (tPayload.type === 'TM_APP') setTmAppData(tPayload.payload);
                                                                         else if (tPayload.type === 'GNIDA_REGISTRY') setGnidaRegistryData(tPayload.payload);
                                                                         else if (tPayload.type === 'GNIDA_PTM') setGnidaPtmData(tPayload.payload);
-                                                                        else if (tPayload.type === 'ECOMM_TC') setEcommTCData(tPayload.payload);
-                                                                        else if (tPayload.type === 'ECOMM_PP') setEcommPPData(tPayload.payload);
-                                                                        else if (tPayload.type === 'ECOMM_RP') setEcommRPData(tPayload.payload);
                                                                         else setRegData(tPayload.payload);
                                                                         alert("Draft successfully loaded into form fields!");
                                                                     }}
@@ -4152,9 +4040,6 @@
                 { value: 'gnida_ptm', label: 'Permission to Mortgage' },
                 { value: 'noida_transfer', label: 'NOIDA Transfer' },
                 { value: 'tm_app', label: 'TM Application' },
-                { value: 'ecomm_tc', label: 'E-Commerce T&C' },
-                { value: 'ecomm_pp', label: 'Privacy Policy' },
-                { value: 'ecomm_rp', label: 'Refund Policy' },
             ];
             const [shareMode, setShareMode] = useState('SHARE');
             const [shareGeneratedCode, setShareGeneratedCode] = useState('');
@@ -4673,17 +4558,17 @@
                                 </button>
                                 {(() => {
                                     const docMap = {
-                                        RENT: { label: 'Rent Agreement', icon: 'fa-file-signature', desc: 'Standard residential rent agreement with landlord, tenant, security deposit, and tenancy clauses. Valid for 11 months with renewal option.', price: '₹499', badge: 'Most Popular' },
-                                        ATS: { label: 'Agreement to Sell', icon: 'fa-file-contract', desc: 'Legal contract for sale/purchase of residential property outlining payment schedules, possession date, and registration terms.', price: '₹999', badge: '' },
-                                        REG_RENT: { label: 'Registered Rent Agreement', icon: 'fa-stamp', desc: 'Official format registered lease deed compliant with state registration department guidelines. Includes stamp paper & registration details.', price: '₹1,499', badge: 'Recommended' },
-                                        TM48: { label: 'TM-48 Trademark Proxy', icon: 'fa-trademark', desc: 'Official authorisation form (TM-48) to represent clients before the Indian Trademark Registry under the Trade Marks Act, 1999.', price: '₹249', badge: '' },
-                                        GNIDA_PACKAGE: { label: 'GNIDA 5-in-1 Package', icon: 'fa-cubes', desc: 'Complete GNIDA documentation set — KYA + TM Application + Mutation + Registry + PTM. Fill once, generate all 5 documents.', price: '₹1,999', badge: 'Best Value' },
-                                        KYA: { label: 'Know Your Allottee (KYA)', icon: 'fa-id-card', desc: 'Greater Noida Authority official allottee verification datasheet to update owner database records.', price: '₹199', badge: '' },
-                                        TM_APP: { label: 'Transfer Memo Application', icon: 'fa-right-left', desc: 'Application for transfer of leasehold rights and allotment details under GNIDA authority rules.', price: '₹499', badge: '' },
-                                        MUTATION: { label: 'Mutation Form', icon: 'fa-file-pen', desc: 'Application form for property title mutation in municipal or Greater Noida authority records.', price: '₹299', badge: '' },
-                                        GNIDA_REGISTRY: { label: 'GNIDA Registry Format', icon: 'fa-book', desc: 'Sub-lease transfer deed format for residential flats under Greater Noida Authority with all prescribed schedules.', price: '₹1,999', badge: '' },
-                                        GNIDA_PTM: { label: 'Permission to Mortgage (PTM)', icon: 'fa-file-shield', desc: 'Official application to GNIDA requesting mortgage permission for housing/property bank loans.', price: '₹399', badge: '' },
-                                        NOIDA_TRANSFER: { label: 'NOIDA Transfer Application', icon: 'fa-right-left', desc: 'Transfer of leasehold rights and allotment details under NOIDA Authority regulations.', price: '₹499', badge: '' },
+                                        RENT: { label: 'Rent Agreement', icon: 'fa-file-signature', desc: 'Standard residential rent agreement with landlord, tenant, security deposit, and tenancy clauses. Valid for 11 months with renewal option.', price: '₹300', badge: 'Most Popular' },
+                                        ATS: { label: 'Agreement to Sell', icon: 'fa-file-contract', desc: 'Legal contract for sale/purchase of residential property outlining payment schedules, possession date, and registration terms.', price: '₹300', badge: '' },
+                                        REG_RENT: { label: 'Registered Rent Agreement', icon: 'fa-stamp', desc: 'Official format registered lease deed compliant with state registration department guidelines. Includes stamp paper & registration details.', price: '₹5000', badge: 'Recommended' },
+                                        TM48: { label: 'TM-48 Trademark Proxy', icon: 'fa-trademark', desc: 'Official authorisation form (TM-48) to represent clients before the Indian Trademark Registry under the Trade Marks Act, 1999.', price: '₹500', badge: '' },
+                                        GNIDA_PACKAGE: { label: 'GNIDA 5-in-1 Package', icon: 'fa-cubes', desc: 'Complete GNIDA documentation set — KYA + TM Application + Mutation + Registry + PTM. Fill once, generate all 5 documents.', price: '₹40000', badge: 'Best Value' },
+                                        KYA: { label: 'Know Your Allottee (KYA)', icon: 'fa-id-card', desc: 'Greater Noida Authority official allottee verification datasheet to update owner database records.', price: 'FREE', badge: '' },
+                                        TM_APP: { label: 'Transfer Memo Application', icon: 'fa-right-left', desc: 'Application for transfer of leasehold rights and allotment details under GNIDA authority rules.', price: '₹2000', badge: '' },
+                                        MUTATION: { label: 'Mutation Form', icon: 'fa-file-pen', desc: 'Application form for property title mutation in municipal or Greater Noida authority records.', price: '₹4000', badge: '' },
+                                        GNIDA_REGISTRY: { label: 'GNIDA Registry Format', icon: 'fa-book', desc: 'Sub-lease transfer deed format for residential flats under Greater Noida Authority with all prescribed schedules.', price: '₹10000', badge: '' },
+                                        GNIDA_PTM: { label: 'Permission to Mortgage (PTM)', icon: 'fa-file-shield', desc: 'Official application to GNIDA requesting mortgage permission for housing/property bank loans.', price: '₹7500', badge: '' },
+                                        NOIDA_TRANSFER: { label: 'NOIDA Transfer Application', icon: 'fa-right-left', desc: 'Transfer of leasehold rights and allotment details under NOIDA Authority regulations.', price: '₹2000', badge: '' },
                                     };
                                     const info = docMap[confirmDoc] || { label: confirmDoc, icon: 'fa-file', desc: '', price: '—', badge: '' };
                                     return (
@@ -4723,17 +4608,17 @@
                         {/* Document Confirm Modal */}
                         {confirmDoc && (() => {
                             const docMap = {
-                                RENT: { label: 'Rent Agreement', icon: 'fa-file-signature', color: 'blue', desc: 'Standard residential rent agreement with landlord, tenant, deposit & tenancy clauses.', price: '₹499' },
-                                ATS: { label: 'Agreement to Sell', icon: 'fa-file-contract', color: 'purple', desc: 'Sale/purchase agreement for residential property with payment schedule.', price: '₹999' },
-                                REG_RENT: { label: 'Registered Rent Agreement', icon: 'fa-stamp', color: 'indigo', desc: 'Official registered lease deed in authority-prescribed format.', price: '₹1,499' },
-                                TM48: { label: 'TM-48 Trademark Proxy', icon: 'fa-trademark', color: 'orange', desc: 'Authorisation form to represent clients before the Trademark Registry.', price: '₹249' },
-                                GNIDA_PACKAGE: { label: 'GNIDA 5-in-1 Package', icon: 'fa-cubes', color: 'blue', desc: 'Fill KYA + TM App + Mutation + Registry + PTM in one form.', price: '₹1,999' },
-                                KYA: { label: 'Know Your Allottee', icon: 'fa-id-card', color: 'yellow', desc: 'GNIDA allottee verification datasheet.', price: '₹199' },
-                                TM_APP: { label: 'Transfer Memo Application', icon: 'fa-right-left', color: 'rose', desc: 'GNIDA transfer of leasehold rights application.', price: '₹499' },
-                                MUTATION: { label: 'Mutation Form', icon: 'fa-file-pen', color: 'indigo', desc: 'Property title mutation application for authority records.', price: '₹299' },
-                                GNIDA_REGISTRY: { label: 'GNIDA Registry Format', icon: 'fa-book', color: 'cyan', desc: 'Sub-lease transfer deed format for GNIDA flats.', price: '₹1,999' },
-                                GNIDA_PTM: { label: 'Permission to Mortgage (PTM)', icon: 'fa-file-shield', color: 'teal', desc: 'GNIDA mortgage permission application for bank loans.', price: '₹399' },
-                                NOIDA_TRANSFER: { label: 'NOIDA Transfer Application', icon: 'fa-right-left', color: 'sky', desc: 'Transfer of leasehold rights under NOIDA Authority.', price: '₹499' },
+                                RENT: { label: 'Rent Agreement', icon: 'fa-file-signature', color: 'blue', desc: 'Standard residential rent agreement with landlord, tenant, deposit & tenancy clauses.', price: '₹300' },
+                                ATS: { label: 'Agreement to Sell', icon: 'fa-file-contract', color: 'purple', desc: 'Sale/purchase agreement for residential property with payment schedule.', price: '₹300' },
+                                REG_RENT: { label: 'Registered Rent Agreement', icon: 'fa-stamp', color: 'indigo', desc: 'Official registered lease deed in authority-prescribed format.', price: '₹5000' },
+                                TM48: { label: 'TM-48 Trademark Proxy', icon: 'fa-trademark', color: 'orange', desc: 'Authorisation form to represent clients before the Trademark Registry.', price: '₹500' },
+                                GNIDA_PACKAGE: { label: 'GNIDA 5-in-1 Package', icon: 'fa-cubes', color: 'blue', desc: 'Fill KYA + TM App + Mutation + Registry + PTM in one form.', price: '₹40000' },
+                                KYA: { label: 'Know Your Allottee', icon: 'fa-id-card', color: 'yellow', desc: 'GNIDA allottee verification datasheet.', price: 'FREE' },
+                                TM_APP: { label: 'Transfer Memo Application', icon: 'fa-right-left', color: 'rose', desc: 'GNIDA transfer of leasehold rights application.', price: '₹2000' },
+                                MUTATION: { label: 'Mutation Form', icon: 'fa-file-pen', color: 'indigo', desc: 'Property title mutation application for authority records.', price: '₹4000' },
+                                GNIDA_REGISTRY: { label: 'GNIDA Registry Format', icon: 'fa-book', color: 'cyan', desc: 'Sub-lease transfer deed format for GNIDA flats.', price: '₹10000' },
+                                GNIDA_PTM: { label: 'Permission to Mortgage (PTM)', icon: 'fa-file-shield', color: 'teal', desc: 'GNIDA mortgage permission application for bank loans.', price: '₹7500' },
+                                NOIDA_TRANSFER: { label: 'NOIDA Transfer Application', icon: 'fa-right-left', color: 'sky', desc: 'Transfer of leasehold rights under NOIDA Authority.', price: '₹2000' },
                             };
                             const info = docMap[confirmDoc] || { label: confirmDoc, icon: 'fa-file', color: 'slate', desc: '', price: '' };
                             return (
@@ -5246,62 +5131,7 @@
                                             </div>
                                         )}
 
-                                        {(activeAuthority === 'ECOMMERCE') && (
-                                            <>
-                                                <button
-                                                    onClick={() => setActiveTab('ECOMM_TC')}
-                                                    className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'ECOMM_TC'
-                                                            ? 'bg-emerald-50/80 border-emerald-600 shadow-sm ring-1 ring-emerald-100 text-emerald-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-emerald-100 hover:bg-emerald-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'ECOMM_TC' ? 'bg-emerald-600 text-white' : 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-file-contract text-sm"></i>
-                                                    </div>
-                                                    <span className="font-bold text-[12px] mt-1 leading-tight">Terms & Conditions</span>
-                                                    <span className="text-[10px] text-slate-400 font-normal leading-none">Website T&C</span>
-                                                </button>
-
-                                                <button
-                                                    onClick={() => setActiveTab('ECOMM_PP')}
-                                                    className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'ECOMM_PP'
-                                                            ? 'bg-violet-50/80 border-violet-600 shadow-sm ring-1 ring-violet-100 text-violet-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-violet-100 hover:bg-violet-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'ECOMM_PP' ? 'bg-violet-600 text-white' : 'bg-violet-50 text-violet-600 group-hover:bg-violet-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-shield-halved text-sm"></i>
-                                                    </div>
-                                                    <span className="font-bold text-[12px] mt-1 leading-tight">Privacy Policy</span>
-                                                    <span className="text-[10px] text-slate-400 font-normal leading-none">GDPR & IT Act</span>
-                                                </button>
-
-                                                <button
-                                                    onClick={() => setActiveTab('ECOMM_RP')}
-                                                    className={`group col-span-2 flex flex-row items-center gap-3 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'ECOMM_RP'
-                                                            ? 'bg-amber-50/80 border-amber-600 shadow-sm ring-1 ring-amber-100 text-amber-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-amber-100 hover:bg-amber-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'ECOMM_RP' ? 'bg-amber-600 text-white' : 'bg-amber-50 text-amber-600 group-hover:bg-amber-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-rotate-left text-sm"></i>
-                                                    </div>
-                                                    <div className="flex flex-col">
-                                                        <span className="font-bold text-[12px] leading-tight">Refund & Cancellation Policy</span>
-                                                        <span className="text-[10px] text-slate-400 font-normal leading-none">Return & refund terms</span>
-                                                    </div>
-                                                </button>
-                                            </>
-                                        )}
+                                        
 
                                         {(activeAuthority === 'YEIDA') && (
                                             <div className="col-span-2 bg-slate-50 border border-slate-100 rounded-xl p-4 text-center">
@@ -5330,9 +5160,7 @@
                                                 activeTab === 'MUTATION' ? 'Mutation Form' :
                                                 activeTab === 'GNIDA_REGISTRY' ? 'Registry Format' :
                                                 activeTab === 'GNIDA_PTM' ? 'Permission to Mortgage' :
-                                                activeTab === 'ECOMM_TC' ? 'Terms & Conditions' :
-                                                activeTab === 'ECOMM_PP' ? 'Privacy Policy' :
-                                                activeTab === 'ECOMM_RP' ? 'Refund Policy' :
+                                                
                                                 activeTab === 'NOIDA_TRANSFER' ? 'Noida Transfer' :
                                                 activeTab
                                             }
@@ -5404,90 +5232,6 @@
                                     <i className="fa-solid fa-person-digging text-3xl mb-3 opacity-50"></i>
                                     <p className="text-lg font-bold">Draft Coming Soon</p>
                                 </div>
-                            )}
-
-                            {/* E-Commerce Terms & Conditions Form */}
-                            {(activeTab === 'ECOMM_TC') && (
-                                <>
-                                    <Section title="Company Information" icon="fa-building" color="emerald" isOpen={true}>
-                                        <Input label="Company / Brand Name" name="companyName" value={ecommTCData.companyName} onChange={handleChange} placeholder="e.g. Acme Pvt. Ltd." />
-                                        <Input label="Website URL" name="websiteUrl" value={ecommTCData.websiteUrl} onChange={handleChange} placeholder="e.g. https://www.acme.com" />
-                                        <Input label="Contact Email" name="contactEmail" value={ecommTCData.contactEmail} onChange={handleChange} placeholder="e.g. legal@acme.com" />
-                                        <Input label="Contact Phone" name="contactPhone" value={ecommTCData.contactPhone} onChange={handleChange} placeholder="e.g. +91 98765 43210" />
-                                    </Section>
-                                    <Section title="Legal & Governance" icon="fa-gavel" color="emerald">
-                                        <Input label="Governing State" name="governingState" value={ecommTCData.governingState} onChange={handleChange} />
-                                        <Input label="Governing Country" name="governingCountry" value={ecommTCData.governingCountry} onChange={handleChange} />
-                                        <Input label="Minimum Age Requirement" name="minimumAge" value={ecommTCData.minimumAge} onChange={handleChange} />
-                                        <Input label="Dispute Resolution" name="disputeResolution" value={ecommTCData.disputeResolution} onChange={handleChange} />
-                                    </Section>
-                                    <Section title="Policy Details" icon="fa-clipboard-list" color="emerald">
-                                        <Input label="Return Window (days)" name="returnWindow" value={ecommTCData.returnWindow} onChange={handleChange} />
-                                        <Input label="Payment Methods Accepted" name="paymentMethods" value={ecommTCData.paymentMethods} onChange={handleChange} />
-                                        <Input label="Shipping Policy Summary" name="shippingPolicy" value={ecommTCData.shippingPolicy} onChange={handleChange} />
-                                        <Input label="IP Notice" name="intellectualPropertyNotice" value={ecommTCData.intellectualPropertyNotice} onChange={handleChange} placeholder="All content is proprietary..." />
-                                    </Section>
-                                    <Section title="Dates" icon="fa-calendar" color="emerald">
-                                        <Input label="Effective Date" name="effectiveDate" type="date" value={ecommTCData.effectiveDate} onChange={handleChange} />
-                                        <Input label="Last Updated" name="lastUpdated" type="date" value={ecommTCData.lastUpdated} onChange={handleChange} />
-                                    </Section>
-                                </>
-                            )}
-
-                            {/* E-Commerce Privacy Policy Form */}
-                            {(activeTab === 'ECOMM_PP') && (
-                                <>
-                                    <Section title="Company Information" icon="fa-building" color="violet" isOpen={true}>
-                                        <Input label="Company / Brand Name" name="companyName" value={ecommPPData.companyName} onChange={handleChange} placeholder="e.g. Acme Pvt. Ltd." />
-                                        <Input label="Website URL" name="websiteUrl" value={ecommPPData.websiteUrl} onChange={handleChange} placeholder="e.g. https://www.acme.com" />
-                                        <Input label="Contact Email" name="contactEmail" value={ecommPPData.contactEmail} onChange={handleChange} placeholder="e.g. privacy@acme.com" />
-                                    </Section>
-                                    <Section title="Data Protection Officer" icon="fa-user-shield" color="violet">
-                                        <Input label="DPO Name" name="dpoName" value={ecommPPData.dpoName} onChange={handleChange} placeholder="e.g. Mr. Data Officer" />
-                                        <Input label="DPO Email" name="dpoEmail" value={ecommPPData.dpoEmail} onChange={handleChange} placeholder="e.g. dpo@acme.com" />
-                                    </Section>
-                                    <Section title="Data Collection & Usage" icon="fa-database" color="violet">
-                                        <Input label="Data Collection Types" name="dataCollectionTypes" value={ecommPPData.dataCollectionTypes} onChange={handleChange} />
-                                        <Input label="Legal Basis for Processing" name="legalBasis" value={ecommPPData.legalBasis} onChange={handleChange} />
-                                        <Input label="Data Retention Period" name="dataRetentionPeriod" value={ecommPPData.dataRetentionPeriod} onChange={handleChange} />
-                                        <Input label="Cookie Types Used" name="cookieTypes" value={ecommPPData.cookieTypes} onChange={handleChange} />
-                                        <Input label="Third-Party Services" name="thirdPartyServices" value={ecommPPData.thirdPartyServices} onChange={handleChange} />
-                                    </Section>
-                                    <Section title="Jurisdiction & Dates" icon="fa-calendar" color="violet">
-                                        <Input label="Governing State" name="governingState" value={ecommPPData.governingState} onChange={handleChange} />
-                                        <Input label="Governing Country" name="governingCountry" value={ecommPPData.governingCountry} onChange={handleChange} />
-                                        <Input label="Effective Date" name="effectiveDate" type="date" value={ecommPPData.effectiveDate} onChange={handleChange} />
-                                        <Input label="Last Updated" name="lastUpdated" type="date" value={ecommPPData.lastUpdated} onChange={handleChange} />
-                                    </Section>
-                                </>
-                            )}
-
-                            {/* Refund & Cancellation Policy Form */}
-                            {(activeTab === 'ECOMM_RP') && (
-                                <>
-                                    <Section title="Company Information" icon="fa-building" color="amber" isOpen={true}>
-                                        <Input label="Company / Brand Name" name="companyName" value={ecommRPData.companyName} onChange={handleChange} placeholder="e.g. Acme Pvt. Ltd." />
-                                        <Input label="Website URL" name="websiteUrl" value={ecommRPData.websiteUrl} onChange={handleChange} placeholder="e.g. https://www.acme.com" />
-                                        <Input label="Contact Email" name="contactEmail" value={ecommRPData.contactEmail} onChange={handleChange} placeholder="e.g. support@acme.com" />
-                                        <Input label="Contact Phone" name="contactPhone" value={ecommRPData.contactPhone} onChange={handleChange} placeholder="e.g. +91 98765 43210" />
-                                    </Section>
-                                    <Section title="Return & Refund Terms" icon="fa-rotate-left" color="amber">
-                                        <Input label="Return Window (days)" name="returnWindow" value={ecommRPData.returnWindow} onChange={handleChange} />
-                                        <Input label="Exchange Window (days)" name="exchangeWindow" value={ecommRPData.exchangeWindow} onChange={handleChange} />
-                                        <Input label="Refund Processing Time (days)" name="refundProcessingDays" value={ecommRPData.refundProcessingDays} onChange={handleChange} />
-                                        <Input label="Refund Method" name="refundMethod" value={ecommRPData.refundMethod} onChange={handleChange} />
-                                        <Input label="Shipping Cost Refundable?" name="shippingCostRefundable" value={ecommRPData.shippingCostRefundable} onChange={handleChange} />
-                                    </Section>
-                                    <Section title="Exceptions & Conditions" icon="fa-ban" color="amber">
-                                        <Input label="Non-Returnable Items" name="nonReturnableItems" value={ecommRPData.nonReturnableItems} onChange={handleChange} />
-                                        <Input label="Partial Refund Conditions" name="partialRefundConditions" value={ecommRPData.partialRefundConditions} onChange={handleChange} />
-                                        <Input label="Cancellation Window" name="cancellationWindow" value={ecommRPData.cancellationWindow} onChange={handleChange} />
-                                    </Section>
-                                    <Section title="Dates & Jurisdiction" icon="fa-calendar" color="amber">
-                                        <Input label="Governing State" name="governingState" value={ecommRPData.governingState} onChange={handleChange} />
-                                        <Input label="Effective Date" name="effectiveDate" type="date" value={ecommRPData.effectiveDate} onChange={handleChange} />
-                                    </Section>
-                                </>
                             )}
 
                             {activeTab === 'NOIDA_TRANSFER' && (
@@ -5585,7 +5329,6 @@
                                     </Section>
                                 </>
                             )}
-
 
 
                             {activeTab === 'TM_APP' && (
@@ -5875,7 +5618,6 @@
                                     </Section>
                                 </>
                             )}
-
 
 
                             {activeTab === 'REG_RENT' && (
@@ -6826,7 +6568,6 @@
                                         <Input label="Balance Amount (Rs.)" name="balanceAmount" value={atsData.balanceAmount} onChange={(e) => setAtsData(prev => ({ ...prev, balanceAmount: e.target.value }))} />
                                         <Input label="Balance In Words" name="balanceAmountWords" value={atsData.balanceAmountWords} onChange={(e) => setAtsData(prev => ({ ...prev, balanceAmountWords: e.target.value }))} />
                                     </Section>
-
 
 
                                     <Section title="Witnesses" icon="fa-users-viewfinder" color="cyan">
@@ -8138,7 +7879,6 @@
                                             <div className="w-full">
                                                 <div className="text-center font-bold text-xl uppercase mb-1">GREATER NOIDA INDUSTRIAL DEVELOPMENT AUTHORITY</div>
                                                 <div className="text-center font-bold text-sm underline uppercase mb-6">MORTGAGE PERMISSION FORM</div>
-
 
 
                                                 <div className="flex items-center mb-3">
@@ -10081,8 +9821,6 @@
                                     )}
 
 
-
-
                                     {
                                         activeTab === 'KYA' && (
                                             <>
@@ -10509,286 +10247,7 @@
                                 </div>
                             )
                         }
-                        {/* E-Commerce Terms & Conditions Preview */}
-                        {activeTab === 'ECOMM_TC' && (
-                            <>
-                                <div className="paper-page print-break bg-white text-gray-900 font-serif p-16 relative text-[11pt] leading-relaxed text-justify h-[1123px]">
-                                    <EsignBadge type="ECOMM_TC" />
-                                    <div className="text-center mb-8">
-                                        <div className="text-[16pt] font-bold uppercase tracking-wider mb-2">Terms and Conditions</div>
-                                        <div className="text-[10pt] text-gray-500 mb-1"><Var name="companyName">{ecommTCData.companyName || '[Company Name]'}</Var></div>
-                                        <div className="text-[9pt] text-gray-400"><Var name="websiteUrl">{ecommTCData.websiteUrl || '[Website URL]'}</Var></div>
-                                        <div className="text-[9pt] text-gray-400 mt-1">Effective Date: <Var name="effectiveDate">{ecommTCData.effectiveDate || '________'}</Var> | Last Updated: <Var name="lastUpdated">{ecommTCData.lastUpdated || '________'}</Var></div>
-                                        <div className="w-24 h-[2px] bg-gray-300 mx-auto mt-4"></div>
-                                    </div>
 
-                                    <p className="mb-4 text-[10pt]">Welcome to <strong><Var name="companyName">{ecommTCData.companyName || '[Company Name]'}</Var></strong> ("<Var name="websiteUrl">{ecommTCData.websiteUrl || '[Website]'}</Var>"). By accessing or using our website, you agree to be bound by these Terms and Conditions. Please read them carefully before making any purchase or using our services.</p>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">1. Acceptance of Terms</div>
-                                        <p className="text-[10pt]">By accessing, browsing, or placing an order through <Var name="websiteUrl">{ecommTCData.websiteUrl || '[Website]'}</Var>, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions. If you do not agree, you must cease using this platform immediately. Use of this website is restricted to individuals aged <Var name="minimumAge">{ecommTCData.minimumAge || '18'}</Var> years or above.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">2. Account Registration</div>
-                                        <p className="text-[10pt]">To access certain features, you may be required to create an account. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to provide accurate and current information during registration and to update such information promptly if it changes.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">3. Products & Pricing</div>
-                                        <p className="text-[10pt]">All product descriptions, images, and prices are subject to change without prior notice. While we endeavor to display accurate pricing, errors may occur. <Var name="companyName">{ecommTCData.companyName || '[Company Name]'}</Var> reserves the right to correct any errors and to cancel orders placed at incorrect prices. Prices are inclusive of applicable taxes unless stated otherwise.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">4. Payment Terms</div>
-                                        <p className="text-[10pt]">Payments are processed through secure third-party gateways. Accepted methods include: <Var name="paymentMethods">{ecommTCData.paymentMethods || '[Payment Methods]'}</Var>. All transactions are encrypted and processed in compliance with PCI-DSS standards. <Var name="companyName">{ecommTCData.companyName || '[Company Name]'}</Var> does not store credit/debit card details on its servers.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">5. Shipping & Delivery</div>
-                                        <p className="text-[10pt]"><Var name="shippingPolicy">{ecommTCData.shippingPolicy || '[Shipping Policy]'}</Var>. Delivery timelines are estimates and may vary based on location and availability. Risk of loss and title for items passes to you upon delivery to the carrier.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">6. Returns & Refunds</div>
-                                        <p className="text-[10pt]">Products may be returned within <Var name="returnWindow">{ecommTCData.returnWindow || '7'}</Var> days of delivery, subject to our Refund & Cancellation Policy. Items must be in original condition with all tags and packaging intact. Refunds will be processed to the original payment method within 5-7 business days of receiving the returned item.</p>
-                                    </div>
-                                </div>
-
-                                {/* Page 2 */}
-                                <div className="paper-page print-break bg-white text-gray-900 font-serif p-16 relative text-[11pt] leading-relaxed text-justify h-[1123px]">
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">7. Intellectual Property</div>
-                                        <p className="text-[10pt]"><Var name="intellectualPropertyNotice">{ecommTCData.intellectualPropertyNotice || `All content on this website, including but not limited to text, graphics, logos, images, audio clips, digital downloads, and software, is the property of ${ecommTCData.companyName || '[Company Name]'} or its content suppliers and is protected by Indian and international copyright, trademark, and other intellectual property laws.`}</Var></p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">8. Limitation of Liability</div>
-                                        <p className="text-[10pt]">To the fullest extent permitted by applicable law, <Var name="companyName">{ecommTCData.companyName || '[Company Name]'}</Var> shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of your access to or use of the website. Our total liability shall not exceed the amount paid by you for the specific product or service giving rise to the claim.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">9. Indemnification</div>
-                                        <p className="text-[10pt]">You agree to indemnify and hold harmless <Var name="companyName">{ecommTCData.companyName || '[Company Name]'}</Var>, its officers, directors, employees, and agents from any claims, liabilities, damages, losses, or expenses arising from your use of the website or violation of these Terms.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">10. Governing Law & Dispute Resolution</div>
-                                        <p className="text-[10pt]">These Terms shall be governed by and construed in accordance with the laws of <Var name="governingState">{ecommTCData.governingState || '[State]'}</Var>, <Var name="governingCountry">{ecommTCData.governingCountry || '[Country]'}</Var>. Any disputes arising hereunder shall be resolved through <Var name="disputeResolution">{ecommTCData.disputeResolution || 'Arbitration'}</Var> in accordance with the Arbitration and Conciliation Act, 1996, and the seat of arbitration shall be <Var name="governingState">{ecommTCData.governingState || '[State]'}</Var>.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">11. Modifications</div>
-                                        <p className="text-[10pt]"><Var name="companyName">{ecommTCData.companyName || '[Company Name]'}</Var> reserves the right to modify these Terms at any time. Changes will be effective immediately upon posting to the website. Your continued use of the website after any modifications constitutes acceptance of the revised Terms.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">12. Contact Information</div>
-                                        <p className="text-[10pt]">For any questions regarding these Terms and Conditions, please contact us at:</p>
-                                        <div className="ml-4 mt-2 text-[10pt]">
-                                            <p><strong>Email:</strong> <Var name="contactEmail">{ecommTCData.contactEmail || '[Email]'}</Var></p>
-                                            <p><strong>Phone:</strong> <Var name="contactPhone">{ecommTCData.contactPhone || '[Phone]'}</Var></p>
-                                            <p><strong>Website:</strong> <Var name="websiteUrl">{ecommTCData.websiteUrl || '[Website]'}</Var></p>
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-12 border-t border-gray-300 pt-6">
-                                        <div className="flex justify-between items-end">
-                                            <div>
-                                                <div className="text-[9pt] text-gray-500 uppercase tracking-wider mb-4">For and on behalf of</div>
-                                                <div className="font-bold text-[11pt]"><Var name="companyName">{ecommTCData.companyName || '[Company Name]'}</Var></div>
-                                                <div className="w-48 border-b border-gray-400 mt-8 mb-1"></div>
-                                                <div className="text-[9pt] text-gray-500">Authorized Signatory</div>
-                                            </div>
-                                            <div className="text-right">
-                                                <div className="text-[9pt] text-gray-500 uppercase tracking-wider mb-4">Date</div>
-                                                <div className="font-bold text-[11pt]"><Var name="effectiveDate">{ecommTCData.effectiveDate || '________'}</Var></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-
-                        {/* E-Commerce Privacy Policy Preview */}
-                        {activeTab === 'ECOMM_PP' && (
-                            <>
-                                <div className="paper-page print-break bg-white text-gray-900 font-serif p-16 relative text-[11pt] leading-relaxed text-justify h-[1123px]">
-                                    <EsignBadge type="ECOMM_PP" />
-                                    <div className="text-center mb-8">
-                                        <div className="text-[16pt] font-bold uppercase tracking-wider mb-2">Privacy Policy</div>
-                                        <div className="text-[10pt] text-gray-500 mb-1"><Var name="companyName">{ecommPPData.companyName || '[Company Name]'}</Var></div>
-                                        <div className="text-[9pt] text-gray-400"><Var name="websiteUrl">{ecommPPData.websiteUrl || '[Website URL]'}</Var></div>
-                                        <div className="text-[9pt] text-gray-400 mt-1">Effective Date: <Var name="effectiveDate">{ecommPPData.effectiveDate || '________'}</Var> | Last Updated: <Var name="lastUpdated">{ecommPPData.lastUpdated || '________'}</Var></div>
-                                        <div className="w-24 h-[2px] bg-gray-300 mx-auto mt-4"></div>
-                                    </div>
-
-                                    <p className="mb-4 text-[10pt]"><strong><Var name="companyName">{ecommPPData.companyName || '[Company Name]'}</Var></strong> ("we", "us", or "our") is committed to protecting the privacy of our users. This Privacy Policy describes how we collect, use, disclose, and safeguard your personal information when you visit <Var name="websiteUrl">{ecommPPData.websiteUrl || '[Website]'}</Var>.</p>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">1. Information We Collect</div>
-                                        <p className="text-[10pt]">We collect the following categories of personal data: <Var name="dataCollectionTypes">{ecommPPData.dataCollectionTypes || '[Data Types]'}</Var>. This information is collected directly from you during account registration, order placement, customer support interactions, and through automated technologies such as cookies and analytics tools.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">2. Legal Basis for Processing</div>
-                                        <p className="text-[10pt]">We process your personal data under the following legal bases: <Var name="legalBasis">{ecommPPData.legalBasis || '[Legal Basis]'}</Var>. Processing is necessary for the performance of our contract with you, compliance with legal obligations, and/or our legitimate business interests.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">3. Cookies & Tracking</div>
-                                        <p className="text-[10pt]">Our website uses the following types of cookies: <Var name="cookieTypes">{ecommPPData.cookieTypes || '[Cookie Types]'}</Var>. You may manage cookie preferences through your browser settings. Disabling certain cookies may limit your ability to use some features of our website.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">4. Third-Party Services</div>
-                                        <p className="text-[10pt]">We use the following third-party services to operate our platform: <Var name="thirdPartyServices">{ecommPPData.thirdPartyServices || '[Third-Party Services]'}</Var>. These services may collect information as governed by their respective privacy policies. We encourage you to review their policies.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">5. Data Retention</div>
-                                        <p className="text-[10pt]">We retain your personal data for a period of <Var name="dataRetentionPeriod">{ecommPPData.dataRetentionPeriod || '[Retention Period]'}</Var> from your last interaction with our services, unless a longer retention period is required by law or for legitimate business purposes.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">6. Your Rights</div>
-                                        <p className="text-[10pt]">Under applicable data protection laws, you have the right to: (a) access your personal data, (b) rectify inaccurate data, (c) request erasure of your data, (d) restrict processing, (e) data portability, and (f) object to processing. To exercise any of these rights, please contact our Data Protection Officer.</p>
-                                    </div>
-                                </div>
-
-                                {/* Page 2 */}
-                                <div className="paper-page print-break bg-white text-gray-900 font-serif p-16 relative text-[11pt] leading-relaxed text-justify h-[1123px]">
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">7. Data Security</div>
-                                        <p className="text-[10pt]">We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction. These include SSL encryption, secure payment processing, access controls, and regular security assessments.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">8. Children's Privacy</div>
-                                        <p className="text-[10pt]">Our services are not directed to individuals under the age of 18. We do not knowingly collect personal data from children. If we become aware that we have collected data from a child without parental consent, we will take steps to delete such information.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">9. Governing Law</div>
-                                        <p className="text-[10pt]">This Privacy Policy shall be governed by the laws of <Var name="governingState">{ecommPPData.governingState || '[State]'}</Var>, <Var name="governingCountry">{ecommPPData.governingCountry || '[Country]'}</Var>, including the Information Technology Act, 2000 and the Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">10. Data Protection Officer</div>
-                                        <div className="ml-4 mt-2 text-[10pt]">
-                                            <p><strong>Name:</strong> <Var name="dpoName">{ecommPPData.dpoName || '[DPO Name]'}</Var></p>
-                                            <p><strong>Email:</strong> <Var name="dpoEmail">{ecommPPData.dpoEmail || '[DPO Email]'}</Var></p>
-                                        </div>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">11. Contact Us</div>
-                                        <p className="text-[10pt]">For privacy-related inquiries, please contact:</p>
-                                        <div className="ml-4 mt-2 text-[10pt]">
-                                            <p><strong>Email:</strong> <Var name="contactEmail">{ecommPPData.contactEmail || '[Email]'}</Var></p>
-                                            <p><strong>Website:</strong> <Var name="websiteUrl">{ecommPPData.websiteUrl || '[Website]'}</Var></p>
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-12 border-t border-gray-300 pt-6">
-                                        <div className="flex justify-between items-end">
-                                            <div>
-                                                <div className="text-[9pt] text-gray-500 uppercase tracking-wider mb-4">For and on behalf of</div>
-                                                <div className="font-bold text-[11pt]"><Var name="companyName">{ecommPPData.companyName || '[Company Name]'}</Var></div>
-                                                <div className="w-48 border-b border-gray-400 mt-8 mb-1"></div>
-                                                <div className="text-[9pt] text-gray-500">Authorized Signatory</div>
-                                            </div>
-                                            <div className="text-right">
-                                                <div className="text-[9pt] text-gray-500 uppercase tracking-wider mb-4">Date</div>
-                                                <div className="font-bold text-[11pt]"><Var name="effectiveDate">{ecommPPData.effectiveDate || '________'}</Var></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-
-                        {/* Refund & Cancellation Policy Preview */}
-                        {activeTab === 'ECOMM_RP' && (
-                            <>
-                                <div className="paper-page print-break bg-white text-gray-900 font-serif p-16 relative text-[11pt] leading-relaxed text-justify h-[1123px]">
-                                    <EsignBadge type="ECOMM_RP" />
-                                    <div className="text-center mb-8">
-                                        <div className="text-[16pt] font-bold uppercase tracking-wider mb-2">Refund & Cancellation Policy</div>
-                                        <div className="text-[10pt] text-gray-500 mb-1"><Var name="companyName">{ecommRPData.companyName || '[Company Name]'}</Var></div>
-                                        <div className="text-[9pt] text-gray-400"><Var name="websiteUrl">{ecommRPData.websiteUrl || '[Website URL]'}</Var></div>
-                                        <div className="text-[9pt] text-gray-400 mt-1">Effective Date: <Var name="effectiveDate">{ecommRPData.effectiveDate || '________'}</Var></div>
-                                        <div className="w-24 h-[2px] bg-gray-300 mx-auto mt-4"></div>
-                                    </div>
-
-                                    <p className="mb-4 text-[10pt]">At <strong><Var name="companyName">{ecommRPData.companyName || '[Company Name]'}</Var></strong>, we strive to ensure complete customer satisfaction. This policy outlines the terms under which you may return products, request refunds, or cancel orders placed through <Var name="websiteUrl">{ecommRPData.websiteUrl || '[Website]'}</Var>.</p>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">1. Cancellation Policy</div>
-                                        <p className="text-[10pt]">Orders may be cancelled within <Var name="cancellationWindow">{ecommRPData.cancellationWindow || '24 hours'}</Var> of placement, provided the order has not yet been shipped. Once an order enters the shipping process, cancellation requests cannot be accommodated. To cancel, contact our support team at <Var name="contactEmail">{ecommRPData.contactEmail || '[Email]'}</Var>.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">2. Return Policy</div>
-                                        <p className="text-[10pt]">Products may be returned within <strong><Var name="returnWindow">{ecommRPData.returnWindow || '7'}</Var> days</strong> of delivery. Items must be unused, in their original packaging, and with all tags and labels attached. The customer is responsible for return shipping costs unless the return is due to a defective or incorrect product.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">3. Exchange Policy</div>
-                                        <p className="text-[10pt]">Exchanges are accepted within <strong><Var name="exchangeWindow">{ecommRPData.exchangeWindow || '15'}</Var> days</strong> of delivery, subject to availability. For exchanges, please contact us with your order number and the desired replacement item.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">4. Non-Returnable Items</div>
-                                        <p className="text-[10pt]">The following categories of items are non-returnable and non-refundable: <Var name="nonReturnableItems">{ecommRPData.nonReturnableItems || '[Non-Returnable Items]'}</Var>.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">5. Refund Processing</div>
-                                        <p className="text-[10pt]">Upon receipt and inspection of the returned item, refunds will be processed within <strong><Var name="refundProcessingDays">{ecommRPData.refundProcessingDays || '5-7'}</Var> business days</strong> via <Var name="refundMethod">{ecommRPData.refundMethod || '[Refund Method]'}</Var>. Shipping costs are {ecommRPData.shippingCostRefundable === 'Yes' ? 'refundable' : 'non-refundable'}.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">6. Partial Refunds</div>
-                                        <p className="text-[10pt]">Partial refunds may be granted in the following situations: <Var name="partialRefundConditions">{ecommRPData.partialRefundConditions || '[Conditions]'}</Var>. The refund amount will be determined after inspection of the returned item.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">7. Damaged or Defective Products</div>
-                                        <p className="text-[10pt]">If you receive a damaged or defective product, please contact us within 48 hours of delivery with photographic evidence. We will arrange for a free replacement or full refund at your preference.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">8. Governing Law</div>
-                                        <p className="text-[10pt]">This policy is governed by the Consumer Protection Act, 2019 and the laws of the State of <Var name="governingState">{ecommRPData.governingState || '[State]'}</Var>, India. Any disputes shall be subject to the exclusive jurisdiction of the courts in <Var name="governingState">{ecommRPData.governingState || '[State]'}</Var>.</p>
-                                    </div>
-
-                                    <div className="mb-4">
-                                        <div className="font-bold uppercase text-[10pt] mb-2 border-b border-gray-200 pb-1">9. Contact Us</div>
-                                        <div className="ml-4 mt-2 text-[10pt]">
-                                            <p><strong>Email:</strong> <Var name="contactEmail">{ecommRPData.contactEmail || '[Email]'}</Var></p>
-                                            <p><strong>Phone:</strong> <Var name="contactPhone">{ecommRPData.contactPhone || '[Phone]'}</Var></p>
-                                            <p><strong>Website:</strong> <Var name="websiteUrl">{ecommRPData.websiteUrl || '[Website]'}</Var></p>
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-8 border-t border-gray-300 pt-6">
-                                        <div className="flex justify-between items-end">
-                                            <div>
-                                                <div className="text-[9pt] text-gray-500 uppercase tracking-wider mb-4">For and on behalf of</div>
-                                                <div className="font-bold text-[11pt]"><Var name="companyName">{ecommRPData.companyName || '[Company Name]'}</Var></div>
-                                                <div className="w-48 border-b border-gray-400 mt-8 mb-1"></div>
-                                                <div className="text-[9pt] text-gray-500">Authorized Signatory</div>
-                                            </div>
-                                            <div className="text-right">
-                                                <div className="text-[9pt] text-gray-500 uppercase tracking-wider mb-4">Date</div>
-                                                <div className="font-bold text-[11pt]"><Var name="effectiveDate">{ecommRPData.effectiveDate || '________'}</Var></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        )}
                             </div>
                         )}
                     </div>
@@ -10855,9 +10314,7 @@
                                                     activeTab === 'TM_APP' ? tmAppData :
                                                         activeTab === 'GNIDA_REGISTRY' ? gnidaRegistryData :
                                                             activeTab === 'GNIDA_PTM' ? gnidaPtmData :
-                                                            activeTab === 'ECOMM_TC' ? ecommTCData :
-                                                            activeTab === 'ECOMM_PP' ? ecommPPData :
-                                                            activeTab === 'ECOMM_RP' ? ecommRPData :
+                                                            
                                                                 regData
                             }
                             onImport={(data, type) => {
@@ -10875,9 +10332,7 @@
                                 else if (target === 'TM_APP') setTmAppData(data);
                                 else if (target === 'GNIDA_REGISTRY') setGnidaRegistryData(data);
                                 else if (target === 'GNIDA_PTM') setGnidaPtmData(data);
-                                else if (target === 'ECOMM_TC') setEcommTCData(data);
-                                else if (target === 'ECOMM_PP') setEcommPPData(data);
-                                else if (target === 'ECOMM_RP') setEcommRPData(data);
+                                
                                 else setRegData(data);
                             }}
                         />
