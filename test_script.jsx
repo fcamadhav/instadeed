@@ -3370,9 +3370,9 @@
 
             const renderHomeDashboard = () => {
                 const templates = [
-                    { type: 'RENT', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Rent Agreement', desc: 'Standard residential rent agreement detailing landlord, tenant, security deposit, and tenancy clauses.', icon: 'fa-file-signature', color: 'blue', price: '₹300' },
-                    { type: 'ATS', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Agreement to Sell', desc: 'Legal contract for sale/purchase of residential property outlining payment schedules and registration terms.', icon: 'fa-file-contract', color: 'purple', price: '₹300' },
-                    { type: 'REG_RENT', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Registered Rent Agreement', desc: 'Official format registered lease agreement compliant with state registration department guidelines.', icon: 'fa-stamp', color: 'indigo', price: '₹5000' },
+                    { type: 'RENT', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Rent Agreement', desc: 'Standard Greater Noida rent agreement — accepted by GNIDA and local authorities. Covers landlord, tenant, deposit, and tenancy clauses.', icon: 'fa-file-signature', color: 'blue', price: '₹300' },
+                    { type: 'ATS', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Agreement to Sell', desc: 'Greater Noida property sale/purchase agreement — meets GNIDA and sub-registrar requirements for payment schedules and registration.', icon: 'fa-file-contract', color: 'purple', price: '₹300' },
+                    { type: 'REG_RENT', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Registered Rent Agreement', desc: 'Registered lease format for Greater Noida — compliant with UP registration department and GNIDA guidelines.', icon: 'fa-stamp', color: 'indigo', price: '₹5000' },
                     { type: 'MUTATION', auth: 'GNIDA', cat: 'AUTHORITY', label: 'Mutation Form', desc: 'Application form for property title mutation in municipal or Greater Noida authority records.', icon: 'fa-file-pen', color: 'emerald', price: '₹4000' },
                     { type: 'GNIDA', auth: 'GNIDA', cat: 'AUTHORITY', label: 'Know Your Allottee (KYA)', desc: 'Greater Noida Authority official allottee verification datasheet to update owner database records.', icon: 'fa-id-card', color: 'yellow', price: 'FREE' },
                     { type: 'GNIDA_REGISTRY', auth: 'GNIDA', cat: 'AUTHORITY', label: 'GNIDA Flat Registry Deed', desc: 'Sub-lease transfer deed format for residential flats under Greater Noida Authority.', icon: 'fa-book', color: 'cyan', price: '₹10000' },
@@ -3391,7 +3391,7 @@
                 });
 
                 const banners = [
-                    { title: 'Rent Agreement', subtitle: 'Most Popular — 11-month tenancy contract', price: '₹300', color: 'blue', icon: 'fa-file-signature', type: 'RENT' },
+                    { title: 'Rent Agreement', subtitle: 'GNIDA Standard Format — 11-month tenancy contract', price: '₹300', color: 'blue', icon: 'fa-file-signature', type: 'RENT' },
                     { title: 'GNIDA Registry Deed', subtitle: 'Flat sub-lease transfer format', price: '₹10000', color: 'cyan', icon: 'fa-book', type: 'GNIDA_REGISTRY' },
                 ];
 
@@ -4110,15 +4110,16 @@
                             <div className="max-w-6xl mx-auto px-6 py-20 lg:py-28 text-center relative z-10">
                                 <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-400/20 rounded-full px-4 py-1.5 mb-6">
                                     <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-                                    <span className="text-[11px] font-bold text-blue-300 uppercase tracking-wider">Legal Drafting Suite</span>
+                                    <span className="text-[11px] font-bold text-blue-300 uppercase tracking-wider">Greater Noida Legal Suite</span>
                                 </div>
                                 <h1 className="text-4xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
-                                    Draft Legal Documents<br/>
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">in Minutes, Not Days</span>
+                                    Greater Noida Legal<br/>
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Documents, Instantly</span>
                                 </h1>
                                 <p className="text-slate-300 text-lg max-w-2xl mx-auto mb-10 font-medium">
-                                    Choose from 12+ court-validated legal templates — Rent Agreements, TM-48 Trademark Forms, 
-                                    GNIDA Registry documents, and more. Fill, download, and eSign instantly.
+                                    Built exclusively for Greater Noida — standard GNIDA rent agreement, registry deed, 
+                                    mutation, TM-48, and more. Every template is accepted by GNIDA and local authorities. 
+                                    Fill, download, and eSign in minutes.
                                 </p>
                                 <div className="flex items-center justify-center gap-3 flex-wrap">
                                     <button onClick={() => document.querySelector('.template-grid-section')?.scrollIntoView({behavior:'smooth'})} className="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-500/25 cursor-pointer">
@@ -4129,9 +4130,9 @@
                                     </button>
                                 </div>
                                 <div className="flex items-center justify-center gap-6 mt-10 text-xs text-slate-400 font-semibold">
-                                    <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i className="fa-solid fa-check-circle text-emerald-400"></i>Court-validated</span>
-                                    <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i className="fa-solid fa-check-circle text-emerald-400"></i>Instant PDF</span>
-                                    <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i className="fa-solid fa-check-circle text-emerald-400"></i>eSign ready</span>
+                                    <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i className="fa-solid fa-check-circle text-emerald-400"></i>GNIDA Accepted</span>
+                                    <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i className="fa-solid fa-check-circle text-emerald-400"></i>Greater Noida Standard</span>
+                                    <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i className="fa-solid fa-check-circle text-emerald-400"></i>Instant eSign</span>
                                 </div>
                             </div>
                         </div>
@@ -4140,8 +4141,8 @@
                         <div className="max-w-6xl mx-auto px-6 -mt-8 relative z-20">
                             <div className="bg-white rounded-2xl border border-slate-100 shadow-lg p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
                                 {[
-                                    { icon: 'fa-file', label: 'Legal Templates', value: '12+' },
-                                    { icon: 'fa-gavel', label: 'Court Validated', value: '100%' },
+                                    { icon: 'fa-file', label: 'GNIDA Templates', value: '12+' },
+                                    { icon: 'fa-gavel', label: 'Greater Noida Approved', value: '100%' },
                                     { icon: 'fa-clock', label: 'Instant Delivery', value: '< 5 min' },
                                     { icon: 'fa-shield', label: 'Secure & SSL', value: 'Encrypted' },
                                 ].map((s, i) => (
@@ -4162,9 +4163,9 @@
                             <h2 className="text-2xl lg:text-3xl font-extrabold text-slate-900 mt-3 mb-10">How It Works</h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 {[
-                                    { step: '1', icon: 'fa-file-circle-plus', title: 'Choose Template', desc: 'Browse our library of 12+ court-validated legal templates and select the one you need.' },
-                                    { step: '2', icon: 'fa-pen-to-square', title: 'Fill & Review', desc: 'Complete the smart form fields. Our system validates every entry in real-time.' },
-                                    { step: '3', icon: 'fa-file-pdf', title: 'Download & Sign', desc: 'Export as PDF, eSign digitally via Leegality, or print instantly.' },
+                                    { step: '1', icon: 'fa-file-circle-plus', title: 'Choose Template', desc: 'Pick from 12+ GNIDA-accepted templates — rent, registry, mutation, and more.' },
+                                    { step: '2', icon: 'fa-pen-to-square', title: 'Fill & Review', desc: 'Smart form fields pre-configured for Greater Noida authority requirements.' },
+                                    { step: '3', icon: 'fa-file-pdf', title: 'Download & Sign', desc: 'Export GNIDA-ready PDF, eSign via Leegality, or print for submission.' },
                                 ].map((h, i) => (
                                     <div key={i} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 text-center hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
                                         <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 relative">
@@ -4558,7 +4559,7 @@
                                 </button>
                                 {(() => {
                                     const docMap = {
-                                        RENT: { label: 'Rent Agreement', icon: 'fa-file-signature', desc: 'Standard residential rent agreement with landlord, tenant, security deposit, and tenancy clauses. Valid for 11 months with renewal option.', price: '₹300', badge: 'Most Popular' },
+                                        RENT: { label: 'Rent Agreement', icon: 'fa-file-signature', desc: 'Greater Noida standard rent agreement — accepted by GNIDA. Covers landlord, tenant, security deposit, and 11-month tenancy with renewal.', price: '₹300', badge: 'GNIDA Standard' },
                                         ATS: { label: 'Agreement to Sell', icon: 'fa-file-contract', desc: 'Legal contract for sale/purchase of residential property outlining payment schedules, possession date, and registration terms.', price: '₹300', badge: '' },
                                         REG_RENT: { label: 'Registered Rent Agreement', icon: 'fa-stamp', desc: 'Official format registered lease deed compliant with state registration department guidelines. Includes stamp paper & registration details.', price: '₹5000', badge: 'Recommended' },
                                         TM48: { label: 'TM-48 Trademark Proxy', icon: 'fa-trademark', desc: 'Official authorisation form (TM-48) to represent clients before the Indian Trademark Registry under the Trade Marks Act, 1999.', price: '₹500', badge: '' },
