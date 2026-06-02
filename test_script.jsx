@@ -3388,7 +3388,7 @@
                     const matchesSearch = t.label.toLowerCase().includes(librarySearch.toLowerCase()) || 
                                           t.desc.toLowerCase().includes(librarySearch.toLowerCase());
                     const matchesCat = libraryFilter === 'ALL' || t.cat === libraryFilter;
-                    const matchesAuth = landingAuth === 'ALL' ? t.auth === 'ALL' : t.auth === landingAuth;
+                    const matchesAuth = landingAuth === 'ALL' ? true : t.auth === landingAuth;
                     return matchesSearch && matchesCat && matchesAuth;
                 });
 
