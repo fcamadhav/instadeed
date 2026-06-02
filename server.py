@@ -8,6 +8,7 @@ import os
 import hashlib
 import io
 import base64
+import random
 from contextlib import asynccontextmanager
 from typing import Optional
 
@@ -326,6 +327,54 @@ class OfflineOrderRequest(BaseModel):
 
 class StatusUpdateRequest(BaseModel):
     status: str
+
+# === OTP STORE (in-memory) ===
+otp_store = {}
+
+class SendOTPRequest(BaseModel):
+    email: str
+
+class VerifyOTPRequest(BaseModel):
+    email: str
+    otp: str
+
+@app.post("/api/auth/send-otp")
+@limiter.limit("5/minute")
+async def send_otp(request: Request, body: SendOTPRequest):
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, role FROM users WHERE email = ? AND is_active = 1", (body.email,))
+    user = cursor.fetchone()
+    conn.close()
+    if not user:
+        raise HTTPException(status_code=404, detail="No account found with this email")
+    otp = str(random.randint(100000, 999999))
+    otp_store[body.email] = {"otp": otp, "expires": datetime.datetime.now() + datetime.timedelta(minutes=5)}
+    logger.info(f"OTP for {body.email}: {otp}")
+    return {"status": "success", "message": "OTP sent to your email"}
+
+@app.post("/api/auth/verify-otp")
+@limiter.limit("10/minute")
+async def verify_otp(request: Request, body: VerifyOTPRequest):
+    if body.email not in otp_store:
+        raise HTTPException(status_code=400, detail="No OTP requested for this email")
+    record = otp_store[body.email]
+    if datetime.datetime.now() > record["expires"]:
+        del otp_store[body.email]
+        raise HTTPException(status_code=400, detail="OTP expired")
+    if record["otp"] != body.otp:
+        raise HTTPException(status_code=400, detail="Invalid OTP")
+    del otp_store[body.email]
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, email, role FROM users WHERE email = ?", (body.email,))
+    user = cursor.fetchone()
+    now = datetime.datetime.now().isoformat()
+    cursor.execute("UPDATE users SET last_login = ? WHERE id = ?", (now, user[0]))
+    conn.commit()
+    conn.close()
+    token = create_token(user[0], user[2], user[3])
+    return {"status": "success", "token": token, "user": {"id": user[0], "name": user[1], "email": user[2], "role": user[3]}}
 
 # === AUTH ENDPOINTS ===
 

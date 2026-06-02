@@ -2606,6 +2606,10 @@
             const [crmAnalytics, setCrmAnalytics] = useState(null);
             const [crmFilterStatus, setCrmFilterStatus] = useState('');
             const [crmView, setCrmView] = useState('orders');
+            const [adminOtpEmail, setAdminOtpEmail] = useState('');
+            const [adminOtpStep, setAdminOtpStep] = useState('email'); // 'email' | 'otp'
+            const [adminOtpSending, setAdminOtpSending] = useState(false);
+            const [adminOtpVerifying, setAdminOtpVerifying] = useState(false);
             const [crmCustomers, setCrmCustomers] = useState([]);
             const [crmFilterType, setCrmFilterType] = useState('');
             const [crmSearch, setCrmSearch] = useState('');
@@ -3505,45 +3509,77 @@
                 );
             };
 
+            const handleSendOtp = async () => {
+                if (!adminOtpEmail.trim()) { alert('Enter your email'); return; }
+                setAdminOtpSending(true);
+                try {
+                    const res = await fetch(`${API_BASE}/api/auth/send-otp`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: adminOtpEmail.trim() })
+                    });
+                    if (res.ok) { setAdminOtpStep('otp'); }
+                    else { const err = await res.json(); alert(err.detail || 'Failed to send OTP'); }
+                } catch (e) { alert('Network error: ' + e.message); }
+                setAdminOtpSending(false);
+            };
+
+            const handleVerifyOtp = async (otpCode) => {
+                if (!otpCode || otpCode.length < 4) { alert('Enter the OTP code'); return; }
+                setAdminOtpVerifying(true);
+                try {
+                    const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: adminOtpEmail.trim(), otp: otpCode })
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        localStorage.setItem('instadeed_admin', 'true');
+                        localStorage.setItem('instadeed_token', data.token);
+                        setIsAdminLoggedIn(true);
+                        setAdminOtpStep('email');
+                        setAdminOtpEmail('');
+                        fetchCrmOrders();
+                        fetchCrmAnalytics();
+                        fetchCrmCustomers();
+                    } else { const err = await res.json(); alert(err.detail || 'Invalid OTP'); }
+                } catch (e) { alert('Network error: ' + e.message); }
+                setAdminOtpVerifying(false);
+            };
+
             const renderCrmDashboard = () => {
                 if (!isAdminLoggedIn) {
                     return (
-                        <div className="w-full max-w-md mx-auto my-12 bg-[#FCFAF5] p-2 border-2 border-[#D8C7A5] shadow-2xl animate-in fade-in duration-200">
-                            <div className="border border-[#D8C7A5] p-8 flex flex-col items-center">
-                                <div className="text-center mb-6 w-full">
-                                    <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-[#D8C7A5] to-[#b8860b] flex items-center justify-center mb-4 shadow-lg">
-                                        <i className="fa-solid fa-shield-halved text-white text-xl"></i>
-                                    </div>
-                                    <h2 className="font-serif text-2xl font-bold text-[#1a1a1a] uppercase tracking-widest mb-2">Admin CRM Login</h2>
-                                    <div className="w-16 h-[2px] bg-[#D8C7A5] mx-auto mb-4"></div>
-                                    <p className="font-body text-xs text-[#4a4a4a] leading-relaxed">Access to the tracking and database console requires cryptographic administrator verification.</p>
+                        <div className="w-full max-w-md mx-auto my-12 px-6 animate-in fade-in duration-200">
+                            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 text-center">
+                                <div className="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-5 shadow-sm">
+                                    <i className="fa-solid fa-shield-halved text-2xl"></i>
                                 </div>
-                                
-                                <form onSubmit={(e) => {
-                                    e.preventDefault();
-                                    const u = e.target.username.value;
-                                    const p = e.target.password.value;
-                                    if (u === 'admin' && p === 'admin123') {
-                                        localStorage.setItem('instadeed_admin', 'true');
-                                        setIsAdminLoggedIn(true);
-                                        fetchCrmOrders();
-                                        fetchCrmAnalytics();
-                                    } else {
-                                        alert("Invalid credentials. Access Denied.");
-                                    }
-                                }} className="space-y-4 w-full">
-                                    <div>
-                                        <label className="block text-[10px] font-bold text-[#b8860b] uppercase tracking-wider mb-1">Username</label>
-                                        <input name="username" type="text" required placeholder="admin" className="w-full px-3 py-2 bg-white border border-gray-300 focus:border-blue-500 focus:outline-none text-sm text-gray-800 font-medium" />
+                                <h2 className="text-xl font-extrabold text-slate-800 mb-1">Admin Access</h2>
+                                <p className="text-xs text-slate-400 mb-6">Enter your admin email to receive a one-time passcode</p>
+
+                                {adminOtpStep === 'email' ? (
+                                    <div className="space-y-4">
+                                        <div className="text-left">
+                                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Email</label>
+                                            <input type="email" value={adminOtpEmail} onChange={e => setAdminOtpEmail(e.target.value)} placeholder="admin@instadeed.local" className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10 transition-all font-medium" />
+                                        </div>
+                                        <button onClick={handleSendOtp} disabled={adminOtpSending} className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer disabled:opacity-50">
+                                            {adminOtpSending ? <><i className="fa-solid fa-circle-notch fa-spin mr-2"></i> Sending...</> : <><i className="fa-solid fa-envelope mr-1.5"></i> Send OTP</>}
+                                        </button>
                                     </div>
-                                    <div>
-                                        <label className="block text-[10px] font-bold text-[#b8860b] uppercase tracking-wider mb-1">Password</label>
-                                        <input name="password" type="password" required placeholder="••••••••" className="w-full px-3 py-2 bg-white border border-gray-300 focus:border-blue-500 focus:outline-none text-sm text-gray-800" />
+                                ) : (
+                                    <div className="space-y-4">
+                                        <p className="text-xs text-slate-500">OTP sent to <span className="font-bold text-slate-700">{adminOtpEmail}</span></p>
+                                        <div className="text-left">
+                                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">One-Time Passcode</label>
+                                            <input type="text" maxLength={6} placeholder="000000" id="admin-otp-input" className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10 transition-all font-medium text-center text-2xl tracking-[0.5em]" onKeyDown={e => { if (e.key === 'Enter') handleVerifyOtp(e.target.value); }} />
+                                        </div>
+                                        <button onClick={() => { const inp = document.getElementById('admin-otp-input'); handleVerifyOtp(inp ? inp.value : ''); }} disabled={adminOtpVerifying} className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer disabled:opacity-50">
+                                            {adminOtpVerifying ? <><i className="fa-solid fa-circle-notch fa-spin mr-2"></i> Verifying...</> : <><i className="fa-solid fa-check-circle mr-1.5"></i> Verify & Login</>}
+                                        </button>
+                                        <button onClick={() => setAdminOtpStep('email')} className="text-xs text-slate-400 hover:text-slate-600 font-medium cursor-pointer">Change email</button>
                                     </div>
-                                    <button type="submit" className="w-full py-3 bg-[#1a1a1a] hover:bg-[#8B0000] text-[#FCFAF5] font-serif font-bold tracking-widest uppercase transition-all text-xs cursor-pointer text-center mt-2">
-                                        Authenticate
-                                    </button>
-                                </form>
+                                )}
                             </div>
                         </div>
                     );
@@ -6835,6 +6871,7 @@
                             <div className="p-4 border-t border-gray-200 bg-white z-20 text-center">
                                 <button onClick={() => {
                                     localStorage.removeItem('instadeed_admin');
+                                    localStorage.removeItem('instadeed_token');
                                     setIsAdminLoggedIn(false);
                                     setActiveTab('RENT');
                                 }} className="w-full py-2.5 bg-rose-50 border border-rose-200 hover:bg-rose-100 hover:border-rose-300 text-rose-600 text-xs font-bold rounded-xl transition duration-150 flex items-center justify-center gap-2 cursor-pointer">
