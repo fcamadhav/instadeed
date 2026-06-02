@@ -3001,7 +3001,7 @@
 
             const fetchCrmAnalytics = async () => {
                 try {
-                    const res = await fetch('${API_BASE}/analytics');
+                    const res = await fetch(`${API_BASE}/analytics`);
                     if (res.ok) {
                         const data = await res.json();
                         setCrmAnalytics(data);
@@ -3013,7 +3013,7 @@
 
             const fetchCrmCustomers = async () => {
                 try {
-                    const res = await fetch('${API_BASE}/api/customers');
+                    const res = await fetch(`${API_BASE}/api/customers`);
                     if (res.ok) {
                         const data = await res.json();
                         setCrmCustomers(data.customers || []);
@@ -3027,7 +3027,7 @@
                 if (!user || !user.email) return;
                 setUserOrdersLoading(true);
                 try {
-                    const res = await fetch('${API_BASE}/api/customer/documents?email=' + encodeURIComponent(user.email));
+                    const res = await fetch(`${API_BASE}/api/customer/documents?email=${encodeURIComponent(user.email)}`);
                     if (res.ok) {
                         const data = await res.json();
                         setUserOrders(Array.isArray(data) ? data : []);
@@ -3125,7 +3125,7 @@
                 const details = extractCustomerDetails();
                 const payload = getActiveDataPayload();
                 try {
-                    const res = await fetch('${API_BASE}/create-offline-order', {
+                    const res = await fetch(`${API_BASE}/create-offline-order`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -3170,7 +3170,7 @@
                     };
                     const orderAmount = docPrices[activeTab] || 499;
                     // 1. Create order on backend
-                    const res = await fetch('${API_BASE}/create-order', {
+                    const res = await fetch(`${API_BASE}/create-order`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -3190,7 +3190,7 @@
                     if (orderData.order_id.startsWith('MOCK_ORD_')) {
                         // Simulate payment processing
                         alert("Razorpay is in local Mock Mode. Simulating checkout...");
-                        const verifyRes = await fetch('${API_BASE}/verify-payment', {
+                        const verifyRes = await fetch(`${API_BASE}/verify-payment`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
@@ -3215,7 +3215,7 @@
                         
                         let razorpayKey = 'rzp_live_SwmTpRiDct3TaU';
                         try {
-                            const cfgRes = await fetch('${API_BASE}/api/config');
+                            const cfgRes = await fetch(`${API_BASE}/api/config`);
                             if (cfgRes.ok) {
                                 const cfg = await cfgRes.json();
                                 if (cfg.razorpay_key) razorpayKey = cfg.razorpay_key;
@@ -3230,7 +3230,7 @@
                             description: 'Legal Agreement Drafting Fee',
                             order_id: orderData.order_id,
                             handler: async function (response) {
-                                const verifyRes = await fetch('${API_BASE}/verify-payment', {
+                                const verifyRes = await fetch(`${API_BASE}/verify-payment`, {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({
@@ -3920,7 +3920,7 @@
                                                         <div className="flex items-center justify-end gap-1.5">
                                                             <button onClick={async () => {
                                                                 try {
-                                                                    const r = await fetch('${API_BASE}/orders/${order.id}/favorite', { method: 'PUT' });
+                                                                    const r = await fetch(`${API_BASE}/orders/${order.id}/favorite`, { method: 'PUT' });
                                                                     if (r.ok) fetchCrmOrders();
                                                                 } catch(e) {}
                                                             }} className={`px-2 py-1.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${order.is_favorite ? 'bg-amber-50 text-amber-500' : 'bg-slate-50 text-slate-300 hover:text-amber-400'}`} title="Star">
@@ -3929,7 +3929,7 @@
                                                             <button onClick={() => { const msg = encodeURIComponent('Instadeed Document - ' + order.agreement_type + ' (Order: ' + order.id + ')'); window.open('https://wa.me/?text=' + msg, '_blank'); }} className="px-2 py-1.5 bg-green-50 text-green-600 hover:bg-green-100 text-[10px] font-bold rounded-lg transition cursor-pointer" title="WhatsApp Share">
                                                                 <i className="fa-brands fa-whatsapp"></i>
                                                             </button>
-                                                            <button onClick={async () => { if (!confirm('Delete order ' + order.id + '?')) return; try { const r = await fetch('${API_BASE}/orders/${order.id}', { method: 'DELETE' }); if (r.ok) fetchCrmOrders(); else alert('Failed to delete'); } catch(e) { alert('Error'); } }} className="px-2 py-1.5 bg-rose-50 text-rose-500 hover:bg-rose-100 text-[10px] font-bold rounded-lg transition cursor-pointer" title="Delete">
+                                                            <button onClick={async () => { if (!confirm('Delete order ' + order.id + '?')) return; try { const r = await fetch(`${API_BASE}/orders/${order.id}`, { method: 'DELETE' }); if (r.ok) fetchCrmOrders(); else alert('Failed to delete'); } catch(e) { alert('Error'); } }} className="px-2 py-1.5 bg-rose-50 text-rose-500 hover:bg-rose-100 text-[10px] font-bold rounded-lg transition cursor-pointer" title="Delete">
                                                                 <i className="fa-solid fa-trash-can"></i>
                                                             </button>
                                                             {order.form_data && (
