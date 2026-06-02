@@ -599,7 +599,7 @@
                 const initGoogle = () => {
                     if (window.google && window.google.accounts && window.google.accounts.id) {
                         window.google.accounts.id.initialize({
-                            client_id: "92873092183-sampleclientid.apps.googleusercontent.com",
+                            client_id: "572299806945-fii3kuucdqj587i6br3to5i2821ovo5p.apps.googleusercontent.com",
                             callback: (response) => {
                                 try {
                                     const base64Url = response.credential.split('.')[1];
