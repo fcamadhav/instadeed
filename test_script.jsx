@@ -3593,37 +3593,34 @@
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Recent Users */}
-                            {crmAnalytics.recent_users && crmAnalytics.recent_users.length > 0 && (
-                                <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
-                                    <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2 mb-4">
-                                        <i className="fa-solid fa-user-plus text-indigo-600"></i> Recent User Registrations
-                                    </h3>
-                                    <div className="overflow-x-auto">
-                                        <table className="w-full text-left border-collapse">
-                                            <thead>
-                                                <tr className="bg-slate-50 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                                                    <th className="px-4 py-2.5">Name</th>
-                                                    <th className="px-4 py-2.5">Email</th>
-                                                    <th className="px-4 py-2.5">Registered</th>
-                                                    <th className="px-4 py-2.5">Last Login</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-slate-50 text-xs">
-                                                {crmAnalytics.recent_users.map((u, i) => (
-                                                    <tr key={i} className="hover:bg-slate-50/50 transition">
-                                                        <td className="px-4 py-3 font-bold text-slate-700">{u.name}</td>
-                                                        <td className="px-4 py-3 text-slate-500">{u.email}</td>
-                                                        <td className="px-4 py-3 text-slate-500">{new Date(u.created_at).toLocaleString('en-IN')}</td>
-                                                        <td className="px-4 py-3 text-slate-500">{u.last_login ? new Date(u.last_login).toLocaleString('en-IN') : '—'}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            )}
+                        )}
+                        {crmAnalytics && crmAnalytics.recent_users && crmAnalytics.recent_users.length !== 0 && React.createElement('div', { className: 'bg-white rounded-2xl border border-slate-100 p-5 shadow-sm' },
+                            React.createElement('h3', { className: 'font-bold text-slate-800 text-sm flex items-center gap-2 mb-4' },
+                                React.createElement('i', { className: 'fa-solid fa-user-plus text-indigo-600' }), ' Recent User Registrations'
+                            ),
+                            React.createElement('div', { className: 'overflow-x-auto' },
+                                React.createElement('table', { className: 'w-full text-left border-collapse' },
+                                    React.createElement('thead', null,
+                                        React.createElement('tr', { className: 'bg-slate-50 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider' },
+                                            React.createElement('th', { className: 'px-4 py-2.5' }, 'Name'),
+                                            React.createElement('th', { className: 'px-4 py-2.5' }, 'Email'),
+                                            React.createElement('th', { className: 'px-4 py-2.5' }, 'Registered'),
+                                            React.createElement('th', { className: 'px-4 py-2.5' }, 'Last Login')
+                                        )
+                                    ),
+                                    React.createElement('tbody', { className: 'divide-y divide-slate-50 text-xs' },
+                                        crmAnalytics.recent_users.map((u, i) =>
+                                            React.createElement('tr', { key: i, className: 'hover:bg-slate-50/50 transition' },
+                                                React.createElement('td', { className: 'px-4 py-3 font-bold text-slate-700' }, u.name),
+                                                React.createElement('td', { className: 'px-4 py-3 text-slate-500' }, u.email),
+                                                React.createElement('td', { className: 'px-4 py-3 text-slate-500' }, new Date(u.created_at).toLocaleString('en-IN')),
+                                                React.createElement('td', { className: 'px-4 py-3 text-slate-500' }, u.last_login ? new Date(u.last_login).toLocaleString('en-IN') : '\u2014')
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )}
                         )}
 
                         {/* Agreement Type Breakdown */}
