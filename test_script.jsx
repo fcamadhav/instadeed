@@ -1289,6 +1289,8 @@
             const [myDocs, setMyDocs] = useState([]);
             const [myDocsPhone, setMyDocsPhone] = useState('');
             const [myDocsLoading, setMyDocsLoading] = useState(false);
+            const [userOrders, setUserOrders] = useState([]);
+            const [userOrdersLoading, setUserOrdersLoading] = useState(false);
             const [showLeegalityModal, setShowLeegalityModal] = useState(false);
             const [leegalityOrderId, setLeegalityOrderId] = useState('');
             const [leegalitySignee, setLeegalitySignee] = useState({ name: '', email: '', phone: '' });
@@ -3138,6 +3140,25 @@
                 }
             };
 
+            const fetchUserOrders = async () => {
+                if (!user || !user.email) return;
+                setUserOrdersLoading(true);
+                try {
+                    const res = await fetch('${API_BASE}/api/customer/documents?email=' + encodeURIComponent(user.email));
+                    if (res.ok) {
+                        const data = await res.json();
+                        setUserOrders(Array.isArray(data) ? data : []);
+                    }
+                } catch (e) {
+                    console.error("Failed to fetch user orders:", e);
+                }
+                setUserOrdersLoading(false);
+            };
+
+            useEffect(() => {
+                if (user && user.email) fetchUserOrders();
+            }, [user]);
+
             useEffect(() => {
                 if (activeTab === 'CRM' && isAdminLoggedIn) {
                     fetchCrmOrders();
@@ -3375,6 +3396,82 @@
                 } catch (e) {
                     console.error("Failed to update status:", e);
                 }
+            };
+
+            const renderClientDashboard = () => {
+                return (
+                    <div className="w-full max-w-4xl mx-auto space-y-6 animate-in fade-in duration-200">
+                        {/* Header */}
+                        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex items-center gap-4">
+                            <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 shadow-sm">
+                                {user.picture ? <img src={user.picture} alt="" className="w-14 h-14 rounded-2xl" /> : <i className="fa-solid fa-user text-2xl"></i>}
+                            </div>
+                            <div className="flex-1">
+                                <h1 className="text-xl font-extrabold text-slate-800">Welcome, {user.name?.split(' ')[0] || 'User'}</h1>
+                                <p className="text-xs text-slate-400">{user.email}</p>
+                            </div>
+                            <button onClick={() => { localStorage.removeItem('instadeed_user_session'); setUser(null); setActiveTab('HOME'); }} className="px-4 py-2 bg-rose-50 border border-rose-200 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5">
+                                <i className="fa-solid fa-right-from-bracket"></i> Sign Out
+                            </button>
+                        </div>
+
+                        {/* Orders */}
+                        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                            <div className="px-6 py-4 border-b border-slate-50 flex items-center justify-between">
+                                <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                    <i className="fa-solid fa-file-invoice text-blue-600"></i> My Documents ({userOrders.length})
+                                </h3>
+                            </div>
+                            {userOrdersLoading ? (
+                                <div className="p-12 text-center text-slate-400 font-medium">
+                                    <i className="fa-solid fa-circle-notch fa-spin text-2xl mb-3 block"></i>
+                                    Loading your documents...
+                                </div>
+                            ) : userOrders.length === 0 ? (
+                                <div className="p-12 text-center text-slate-400 font-medium">
+                                    <i className="fa-solid fa-folder-open text-3xl mb-3 block opacity-30"></i>
+                                    No documents yet. Draft one now!
+                                </div>
+                            ) : (
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr className="bg-slate-50 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                                                <th className="px-6 py-3">Document</th>
+                                                <th className="px-6 py-3">Amount</th>
+                                                <th className="px-6 py-3">Status</th>
+                                                <th className="px-6 py-3">Date</th>
+                                                <th className="px-6 py-3 text-right">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-50 text-xs">
+                                            {userOrders.map((doc) => (
+                                                <tr key={doc.id} className="hover:bg-slate-50/50 transition">
+                                                    <td className="px-6 py-4 font-bold text-slate-700">{doc.agreement_type}</td>
+                                                    <td className="px-6 py-4 font-bold text-slate-800">\u20B9{doc.amount}</td>
+                                                    <td className="px-6 py-4">
+                                                        <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${
+                                                            doc.status === 'COMPLETED' || doc.status === 'SIGNED' ? 'bg-emerald-50 text-emerald-700' :
+                                                            doc.status === 'PAID' ? 'bg-purple-50 text-purple-700' :
+                                                            doc.status === 'PENDING_PAYMENT' ? 'bg-amber-50 text-amber-700' :
+                                                            'bg-slate-100 text-slate-600'
+                                                        }`}>{doc.status}</span>
+                                                    </td>
+                                                    <td className="px-6 py-4 text-slate-500">{new Date(doc.created_at).toLocaleDateString('en-IN')}</td>
+                                                    <td className="px-6 py-4 text-right">
+                                                        <a href={'${API_BASE}/api/customer/documents/' + doc.id + '/download'} target="_blank" className="px-3 py-1.5 bg-blue-50 border border-blue-100 hover:bg-blue-100 text-blue-600 text-[10px] font-bold rounded-lg transition cursor-pointer inline-flex items-center gap-1">
+                                                            <i className="fa-solid fa-download"></i> PDF
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                );
             };
 
             const renderHomeDashboard = () => {
@@ -4080,12 +4177,17 @@
                                 </div>
                                 <div className="flex items-center gap-2">
                                     {user ? (
-                                        <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full py-1 pl-1 pr-3 shadow-sm text-xs text-slate-700">
-                                            <img src={user.picture} alt={user.name} className="w-6 h-6 rounded-full" />
-                                            <span className="font-semibold truncate max-w-[80px]">{user.name.split(' ')[0]}</span>
-                                            <button onClick={() => {localStorage.removeItem('instadeed_user_session');setUser(null);}} className="text-slate-400 hover:text-rose-600 transition ml-1" title="Sign Out">
-                                                <i className="fa-solid fa-right-from-bracket"></i>
+                                        <div className="flex items-center gap-1.5">
+                                            <button onClick={() => setActiveTab('DASHBOARD')} className="px-3 py-1.5 bg-blue-50 border border-blue-100 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded-xl transition cursor-pointer">
+                                                <i className="fa-solid fa-layer-group mr-1"></i> My Docs
                                             </button>
+                                            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full py-1 pl-1 pr-3 shadow-sm text-xs text-slate-700">
+                                                <img src={user.picture} alt={user.name} className="w-6 h-6 rounded-full" />
+                                                <span className="font-semibold truncate max-w-[80px]">{user.name.split(' ')[0]}</span>
+                                                <button onClick={() => {localStorage.removeItem('instadeed_user_session');setUser(null);}} className="text-slate-400 hover:text-rose-600 transition ml-1" title="Sign Out">
+                                                    <i className="fa-solid fa-right-from-bracket"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     ) : (
                                         <button onClick={() => setShowLogin(true)} style={{fontSize:'.72rem',fontWeight:700,color:'#2563EB',border:'1.5px solid #2563EB',borderRadius:'9999px',padding:'.32rem .85rem',background:'#EEF4FF',cursor:'pointer',fontFamily:'Inter,sans-serif'}}>Sign In</button>
@@ -6883,7 +6985,7 @@
                     )}
 
                     {/* Right Preview Area */}
-                    <div className={`flex-1 overflow-y-auto ${viewOnlyMode ? 'bg-slate-50 p-4 lg:p-10 w-full' : (activeTab === 'CRM' || activeTab === 'HOME' ? 'bg-slate-50 p-6 lg:p-10' : 'bg-dot-pattern p-8 lg:p-16')} flex flex-col items-center justify-start paper-page-container`}>
+                    <div className={`flex-1 overflow-y-auto ${viewOnlyMode ? 'bg-slate-50 p-4 lg:p-10 w-full' : (activeTab === 'CRM' || activeTab === 'HOME' || activeTab === 'DASHBOARD' ? 'bg-slate-50 p-6 lg:p-10' : 'bg-dot-pattern p-8 lg:p-16')} flex flex-col items-center justify-start paper-page-container`}>
                         {viewOnlyMode && (
                             <div className="w-full max-w-4xl bg-white border border-blue-100 rounded-2xl p-4 shadow-sm flex items-center justify-between gap-4 mb-6 z-20 sticky top-0 backdrop-blur-md bg-white/90">
                                 <div className="flex items-center gap-3">
@@ -6905,7 +7007,9 @@
                                 </div>
                             </div>
                         )}
-                        {activeTab === 'HOME' ? (
+                        {activeTab === 'DASHBOARD' && user ? (
+                            renderClientDashboard()
+                        ) : activeTab === 'HOME' ? (
                             renderHomeDashboard()
                         ) : activeTab === 'CRM' ? (
                             renderCrmDashboard()
