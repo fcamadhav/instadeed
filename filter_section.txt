@@ -1,4 +1,0 @@
-const filtered = templates.filter(t => {
-                    const matchesSearch = t.label.toLowerCase().includes(librarySearch.toLowerCase()) || 
-                                          t.desc.toLowerCase().includes(librarySearch.toLowerCase());
-                    const matchesCat = libraryFilte
