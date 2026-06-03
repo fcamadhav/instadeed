@@ -176,7 +176,7 @@
         );
 
         const Var = ({ children, name }) => {
-            const activeField = React.useContext(ActiveFieldContext);
+            const { activeField } = React.useContext(ActiveFieldContext);
             const isActive = activeField && name && (
                 activeField.toLowerCase() === name.toLowerCase() ||
                 (activeField.toLowerCase().includes('aadhar') && name.toLowerCase().includes('aadhar')) ||
@@ -4253,7 +4253,7 @@
             }, [activeTab, shareMode]);
 
             return (
-                <ActiveFieldContext.Provider value={activeField}>
+                <ActiveFieldContext.Provider value={{ activeField, setActiveField }}>
                 {activeTab === 'HOME' ? (
                     /* ===== LANDING PAGE ===== */
                     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 font-ui overflow-y-auto" style={{fontFamily:'Plus Jakarta Sans, Inter, sans-serif'}}>
