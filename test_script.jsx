@@ -1227,7 +1227,7 @@
         };
 
         function Home() {
-            const [activeTab, setActiveTab] = useState('HOME'); // 'RENT', 'ATS', 'NOIDA_TRANSFER' etc.
+            const [activeTab, setActiveTab] = useState(() => window.location.pathname.startsWith('/admin') ? 'CRM' : 'HOME'); // 'RENT', 'ATS', 'NOIDA_TRANSFER' etc.
             const [gnidaPackageDocs, setGnidaPackageDocs] = useState({
                 kya: true,
                 tm: true,
@@ -4292,9 +4292,6 @@
                                     ) : (
                                         <button onClick={() => setShowLogin(true)} style={{fontSize:'.72rem',fontWeight:700,color:'#2563EB',border:'1.5px solid #2563EB',borderRadius:'9999px',padding:'.32rem .85rem',background:'#EEF4FF',cursor:'pointer',fontFamily:'Inter,sans-serif'}}>Sign In</button>
                                     )}
-                                    <button onClick={() => setActiveTab('CRM')} className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-indigo-50 hover:border-indigo-200 text-slate-500 hover:text-indigo-600 text-xs font-bold rounded-xl transition cursor-pointer" title="Admin CRM">
-                                        <i className="fa-solid fa-chart-line mr-1"></i> Admin
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -5069,9 +5066,6 @@
                                     <div className="w-px h-6 bg-gray-200 mx-1 my-auto"></div>
                                     <button onClick={() => { setActiveTab('HOME'); setActiveAuthority('ALL'); }} className={`w-9 h-9 flex items-center justify-center rounded-full transition cursor-pointer ${activeTab === 'HOME' ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-blue-50 text-gray-400 hover:text-blue-600'}`} title="Template Library Home">
                                         <i className="fa-solid fa-house text-sm"></i>
-                                    </button>
-                                    <button onClick={() => setActiveTab('CRM')} className={`w-9 h-9 flex items-center justify-center rounded-full transition cursor-pointer ${activeTab === 'CRM' ? 'bg-blue-600 text-white shadow-md animate-none' : 'hover:bg-blue-50 text-gray-400 hover:text-blue-600'}`} title="Admin CRM Dashboard">
-                                        <i className="fa-solid fa-chart-line text-sm"></i>
                                     </button>
                                 </div>
                             </div>
