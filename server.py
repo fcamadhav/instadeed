@@ -143,6 +143,19 @@ def init_db():
     )
     """)
     cursor.execute("""
+    CREATE TABLE IF NOT EXISTS page_events (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        timestamp TEXT,
+        session_id TEXT,
+        user_id TEXT,
+        event TEXT,
+        page TEXT,
+        detail TEXT,
+        ip_address TEXT,
+        user_agent TEXT
+    )
+    """)
+    cursor.execute("""
     CREATE TABLE IF NOT EXISTS activity_log (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         timestamp TEXT,
@@ -758,6 +771,77 @@ async def get_analytics(request: Request, user: dict = Depends(get_current_user)
             "agreement_details": agreement_details,
             "total_users": total_users,
             "recent_users": recent_users
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# === PAGE TRACKING / BREADCRUMBS ===
+
+@app.post("/api/track")
+async def track_event(request: Request):
+    try:
+        body = await request.json()
+        now = datetime.datetime.now().isoformat()
+        ip = get_client_ip(request)
+        ua = request.headers.get("user-agent", "")
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO page_events (timestamp, session_id, user_id, event, page, detail, ip_address, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (now, body.get("session_id", ""), body.get("user_id", ""), body.get("event", ""), body.get("page", ""), body.get("detail", ""), ip, ua)
+        )
+        conn.commit()
+        conn.close()
+        return {"ok": True}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/track")
+async def get_tracked_events(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    try:
+        limit = request.query_params.get("limit", "200")
+        offset = request.query_params.get("offset", "0")
+        event_filter = request.query_params.get("event", "")
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        query = "SELECT * FROM page_events"
+        params = []
+        if event_filter:
+            query += " WHERE event = ?"
+            params.append(event_filter)
+        query += " ORDER BY id DESC LIMIT ? OFFSET ?"
+        params.extend([limit, offset])
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        conn.close()
+        columns = ["id", "timestamp", "session_id", "user_id", "event", "page", "detail", "ip_address", "user_agent"]
+        return {"events": [dict(zip(columns, r)) for r in rows], "total": len(rows)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/track/stats")
+async def get_track_stats(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT event, COUNT(*) as cnt FROM page_events GROUP BY event ORDER BY cnt DESC")
+        event_breakdown = dict(cursor.fetchall())
+        cursor.execute("SELECT COUNT(DISTINCT session_id) FROM page_events")
+        unique_sessions = cursor.fetchone()[0]
+        cursor.execute("SELECT COUNT(*) FROM page_events")
+        total_events = cursor.fetchone()[0]
+        cursor.execute("SELECT page, COUNT(*) as cnt FROM page_events WHERE event = 'page_view' GROUP BY page ORDER BY cnt DESC")
+        page_views = dict(cursor.fetchall())
+        conn.close()
+        return {
+            "total_events": total_events,
+            "unique_sessions": unique_sessions,
+            "event_breakdown": event_breakdown,
+            "page_views": page_views
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

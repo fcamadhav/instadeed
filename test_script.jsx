@@ -93,11 +93,11 @@
                     {isOpen && (
                         <div className="p-4 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
                             {children}
-                        </div>
-                    )}
-                </div>
-            );
-        };
+                            </div>
+                        )}
+                    </div>
+                );
+            };
 
         const Input = ({ label, name = "", type = "text", value = "", onChange, fullWidth, placeholder = "", as = "input", maxLength }) => {
             const getValidationClass = () => {
@@ -129,59 +129,18 @@
                 }
                 return "border-gray-200 focus:border-blue-500 focus:ring-blue-500/10 hover:border-gray-300";
             };
-
-            const getValidationBadge = () => {
-                if (!value) return null;
-                const lowerName = (name || "").toLowerCase();
-                if (lowerName.includes('aadhar') || lowerName.includes('aadhaar')) {
-                    const digits = value.replace(/\s/g, '');
-                    return digits.length === 12
-                        ? <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-check"></i> Valid 12-digit Aadhaar</span>
-                        : <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-exclamation"></i> Enter 12-digit Aadhaar ({digits.length}/12)</span>;
-                }
-                if (lowerName.includes('pan')) {
-                    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
-                    const isValid = value.length === 10 && panRegex.test(value);
-                    return isValid
-                        ? <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-check"></i> Valid PAN Format</span>
-                        : <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-exclamation"></i> Format: ABCDE1234F ({value.length}/10)</span>;
-                }
-                if (lowerName.includes('phone') || lowerName.includes('mobile')) {
-                    const digits = value.replace(/\D/g, '');
-                    return digits.length === 10
-                        ? <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-check"></i> Valid 10-digit Mobile</span>
-                        : <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-exclamation"></i> Enter 10-digit Mobile ({digits.length}/10)</span>;
-                }
-                if (lowerName.includes('pincode') || (name || "") === 'pinCode') {
-                    const digits = value.replace(/\D/g, '');
-                    return digits.length === 6
-                        ? <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-check"></i> Valid 6-digit Pincode</span>
-                        : <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-exclamation"></i> Enter 6-digit Pincode ({digits.length}/6)</span>;
-                }
-                return null;
-            };
-
             const borderClass = getValidationClass();
-
+            const { activeField, setActiveField } = React.useContext(ActiveFieldContext);
             return (
-                <div className={`${fullWidth ? 'col-span-2' : ''} mb-0 relative`}>
-                    <div className="flex justify-between items-center mb-1">
-                        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                            {label}
-                        </label>
-                        {as === "textarea" && (
-                            <span className="text-[10px] text-gray-400 font-medium select-none">
-                                {value ? value.length : 0} chars
-                            </span>
-                        )}
-                    </div>
-                    {as === "textarea" ? (
+                <div className={`mb-1 ${fullWidth ? 'w-full md:col-span-2' : ''}`}>
+                    {label && <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">{label}</label>}
+                    {as === 'textarea' ? (
                         <textarea
                             name={name}
                             value={value}
                             onChange={onChange}
-                            rows={3}
-                            className={`w-full bg-white border rounded-lg px-3 py-2.5 text-gray-900 text-sm focus:outline-none focus:ring-4 transition-all font-ui shadow-sm resize-none placeholder:text-gray-300 ${borderClass}`}
+                            maxLength={maxLength}
+                            className={`w-full bg-white border rounded-lg px-3 py-2.5 text-gray-900 text-sm focus:outline-none focus:ring-4 transition-all font-ui shadow-sm placeholder:text-gray-300 min-h-[80px] ${borderClass}`}
                             placeholder={placeholder}
                         />
                     ) : (
@@ -2515,11 +2474,23 @@
             const [crmAnalytics, setCrmAnalytics] = useState(null);
             const [crmFilterStatus, setCrmFilterStatus] = useState('');
             const [crmView, setCrmView] = useState('orders');
-            const [adminOtpEmail, setAdminOtpEmail] = useState('');
-            const [adminOtpStep, setAdminOtpStep] = useState('email'); // 'email' | 'otp'
-            const [adminOtpSending, setAdminOtpSending] = useState(false);
-            const [adminOtpVerifying, setAdminOtpVerifying] = useState(false);
             const [crmCustomers, setCrmCustomers] = useState([]);
+            const [trackedEvents, setTrackedEvents] = useState([]);
+            const [trackedEventStats, setTrackedEventStats] = useState(null);
+            const loadTrackedEvents = async () => {
+                try {
+                    const r = await fetch(`${API_BASE}/api/track?limit=300`);
+                    if (r.ok) {
+                        const d = await r.json();
+                        setTrackedEvents(d.events || []);
+                    }
+                    const s = await fetch(`${API_BASE}/api/track/stats`);
+                    if (s.ok) {
+                        const sd = await s.json();
+                        setTrackedEventStats(sd);
+                    }
+                } catch(e) {}
+            };
             const [crmFilterType, setCrmFilterType] = useState('');
             const [crmSearch, setCrmSearch] = useState('');
             const [crmFilterToday, setCrmFilterToday] = useState(false);
@@ -2527,6 +2498,23 @@
             const [flowStep, setFlowStep] = useState(1); // 1 = CRM intake, 2 = doc selection, 3 = drafting
             const [customerInfo, setCustomerInfo] = useState({ name: '', phone: '', email: '', address: '' });
             const API_BASE = '';
+            const [sessionId] = useState('sess_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8));
+            const trackEvent = (event, page, detail) => {
+                try {
+                    const uid = user && user.email ? user.email : '';
+                    fetch(`${API_BASE}/api/track`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            session_id: sessionId,
+                            user_id: uid,
+                            event: event,
+                            page: page || activeTab || 'HOME',
+                            detail: detail || ''
+                        })
+                    }).catch(() => {});
+                } catch(e) {}
+            };
 
             useEffect(() => {
                 const saved = localStorage.getItem('madhav_saved_drafts');
@@ -2536,6 +2524,12 @@
                     } catch (e) { console.error("Error loading drafts", e); }
                 }
             }, []);
+
+            useEffect(() => {
+                const page = activeTab === 'HOME' ? 'landing' : (activeTab || 'unknown');
+                const step = flowStep > 1 ? `step${flowStep}` : 'browse';
+                trackEvent('page_view', page, step);
+            }, [activeTab, flowStep]);
 
             const saveToLibrary = () => {
                 let currentData;
@@ -3118,6 +3112,7 @@
             };
 
             const triggerPrint = () => {
+                trackEvent('pdf_download', activeTab, getFilename());
                 document.title = getFilename();
                 window.print();
             };
@@ -3152,6 +3147,7 @@
             };
 
             const handleOnlinePayment = async () => {
+                trackEvent('payment_initiated', activeTab, '');
                 const payload = getActiveDataPayload();
                 try {
                     // Dynamic pricing based on document type
@@ -3230,8 +3226,9 @@
                             name: 'INSTADEED',
                             description: 'Legal Agreement Drafting Fee',
                             order_id: orderData.order_id,
-                            handler: async function (response) {
-                                const verifyRes = await fetch(`${API_BASE}/verify-payment`, {
+                                            handler: async function (response) {
+                                                trackEvent('payment_complete', activeTab, response.razorpay_order_id);
+                                                const verifyRes = await fetch(`${API_BASE}/verify-payment`, {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({
@@ -3410,7 +3407,7 @@
                         {/* Authority Dropdown */}
                         <div className="w-full max-w-xs mx-auto">
                             <div className="relative">
-                                <select value={landingAuth} onChange={e => setLandingAuth(e.target.value)} className="w-full appearance-none px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 focus:outline-none cursor-pointer shadow-sm">
+                                <select value={landingAuth} onChange={e => { trackEvent('auth_filter', 'HOME', e.target.value); setLandingAuth(e.target.value); }} className="w-full appearance-none px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 focus:outline-none cursor-pointer shadow-sm">
                                     <option value="ALL">All Docs — Rent, ATS, TM48</option>
                                     <option value="GNIDA">GNIDA (Greater Noida)</option>
                                     <option value="NOIDA">NOIDA Authority</option>
@@ -3428,7 +3425,7 @@
                             <div className="flex items-center gap-3 transition-all duration-500" style={{ transform: `translateX(-${bannerIdx * 100}%)` }}>
                                 <div className="flex gap-4 min-w-full">
                                     {banners.map((b, i) => (
-                                                    <div key={i} className="flex-1 flex items-center gap-4 bg-slate-50 rounded-xl p-4 cursor-pointer hover:shadow-sm transition" onClick={() => { setActiveTab(b.type); setActiveAuthority('ALL'); setFlowStep(3); }}>
+                                                    <div key={i} className="flex-1 flex items-center gap-4 bg-slate-50 rounded-xl p-4 cursor-pointer hover:shadow-sm transition" onClick={() => { trackEvent('banner_click', 'HOME', b.type); setActiveTab(b.type); setActiveAuthority('ALL'); setFlowStep(3); }}>
                                             <div className={`w-12 h-12 rounded-xl bg-${b.color}-100 text-${b.color}-600 flex items-center justify-center shrink-0`}>
                                                 <i className={`fa-solid ${b.icon} text-lg`}></i>
                                             </div>
@@ -3488,7 +3485,7 @@
                                             <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">{t.cat.replace('_', ' ')}</div>
                                             <h3 className="font-extrabold text-sm text-slate-800 group-hover:text-blue-600 transition-colors leading-tight mb-1.5">{t.label}</h3>
                                             <p className="text-[10px] text-slate-400 font-medium leading-relaxed flex-1">{t.desc}</p>
-                                            <button onClick={() => { setActiveTab(t.type); setActiveAuthority(t.auth); setFlowStep(3); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="mt-3 w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-sm cursor-pointer flex items-center justify-center gap-1.5">
+                                            <button onClick={() => { trackEvent('template_select', 'HOME', t.type); setActiveTab(t.type); setActiveAuthority(t.auth); setFlowStep(3); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="mt-3 w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-sm cursor-pointer flex items-center justify-center gap-1.5">
                                                 <i className="fa-solid fa-file-pen text-[10px]"></i> Draft Now
                                             </button>
                                         </div>
@@ -3624,6 +3621,9 @@
                             </button>
                             <button onClick={() => setCrmView('analytics')} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'analytics' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
                                 <i className="fa-solid fa-chart-pie"></i> Reports
+                            </button>
+                            <button onClick={() => { setCrmView('activity'); loadTrackedEvents(); }} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'activity' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
+                                <i className="fa-solid fa-shoe-prints"></i> Activity
                             </button>
                         </div>
 
@@ -4042,6 +4042,106 @@
                                 </div>
                             </div>
                         )}
+
+                        {/* Activity Log Section */}
+                        {crmView === 'activity' && (
+                            <div className="space-y-4">
+                                {trackedEventStats && (
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                                            <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Total Events</span>
+                                            <div className="text-xl font-black text-slate-800 mt-1">{trackedEventStats.total_events}</div>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                                            <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Unique Sessions</span>
+                                            <div className="text-xl font-black text-slate-800 mt-1">{trackedEventStats.unique_sessions}</div>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                                            <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Top Event</span>
+                                            <div className="text-xl font-black text-slate-800 mt-1">
+                                                {trackedEventStats.event_breakdown && Object.entries(trackedEventStats.event_breakdown).sort((a,b) => b[1]-a[1])[0]?.[0] || '-'}
+                                            </div>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                                            <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Top Page</span>
+                                            <div className="text-xl font-black text-slate-800 mt-1">
+                                                {trackedEventStats.page_views && Object.entries(trackedEventStats.page_views).sort((a,b) => b[1]-a[1])[0]?.[0] || '-'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                    <div className="px-5 py-4 border-b border-slate-50 flex items-center justify-between">
+                                        <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                            <i className="fa-solid fa-shoe-prints text-blue-600"></i>
+                                            User Activity Log ({trackedEvents.length})
+                                        </h3>
+                                        <button onClick={loadTrackedEvents} className="px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-[10px] font-bold transition cursor-pointer">
+                                            <i className="fa-solid fa-rotate mr-1"></i> Refresh
+                                        </button>
+                                    </div>
+                                    <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
+                                        <table className="w-full text-left border-collapse">
+                                            <thead className="sticky top-0 bg-white">
+                                                <tr className="bg-slate-50 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                                                    <th className="px-4 py-2.5">Time</th>
+                                                    <th className="px-4 py-2.5">Event</th>
+                                                    <th className="px-4 py-2.5">Page</th>
+                                                    <th className="px-4 py-2.5">Detail</th>
+                                                    <th className="px-4 py-2.5">Session</th>
+                                                    <th className="px-4 py-2.5">User</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-slate-50 text-xs">
+                                                {trackedEvents.length === 0 ? (
+                                                    <tr>
+                                                        <td colSpan="6" className="px-4 py-10 text-center text-slate-400 font-medium">
+                                                            <i className="fa-solid fa-person-walking-dashed-line-arrow-right text-xl mb-2 block opacity-40"></i>
+                                                            No activity recorded yet. Events will appear as users interact with the site.
+                                                        </td>
+                                                    </tr>
+                                                ) : (
+                                                    trackedEvents.map((ev, i) => (
+                                                        <tr key={ev.id || i} className="hover:bg-slate-50/50 transition">
+                                                            <td className="px-4 py-3 text-slate-400 whitespace-nowrap text-[10px]">
+                                                                {new Date(ev.timestamp).toLocaleString('en-IN')}
+                                                            </td>
+                                                            <td className="px-4 py-3">
+                                                                <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] inline-flex items-center gap-1 ${
+                                                                    ev.event === 'page_view' ? 'bg-slate-100 text-slate-700' :
+                                                                    ev.event === 'template_select' || ev.event === 'banner_click' ? 'bg-blue-50 text-blue-700' :
+                                                                    ev.event === 'payment_initiated' ? 'bg-amber-50 text-amber-700' :
+                                                                    ev.event === 'payment_complete' ? 'bg-emerald-50 text-emerald-700' :
+                                                                    ev.event === 'pdf_download' ? 'bg-purple-50 text-purple-700' :
+                                                                    ev.event === 'esign_sent' ? 'bg-indigo-50 text-indigo-700' :
+                                                                    'bg-slate-100 text-slate-700'
+                                                                }`}>
+                                                                    <i className={`fa-solid ${
+                                                                        ev.event === 'page_view' ? 'fa-eye' :
+                                                                        ev.event === 'template_select' ? 'fa-file' :
+                                                                        ev.event === 'banner_click' ? 'fa-bullhorn' :
+                                                                        ev.event === 'payment_initiated' ? 'fa-credit-card' :
+                                                                        ev.event === 'payment_complete' ? 'fa-check-circle' :
+                                                                        ev.event === 'pdf_download' ? 'fa-download' :
+                                                                        ev.event === 'esign_sent' ? 'fa-fingerprint' :
+                                                                        'fa-circle'
+                                                                    }`}></i>
+                                                                    {ev.event}
+                                                                </span>
+                                                            </td>
+                                                            <td className="px-4 py-3 font-bold text-slate-700">{ev.page}</td>
+                                                            <td className="px-4 py-3 text-slate-500 max-w-[200px] truncate">{ev.detail}</td>
+                                                            <td className="px-4 py-3 text-slate-400 text-[10px]">{(ev.session_id || '').slice(0, 16)}..</td>
+                                                            <td className="px-4 py-3 text-slate-500 text-[10px]">{ev.user_id || '-'}</td>
+                                                        </tr>
+                                                    ))
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 );
             };
@@ -4121,6 +4221,33 @@
                             </div>
                         </div>
 
+                        {/* Breadcrumb Bar */}
+                        <div className="max-w-6xl mx-auto px-6 pt-3">
+                            <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-semibold">
+                                <i className="fa-solid fa-house text-slate-300"></i>
+                                {activeTab === 'HOME' || !activeTab ? (
+                                    <>
+                                        <span className="text-slate-400">/</span>
+                                        <span className="text-slate-600">Templates</span>
+                                    </>
+                                ) : (() => {
+                                    const docLabels = {'RENT':'Rent Agreement','ATS':'Agreement to Sell','REG_RENT':'Registered Rent','MUTATION':'Mutation Form','GNIDA':'Know Your Allottee','GNIDA_REGISTRY':'GNIDA Registry','GNIDA_PTM':'Permission to Mortgage','GNIDA_PACKAGE':'GNIDA 5-in-1 Package','TM_APP':'Transfer Memo App','TM48':'TM-48 Trademark','NOIDA_TRANSFER':'NOIDA Transfer','DASHBOARD':'My Dashboard','CRM':'Admin CRM','KYA':'Know Your Allottee'};
+                                    return (
+                                        <>
+                                            <span className="text-slate-400">/</span>
+                                            <span className="text-slate-600">{docLabels[activeTab] || activeTab}</span>
+                                            {flowStep > 1 && (
+                                                <>
+                                                    <span className="text-slate-400">/</span>
+                                                    <span className="text-blue-600 font-bold">{flowStep === 2 ? 'Select Document' : 'Drafting'}</span>
+                                                </>
+                                            )}
+                                        </>
+                                    );
+                                })()}
+                            </div>
+                        </div>
+
                         {/* Hero Section */}
                         <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-slate-950">
                             <div className="absolute inset-0 bg-dot-pattern opacity-20"></div>
@@ -4141,7 +4268,7 @@
                                     Fill, download, and eSign in minutes.
                                 </p>
                                 <div className="flex items-center justify-center gap-3 flex-wrap">
-                                    <button onClick={() => document.querySelector('.template-grid-section')?.scrollIntoView({behavior:'smooth'})} className="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-500/25 cursor-pointer">
+                                    <button onClick={() => { trackEvent('browse_templates', 'HOME', 'hero_cta'); document.querySelector('.template-grid-section')?.scrollIntoView({behavior:'smooth'}); }} className="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-500/25 cursor-pointer">
                                         <i className="fa-solid fa-file-circle-plus mr-2"></i> Browse Templates
                                     </button>
                                     <button onClick={() => setShowLogin(true)} className="px-8 py-3.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-xl font-bold text-sm transition cursor-pointer">
@@ -4609,7 +4736,7 @@
                                                     </div>
                                                 </div>
                                                 <div className="flex gap-3 max-w-sm mx-auto">
-                                                    <button onClick={() => { setConfirmDoc(null); setActiveTab(confirmDoc); setFlowStep(3); }} className="flex-1 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer">
+                                                    <button onClick={() => { trackEvent('confirm_doc', activeTab, confirmDoc); setConfirmDoc(null); setActiveTab(confirmDoc); setFlowStep(3); }} className="flex-1 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer">
                                                         <i className="fa-solid fa-pen-to-square mr-1.5"></i> Start Drafting
                                                     </button>
                                                 </div>
@@ -4658,7 +4785,7 @@
                                                 <button onClick={() => setConfirmDoc(null)} className="flex-1 py-3 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-xl font-bold text-sm transition cursor-pointer">
                                                     Cancel
                                                 </button>
-                                                <button onClick={() => { setConfirmDoc(null); setActiveTab(confirmDoc); setFlowStep(3); }} className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer">
+                                                <button onClick={() => { trackEvent('confirm_doc', activeTab, confirmDoc); setConfirmDoc(null); setActiveTab(confirmDoc); setFlowStep(3); }} className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer">
                                                     <i className="fa-solid fa-pen-to-square mr-1.5"></i> Start Drafting
                                                 </button>
                                             </div>
@@ -4902,6 +5029,26 @@
                                     </button>
                                 </div>
                             </div>
+
+                            {/* Sidebar Breadcrumb */}
+                            {activeTab && activeTab !== 'HOME' && (() => {
+                                const docLabels = {'RENT':'Rent Agreement','ATS':'Agreement to Sell','REG_RENT':'Registered Rent','MUTATION':'Mutation Form','GNIDA':'Know Your Allottee','GNIDA_REGISTRY':'GNIDA Registry','GNIDA_PTM':'Permission to Mortgage','GNIDA_PACKAGE':'GNIDA 5-in-1 Package','TM_APP':'Transfer Memo App','TM48':'TM-48 Trademark','NOIDA_TRANSFER':'NOIDA Transfer','DASHBOARD':'My Dashboard','CRM':'Admin CRM','KYA':'Know Your Allottee'};
+                                return (
+                                    <div className="px-6 py-2 border-b border-gray-100">
+                                        <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-semibold">
+                                            <i className="fa-solid fa-house text-slate-300"></i>
+                                            <span className="text-slate-400">/</span>
+                                            <span className="text-slate-700 font-bold">{docLabels[activeTab] || activeTab}</span>
+                                            {flowStep > 1 && (
+                                                <>
+                                                    <span className="text-slate-400">/</span>
+                                                    <span className="text-blue-600">{flowStep === 2 ? 'Select Document' : 'Drafting'}</span>
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            })()}
 
                             {activeTab === 'HOME' && (
                                 <>
@@ -10439,6 +10586,7 @@
                                                                 })
                                                             });
                                                             if (res.ok) {
+                                                                trackEvent('esign_sent', leegalityOrderId, leegalitySignee.email);
                                                                 const data = await res.json();
                                                                 setLeegalityResult(data);
                                                                 fetchCrmOrders();
