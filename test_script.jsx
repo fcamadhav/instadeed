@@ -2477,6 +2477,13 @@
             const [crmCustomers, setCrmCustomers] = useState([]);
             const [trackedEvents, setTrackedEvents] = useState([]);
             const [trackedEventStats, setTrackedEventStats] = useState(null);
+            const [expiringRentals, setExpiringRentals] = useState(null);
+            const fetchExpiringRentals = async () => {
+                try {
+                    const r = await fetch(`${API_BASE}/api/rentals/expiring`);
+                    if (r.ok) setExpiringRentals(await r.json());
+                } catch(e) {}
+            };
             const loadTrackedEvents = async () => {
                 try {
                     const r = await fetch(`${API_BASE}/api/track?limit=300`);
@@ -3042,6 +3049,7 @@
                     fetchCrmOrders();
                     fetchCrmAnalytics();
                     fetchCrmCustomers();
+                    fetchExpiringRentals();
                 }
             }, [activeTab, crmFilterStatus, crmFilterType, crmFilterToday, crmSearch, isAdminLoggedIn]);
 
@@ -3545,6 +3553,7 @@
                         fetchCrmOrders();
                         fetchCrmAnalytics();
                         fetchCrmCustomers();
+                        fetchExpiringRentals();
                     } else { const err = await res.json(); alert(err.detail || 'Invalid OTP'); }
                 } catch (e) { alert('Network error: ' + e.message); }
                 setAdminOtpVerifying(false);
@@ -3601,7 +3610,7 @@
                                 <p className="text-xs text-slate-400 font-medium">B2C and In-Office Document Drafting Tracking Engine</p>
                             </div>
                             <div className="flex gap-2">
-                                <button onClick={() => { fetchCrmOrders(); fetchCrmAnalytics(); fetchCrmCustomers(); }} className="px-3.5 py-2 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-800 text-xs font-bold rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-sm">
+                                <button onClick={() => { fetchCrmOrders(); fetchCrmAnalytics(); fetchCrmCustomers(); fetchExpiringRentals(); }} className="px-3.5 py-2 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-800 text-xs font-bold rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-sm">
                                     <i className="fa-solid fa-arrows-rotate"></i> Refresh Data
                                 </button>
                             </div>
@@ -3696,6 +3705,68 @@
                                 )
                             )
                         )}
+                        )}
+
+                        {/* Expiring Rentals Widget */}
+                        {expiringRentals && (expiringRentals.expiring.length > 0 || expiringRentals.expired.length > 0) && (
+                            <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-4">
+                                <div>
+                                    <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                        <i className="fa-solid fa-clock text-amber-500"></i>
+                                        Rent Agreement Expiry Alerts
+                                    </h3>
+                                    <p className="text-[11px] text-slate-400 font-medium">Agreements expiring soon or already expired</p>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {expiringRentals.expired.length > 0 && (
+                                        <div className="bg-rose-50 border border-rose-200 rounded-xl p-4">
+                                            <div className="text-[10px] font-bold uppercase text-rose-600 tracking-wider mb-2 flex items-center gap-1.5">
+                                                <i className="fa-solid fa-circle-exclamation"></i> Expired ({expiringRentals.expired.length})
+                                            </div>
+                                            <div className="space-y-2 max-h-[200px] overflow-y-auto">
+                                                {expiringRentals.expired.map((r, i) => (
+                                                    <div key={r.order_id} className="bg-white rounded-lg p-3 border border-rose-100 text-xs">
+                                                        <div className="flex justify-between items-start">
+                                                            <div>
+                                                                <div className="font-bold text-slate-800">{r.customer_name}</div>
+                                                                <div className="text-[10px] text-slate-400">{r.property_address || r.customer_phone}</div>
+                                                            </div>
+                                                            <span className="px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full font-bold text-[9px] whitespace-nowrap">{Math.abs(r.days_left)}d ago</span>
+                                                        </div>
+                                                        <div className="text-[9px] text-slate-400 mt-1">Ended: {r.end_date} · Order: {r.order_id?.slice(0,12)}..</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                    {expiringRentals.expiring.length > 0 && (
+                                        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                                            <div className="text-[10px] font-bold uppercase text-amber-600 tracking-wider mb-2 flex items-center gap-1.5">
+                                                <i className="fa-solid fa-bell"></i> Expiring Soon ({expiringRentals.expiring.length})
+                                            </div>
+                                            <div className="space-y-2 max-h-[200px] overflow-y-auto">
+                                                {expiringRentals.expiring.map((r, i) => (
+                                                    <div key={r.order_id} className="bg-white rounded-lg p-3 border border-amber-100 text-xs">
+                                                        <div className="flex justify-between items-start">
+                                                            <div>
+                                                                <div className="font-bold text-slate-800">{r.customer_name}</div>
+                                                                <div className="text-[10px] text-slate-400">{r.property_address || r.customer_phone}</div>
+                                                            </div>
+                                                            <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full font-bold text-[9px] whitespace-nowrap">{r.days_left}d left</span>
+                                                        </div>
+                                                        <div className="text-[9px] text-slate-400 mt-1">Expires: {r.end_date}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                                {expiringRentals.active_count > 0 && (
+                                    <div className="text-[10px] text-slate-400 font-medium text-center">
+                                        {expiringRentals.active_count} active agreements · {expiringRentals.total_rentals} total
+                                    </div>
+                                )}
+                            </div>
                         )}
 
                         {/* Agreement Type Breakdown */}

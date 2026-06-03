@@ -897,6 +897,77 @@ async def get_customers(request: Request, user: dict = Depends(get_current_user)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# === EXPIRING RENT AGREEMENTS ===
+
+@app.get("/api/rentals/expiring")
+async def get_expiring_rentals(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    try:
+        today = datetime.date.today()
+        window_days = int(request.query_params.get("days", "30"))
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, customer_name, customer_phone, customer_email, form_data, created_at FROM orders WHERE agreement_type = 'RENT' AND form_data IS NOT NULL AND form_data != ''")
+        rows = cursor.fetchall()
+        conn.close()
+        expiring = []
+        expired = []
+        active = []
+        for r in rows:
+            order_id, name, phone, email, form_data_str, created_at = r
+            try:
+                fd = json.loads(form_data_str)
+                payload = fd.get("payload", {}) if isinstance(fd, dict) else {}
+                if isinstance(fd, dict) and "type" in fd and fd["type"] == "RENT":
+                    payload = fd.get("payload", {})
+                end_date_str = payload.get("endDate", "") if isinstance(payload, dict) else ""
+                start_date_str = payload.get("startDate", "") if isinstance(payload, dict) else ""
+                property_addr = payload.get("propertyAddress", "") if isinstance(payload, dict) else ""
+                if not end_date_str and start_date_str:
+                    parts = start_date_str.split("-")
+                    if len(parts) == 3:
+                        from datetime import datetime as dt_mod
+                        sd = dt_mod.strptime(start_date_str, "%Y-%m-%d")
+                        from dateutil.relativedelta import relativedelta
+                        try:
+                            from dateutil.relativedelta import relativedelta
+                            nd = sd + relativedelta(months=11)
+                            nd -= datetime.timedelta(days=1)
+                            end_date_str = nd.strftime("%Y-%m-%d")
+                        except:
+                            pass
+                if end_date_str:
+                    end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d").date()
+                    days_left = (end_date - today).days
+                    entry = {
+                        "order_id": order_id,
+                        "customer_name": name,
+                        "customer_phone": phone,
+                        "customer_email": email,
+                        "end_date": end_date_str,
+                        "days_left": days_left,
+                        "property_address": property_addr,
+                        "created_at": created_at
+                    }
+                    if days_left < 0:
+                        expired.append(entry)
+                    elif days_left <= window_days:
+                        expiring.append(entry)
+                    else:
+                        active.append(entry)
+            except:
+                continue
+        return {
+            "expiring": sorted(expiring, key=lambda x: x["days_left"]),
+            "expired": sorted(expired, key=lambda x: x["days_left"]),
+            "active_count": len(active),
+            "total_rentals": len(rows),
+            "checked_on": today.isoformat()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/api/config")
 async def get_config():
     return {

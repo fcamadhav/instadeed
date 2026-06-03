@@ -1,0 +1,5 @@
+const renderHomeDashboard = () => {
+                const templates = [
+                    { type: 'RENT', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Rent Agreement', desc: 'Standard Greater Noida rent agreement — accepted by GNIDA and local authorities. Covers landlord, tenant, deposit, and tenancy clauses.', icon: 'fa-file-signature', color: 'blue', price: '₹300' },
+                    { type: 'ATS', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Agreement to Sell', desc: 'Greater Noida property sale/purchase agreement — meets GNIDA and sub-registrar requirements for payment schedules and registration.', icon: 'fa-file-contract', color: 'purple', price: '₹300' },
+                    { type: 'REG_RENT', auth: 'ALL', cat: 'REAL_ESTATE', label: 'Registered Rent Agreement', desc: 'Registered lease 
