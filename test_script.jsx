@@ -129,6 +129,35 @@
                 }
                 return "border-gray-200 focus:border-blue-500 focus:ring-blue-500/10 hover:border-gray-300";
             };
+            const getValidationBadge = () => {
+                if (!value) return null;
+                const lowerName = (name || "").toLowerCase();
+                if (lowerName.includes('aadhar') || lowerName.includes('aadhaar')) {
+                    const digits = value.replace(/\s/g, '');
+                    return digits.length === 12
+                        ? <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-check"></i> Valid 12-digit Aadhaar</span>
+                        : <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-exclamation"></i> Enter 12-digit Aadhaar ({digits.length}/12)</span>;
+                }
+                if (lowerName.includes('pan')) {
+                    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+                    return (value.length === 10 && panRegex.test(value))
+                        ? <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-check"></i> Valid PAN Format</span>
+                        : <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-exclamation"></i> Format: ABCDE1234F ({value.length}/10)</span>;
+                }
+                if (lowerName.includes('phone') || lowerName.includes('mobile')) {
+                    const digits = value.replace(/\D/g, '');
+                    return digits.length === 10
+                        ? <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-check"></i> Valid 10-digit Mobile</span>
+                        : <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-exclamation"></i> Enter 10-digit Mobile ({digits.length}/10)</span>;
+                }
+                if (lowerName.includes('pincode') || (name || "") === 'pinCode') {
+                    const digits = value.replace(/\D/g, '');
+                    return digits.length === 6
+                        ? <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-check"></i> Valid 6-digit Pincode</span>
+                        : <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-exclamation"></i> Enter 6-digit Pincode ({digits.length}/6)</span>;
+                }
+                return null;
+            };
             const borderClass = getValidationClass();
             const { activeField, setActiveField } = React.useContext(ActiveFieldContext);
             return (
