@@ -5025,10 +5025,6 @@
                                             <span style={{fontFamily:'Plus Jakarta Sans, sans-serif',fontSize:'.6rem',fontWeight:800,color:'#fff',background:'#2563EB',width:'19px',height:'19px',borderRadius:'50%',marginLeft:'4px',alignSelf:'center',display:'inline-flex',alignItems:'center',justifyContent:'center',lineHeight:1,boxShadow:'0 2px 6px rgba(37,99,235,.25)'}}>in</span>
                                         </span>
                                     </div>
-                                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-slate-50 border border-slate-100 text-[10px] text-gray-500 font-semibold select-none shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
-                                        <span className={`w-1.5 h-1.5 rounded-full ${saveStatus === 'Saving...' ? 'bg-amber-400 animate-pulse' : 'bg-emerald-500'}`}></span>
-                                        {saveStatus}
-                                    </div>
                                     {user ? (
                                         <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full py-1 pl-1 pr-3 shadow-sm text-xs text-slate-700">
                                             <img src={user.picture} alt={user.name} className="w-6 h-6 rounded-full" />
@@ -5041,26 +5037,10 @@
                                                 <i className="fa-solid fa-right-from-bracket"></i>
                                             </button>
                                         </div>
-                                    ) : (
-                                        <button onClick={() => setShowLogin(true)} style={{fontSize:'.72rem',fontWeight:700,color:'#2563EB',border:'1.5px solid #2563EB',borderRadius:'9999px',padding:'.32rem .85rem',background:'#EEF4FF',transition:'all .18s',fontFamily:'Inter,sans-serif',cursor:'pointer'}} title="Sign In"
-                                            onMouseOver={e => {e.currentTarget.style.background='#DBEAFE';e.currentTarget.style.boxShadow='0 2px 8px rgba(37,99,235,.18)';}}
-                                            onMouseOut={e => {e.currentTarget.style.background='#EEF4FF';e.currentTarget.style.boxShadow='none';}}>
-                                            Sign In
-                                        </button>
-                                    )}
+                                    ) : null}
                                 </div>
                                 {/* Toolbar Actions */}
                                 <div className="flex gap-1">
-                                    <button onClick={saveDefault} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-yellow-50 text-gray-400 hover:text-yellow-600 transition" title={`Save Default (${activeTab})`}>
-                                        <i className="fa-solid fa-star text-sm"></i>
-                                    </button>
-                                    <button onClick={loadDefault} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-yellow-50 text-gray-400 hover:text-yellow-600 transition" title={`Load Default (${activeTab})`}>
-                                        <i className="fa-regular fa-star text-sm"></i>
-                                    </button>
-                                    <div className="w-px h-6 bg-gray-200 mx-1 my-auto"></div>
-                                    <button onClick={saveToLibrary} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition" title="Save to Library">
-                                        <i className="fa-solid fa-cloud-arrow-up text-sm"></i>
-                                    </button>
                                     <button onClick={() => setShowLibrary(true)} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition relative" title="Open Library">
                                         <i className="fa-solid fa-book-bookmark text-sm"></i>
                                         {savedDrafts.some(d => {
@@ -5081,18 +5061,6 @@
                                         }) && (
                                                 <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
                                             )}
-                                    </button>
-                                    <div className="w-px h-6 bg-gray-200 mx-1 my-auto"></div>
-                                    <button onClick={() => setShowShare(true)} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-green-50 text-gray-400 hover:text-green-600 transition" title="Share / Receive Data">
-                                        <i className="fa-brands fa-whatsapp text-sm"></i>
-                                    </button>
-                                    <div className="w-px h-6 bg-gray-200 mx-1 my-auto"></div>
-                                    <label className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition cursor-pointer" title="Load JSON">
-                                        <i className="fa-solid fa-folder-open text-sm"></i>
-                                        <input type="file" accept=".json" onChange={uploadJSON} className="hidden" />
-                                    </label>
-                                    <button onClick={downloadJSON} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition" title="Save JSON">
-                                        <i className="fa-solid fa-save text-sm"></i>
                                     </button>
                                     <div className="w-px h-6 bg-gray-200 mx-1 my-auto"></div>
                                     <button onClick={clearAllData} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-red-50 text-gray-400 hover:text-red-600 transition" title="Clear All Data">
