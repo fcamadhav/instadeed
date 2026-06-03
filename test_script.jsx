@@ -1,6 +1,34 @@
 
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useCallback } = React;
         const ActiveFieldContext = React.createContext(null);
+
+        // --- Toast Notification System ---
+        const ToastContext = React.createContext(null);
+        const Toast = () => {
+            const [toasts, setToasts] = useState([]);
+            const addToast = useCallback((message, type = 'success', duration = 4000) => {
+                const id = Date.now();
+                setToasts(prev => [...prev, { id, message, type }]);
+                setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), duration);
+            }, []);
+            const removeToast = (id) => setToasts(prev => prev.filter(t => t.id !== id));
+            return { addToast, removeToast, toasts };
+        };
+        const ToastBar = ({ toasts, removeToast }) => {
+            if (!toasts.length) return null;
+            return React.createElement('div', {
+                className: 'fixed top-4 right-4 z-[9999] flex flex-col gap-2 max-w-sm',
+                dangerouslySetInnerHTML: { __html: '' }
+            }, toasts.map(t => React.createElement('div', {
+                key: t.id,
+                className: `flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-semibold animate-in slide-in-from-right-2 fade-in duration-200 cursor-pointer ${t.type === 'success' ? 'bg-emerald-600 text-white' : t.type === 'error' ? 'bg-red-600 text-white' : t.type === 'warning' ? 'bg-amber-500 text-white' : 'bg-blue-600 text-white'}`,
+                onClick: () => removeToast(t.id)
+            },
+                React.createElement('i', { className: `fa-solid ${t.type === 'success' ? 'fa-circle-check' : t.type === 'error' ? 'fa-circle-exclamation' : t.type === 'warning' ? 'fa-triangle-exclamation' : 'fa-circle-info'}` }),
+                React.createElement('span', null, t.message),
+                React.createElement('i', { className: 'fa-solid fa-xmark ml-auto opacity-70 text-xs' })
+            )));
+        };
 
         // --- Helper: Number to Words ---
         function numToWords(n) {
@@ -652,14 +680,14 @@
 
             const triggerGoogleMock = () => {
                 const mockUser = {
-                    name: "Demo Signee",
-                    email: "google.signee@instadeed.com",
-                    picture: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+                    name: "Demo User",
+                    email: "demo@user.com",
+                    picture: "https://ui-avatars.com/api/?name=Demo+User&background=2563EB&color=fff"
                 };
-                localStorage.setItem('instadeed_user_session', JSON.stringify(mockUser));
+                localStorage.setItem('instadeed_user', JSON.stringify(mockUser));
+                setUser(mockUser);
                 onLogin(mockUser);
-                handleClose();
-                alert("Signed in successfully as " + mockUser.name);
+                addToast("Signed in as " + mockUser.name, 'success');
             };
 
             const handleSendOtp = () => {
@@ -846,8 +874,9 @@
             );
         };
 
-        const CheckoutModal = ({ isOpen, onClose, checkoutDetails, setCheckoutDetails, onSubmit }) => {
+        const CheckoutModal = ({ isOpen, onClose, checkoutDetails, setCheckoutDetails, onSubmit, amount, docLabel }) => {
             if (!isOpen) return null;
+            const displayAmount = amount || 499;
 
             return (
                 <div
@@ -866,18 +895,22 @@
                                 <i className="fa-solid fa-xmark"></i>
                             </button>
                             
-                            <div className="mb-6 text-center w-full pb-4">
+                            <div className="mb-4 text-center w-full pb-4">
                                 <div className="w-12 h-12 mx-auto rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
                                     <i className="fa-solid fa-credit-card text-lg"></i>
                                 </div>
-                                <h3 className="font-extrabold text-slate-800 text-lg">Online Checkout</h3>
-                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1">B2C Agreement Drafting Suite</p>
+                                <h3 className="font-extrabold text-slate-800 text-lg">Checkout</h3>
+                                {docLabel && <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1">{docLabel}</p>}
                             </div>
 
                             <div className="space-y-4 w-full">
                                 <div className="p-3 bg-blue-50 border border-blue-100 rounded-xl text-center text-xs text-blue-800 font-medium flex items-center justify-center gap-1.5">
                                     <i className="fa-solid fa-stamp text-blue-600"></i>
-                                    Drafting Fee: <strong>Rs. 499</strong> (Inclusive of all taxes)
+                                    {displayAmount === 0 ? (
+                                        <span className="text-emerald-600 font-bold">Free Document — No Payment Needed</span>
+                                    ) : (
+                                        <>Drafting Fee: <strong>Rs. {displayAmount.toLocaleString('en-IN')}</strong> (Inclusive of all taxes)</>
+                                    )}
                                 </div>
 
                                 <div className="space-y-3">
@@ -923,7 +956,7 @@
                                     disabled={!checkoutDetails.name || checkoutDetails.phone.length !== 10}
                                     className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all text-xs cursor-pointer text-center disabled:opacity-40 disabled:pointer-events-none mt-2 shadow-sm"
                                 >
-                                    Proceed to Pay Rs. 499
+                                    {displayAmount === 0 ? 'Create Free Document' : `Proceed to Pay Rs. ${displayAmount.toLocaleString('en-IN')}`}
                                 </button>
                             </div>
                         </div>
@@ -1256,6 +1289,16 @@
         };
 
         function Home() {
+            const toastBag = Toast();
+            const showToast = toastBag.addToast;
+            const [toasts, setToasts] = useState([]);
+            const removeToast = (id) => setToasts(prev => prev.filter(t => t.id !== id));
+            const addToast = useCallback((message, type = 'success', duration = 4000) => {
+                const id = Date.now() + Math.random();
+                setToasts(prev => [...prev, { id, message, type }]);
+                setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), duration);
+            }, []);
+
             const [activeTab, setActiveTab] = useState(() => window.location.pathname.startsWith('/admin') ? 'CRM' : 'HOME'); // 'RENT', 'ATS', 'NOIDA_TRANSFER' etc.
             const [gnidaPackageDocs, setGnidaPackageDocs] = useState({
                 kya: true,
@@ -2509,18 +2552,18 @@
             const [expiringRentals, setExpiringRentals] = useState(null);
             const fetchExpiringRentals = async () => {
                 try {
-                    const r = await fetch(`${API_BASE}/api/rentals/expiring`);
+                    const r = await fetch(`${API_BASE}/api/rentals/expiring`, { headers: getAuthHeaders() });
                     if (r.ok) setExpiringRentals(await r.json());
                 } catch(e) {}
             };
             const loadTrackedEvents = async () => {
                 try {
-                    const r = await fetch(`${API_BASE}/api/track?limit=300`);
+                    const r = await fetch(`${API_BASE}/api/track?limit=300`, { headers: getAuthHeaders() });
                     if (r.ok) {
                         const d = await r.json();
                         setTrackedEvents(d.events || []);
                     }
-                    const s = await fetch(`${API_BASE}/api/track/stats`);
+                    const s = await fetch(`${API_BASE}/api/track/stats`, { headers: getAuthHeaders() });
                     if (s.ok) {
                         const sd = await s.json();
                         setTrackedEventStats(sd);
@@ -3017,26 +3060,35 @@
             };
 
             // --- CRM Functions ---
+            const getAuthHeaders = () => {
+                const token = localStorage.getItem('instadeed_token');
+                return token ? { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+            };
+
             const fetchCrmOrders = async () => {
                 try {
-                    let url = '${API_BASE}/orders?';
+                    let url = `${API_BASE}/orders?`;
                     if (crmFilterStatus) url += `status=${crmFilterStatus}&`;
                     if (crmFilterType) url += `agreement_type=${crmFilterType}&`;
                     if (crmFilterToday) url += `today=true&`;
                     if (crmSearch) url += `search=${encodeURIComponent(crmSearch)}&`;
-                    const res = await fetch(url);
+                    const res = await fetch(url, { headers: getAuthHeaders() });
                     if (res.ok) {
                         const data = await res.json();
                         setCrmOrders(data);
+                    } else {
+                        console.warn("CRM orders fetch failed:", res.status);
+                        addToast("Failed to load orders. Check admin login.", 'error');
                     }
                 } catch (e) {
                     console.error("Failed to fetch CRM orders:", e);
+                    addToast("Network error loading orders", 'error');
                 }
             };
 
             const fetchCrmAnalytics = async () => {
                 try {
-                    const res = await fetch(`${API_BASE}/analytics`);
+                    const res = await fetch(`${API_BASE}/analytics`, { headers: getAuthHeaders() });
                     if (res.ok) {
                         const data = await res.json();
                         setCrmAnalytics(data);
@@ -3048,7 +3100,7 @@
 
             const fetchCrmCustomers = async () => {
                 try {
-                    const res = await fetch(`${API_BASE}/api/customers`);
+                    const res = await fetch(`${API_BASE}/api/customers`, { headers: getAuthHeaders() });
                     if (res.ok) {
                         const data = await res.json();
                         setCrmCustomers(data.customers || []);
@@ -3226,8 +3278,7 @@
                     
                     // 2. Open Razorpay or simulate if mock
                     if (orderData.order_id.startsWith('MOCK_ORD_')) {
-                        // Simulate payment processing
-                        alert("Razorpay is in local Mock Mode. Simulating checkout...");
+                        addToast("Processing mock payment...", 'info');
                         const verifyRes = await fetch(`${API_BASE}/verify-payment`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -3240,14 +3291,14 @@
                         
                         if (verifyRes.ok) {
                             setShowCheckoutModal(false);
-                            alert("Payment simulated successfully! Opening print dialog.");
+                            addToast("Payment successful! Opening document...", 'success');
                             triggerPrint();
                         }
                     } else {
                         // Load Razorpay Script dynamically and process payment
                         const loaded = await loadRazorpayScript();
                         if (!loaded) {
-                            alert("Failed to load Razorpay library. Please check your internet connection.");
+                            addToast("Failed to load Razorpay. Check connection.", 'error');
                             return;
                         }
                         
@@ -3280,9 +3331,10 @@
                                 });
                                 if (verifyRes.ok) {
                                     setShowCheckoutModal(false);
+                                    addToast("Payment verified! Downloading document...", 'success');
                                     triggerPrint();
                                 } else {
-                                    alert("Payment verification failed on the server.");
+                                    addToast("Payment verification failed. Contact support.", 'error');
                                 }
                             },
                             prefill: {
@@ -3297,7 +3349,7 @@
                     }
                 } catch (e) {
                     console.error("Online checkout failed:", e);
-                    alert("Unable to initiate online payment: " + e.message);
+                    addToast("Payment failed: " + e.message, 'error');
                 }
             };
 
@@ -4004,14 +4056,14 @@
                                                                         });
                                                                         if (r.ok) {
                                                                             const resData = await r.json();
-                                                                            alert("Document uploaded to Instadeed Cloud Vault successfully!\n\nLink: " + resData.cloud_url);
+                                                                            addToast("Document uploaded to cloud vault!", 'success');
                                                                             fetchCrmOrders(); // Refresh table
                                                                         } else {
-                                                                            alert("Failed to upload document to cloud.");
+                                                                            addToast("Failed to upload document.", 'error');
                                                                         }
                                                                     } catch (err) {
                                                                         console.error(err);
-                                                                        alert("Error uploading to cloud.");
+                                                                        addToast("Error uploading to cloud.", 'error');
                                                                     }
                                                                 }}
                                                                 className="inline-flex items-center gap-1 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-indigo-200 text-slate-600 hover:text-blue-600 px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition cursor-pointer"
@@ -10527,6 +10579,8 @@
                             checkoutDetails={checkoutDetails}
                             setCheckoutDetails={setCheckoutDetails}
                             onSubmit={handleOnlinePayment}
+                            amount={(() => { const p = { RENT: 300, ATS: 300, REG_RENT: 5000, MUTATION: 4000, KYA: 0, GNIDA: 0, GNIDA_REGISTRY: 10000, GNIDA_PTM: 7500, GNIDA_PACKAGE: 40000, TM_APP: 2000, TM48: 500, NOIDA_TRANSFER: 2000 }; return p[activeTab] || 499; })()}
+                            docLabel={(() => { const l = { RENT: 'Rent Agreement', ATS: 'Agreement to Sell', REG_RENT: 'Registered Rent Agreement', MUTATION: 'Mutation Form', GNIDA: 'Know Your Allottee', GNIDA_REGISTRY: 'GNIDA Registry', GNIDA_PTM: 'Permission to Mortgage', GNIDA_PACKAGE: 'GNIDA 5-in-1 Package', TM48: 'TM-48 Trademark', TM_APP: 'Transfer Memo Application', NOIDA_TRANSFER: 'NOIDA Transfer', KYA: 'KYA Verification' }; return l[activeTab] || ''; })()}
                         />
 
                         {/* Login Modal */}
@@ -10682,6 +10736,7 @@
 
                     </div >
                     )}
+                    <ToastBar toasts={toasts} removeToast={removeToast} />
                 </ActiveFieldContext.Provider>
             );
         }

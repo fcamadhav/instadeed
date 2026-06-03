@@ -540,7 +540,8 @@ async def create_order(request: Request, body: OrderRequest):
     try:
         conn = sqlite3.connect(DATABASE_FILE)
         cursor = conn.cursor()
-        cloud_url = f"http://localhost:8000?view={order_id}"
+        base_url = os.environ.get("BASE_URL", "https://instadeed.io")
+        cloud_url = f"{base_url}?view={order_id}"
         cursor.execute(
             "INSERT INTO orders (id, customer_name, customer_phone, customer_email, agreement_type, source, status, amount, form_data, created_at, updated_at, cloud_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (order_id, body.customer_name, body.customer_phone, body.customer_email, body.service_type, "ONLINE_B2C", "PENDING_PAYMENT", float(body.amount), json.dumps(body.form_data), now, now, cloud_url)
@@ -686,7 +687,8 @@ async def upload_order_to_cloud(order_id: str, request: Request):
         if not row:
             conn.close()
             raise HTTPException(status_code=404, detail="Order not found")
-        cloud_url = f"http://localhost:8000?view={order_id}"
+        base_url = os.environ.get("BASE_URL", "https://instadeed.io")
+        cloud_url = f"{base_url}?view={order_id}"
         cursor.execute("UPDATE orders SET cloud_url = ?, updated_at = ? WHERE id = ?", (cloud_url, now, order_id))
         conn.commit()
         conn.close()
