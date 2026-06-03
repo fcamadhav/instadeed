@@ -4217,6 +4217,9 @@
                                     ) : (
                                         <button onClick={() => setShowLogin(true)} style={{fontSize:'.72rem',fontWeight:700,color:'#2563EB',border:'1.5px solid #2563EB',borderRadius:'9999px',padding:'.32rem .85rem',background:'#EEF4FF',cursor:'pointer',fontFamily:'Inter,sans-serif'}}>Sign In</button>
                                     )}
+                                    <button onClick={() => setActiveTab('CRM')} className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:bg-indigo-50 hover:border-indigo-200 text-slate-500 hover:text-indigo-600 text-xs font-bold rounded-xl transition cursor-pointer" title="Admin CRM">
+                                        <i className="fa-solid fa-chart-line mr-1"></i> Admin
+                                    </button>
                                 </div>
                             </div>
                         </div>
