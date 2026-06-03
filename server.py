@@ -391,7 +391,8 @@ async def verify_otp(request: Request, body: VerifyOTPRequest):
         if record["otp"] != body.otp:
             raise HTTPException(status_code=400, detail="Invalid OTP")
         del otp_store[body.email]
-    del otp_store[body.email]
+    if body.email in otp_store:
+        del otp_store[body.email]
     conn = sqlite3.connect(DATABASE_FILE)
     cursor = conn.cursor()
     cursor.execute("SELECT id, name, email, role FROM users WHERE email = ?", (body.email,))

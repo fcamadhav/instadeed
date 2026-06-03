@@ -16,10 +16,8 @@
     <title>INSTADEED – Legal Drafting Suite | Draft, eSign & Deliver</title>
     <script>
         window.onerror = function (msg, url, line, col, error) {
-            // Suppress cross-origin CDN "Script error" (line 0) - not a real app error
-            if (msg === 'Script error.' || (line === 0 && col === 0)) return true;
-            // Show real app errors during development
-            alert("[INSTADEED Error] " + msg + "\nLine: " + line + "\nCol: " + col);
+            if (msg === 'Script error.' || !url || (line === 0 && col === 0)) return true;
+            alert("[INSTADEED Error] " + msg + "\nURL: " + url + "\nLine: " + line + "\nCol: " + col);
             console.error('[INSTADEED]', msg, 'at', url, line + ':' + col, error);
             return false;
         };

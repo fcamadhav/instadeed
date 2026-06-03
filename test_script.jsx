@@ -2501,6 +2501,10 @@
             const [crmFilterType, setCrmFilterType] = useState('');
             const [crmSearch, setCrmSearch] = useState('');
             const [crmFilterToday, setCrmFilterToday] = useState(false);
+            const [adminOtpStep, setAdminOtpStep] = useState('email');
+            const [adminOtpEmail, setAdminOtpEmail] = useState('');
+            const [adminOtpSending, setAdminOtpSending] = useState(false);
+            const [adminOtpVerifying, setAdminOtpVerifying] = useState(false);
             const [confirmDoc, setConfirmDoc] = useState(null); // doc type string when showing confirm modal
             const [flowStep, setFlowStep] = useState(1); // 1 = CRM intake, 2 = doc selection, 3 = drafting
             const [customerInfo, setCustomerInfo] = useState({ name: '', phone: '', email: '', address: '' });
