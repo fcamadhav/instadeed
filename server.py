@@ -253,6 +253,16 @@ async def serve_js():
         raise HTTPException(status_code=404, detail="JS bundle not found. Run build.py first.")
     return FileResponse(js_path, media_type="application/javascript")
 
+@app.get("/{full_path:path}", response_class=HTMLResponse)
+async def serve_spa(full_path: str):
+    if full_path.startswith("api/") or full_path.startswith("analytics") or full_path.startswith("create-order") or full_path.startswith("verify-payment"):
+        raise HTTPException(status_code=404, detail="Not Found")
+    html_path = os.path.join(STATIC_DIR, "Madhav_Drafting_Hub.html")
+    if not os.path.exists(html_path):
+        raise HTTPException(status_code=404, detail="Frontend not built.")
+    with open(html_path, "r", encoding="utf-8") as f:
+        return HTMLResponse(content=f.read())
+
 # --- Auth Helpers ---
 def create_token(user_id: str, email: str, role: str) -> str:
     payload = {
