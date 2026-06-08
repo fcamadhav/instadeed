@@ -2108,7 +2108,9 @@
                 const sessionStr = localStorage.getItem('instadeed_user_session');
                 if (sessionStr) {
                     try {
-                        setUser(JSON.parse(sessionStr));
+                        const u = JSON.parse(sessionStr);
+                        setUser(u);
+                        if (u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); }
                     } catch (e) { console.error("Error loading session:", e); }
                 }
 
@@ -2117,7 +2119,9 @@
                     if (e.key === 'instadeed_user_session') {
                         if (e.newValue) {
                             try {
-                                setUser(JSON.parse(e.newValue));
+                                const u = JSON.parse(e.newValue);
+                                setUser(u);
+                                if (u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); }
                             } catch (err) { console.error("Error syncing session:", err); }
                         } else {
                             setUser(null);
@@ -3593,7 +3597,7 @@
                                 <h1 className="text-xl font-extrabold text-slate-800">Welcome, {user.name?.split(' ')[0] || 'User'}</h1>
                                 <p className="text-xs text-slate-400">{user.email}</p>
                             </div>
-                            <button onClick={() => { localStorage.removeItem('instadeed_user_session'); setUser(null); setActiveTab('HOME'); }} className="px-4 py-2 bg-rose-50 border border-rose-200 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5">
+                            <button onClick={() => { localStorage.removeItem('instadeed_user_session'); setUser(null); setActiveTab('HOME'); setIsAdminLoggedIn(false); localStorage.removeItem('instadeed_admin'); }} className="px-4 py-2 bg-rose-50 border border-rose-200 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5">
                                 <i className="fa-solid fa-right-from-bracket"></i> Sign Out
                             </button>
                         </div>
@@ -3851,31 +3855,10 @@
                                     <i className="fa-solid fa-shield-halved text-2xl"></i>
                                 </div>
                                 <h2 className="text-xl font-extrabold text-slate-800 mb-1">Admin Access</h2>
-                                <p className="text-xs text-slate-400 mb-6">Enter your admin email to receive a one-time passcode</p>
-
-                                {adminOtpStep === 'email' ? (
-                                    <div className="space-y-4">
-                                        <div className="text-left">
-                                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Email</label>
-                                            <input type="email" value={adminOtpEmail} onChange={e => setAdminOtpEmail(e.target.value)} placeholder="admin@instadeed.local" className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10 transition-all font-medium" />
-                                        </div>
-                                        <button onClick={handleSendOtp} disabled={adminOtpSending} className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer disabled:opacity-50">
-                                            {adminOtpSending ? <><i className="fa-solid fa-circle-notch fa-spin mr-2"></i> Sending...</> : <><i className="fa-solid fa-envelope mr-1.5"></i> Send OTP</>}
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <div className="space-y-4">
-                                        <p className="text-xs text-slate-500">OTP sent to <span className="font-bold text-slate-700">{adminOtpEmail}</span></p>
-                                        <div className="text-left">
-                                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">One-Time Passcode</label>
-                                            <input type="text" maxLength={6} placeholder="000000" id="admin-otp-input" className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10 transition-all font-medium text-center text-2xl tracking-[0.5em]" onKeyDown={e => { if (e.key === 'Enter') handleVerifyOtp(e.target.value); }} />
-                                        </div>
-                                        <button onClick={() => { const inp = document.getElementById('admin-otp-input'); handleVerifyOtp(inp ? inp.value : ''); }} disabled={adminOtpVerifying} className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer disabled:opacity-50">
-                                            {adminOtpVerifying ? <><i className="fa-solid fa-circle-notch fa-spin mr-2"></i> Verifying...</> : <><i className="fa-solid fa-check-circle mr-1.5"></i> Verify & Login</>}
-                                        </button>
-                                        <button onClick={() => setAdminOtpStep('email')} className="text-xs text-slate-400 hover:text-slate-600 font-medium cursor-pointer">Change email</button>
-                                    </div>
-                                )}
+                                <p className="text-xs text-slate-400 mb-6">Sign in with your admin email to access the control panel</p>
+                                <button onClick={() => setShowLogin(true)} className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer">
+                                    <i className="fa-solid fa-right-to-bracket mr-1.5"></i> Sign In
+                                </button>
                             </div>
                         </div>
                     );
@@ -5295,7 +5278,7 @@
                                             <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full py-1 pl-1 pr-3 shadow-sm text-xs text-slate-700">
                                                 <img src={user.picture} alt={user.name} className="w-6 h-6 rounded-full" />
                                                 <span className="font-semibold truncate max-w-[80px]">{user.name.split(' ')[0]}</span>
-                                                <button onClick={() => {localStorage.removeItem('instadeed_user_session');setUser(null);}} className="text-slate-400 hover:text-rose-600 transition ml-1" title="Sign Out">
+                                                <button onClick={() => {localStorage.removeItem('instadeed_user_session');setUser(null);setIsAdminLoggedIn(false);localStorage.removeItem('instadeed_admin');}} className="text-slate-400 hover:text-rose-600 transition ml-1" title="Sign Out">
                                                     <i className="fa-solid fa-right-from-bracket"></i>
                                                 </button>
                                             </div>
@@ -5885,7 +5868,7 @@
                         <LoginModal
                             isOpen={showLogin}
                             onClose={() => setShowLogin(false)}
-                            onLogin={(u) => { setUser(u); setShowLogin(false); }}
+                            onLogin={(u) => { setUser(u); setShowLogin(false); if (u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
                         />
                     </div>
                 ) : activeTab === 'SHARE' ? (
@@ -6039,7 +6022,9 @@
                                             <span className="font-semibold truncate max-w-[80px]">{user.name.split(' ')[0]}</span>
                                             <button onClick={() => {
                                                 localStorage.removeItem('instadeed_user_session');
+                                                localStorage.removeItem('instadeed_admin');
                                                 setUser(null);
+                                                setIsAdminLoggedIn(false);
                                                 addToast("Signed out successfully.", 'success');
                                             }} className="text-slate-400 hover:text-rose-600 transition ml-1" title="Sign Out">
                                                 <i className="fa-solid fa-right-from-bracket"></i>
@@ -11548,7 +11533,7 @@
                         <LoginModal
                             isOpen={showLogin}
                             onClose={() => setShowLogin(false)}
-                            onLogin={setUser}
+                            onLogin={(u) => { setUser(u); if (u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
                         />
 
                         {/* Share Modal */}
