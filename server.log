@@ -157,3 +157,4 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2026-06-02 02:03:38,148 | INFO     | GET / -> 200 (35ms)
 2026-06-02 03:24:22,086 | INFO     | GET / -> 200 (2ms)
 2026-06-02 03:24:22,136 | INFO     | GET /out.js -> 200 (2ms)
+2026-06-08 20:39:49,413 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.

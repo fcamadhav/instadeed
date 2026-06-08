@@ -4,6 +4,7 @@ import uuid
 import datetime
 import time
 import logging
+from logging.handlers import RotatingFileHandler
 import os
 import hashlib
 import io
@@ -25,6 +26,19 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from fpdf import FPDF
+import re
+from dateutil.relativedelta import relativedelta
+
+# --- Logging Setup ---
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)-8s | %(message)s",
+    handlers=[
+        RotatingFileHandler("server.log", maxBytes=10*1024*1024, backupCount=5),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger("instadeed")
 
 # --- Configuration ---
 JWT_SECRET = os.environ.get("JWT_SECRET")
@@ -42,38 +56,15 @@ LEEGALITY_PRIVATE_SALT = os.environ.get("LEEGALITY_PRIVATE_SALT")
 LEEGALITY_BASE_URL = os.environ.get("LEEGALITY_BASE_URL", "https://sandbox.leegality.com/api")
 LEEGALITY_PROFILE_ID = os.environ.get("LEEGALITY_PROFILE_ID", "")
 
-# --- Logging Setup ---
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)-8s | %(message)s",
-    handlers=[
-        logging.FileHandler("server.log"),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger("instadeed")
-
 # --- Password Hashing (bcrypt) ---
-try:
-    import bcrypt as _bcrypt
-    def hash_password(password: str) -> str:
-        return _bcrypt.hashpw(password.encode(), _bcrypt.gensalt()).decode()
-    def verify_password(password: str, stored: str) -> bool:
-        return _bcrypt.checkpw(password.encode(), stored.encode())
-except ImportError:
-    import hashlib
-    logger.warning("bcrypt not installed; falling back to SHA-256. Install bcrypt for production.")
-    def hash_password(password: str) -> str:
-        salt = uuid.uuid4().hex[:16]
-        return salt + ":" + hashlib.sha256((salt + password).encode()).hexdigest()
-    def verify_password(password: str, stored: str) -> bool:
-        if ":" not in stored:
-            return False
-        salt, expected = stored.split(":", 1)
-        return hashlib.sha256((salt + password).encode()).hexdigest() == expected
+import bcrypt as _bcrypt
+def hash_password(password: str) -> str:
+    return _bcrypt.hashpw(password.encode(), _bcrypt.gensalt()).decode()
+
+def check_password(password: str, hashed: str) -> bool:
+    return _bcrypt.checkpw(password.encode(), hashed.encode())
 
 # --- Input Validation ---
-import re
 VALID_EMAIL_RE = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
 def validate_email(email: str) -> bool:
     return bool(VALID_EMAIL_RE.match(email))
@@ -114,9 +105,11 @@ if RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET and "YOUR_KEY" not in RAZORPAY_KEY_ID
 # --- Database ---
 class Database:
     def __enter__(self):
-        self.conn = sqlite3.connect(DATABASE_FILE)
+        self.conn = sqlite3.connect(DATABASE_FILE, timeout=30)
+        self.conn.execute("PRAGMA foreign_keys = ON")
         self.conn.row_factory = sqlite3.Row
-        return self.conn.cursor()
+        self.cursor = self.conn.cursor()
+        return self.cursor
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type is None:
             self.conn.commit()
@@ -144,19 +137,19 @@ def init_db():
     """)
     try:
         cursor.execute("ALTER TABLE orders ADD COLUMN cloud_url TEXT")
-    except Exception:
+    except sqlite3.OperationalError:
         pass
     try:
         cursor.execute("ALTER TABLE orders ADD COLUMN leegality_doc_id TEXT")
-    except Exception:
+    except sqlite3.OperationalError:
         pass
     try:
         cursor.execute("ALTER TABLE orders ADD COLUMN leegality_sign_url TEXT")
-    except Exception:
+    except sqlite3.OperationalError:
         pass
     try:
         cursor.execute("ALTER TABLE orders ADD COLUMN is_favorite INTEGER DEFAULT 0")
-    except Exception:
+    except sqlite3.OperationalError:
         pass
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS users (
@@ -175,15 +168,15 @@ def init_db():
     """)
     try:
         cursor.execute("ALTER TABLE users ADD COLUMN phone TEXT DEFAULT ''")
-    except Exception:
+    except sqlite3.OperationalError:
         pass
     try:
         cursor.execute("ALTER TABLE users ADD COLUMN location TEXT DEFAULT ''")
-    except Exception:
+    except sqlite3.OperationalError:
         pass
     try:
         cursor.execute("ALTER TABLE users ADD COLUMN device_info TEXT DEFAULT ''")
-    except Exception:
+    except sqlite3.OperationalError:
         pass
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS api_keys (
@@ -324,6 +317,16 @@ def init_db():
         FOREIGN KEY (order_id) REFERENCES orders(id)
     )
     """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS saved_drafts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        doc_type TEXT,
+        form_data TEXT,
+        phone TEXT,
+        created_at TEXT,
+        updated_at TEXT
+    )
+    """)
     # Indexes for performance
     for idx_sql in [
         "CREATE INDEX IF NOT EXISTS idx_orders_user ON orders(customer_phone)",
@@ -344,7 +347,7 @@ def init_db():
     ]:
         try:
             cursor.execute(idx_sql)
-        except Exception:
+        except sqlite3.OperationalError:
             pass
     conn.commit()
     conn.close()
@@ -412,6 +415,7 @@ async def log_requests(request: Request, call_next):
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload"
     response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    response.headers["Content-Security-Policy"] = "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://accounts.google.com https://cdn.tailwindcss.com https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.razorpay.com https://api.razorpay.com"
     user_id = ""
     try:
         conn = sqlite3.connect(DATABASE_FILE)
@@ -468,8 +472,8 @@ def create_token(user_id: str, email: str, role: str) -> str:
         "sub": user_id,
         "email": email,
         "role": role,
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=JWT_EXPIRY_HOURS),
-        "iat": datetime.datetime.utcnow()
+        "exp": datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=JWT_EXPIRY_HOURS),
+        "iat": datetime.datetime.now(datetime.timezone.utc)
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
@@ -590,9 +594,9 @@ async def send_otp(request: Request, body: SendOTPRequest):
         if sent:
             logger.info(f"OTP email sent to {body.email}")
         else:
-            logger.info(f"OTP for {body.email}: {otp} (email delivery not configured)")
+            logger.info(f"OTP sent to {body.email}")
     except Exception:
-        logger.info(f"OTP for {body.email}: {otp} (email delivery not configured)")
+        logger.info(f"OTP sent to {body.email}")
     return {"status": "success", "message": "OTP sent to your email"}
 
 @app.post("/api/auth/verify-otp")
@@ -717,7 +721,7 @@ async def login(request: Request, body: LoginRequest):
     if not is_active:
         conn.close()
         raise HTTPException(status_code=403, detail="Account deactivated")
-    if not verify_password(body.password, password_hash):
+    if not check_password(body.password, password_hash):
         conn.close()
         raise HTTPException(status_code=401, detail="Invalid email or password")
     now = datetime.datetime.now().isoformat()
@@ -971,7 +975,7 @@ async def upload_order_to_cloud(order_id: str, request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.put("/orders/{order_id}/status")
-async def update_order_status(order_id: str, body: StatusUpdateRequest, request: Request):
+async def update_order_status(order_id: str, body: StatusUpdateRequest, request: Request, user: dict = Depends(get_current_user)):
     now = datetime.datetime.now().isoformat()
     try:
         conn = sqlite3.connect(DATABASE_FILE)
@@ -1212,15 +1216,12 @@ async def get_expiring_rentals(request: Request, user: dict = Depends(get_curren
                 if not end_date_str and start_date_str:
                     parts = start_date_str.split("-")
                     if len(parts) == 3:
-                        from datetime import datetime as dt_mod
-                        sd = dt_mod.strptime(start_date_str, "%Y-%m-%d")
-                        from dateutil.relativedelta import relativedelta
+                        sd = datetime.datetime.strptime(start_date_str, "%Y-%m-%d")
                         try:
-                            from dateutil.relativedelta import relativedelta
                             nd = sd + relativedelta(months=11)
                             nd -= datetime.timedelta(days=1)
                             end_date_str = nd.strftime("%Y-%m-%d")
-                        except:
+                        except Exception:
                             pass
                 if end_date_str:
                     end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d").date()
@@ -2139,9 +2140,9 @@ async def drafts_send_otp(body: dict = Body(...)):
     phone = body.get("phone", "")
     if len(phone) != 10:
         return {"success": False, "error": "Invalid phone number"}
-    otp = os.environ.get("DEMO_OTP", str(random.randint(100000, 999999)))
+    otp = str(random.randint(100000, 999999))
     DRAFT_OTP_STORE[phone] = otp
-    logger.info(f"Draft OTP for {phone}: {otp}")
+    logger.info(f"Draft OTP sent to {phone}")
     return {"success": True}
 
 @app.post("/api/drafts/verify-otp")
@@ -2172,7 +2173,6 @@ async def save_draft(body: dict = Body(...)):
     try:
         conn = sqlite3.connect(DATABASE_FILE)
         cursor = conn.cursor()
-        cursor.execute("CREATE TABLE IF NOT EXISTS saved_drafts (id INTEGER PRIMARY KEY AUTOINCREMENT, doc_type TEXT, form_data TEXT, phone TEXT, created_at TEXT, updated_at TEXT)")
         if phone:
             cursor.execute("SELECT id FROM saved_drafts WHERE doc_type = ? AND phone = ?", (doc_type, phone))
             existing = cursor.fetchone()

@@ -696,7 +696,7 @@
                 setStep(2);
                 setTimer(30);
                 setOtp(['', '', '', '', '', '']);
-                alert("📱 Demo SMS: Verification code sent to +91 " + phone);
+                addToast("📱 Demo SMS sent to +91 " + phone, 'success');
             };
 
             const handleVerifyOtp = () => {
@@ -714,7 +714,7 @@
                     localStorage.setItem('instadeed_user_session', JSON.stringify(mockUser));
                     onLogin(mockUser);
                     handleClose();
-                    alert("Mobile OTP verified successfully!");
+                    addToast("Mobile OTP verified successfully!", 'success');
                 }, 1200);
             };
 
@@ -1027,10 +1027,10 @@
 
                     onClose();
                     setImportText('');
-                    alert("Data loaded successfully!");
+                    addToast("Data loaded successfully!", 'success');
                 } catch (e) {
                     console.error(e);
-                    alert("Invalid Link or Code. Please check and try again.");
+                    addToast("Invalid Link or Code. Please check and try again.", 'error');
                 }
             };
 
@@ -1126,7 +1126,7 @@
                                                     </button>
                                                     <button onClick={() => {
                                                         navigator.clipboard.writeText(appLink);
-                                                        alert('App link copied!');
+                                                        addToast('App link copied!', 'success');
                                                     }} className="flex-1 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm">
                                                         <i className="fa-regular fa-copy mr-1"></i> Copy Link
                                                     </button>
@@ -2105,7 +2105,7 @@
 
             useEffect(() => {
                 // Read user session
-                const sessionStr = localStorage.getItem('instadeed_user_session');
+                let sessionStr = null; try { sessionStr = localStorage.getItem('instadeed_user_session'); } catch(e) {}
                 if (sessionStr) {
                     try {
                         const u = JSON.parse(sessionStr);
@@ -2237,7 +2237,7 @@
                     }
                 }
 
-                const saved = localStorage.getItem('madhav_legal_suite_v4_clean');
+                let saved = null; try { saved = localStorage.getItem('madhav_legal_suite_v4_clean'); } catch(e) {}
                 if (saved) {
                     try {
                         const parsed = JSON.parse(saved);
@@ -2633,7 +2633,7 @@
             const [savedDrafts, setSavedDrafts] = useState([]);
             const [showLibrary, setShowLibrary] = useState(false);
             const [showShare, setShowShare] = useState(false);
-            const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(localStorage.getItem('instadeed_admin') === 'true');
+            const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(() => { try { return localStorage.getItem('instadeed_admin') === 'true'; } catch(e) { return false; } });
             const [showAdminLoginModal, setShowAdminLoginModal] = useState(false);
             const [isOfficeMode, setIsOfficeMode] = useState(false);
             const [showCheckoutModal, setShowCheckoutModal] = useState(false);
@@ -2720,7 +2720,7 @@
             };
 
             useEffect(() => {
-                const saved = localStorage.getItem('madhav_saved_drafts');
+                let saved = null; try { saved = localStorage.getItem('madhav_saved_drafts'); } catch(e) {}
                 if (saved) {
                     try {
                         setSavedDrafts(JSON.parse(saved));
@@ -2793,7 +2793,7 @@
             };
 
             const loadDefault = () => {
-                const saved = localStorage.getItem(`madhav_default_${activeTab}`);
+                let saved = null; try { saved = localStorage.getItem(`madhav_default_${activeTab}`); } catch(e) {}
                 if (saved) {
                     if (confirm(`Load your Default ${activeTab} Template?`)) {
                         const parsed = JSON.parse(saved);
@@ -3181,7 +3181,7 @@
 
             // --- CRM Functions ---
             const getAuthHeaders = () => {
-                const token = localStorage.getItem('instadeed_token');
+                let token = null; try { token = localStorage.getItem('instadeed_token'); } catch(e) {}
                 return token ? { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
             };
 
@@ -3521,24 +3521,28 @@
                             description: 'Legal Agreement Drafting Fee',
                             order_id: orderData.order_id,
                                             handler: async function (response) {
-                                                trackEvent('payment_complete', activeTab, response.razorpay_order_id);
-                                                const verifyRes = await fetch(`${API_BASE}/verify-payment`, {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                        razorpay_order_id: response.razorpay_order_id,
-                                        razorpay_payment_id: response.razorpay_payment_id,
-                                        razorpay_signature: response.razorpay_signature
-                                    })
-                                });
-                                if (verifyRes.ok) {
-                                    setShowCheckoutModal(false);
-                                    addToast("Payment verified! Downloading document...", 'success');
-                                    triggerPrint();
-                                } else {
-                                    addToast("Payment verification failed. Contact support.", 'error');
-                                }
-                            },
+                                                try {
+                                                    trackEvent('payment_complete', activeTab, response.razorpay_order_id);
+                                                    const verifyRes = await fetch(`${API_BASE}/verify-payment`, {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify({
+                                                            razorpay_order_id: response.razorpay_order_id,
+                                                            razorpay_payment_id: response.razorpay_payment_id,
+                                                            razorpay_signature: response.razorpay_signature
+                                                        })
+                                                    });
+                                                    if (verifyRes.ok) {
+                                                        setShowCheckoutModal(false);
+                                                        addToast("Payment verified! Downloading document...", 'success');
+                                                        triggerPrint();
+                                                    } else {
+                                                        addToast("Payment verification failed. Contact support.", 'error');
+                                                    }
+                                                } catch (e) {
+                                                    addToast("Payment verification error: " + e.message, 'error');
+                                                }
+                                            },
                             prefill: {
                                 name: checkoutDetails.name,
                                 email: checkoutDetails.email,
@@ -4591,8 +4595,10 @@
                                             ) : (
                                                 crmUsers.map((u, i) => (
                                                     <tr key={u.id} className="hover:bg-slate-50/50 transition cursor-pointer" onClick={async () => {
-                                                        const res = await fetch(`${API_BASE}/api/admin/users/${u.id}`, { headers: getAuthHeaders() });
-                                                        if (res.ok) { const d = await res.json(); setCrmSelectedUser(d); }
+                                                        try {
+                                                            const res = await fetch(`${API_BASE}/api/admin/users/${u.id}`, { headers: getAuthHeaders() });
+                                                            if (res.ok) { const d = await res.json(); setCrmSelectedUser(d); }
+                                                        } catch(e) { addToast('Failed to load user details', 'error'); }
                                                     }}>
                                                         <td className="px-5 py-4 font-bold text-slate-800">{u.name}</td>
                                                         <td className="px-5 py-4 text-slate-500">{u.email}</td>
@@ -4696,8 +4702,8 @@
                                                     <td className="px-5 py-4 text-slate-500">{s.last_login ? new Date(s.last_login).toLocaleString('en-IN') : '-'}</td>
                                                     <td className="px-5 py-4 text-right">
                                                         <div className="flex gap-1 justify-end">
-                                                            <button onClick={async () => { const newRole = prompt('New role (attorney/support/finance/admin):', s.role); if (newRole) { await fetch(`${API_BASE}/api/admin/staff/${s.id}`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ role: newRole }) }); fetchCrmStaff(); addToast('Role updated', 'success'); } }} className="px-2.5 py-1.5 bg-slate-50 text-slate-600 hover:bg-slate-100 rounded-lg text-[10px] font-bold cursor-pointer transition" title="Change Role"><i className="fa-solid fa-shield"></i></button>
-                                                            <button onClick={async () => { const nowActive = s.is_active ? 0 : 1; await fetch(`${API_BASE}/api/admin/staff/${s.id}`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ is_active: nowActive }) }); fetchCrmStaff(); addToast(nowActive ? 'Activated' : 'Deactivated', 'success'); }} className={`px-2.5 py-1.5 rounded-lg text-[10px] font-bold cursor-pointer transition ${s.is_active ? 'bg-rose-50 text-rose-600 hover:bg-rose-100' : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'}`} title={s.is_active ? 'Deactivate' : 'Activate'}><i className={`fa-solid ${s.is_active ? 'fa-ban' : 'fa-check'}`}></i></button>
+                                                            <button onClick={async () => { try { const newRole = prompt('New role (attorney/support/finance/admin):', s.role); if (newRole) { await fetch(`${API_BASE}/api/admin/staff/${s.id}`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ role: newRole }) }); fetchCrmStaff(); addToast('Role updated', 'success'); } } catch(e) { addToast('Failed to update staff', 'error'); } }} className="px-2.5 py-1.5 bg-slate-50 text-slate-600 hover:bg-slate-100 rounded-lg text-[10px] font-bold cursor-pointer transition" title="Change Role"><i className="fa-solid fa-shield"></i></button>
+                                                            <button onClick={async () => { try { const nowActive = s.is_active ? 0 : 1; await fetch(`${API_BASE}/api/admin/staff/${s.id}`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ is_active: nowActive }) }); fetchCrmStaff(); addToast(nowActive ? 'Activated' : 'Deactivated', 'success'); } catch(e) { addToast('Failed to update staff status', 'error'); } }} className={`px-2.5 py-1.5 rounded-lg text-[10px] font-bold cursor-pointer transition ${s.is_active ? 'bg-rose-50 text-rose-600 hover:bg-rose-100' : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'}`} title={s.is_active ? 'Deactivate' : 'Activate'}><i className={`fa-solid ${s.is_active ? 'fa-ban' : 'fa-check'}`}></i></button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -4720,14 +4726,16 @@
                                         Coupons ({crmCoupons.length})
                                     </h3>
                                     <button onClick={async () => {
-                                        const code = prompt('Coupon code:'); if (!code) return;
-                                        const type = prompt('Type (percentage/flat):', 'percentage');
-                                        const value = parseFloat(prompt('Value (e.g. 10 for 10% or 500 for flat):') || '0');
-                                        const maxUses = parseInt(prompt('Max uses (0 = unlimited):') || '0');
-                                        const minAmount = parseFloat(prompt('Min order amount (0 = none):') || '0');
-                                        const expires = prompt('Expiry (YYYY-MM-DD, leave blank for none):') || '';
-                                        const res = await fetch(`${API_BASE}/api/admin/coupons`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ code: code.toUpperCase(), type, value, max_uses: maxUses, min_amount: minAmount, expires_at: expires }) });
-                                        if (res.ok) { addToast('Coupon created', 'success'); fetchCrmCoupons(); } else { const d = await res.json(); addToast(d.detail || 'Error', 'error'); }
+                                        try {
+                                            const code = prompt('Coupon code:'); if (!code) return;
+                                            const type = prompt('Type (percentage/flat):', 'percentage');
+                                            const value = parseFloat(prompt('Value (e.g. 10 for 10% or 500 for flat):') || '0');
+                                            const maxUses = parseInt(prompt('Max uses (0 = unlimited):') || '0');
+                                            const minAmount = parseFloat(prompt('Min order amount (0 = none):') || '0');
+                                            const expires = prompt('Expiry (YYYY-MM-DD, leave blank for none):') || '';
+                                            const res = await fetch(`${API_BASE}/api/admin/coupons`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ code: code.toUpperCase(), type, value, max_uses: maxUses, min_amount: minAmount, expires_at: expires }) });
+                                            if (res.ok) { addToast('Coupon created', 'success'); fetchCrmCoupons(); } else { const d = await res.json(); addToast(d.detail || 'Error', 'error'); }
+                                        } catch(e) { addToast('Failed to create coupon', 'error'); }
                                     }} className="px-3 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 cursor-pointer transition">
                                         <i className="fa-solid fa-plus mr-1"></i> Add Coupon
                                     </button>
@@ -4759,7 +4767,7 @@
                                                         <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${c.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}`}>{c.is_active ? 'Active' : 'Inactive'}</span>
                                                     </td>
                                                     <td className="px-5 py-4 text-right">
-                                                        <button onClick={async () => { if (!confirm('Delete coupon?')) return; await fetch(`${API_BASE}/api/admin/coupons/${c.id}`, { method: 'DELETE', headers: getAuthHeaders() }); fetchCrmCoupons(); addToast('Deleted', 'success'); }} className="px-2.5 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg text-[10px] font-bold cursor-pointer transition"><i className="fa-solid fa-trash-can"></i></button>
+                                                        <button onClick={async () => { try { if (!confirm('Delete coupon?')) return; await fetch(`${API_BASE}/api/admin/coupons/${c.id}`, { method: 'DELETE', headers: getAuthHeaders() }); fetchCrmCoupons(); addToast('Deleted', 'success'); } catch(e) { addToast('Failed to delete coupon', 'error'); } }} className="px-2.5 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg text-[10px] font-bold cursor-pointer transition"><i className="fa-solid fa-trash-can"></i></button>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -4782,12 +4790,14 @@
                                     </h3>
                                     <div className="flex gap-2">
                                         <button onClick={async () => {
-                                            const recipient = prompt('Recipient (email/phone):'); if (!recipient) return;
-                                            const title = prompt('Title:'); if (!title) return;
-                                            const msg = prompt('Message:'); if (!msg) return;
-                                            const type = prompt('Type (info/warning/success):', 'info');
-                                            await fetch(`${API_BASE}/api/admin/notifications`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ recipient, title, message: msg, type }) });
-                                            fetchCrmNotifications(); addToast('Notification sent', 'success');
+                                            try {
+                                                const recipient = prompt('Recipient (email/phone):'); if (!recipient) return;
+                                                const title = prompt('Title:'); if (!title) return;
+                                                const msg = prompt('Message:'); if (!msg) return;
+                                                const type = prompt('Type (info/warning/success):', 'info');
+                                                await fetch(`${API_BASE}/api/admin/notifications`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ recipient, title, message: msg, type }) });
+                                                fetchCrmNotifications(); addToast('Notification sent', 'success');
+                                            } catch(e) { addToast('Failed to send notification', 'error'); }
                                         }} className="px-3 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 cursor-pointer transition">
                                             <i className="fa-solid fa-paper-plane mr-1"></i> Send
                                         </button>
@@ -4975,7 +4985,7 @@
                                             <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Amount</span><span className="font-black text-slate-800">₹{crmSelectedOrderForDetail.amount}</span></div>
                                             <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Source</span><span className="text-slate-600">{crmSelectedOrderForDetail.source}</span></div>
                                             <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Status</span>
-                                                <select value={crmSelectedOrderForDetail.status} onChange={async (e) => { const newStatus = e.target.value; await fetch(`${API_BASE}/api/orders/${crmSelectedOrderForDetail.id}/status`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ status: newStatus }) }); setCrmSelectedOrderForDetail({...crmSelectedOrderForDetail, status: newStatus}); fetchCrmOrders(); addToast('Status updated', 'success'); }} className="px-2 py-1 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:outline-none cursor-pointer bg-white">
+                                                <select value={crmSelectedOrderForDetail.status} onChange={async (e) => { try { const newStatus = e.target.value; await fetch(`${API_BASE}/api/orders/${crmSelectedOrderForDetail.id}/status`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ status: newStatus }) }); setCrmSelectedOrderForDetail({...crmSelectedOrderForDetail, status: newStatus}); fetchCrmOrders(); addToast('Status updated', 'success'); } catch(e) { addToast('Failed to update status', 'error'); } }} className="px-2 py-1 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:outline-none cursor-pointer bg-white">
                                                     {['PENDING_PAYMENT','PAID','DRAFTED','UNDER_REVIEW','STAMPING','NOTARIZATION','DISPATCHED','COMPLETED','SIGNED','REFUNDED'].map(s => (
                                                         <option key={s} value={s}>{s.replace('_',' ')}</option>
                                                     ))}
@@ -4998,11 +5008,16 @@
                                                     <option value="finance">Finance</option>
                                                 </select>
                                                 <button onClick={async () => {
-                                                    const sid = document.getElementById(`staff-select-${crmSelectedOrderForDetail.id}`).value;
-                                                    const role = document.getElementById(`staff-role-${crmSelectedOrderForDetail.id}`).value;
-                                                    if (!sid) return;
-                                                    await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/assign`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ staff_id: sid, role }) });
-                                                    addToast('Staff assigned', 'success');
+                                                    try {
+                                                        const sidEl = document.getElementById(`staff-select-${crmSelectedOrderForDetail.id}`);
+                                                        const roleEl = document.getElementById(`staff-role-${crmSelectedOrderForDetail.id}`);
+                                                        if (!sidEl || !roleEl) return;
+                                                        const sid = sidEl.value;
+                                                        const role = roleEl.value;
+                                                        if (!sid) return;
+                                                        await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/assign`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ staff_id: sid, role }) });
+                                                        addToast('Staff assigned', 'success');
+                                                    } catch(e) { addToast('Failed to assign staff', 'error'); }
                                                 }} className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 cursor-pointer"><i className="fa-solid fa-check mr-1"></i> Assign</button>
                                             </div>
                                         </div>
@@ -5014,13 +5029,17 @@
                                             <div className="flex gap-2">
                                                 <input id={`note-input-${crmSelectedOrderForDetail.id}`} type="text" placeholder="Add a note..." className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none" />
                                                 <button onClick={async () => {
-                                                    const note = document.getElementById(`note-input-${crmSelectedOrderForDetail.id}`).value;
-                                                    if (!note) return;
-                                                    await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/notes`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ note }) });
-                                                    document.getElementById(`note-input-${crmSelectedOrderForDetail.id}`).value = '';
-                                                    const res = await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/notes`, { headers: getAuthHeaders() });
-                                                    if (res.ok) { const d = await res.json(); document.getElementById(`notes-container-${crmSelectedOrderForDetail.id}`).innerText = ''; const container = document.getElementById(`notes-container-${crmSelectedOrderForDetail.id}`); d.notes.forEach(n => { const div = document.createElement('div'); div.className = 'py-1.5 border-b border-slate-50 last:border-0'; const span = document.createElement('span'); span.className = 'font-bold text-slate-700'; span.textContent = (n.author_name || 'Unknown') + ': '; div.appendChild(span); div.appendChild(document.createTextNode(n.note + ' ')); const time = document.createElement('span'); time.className = 'text-[8px] text-slate-400'; time.textContent = new Date(n.created_at).toLocaleString('en-IN'); div.appendChild(time); container.appendChild(div); }); }
-                                                    addToast('Note added', 'success');
+                                                    try {
+                                                        const noteInput = document.getElementById(`note-input-${crmSelectedOrderForDetail.id}`);
+                                                        if (!noteInput) return;
+                                                        const note = noteInput.value;
+                                                        if (!note) return;
+                                                        await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/notes`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ note }) });
+                                                        noteInput.value = '';
+                                                        const res = await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/notes`, { headers: getAuthHeaders() });
+                                                        if (res.ok) { const d = await res.json(); const container = document.getElementById(`notes-container-${crmSelectedOrderForDetail.id}`); if (container) { container.innerText = ''; d.notes.forEach(n => { const div = document.createElement('div'); div.className = 'py-1.5 border-b border-slate-50 last:border-0'; const span = document.createElement('span'); span.className = 'font-bold text-slate-700'; span.textContent = (n.author_name || 'Unknown') + ': '; div.appendChild(span); div.appendChild(document.createTextNode(n.note + ' ')); const time = document.createElement('span'); time.className = 'text-[8px] text-slate-400'; time.textContent = new Date(n.created_at).toLocaleString('en-IN'); div.appendChild(time); container.appendChild(div); }); } }
+                                                        addToast('Note added', 'success');
+                                                    } catch(e) { addToast('Failed to add note', 'error'); }
                                                 }} className="px-3 py-2 bg-amber-600 text-white rounded-lg text-xs font-bold hover:bg-amber-700 cursor-pointer"><i className="fa-solid fa-plus"></i></button>
                                             </div>
                                         </div>
@@ -5032,11 +5051,16 @@
                                                 <input id={`refund-amount-${crmSelectedOrderForDetail.id}`} type="number" placeholder="Amount" defaultValue={crmSelectedOrderForDetail.amount} className="w-32 px-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none" />
                                                 <input id={`refund-reason-${crmSelectedOrderForDetail.id}`} type="text" placeholder="Reason" className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none" />
                                                 <button onClick={async () => {
-                                                    if (!confirm('Process refund?')) return;
-                                                    const amount = document.getElementById(`refund-amount-${crmSelectedOrderForDetail.id}`).value;
-                                                    const reason = document.getElementById(`refund-reason-${crmSelectedOrderForDetail.id}`).value;
-                                                    const res = await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/refund`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ amount: parseFloat(amount), reason }) });
-                                                    if (res.ok) { addToast('Refund processed', 'success'); fetchCrmOrders(); setCrmSelectedOrderForDetail(null); } else { addToast('Failed', 'error'); }
+                                                    try {
+                                                        if (!confirm('Process refund?')) return;
+                                                        const amountEl = document.getElementById(`refund-amount-${crmSelectedOrderForDetail.id}`);
+                                                        const reasonEl = document.getElementById(`refund-reason-${crmSelectedOrderForDetail.id}`);
+                                                        if (!amountEl || !reasonEl) return;
+                                                        const amount = amountEl.value;
+                                                        const reason = reasonEl.value;
+                                                        const res = await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/refund`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ amount: parseFloat(amount), reason }) });
+                                                        if (res.ok) { addToast('Refund processed', 'success'); fetchCrmOrders(); setCrmSelectedOrderForDetail(null); } else { addToast('Failed', 'error'); }
+                                                    } catch(e) { addToast('Failed to process refund', 'error'); }
                                                 }} className="px-3 py-2 bg-rose-600 text-white rounded-lg text-xs font-bold hover:bg-rose-700 cursor-pointer">Process Refund</button>
                                             </div>
                                         </div>
@@ -5045,8 +5069,10 @@
                                         <div className="border-t border-slate-100 pt-4 mt-4">
                                             <h4 className="font-bold text-slate-700 text-xs flex items-center gap-2 mb-3"><i className="fa-solid fa-clock-rotate-left text-purple-500"></i> Document Versions</h4>
                                             <button onClick={async () => {
-                                                const res = await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/versions`, { headers: getAuthHeaders() });
-                                                if (res.ok) { const d = await res.json(); const versionsContainer = document.getElementById(`versions-${crmSelectedOrderForDetail.id}`); versionsContainer.innerText = ''; d.versions.forEach(v => { const div = document.createElement('div'); div.className = 'py-1.5 border-b border-slate-50 text-xs'; const vspan = document.createElement('span'); vspan.className = 'font-bold text-purple-700'; vspan.textContent = 'v' + v.version + ' by ' + (v.author_name || 'Unknown') + ' · ' + (v.change_summary || 'No summary') + ' · '; div.appendChild(vspan); div.appendChild(document.createTextNode(new Date(v.created_at).toLocaleString('en-IN'))); versionsContainer.appendChild(div); }); }
+                                                try {
+                                                    const res = await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/versions`, { headers: getAuthHeaders() });
+                                                    if (res.ok) { const d = await res.json(); const versionsContainer = document.getElementById(`versions-${crmSelectedOrderForDetail.id}`); if (versionsContainer) { versionsContainer.innerText = ''; d.versions.forEach(v => { const div = document.createElement('div'); div.className = 'py-1.5 border-b border-slate-50 text-xs'; const vspan = document.createElement('span'); vspan.className = 'font-bold text-purple-700'; vspan.textContent = 'v' + v.version + ' by ' + (v.author_name || 'Unknown') + ' · ' + (v.change_summary || 'No summary') + ' · '; div.appendChild(vspan); div.appendChild(document.createTextNode(new Date(v.created_at).toLocaleString('en-IN'))); versionsContainer.appendChild(div); }); } }
+                                                } catch(e) { addToast('Failed to load versions', 'error'); }
                                             }} className="px-3 py-1.5 bg-purple-50 text-purple-700 rounded-lg text-[10px] font-bold hover:bg-purple-100 cursor-pointer mb-2">Load Versions</button>
                                             <div id={`versions-${crmSelectedOrderForDetail.id}`} className="text-xs text-slate-500 max-h-[150px] overflow-y-auto"></div>
                                         </div>
@@ -6390,7 +6416,7 @@
                             onBlurCapture={() => setActiveField(null)}
                         >
                             {activeTab !== 'HOME' && activeTab !== 'CRM' && activeTab !== 'LIBRARY' && (() => {
-                                const allData = { RENT: rentData, ATS: atsData, REG_RENT: regRentData, MUTATION: mutationData, KYA: gnidaData, GNIDA: gnidaData, GNIDA_REGISTRY: gnidaRegistryData, GNIDA_PTM: gnidaPtmData, GNIDA_PACKAGE: gnidaPackageData, TM_APP: tmAppData, TM48: tm48Data, NOIDA_TRANSFER: noidaTransferData };
+                                const allData = { RENT: rentData, ATS: atsData, REG_RENT: regData, MUTATION: mutationData, KYA: gnidaData, GNIDA: gnidaData, GNIDA_REGISTRY: gnidaRegistryData, GNIDA_PTM: gnidaPtmData, GNIDA_PACKAGE: gnidaPackageData, TM_APP: tmAppData, TM48: tm48Data, NOIDA_TRANSFER: noidaTransferData };
                                 const data = allData[activeTab] || {};
                                 const fields = Object.values(data).filter(v => typeof v === 'string' || typeof v === 'number');
                                 const total = fields.length;
