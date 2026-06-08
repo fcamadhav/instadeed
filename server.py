@@ -415,6 +415,42 @@ async def verify_otp(request: Request, body: VerifyOTPRequest):
     token = create_token(user[0], user[2], user[3])
     return {"status": "success", "token": token, "user": {"id": user[0], "name": user[1], "email": user[2], "role": user[3]}}
 
+class GoogleAuthRequest(BaseModel):
+    name: str
+    email: str
+    picture: str = ""
+
+@app.post("/api/auth/google")
+@limiter.limit("10/minute")
+async def google_auth(request: Request, body: GoogleAuthRequest):
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, email, role, is_active FROM users WHERE email = ?", (body.email,))
+    existing = cursor.fetchone()
+    now = datetime.datetime.now().isoformat()
+    if existing:
+        uid, name, email, role, is_active = existing
+        if not is_active:
+            conn.close()
+            raise HTTPException(status_code=403, detail="Account deactivated")
+        cursor.execute("UPDATE users SET last_login = ?, name = ? WHERE id = ?", (now, body.name, uid))
+        conn.commit()
+        conn.close()
+        token = create_token(uid, email, role)
+        return {"status": "success", "token": token, "user": {"id": uid, "name": body.name, "email": email, "role": role, "is_new": False}}
+    else:
+        uid = str(uuid.uuid4())
+        dummy_hash = hash_password(uuid.uuid4().hex)  # no password for Google users
+        cursor.execute(
+            "INSERT INTO users (id, name, email, password_hash, role, is_active, created_at, last_login) VALUES (?, ?, ?, ?, 'user', 1, ?, ?)",
+            (uid, body.name, body.email, dummy_hash, now, now)
+        )
+        conn.commit()
+        conn.close()
+        token = create_token(uid, body.email, "user")
+        logger.info(f"New Google user registered: {body.email}")
+        return {"status": "success", "token": token, "user": {"id": uid, "name": body.name, "email": body.email, "role": "user", "is_new": True}}
+
 # === AUTH ENDPOINTS ===
 
 @app.post("/api/auth/signup")
@@ -1235,6 +1271,63 @@ async def leegality_webhook(request: Request):
         logger.error(f"Leegality webhook error: {e}")
         return {"status": "error", "message": str(e)}
 
+
+# === ADMIN USER MANAGEMENT ===
+
+class AdminUpdateUserRequest(BaseModel):
+    role: Optional[str] = None
+    is_active: Optional[int] = None
+
+@app.get("/api/admin/users")
+async def admin_get_users(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    search = request.query_params.get("search", "").strip()
+    sort_by = request.query_params.get("sort_by", "created_at")
+    sort_order = request.query_params.get("sort_order", "desc")
+    allowed_sort = {"created_at", "name", "email", "last_login", "role"}
+    if sort_by not in allowed_sort:
+        sort_by = "created_at"
+    direction = "DESC" if sort_order == "desc" else "ASC"
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    if search:
+        cursor.execute(f"SELECT id, name, email, role, is_active, created_at, last_login FROM users WHERE name LIKE ? OR email LIKE ? ORDER BY {sort_by} {direction}", (f"%{search}%", f"%{search}%"))
+    else:
+        cursor.execute(f"SELECT id, name, email, role, is_active, created_at, last_login FROM users ORDER BY {sort_by} {direction}")
+    rows = cursor.fetchall()
+    cursor.execute("SELECT COUNT(*) FROM users")
+    total = cursor.fetchone()[0]
+    conn.close()
+    users_list = []
+    for r in rows:
+        users_list.append({"id": r[0], "name": r[1], "email": r[2], "role": r[3], "is_active": bool(r[4]), "created_at": r[5], "last_login": r[6]})
+    return {"users": users_list, "total": total}
+
+@app.put("/api/admin/users/{user_id}")
+async def admin_update_user(user_id: str, body: AdminUpdateUserRequest, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM users WHERE id = ?", (user_id,))
+    if not cursor.fetchone():
+        conn.close()
+        raise HTTPException(status_code=404, detail="User not found")
+    updates = []
+    params = []
+    if body.role is not None:
+        updates.append("role = ?")
+        params.append(body.role)
+    if body.is_active is not None:
+        updates.append("is_active = ?")
+        params.append(body.is_active)
+    if updates:
+        params.append(user_id)
+        cursor.execute(f"UPDATE users SET {', '.join(updates)} WHERE id = ?", tuple(params))
+        conn.commit()
+    conn.close()
+    return {"status": "success"}
 
 # --- Draft API (Save/Resume via OTP) ---
 DRAFT_OTP_STORE = {}

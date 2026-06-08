@@ -628,6 +628,7 @@
                                         picture: payload.picture
                                     };
                                     localStorage.setItem('instadeed_user_session', JSON.stringify(userSession));
+                                    fetch('/api/auth/google', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: payload.name, email: payload.email, picture: payload.picture }) }).catch(() => {});
                                     onLogin(userSession);
                                     resetModal();
                                     onClose();
@@ -686,6 +687,7 @@
                 };
                 localStorage.setItem('instadeed_user', JSON.stringify(mockUser));
                 setUser(mockUser);
+                fetch('/api/auth/google', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(mockUser) }).catch(() => {});
                 onLogin(mockUser);
                 addToast("Signed in as " + mockUser.name, 'success');
             };
@@ -2645,6 +2647,11 @@
             const [crmFilterStatus, setCrmFilterStatus] = useState('');
             const [crmView, setCrmView] = useState('orders');
             const [crmCustomers, setCrmCustomers] = useState([]);
+            const [crmUsers, setCrmUsers] = useState([]);
+            const [crmUsersTotal, setCrmUsersTotal] = useState(0);
+            const [crmUsersSearch, setCrmUsersSearch] = useState('');
+            const [crmUsersSortBy, setCrmUsersSortBy] = useState('created_at');
+            const [crmUsersSortOrder, setCrmUsersSortOrder] = useState('desc');
             const [trackedEvents, setTrackedEvents] = useState([]);
             const [trackedEventStats, setTrackedEventStats] = useState(null);
             const [expiringRentals, setExpiringRentals] = useState(null);
@@ -3205,6 +3212,23 @@
                     }
                 } catch (e) {
                     console.error("Failed to fetch customers:", e);
+                }
+            };
+
+            const fetchCrmUsers = async () => {
+                try {
+                    const params = new URLSearchParams();
+                    if (crmUsersSearch) params.set('search', crmUsersSearch);
+                    params.set('sort_by', crmUsersSortBy);
+                    params.set('sort_order', crmUsersSortOrder);
+                    const res = await fetch(`${API_BASE}/api/admin/users?${params}`, { headers: getAuthHeaders() });
+                    if (res.ok) {
+                        const data = await res.json();
+                        setCrmUsers(data.users || []);
+                        setCrmUsersTotal(data.total || 0);
+                    }
+                } catch (e) {
+                    console.error("Failed to fetch users:", e);
                 }
             };
 
@@ -3823,6 +3847,9 @@
                             <button onClick={() => setCrmView('customers')} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'customers' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
                                 <i className="fa-solid fa-users"></i> Customers
                             </button>
+                            <button onClick={() => { setCrmView('users'); fetchCrmUsers(); }} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'users' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
+                                <i className="fa-solid fa-user-plus"></i> Users
+                            </button>
                             <button onClick={() => setCrmView('analytics')} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'analytics' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
                                 <i className="fa-solid fa-chart-pie"></i> Reports
                             </button>
@@ -4303,6 +4330,112 @@
                                                     <td className="px-5 py-4 text-slate-500 text-[9px] font-medium max-w-[150px] truncate">{c.orders_breakdown}</td>
                                                 </tr>
                                             ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Registered Users Section */}
+                        {crmView === 'users' && (
+                            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                <div className="px-5 py-4 border-b border-slate-50 flex items-center justify-between gap-4 flex-wrap">
+                                    <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                        <i className="fa-solid fa-user-plus text-indigo-600"></i>
+                                        Registered Users ({crmUsersTotal})
+                                    </h3>
+                                    <div className="flex gap-2 items-center">
+                                        <div className="relative">
+                                            <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                                            <input type="text" placeholder="Search users..." value={crmUsersSearch} onChange={(e) => setCrmUsersSearch(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') fetchCrmUsers(); }} className="pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-100 rounded-lg text-xs focus:outline-none focus:border-blue-300 w-44" />
+                                        </div>
+                                        <select value={crmUsersSortBy} onChange={(e) => { setCrmUsersSortBy(e.target.value); setTimeout(fetchCrmUsers, 0); }} className="px-2.5 py-1.5 bg-slate-50 border border-slate-100 rounded-lg text-xs font-medium text-slate-600 focus:outline-none cursor-pointer">
+                                            <option value="created_at">Registered</option>
+                                            <option value="name">Name</option>
+                                            <option value="email">Email</option>
+                                            <option value="last_login">Last Login</option>
+                                            <option value="role">Role</option>
+                                        </select>
+                                        <button onClick={() => { setCrmUsersSortOrder(prev => prev === 'desc' ? 'asc' : 'desc'); setTimeout(fetchCrmUsers, 0); }} className="px-2.5 py-1.5 bg-slate-50 border border-slate-100 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 cursor-pointer">
+                                            <i className={`fa-solid fa-arrow-${crmUsersSortOrder === 'desc' ? 'down-z-a' : 'up-a-z'}`}></i> {crmUsersSortOrder === 'desc' ? 'Newest' : 'Oldest'}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr className="bg-slate-50 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                                                <th className="px-5 py-3">Name</th>
+                                                <th className="px-5 py-3">Email</th>
+                                                <th className="px-5 py-3">Role</th>
+                                                <th className="px-5 py-3">Status</th>
+                                                <th className="px-5 py-3">Registered</th>
+                                                <th className="px-5 py-3">Last Login</th>
+                                                <th className="px-5 py-3 text-right">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-50 text-xs">
+                                            {crmUsers.length === 0 ? (
+                                                <tr>
+                                                    <td colSpan="7" className="px-5 py-10 text-center text-slate-400 font-medium">
+                                                        <i className="fa-solid fa-users-slash text-xl mb-2 block opacity-40"></i>
+                                                        No users found
+                                                    </td>
+                                                </tr>
+                                            ) : (
+                                                crmUsers.map((u, i) => (
+                                                    <tr key={u.id} className="hover:bg-slate-50/50 transition">
+                                                        <td className="px-5 py-4 font-bold text-slate-800">{u.name}</td>
+                                                        <td className="px-5 py-4 text-slate-500">{u.email}</td>
+                                                        <td className="px-5 py-4">
+                                                            <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${u.role === 'admin' ? 'bg-amber-50 text-amber-700' : 'bg-blue-50 text-blue-700'}`}>
+                                                                {u.role}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-5 py-4">
+                                                            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-bold text-[10px] ${u.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}`}>
+                                                                <span className={`w-1.5 h-1.5 rounded-full ${u.is_active ? 'bg-emerald-500' : 'bg-rose-500'}`}></span>
+                                                                {u.is_active ? 'Active' : 'Inactive'}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-5 py-4 text-slate-500">{u.created_at ? new Date(u.created_at).toLocaleString('en-IN') : '-'}</td>
+                                                        <td className="px-5 py-4 text-slate-500">{u.last_login ? new Date(u.last_login).toLocaleString('en-IN') : '-'}</td>
+                                                        <td className="px-5 py-4 text-right">
+                                                            <div className="flex gap-1 justify-end">
+                                                                {u.role !== 'admin' && (
+                                                                    <button
+                                                                        onClick={async () => {
+                                                                            if (!confirm(u.is_active ? 'Deactivate this user?' : 'Activate this user?')) return;
+                                                                            try {
+                                                                                const res = await fetch(`${API_BASE}/api/admin/users/${u.id}`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ is_active: u.is_active ? 0 : 1 }) });
+                                                                                if (res.ok) { addToast(u.is_active ? 'User deactivated' : 'User activated', 'success'); fetchCrmUsers(); }
+                                                                            } catch (e) { addToast('Failed to update user', 'error'); }
+                                                                        }}
+                                                                        className={`px-2.5 py-1.5 rounded-lg text-[10px] font-bold cursor-pointer transition ${u.is_active ? 'bg-rose-50 text-rose-600 hover:bg-rose-100' : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'}`}
+                                                                        title={u.is_active ? 'Deactivate' : 'Activate'}
+                                                                    >
+                                                                        <i className={`fa-solid ${u.is_active ? 'fa-ban' : 'fa-check'}`}></i>
+                                                                    </button>
+                                                                )}
+                                                                {u.role !== 'admin' && (
+                                                                    <button
+                                                                        onClick={async () => {
+                                                                            try {
+                                                                                const res = await fetch(`${API_BASE}/api/admin/users/${u.id}`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ role: u.role === 'user' ? 'admin' : 'user' }) });
+                                                                                if (res.ok) { addToast(`Role changed to ${u.role === 'user' ? 'admin' : 'user'}`, 'success'); fetchCrmUsers(); }
+                                                                            } catch (e) { addToast('Failed to update role', 'error'); }
+                                                                        }}
+                                                                        className="px-2.5 py-1.5 bg-slate-50 text-slate-600 hover:bg-slate-100 rounded-lg text-[10px] font-bold cursor-pointer transition"
+                                                                        title="Toggle role"
+                                                                    >
+                                                                        <i className="fa-solid fa-shield-halved"></i>
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            )}
                                         </tbody>
                                     </table>
                                 </div>
