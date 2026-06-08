@@ -9,12 +9,13 @@ import hashlib
 import io
 import base64
 import random
+import threading
 from contextlib import asynccontextmanager
 from typing import Optional
 
 import requests as http_requests
 
-from fastapi import FastAPI, Request, HTTPException, Depends
+from fastapi import FastAPI, Request, HTTPException, Depends, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse, Response
 from pydantic import BaseModel
@@ -1234,6 +1235,65 @@ async def leegality_webhook(request: Request):
         logger.error(f"Leegality webhook error: {e}")
         return {"status": "error", "message": str(e)}
 
+
+# --- Draft API (Save/Resume via OTP) ---
+DRAFT_OTP_STORE = {}
+DRAFT_DB_LOCK = threading.Lock()
+
+@app.post("/api/drafts/send-otp")
+async def drafts_send_otp(body: dict = Body(...)):
+    phone = body.get("phone", "")
+    if len(phone) != 10:
+        return {"success": False, "error": "Invalid phone number"}
+    otp = "123456"  # Fixed OTP for demo
+    DRAFT_OTP_STORE[phone] = otp
+    logger.info(f"Draft OTP for {phone}: {otp}")
+    return {"success": True}
+
+@app.post("/api/drafts/verify-otp")
+async def drafts_verify_otp(body: dict = Body(...)):
+    phone = body.get("phone", "")
+    otp = body.get("otp", "")
+    if DRAFT_OTP_STORE.get(phone) == otp:
+        DRAFT_OTP_STORE.pop(phone, None)
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, doc_type, form_data, created_at, updated_at FROM saved_drafts WHERE phone = ? ORDER BY updated_at DESC", (phone,))
+        rows = cursor.fetchall()
+        conn.close()
+        drafts = []
+        for r in rows:
+            drafts.append({"id": r[0], "doc_type": r[1], "form_data": json.loads(r[2]) if r[2] else {}, "created_at": r[3], "updated_at": r[4]})
+        return {"success": True, "drafts": drafts}
+    return {"success": False, "error": "Invalid OTP"}
+
+@app.post("/api/drafts")
+async def save_draft(body: dict = Body(...)):
+    doc_type = body.get("doc_type", "")
+    form_data = body.get("form_data", {})
+    phone = body.get("phone", "")
+    if not doc_type:
+        return {"success": False, "error": "doc_type required"}
+    now = datetime.datetime.now().isoformat()
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS saved_drafts (id INTEGER PRIMARY KEY AUTOINCREMENT, doc_type TEXT, form_data TEXT, phone TEXT, created_at TEXT, updated_at TEXT)")
+        if phone:
+            cursor.execute("SELECT id FROM saved_drafts WHERE doc_type = ? AND phone = ?", (doc_type, phone))
+            existing = cursor.fetchone()
+            if existing:
+                cursor.execute("UPDATE saved_drafts SET form_data = ?, updated_at = ? WHERE id = ?", (json.dumps(form_data), now, existing[0]))
+            else:
+                cursor.execute("INSERT INTO saved_drafts (doc_type, form_data, phone, created_at, updated_at) VALUES (?, ?, ?, ?, ?)", (doc_type, json.dumps(form_data), phone, now, now))
+        else:
+            cursor.execute("INSERT INTO saved_drafts (doc_type, form_data, phone, created_at, updated_at) VALUES (?, ?, ?, ?, ?)", (doc_type, json.dumps(form_data), phone, now, now))
+        conn.commit()
+        conn.close()
+        return {"success": True}
+    except Exception as e:
+        logger.error(f"Draft save error: {e}")
+        return {"success": False, "error": str(e)}
 
 if __name__ == "__main__":
     import uvicorn

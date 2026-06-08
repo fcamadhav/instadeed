@@ -1156,6 +1156,97 @@
             );
         };
 
+        // --- Draft Load Modal (OTP based) ---
+        const DraftLoadModal = ({ isOpen, onClose, onLoadDraft }) => {
+            const [step, setStep] = useState('phone'); // phone, otp, list
+            const [phone, setPhone] = useState('');
+            const [otp, setOtp] = useState('');
+            const [drafts, setDrafts] = useState([]);
+            const [loading, setLoading] = useState(false);
+            const [msg, setMsg] = useState('');
+
+            if (!isOpen) return null;
+
+            const sendOtp = async () => {
+                if (phone.length !== 10) { setMsg('Enter valid 10-digit number'); return; }
+                setLoading(true); setMsg('');
+                try {
+                    const r = await fetch(`${API_BASE}/api/drafts/send-otp`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone })
+                    });
+                    const d = await r.json();
+                    if (d.success) { setStep('otp'); setMsg('OTP sent!'); }
+                    else setMsg(d.error || 'Failed');
+                } catch(e) { setMsg('Network error'); }
+                setLoading(false);
+            };
+
+            const verifyOtp = async () => {
+                if (otp.length !== 6) { setMsg('Enter 6-digit OTP'); return; }
+                setLoading(true); setMsg('');
+                try {
+                    const r = await fetch(`${API_BASE}/api/drafts/verify-otp`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone, otp })
+                    });
+                    const d = await r.json();
+                    if (d.success) { setDrafts(d.drafts || []); setStep('list'); setMsg(''); }
+                    else setMsg(d.error || 'Invalid OTP');
+                } catch(e) { setMsg('Network error'); }
+                setLoading(false);
+            };
+
+            return React.createElement('div', {
+                className: 'fixed inset-0 bg-black/60 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm',
+                onClick: onClose
+            }, React.createElement('div', {
+                className: 'bg-white w-full max-w-sm rounded-2xl border border-slate-100 shadow-lg relative animate-in fade-in zoom-in duration-200 p-6',
+                onClick: e => e.stopPropagation()
+            },
+                React.createElement('button', { onClick: onClose, className: 'absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors text-sm' },
+                    React.createElement('i', { className: 'fa-solid fa-xmark' })
+                ),
+                React.createElement('h3', { className: 'font-extrabold text-slate-800 text-lg mb-1' }, 'My Saved Drafts'),
+                React.createElement('p', { className: 'text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-4' }, 'Enter phone to retrieve drafts'),
+
+                step === 'phone' && React.createElement('div', { className: 'space-y-3' },
+                    React.createElement('div', { className: 'flex items-center border border-slate-200 rounded-xl overflow-hidden focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-50 bg-white' },
+                        React.createElement('span', { className: 'bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-500 border-r border-slate-200' }, '+91'),
+                        React.createElement('input', { type: 'tel', value: phone, onChange: e => setPhone(e.target.value.replace(/\D/g,'').slice(0,10)), placeholder: '98765 43210', className: 'w-full px-3 py-2.5 text-sm focus:outline-none text-slate-800' })
+                    ),
+                    msg && React.createElement('p', { className: `text-xs font-semibold ${msg === 'OTP sent!' ? 'text-emerald-600' : 'text-red-500'}` }, msg),
+                    React.createElement('button', { onClick: sendOtp, disabled: loading || phone.length !== 10, className: 'w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all text-xs cursor-pointer text-center disabled:opacity-40 shadow-sm' },
+                        loading ? React.createElement(React.Fragment, null, React.createElement('i', { className: 'fa-solid fa-circle-notch fa-spin mr-2' }), 'Sending...') : 'Send OTP'
+                    )
+                ),
+
+                step === 'otp' && React.createElement('div', { className: 'space-y-3' },
+                    React.createElement('p', { className: 'text-xs text-slate-500' }, 'OTP sent to +91 ' + phone),
+                    React.createElement('input', { type: 'text', value: otp, onChange: e => setOtp(e.target.value.replace(/\D/g,'').slice(0,6)), placeholder: 'Enter 6-digit OTP', maxLength: 6, className: 'w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-50 focus:outline-none bg-white text-slate-800 text-center tracking-[0.5em] font-bold' }),
+                    msg && React.createElement('p', { className: `text-xs font-semibold ${msg === 'OTP sent!' ? 'text-emerald-600' : 'text-red-500'}` }, msg),
+                    React.createElement('button', { onClick: verifyOtp, disabled: loading || otp.length !== 6, className: 'w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all text-xs cursor-pointer text-center disabled:opacity-40 shadow-sm' },
+                        loading ? React.createElement(React.Fragment, null, React.createElement('i', { className: 'fa-solid fa-circle-notch fa-spin mr-2' }), 'Verifying...') : 'Verify OTP'
+                    ),
+                    React.createElement('button', { onClick: () => { setStep('phone'); setOtp(''); setMsg(''); }, className: 'w-full text-xs text-slate-500 hover:text-slate-700 font-semibold' }, '← Change number')
+                ),
+
+                step === 'list' && React.createElement('div', { className: 'space-y-2 max-h-80 overflow-y-auto' },
+                    drafts.length === 0 && React.createElement('p', { className: 'text-xs text-slate-400 text-center py-4' }, 'No saved drafts found'),
+                    drafts.map(d => React.createElement('div', { key: d.id, className: 'flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100 hover:border-blue-100 hover:bg-blue-50/30 transition cursor-pointer', onClick: () => { onLoadDraft(d); onClose(); } },
+                        React.createElement('div', { className: 'flex items-center gap-2.5' },
+                            React.createElement('div', { className: 'w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold' }, (d.doc_type || 'D').slice(0,2)),
+                            React.createElement('div', null,
+                                React.createElement('p', { className: 'text-sm font-bold text-slate-800' }, d.doc_type || 'Draft'),
+                                React.createElement('p', { className: 'text-[10px] text-slate-400' }, new Date(d.updated_at || d.created_at).toLocaleDateString('en-IN'))
+                            )
+                        ),
+                        React.createElement('i', { className: 'fa-solid fa-chevron-right text-slate-300 text-xs' })
+                    ))
+                )
+            ));
+        };
+
         const defaultGnidaPackageData = {
             // Property
             projectName: 'GAUR SAUNDARYAM',
@@ -2542,6 +2633,13 @@
             const [isOfficeMode, setIsOfficeMode] = useState(false);
             const [showCheckoutModal, setShowCheckoutModal] = useState(false);
             const [checkoutDetails, setCheckoutDetails] = useState({ name: '', phone: '', email: '' });
+            const [showDraftLoadModal, setShowDraftLoadModal] = useState(false);
+            const [cloudDrafts, setCloudDrafts] = useState([]);
+            const [draftPhone, setDraftPhone] = useState('');
+            const [draftOtp, setDraftOtp] = useState('');
+            const [draftOtpSent, setDraftOtpSent] = useState(false);
+            const [draftOtpVerified, setDraftOtpVerified] = useState(false);
+            const [draftLoading, setDraftLoading] = useState(false);
             const [crmOrders, setCrmOrders] = useState([]);
             const [crmAnalytics, setCrmAnalytics] = useState(null);
             const [crmFilterStatus, setCrmFilterStatus] = useState('');
@@ -3237,6 +3335,18 @@
                     console.error("Backend offline save failed:", e);
                 }
                 triggerPrint();
+            };
+
+            const handleSaveDraft = async () => {
+                const payload = getActiveDataPayload();
+                try {
+                    await fetch(`${API_BASE}/api/drafts`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ doc_type: activeTab, form_data: payload, phone: user?.phone || checkoutDetails.phone || '' })
+                    });
+                } catch(e) { console.error("Draft save failed:", e); }
+                try { localStorage.setItem(`instadeed_draft_${activeTab}`, JSON.stringify(payload)); } catch(e) {}
             };
 
             const handleOnlinePayment = async () => {
@@ -5474,6 +5584,37 @@
                             }}
                             onBlurCapture={() => setActiveField(null)}
                         >
+                            {activeTab !== 'HOME' && activeTab !== 'CRM' && activeTab !== 'LIBRARY' && (() => {
+                                const allData = { RENT: rentData, ATS: atsData, REG_RENT: regRentData, MUTATION: mutationData, KYA: gnidaData, GNIDA: gnidaData, GNIDA_REGISTRY: gnidaRegistryData, GNIDA_PTM: gnidaPtmData, GNIDA_PACKAGE: gnidaPackageData, TM_APP: tmAppData, TM48: tm48Data, NOIDA_TRANSFER: noidaTransferData };
+                                const data = allData[activeTab] || {};
+                                const fields = Object.values(data).filter(v => typeof v === 'string' || typeof v === 'number');
+                                const total = fields.length;
+                                const filled = fields.filter(v => v !== undefined && v !== null && v.toString().trim() !== '').length;
+                                const pct = total > 0 ? Math.round(filled / total * 100) : 0;
+                                const color = pct === 100 ? 'bg-emerald-500' : pct > 50 ? 'bg-blue-500' : pct > 25 ? 'bg-amber-500' : 'bg-slate-400';
+                                return React.createElement('div', {
+                                    className: 'sticky top-0 z-10 -mx-4 -mt-4 px-4 pt-3 pb-2 bg-white/90 backdrop-blur-sm border-b border-slate-100 mb-3 shadow-sm',
+                                    children: React.createElement('div', { className: 'flex items-center gap-3' },
+                                        React.createElement('div', { className: 'flex-1' },
+                                            React.createElement('div', { className: 'flex items-center justify-between mb-1' },
+                                                React.createElement('span', { className: 'text-[10px] font-bold text-slate-500 uppercase tracking-wider' }, 'Form Completion'),
+                                                React.createElement('span', { className: `text-[10px] font-extrabold ${pct === 100 ? 'text-emerald-600' : 'text-blue-600'}` }, `${pct}%`)
+                                            ),
+                                            React.createElement('div', { className: 'w-full h-1.5 bg-slate-100 rounded-full overflow-hidden' },
+                                                React.createElement('div', { className: `${color} h-full rounded-full transition-all duration-500`, style: { width: pct + '%' } })
+                                            )
+                                        ),
+                                        React.createElement('button', {
+                                            onClick: () => { handleSaveDraft(); addToast('Draft saved!', 'success'); },
+                                            className: 'shrink-0 px-3 py-1.5 bg-slate-100 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 text-slate-600 hover:text-blue-600 text-[10px] font-bold rounded-lg transition flex items-center gap-1.5 cursor-pointer'
+                                        }, React.createElement('i', { className: 'fa-solid fa-floppy-disk' }), 'Save'),
+                                        React.createElement('button', {
+                                            onClick: () => setShowDraftLoadModal(true),
+                                            className: 'shrink-0 px-3 py-1.5 bg-slate-100 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 text-slate-600 hover:text-emerald-600 text-[10px] font-bold rounded-lg transition flex items-center gap-1.5 cursor-pointer'
+                                        }, React.createElement('i', { className: 'fa-solid fa-folder-open' }), 'Load')
+                                    )
+                                });
+                            })()}
 
                             {activeTab === 'HOME' && (
                                 <div className="bg-slate-50 border border-dashed border-slate-200 rounded-xl p-5 text-center my-4 space-y-3">
@@ -10733,6 +10874,18 @@
                                 </div>
                             </div>
                         )}
+
+                        {/* Draft Load Modal */}
+                        {React.createElement(DraftLoadModal, {
+                            isOpen: showDraftLoadModal,
+                            onClose: () => setShowDraftLoadModal(false),
+                            onLoadDraft: (d) => {
+                                setActiveTab(d.doc_type);
+                                const setters = { RENT: setRentData, ATS: setAtsData, REG_RENT: setRegData, MUTATION: setMutationData, GNIDA: setGnidaData, GNIDA_REGISTRY: setGnidaRegistryData, GNIDA_PTM: setGnidaPtmData, GNIDA_PACKAGE: setGnidaPackageData, TM_APP: setTmAppData, TM48: setTm48Data, NOIDA_TRANSFER: setNoidaTransferData, KYA: setGnidaData };
+                                if (setters[d.doc_type] && d.form_data) setters[d.doc_type](d.form_data);
+                                addToast('Draft loaded!', 'success');
+                            }
+                        })}
 
                     </div >
                     )}
