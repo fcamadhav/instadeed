@@ -685,7 +685,6 @@
                     picture: "https://ui-avatars.com/api/?name=Demo+User&background=2563EB&color=fff"
                 };
                 localStorage.setItem('instadeed_user', JSON.stringify(mockUser));
-                setUser(mockUser);
                 fetch('/api/auth/google', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(mockUser) }).catch(() => {});
                 onLogin(mockUser);
                 addToast("Signed in as " + mockUser.name, 'success');
