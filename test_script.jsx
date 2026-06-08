@@ -1391,7 +1391,7 @@
                 setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), duration);
             }, []);
 
-            const [activeTab, setActiveTab] = useState(() => window.location.pathname.startsWith('/admin') ? 'CRM' : 'HOME'); // 'RENT', 'ATS', 'NOIDA_TRANSFER' etc.
+            const [activeTab, setActiveTab] = useState(() => window.location.pathname.toLowerCase().startsWith('/admin') ? 'CRM' : 'HOME'); // 'RENT', 'ATS', 'NOIDA_TRANSFER' etc.
             const [gnidaPackageDocs, setGnidaPackageDocs] = useState({
                 kya: true,
                 tm: true,
