@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    container_name: instadeed
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file: .env
+    volumes:
+      - ./madhav_crm.db:/app/madhav_crm.db
+      - ./server.log:/app/server.log
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Uncomment for PostgreSQL:
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: instadeed-db
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_DB: instadeed
+  #     POSTGRES_USER: instadeed
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #
+  # Uncomment for Redis:
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: instadeed-redis
+  #   restart: unless-stopped
+  #   ports:
+  #     - "6379:6379"
+  #
+  # volumes:
+  #   postgres_data:

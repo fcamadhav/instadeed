@@ -10,3 +10,9 @@ venv/
 *.png
 *.zip
 *.bak
+server.log
+migrations/*.json
+dist/
+build/
+.secrets
+*.log

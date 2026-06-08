@@ -17,8 +17,7 @@
         const ToastBar = ({ toasts, removeToast }) => {
             if (!toasts.length) return null;
             return React.createElement('div', {
-                className: 'fixed top-4 right-4 z-[9999] flex flex-col gap-2 max-w-sm',
-                dangerouslySetInnerHTML: { __html: '' }
+                className: 'fixed top-4 right-4 z-[9999] flex flex-col gap-2 max-w-sm'
             }, toasts.map(t => React.createElement('div', {
                 key: t.id,
                 className: `flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-semibold animate-in slide-in-from-right-2 fade-in duration-200 cursor-pointer ${t.type === 'success' ? 'bg-emerald-600 text-white' : t.type === 'error' ? 'bg-red-600 text-white' : t.type === 'warning' ? 'bg-amber-500 text-white' : 'bg-blue-600 text-white'}`,
@@ -2174,7 +2173,7 @@
                         })
                         .catch(err => {
                             console.error(err);
-                            alert("Failed to load cloud document: " + err.message);
+                                                    addToast("Failed to load cloud document: " + err.message, 'error');
                             setActiveTab('HOME');
                         });
                     return;
@@ -2557,7 +2556,7 @@
                         else if (activeTab === 'GNIDA_PACKAGE') setGnidaPackageData(prev => ({ ...prev, ...loaded }));
                         else setRegData(prev => ({ ...prev, ...loaded }));
                     } catch (err) {
-                        alert("Invalid JSON file");
+                                                addToast("Invalid JSON file", 'error');
                     }
                 };
                 reader.readAsText(file);
@@ -2576,7 +2575,7 @@
                     setGnidaPackageData(defaultGnidaPackageData);
 
                     localStorage.removeItem('madhav_legal_suite_v4_clean');
-                    alert("All forms have been cleared.");
+                    addToast("All forms cleared.", 'success');
                 }
             };
 
@@ -2596,7 +2595,7 @@
 
                 else currentData = regData;
                 localStorage.setItem(`madhav_default_${activeTab}`, JSON.stringify(currentData));
-                alert(`Settings saved as your Default ${activeTab} Template!`);
+                    addToast(`Default ${activeTab} template saved!`, 'success');
             };
 
             // --- Helper to build document name: [FlatNo] - [Name] - [Date] ---
@@ -2760,7 +2759,7 @@
                 const updatedDrafts = [newDraft, ...savedDrafts];
                 setSavedDrafts(updatedDrafts);
                 localStorage.setItem('madhav_saved_drafts', JSON.stringify(updatedDrafts));
-                alert("Draft saved to Library!");
+                    addToast("Draft saved to Library!", 'success');
             };
 
             const loadFromLibrary = (draft) => {
@@ -2808,7 +2807,7 @@
                         else setRegData(parsed);
                     }
                 } else {
-                    alert("No default template found for this document type.");
+                    addToast("No default template found for this document type.", 'warning');
                 }
             };
 
@@ -3500,14 +3499,15 @@
                             return;
                         }
                         
-                        let razorpayKey = 'rzp_live_SwmTpRiDct3TaU';
+                        let razorpayKey = '';
                         try {
                             const cfgRes = await fetch(`${API_BASE}/api/config`);
                             if (cfgRes.ok) {
                                 const cfg = await cfgRes.json();
-                                if (cfg.razorpay_key) razorpayKey = cfg.razorpay_key;
+                                razorpayKey = cfg.razorpay_key || '';
                             }
                         } catch(e) {}
+                        if (!razorpayKey) { addToast("Payment configuration error. Please contact support.", 'error'); return; }
                         
                         const options = {
                             key: razorpayKey,
@@ -3805,21 +3805,21 @@
             };
 
             const handleSendOtp = async () => {
-                if (!adminOtpEmail.trim()) { alert('Enter your email'); return; }
+                if (!adminOtpEmail.trim()) { addToast('Enter your email', 'error'); return; }
                 setAdminOtpSending(true);
                 try {
                     const res = await fetch(`${API_BASE}/api/auth/send-otp`, {
                         method: 'POST', headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ email: adminOtpEmail.trim() })
                     });
-                    if (res.ok) { setAdminOtpStep('otp'); }
-                    else { const err = await res.json(); alert(err.detail || 'Failed to send OTP'); }
-                } catch (e) { alert('Network error: ' + e.message); }
+                    if (res.ok) { setAdminOtpStep('otp'); addToast('OTP sent!', 'success'); }
+                    else { const err = await res.json(); addToast(err.detail || 'Failed to send OTP', 'error'); }
+                } catch (e) { addToast('Network error: ' + e.message, 'error'); }
                 setAdminOtpSending(false);
             };
 
             const handleVerifyOtp = async (otpCode) => {
-                if (!otpCode || otpCode.length < 4) { alert('Enter the OTP code'); return; }
+                if (!otpCode || otpCode.length < 4) { addToast('Enter the OTP code', 'error'); return; }
                 setAdminOtpVerifying(true);
                 try {
                     const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
@@ -3837,8 +3837,8 @@
                         fetchCrmAnalytics();
                         fetchCrmCustomers();
                         fetchExpiringRentals();
-                    } else { const err = await res.json(); alert(err.detail || 'Invalid OTP'); }
-                } catch (e) { alert('Network error: ' + e.message); }
+                    } else { const err = await res.json(); addToast(err.detail || 'Invalid OTP', 'error'); }
+                } catch (e) { addToast('Network error: ' + e.message, 'error'); }
                 setAdminOtpVerifying(false);
             };
 
@@ -4464,7 +4464,7 @@
                                                             <button onClick={() => { const msg = encodeURIComponent('Instadeed Document - ' + order.agreement_type + ' (Order: ' + order.id + ')'); window.open('https://wa.me/?text=' + msg, '_blank'); }} className="px-2 py-1.5 bg-green-50 text-green-600 hover:bg-green-100 text-[10px] font-bold rounded-lg transition cursor-pointer" title="WhatsApp Share">
                                                                 <i className="fa-brands fa-whatsapp"></i>
                                                             </button>
-                                                            <button onClick={async () => { if (!confirm('Delete order ' + order.id + '?')) return; try { const r = await fetch(`${API_BASE}/orders/${order.id}`, { method: 'DELETE' }); if (r.ok) fetchCrmOrders(); else alert('Failed to delete'); } catch(e) { alert('Error'); } }} className="px-2 py-1.5 bg-rose-50 text-rose-500 hover:bg-rose-100 text-[10px] font-bold rounded-lg transition cursor-pointer" title="Delete">
+                                                            <button onClick={async () => { if (!confirm('Delete order ' + order.id + '?')) return; try { const r = await fetch(`${API_BASE}/orders/${order.id}`, { method: 'DELETE' }); if (r.ok) fetchCrmOrders(); else addToast('Failed to delete', 'error'); } catch(e) { addToast('Error deleting order', 'error'); } }} className="px-2 py-1.5 bg-rose-50 text-rose-500 hover:bg-rose-100 text-[10px] font-bold rounded-lg transition cursor-pointer" title="Delete">
                                                                 <i className="fa-solid fa-trash-can"></i>
                                                             </button>
                                                             {order.form_data && (
@@ -4481,7 +4481,7 @@
                                                                         else if (tPayload.type === 'GNIDA_REGISTRY') setGnidaRegistryData(tPayload.payload);
                                                                         else if (tPayload.type === 'GNIDA_PTM') setGnidaPtmData(tPayload.payload);
                                                                         else setRegData(tPayload.payload);
-                                                                        alert("Draft successfully loaded into form fields!");
+                                                                        addToast("Draft loaded into form fields!", 'success');
                                                                     }}
                                                                     className="px-2.5 py-1.5 bg-blue-50 border border-blue-100 hover:bg-blue-100 hover:border-indigo-200 text-blue-600 text-[10px] font-bold rounded-lg transition cursor-pointer"
                                                                 >
@@ -5036,7 +5036,7 @@
                                                     await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/notes`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ note }) });
                                                     document.getElementById(`note-input-${crmSelectedOrderForDetail.id}`).value = '';
                                                     const res = await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/notes`, { headers: getAuthHeaders() });
-                                                    if (res.ok) { const d = await res.json(); document.getElementById(`notes-container-${crmSelectedOrderForDetail.id}`).innerHTML = d.notes.map(n => `<div class="py-1.5 border-b border-slate-50 last:border-0"><span class="font-bold text-slate-700">${n.author_name || 'Unknown'}:</span> ${n.note} <span class="text-[8px] text-slate-400">${new Date(n.created_at).toLocaleString('en-IN')}</span></div>`).join(''); }
+                                                    if (res.ok) { const d = await res.json(); document.getElementById(`notes-container-${crmSelectedOrderForDetail.id}`).innerText = ''; const container = document.getElementById(`notes-container-${crmSelectedOrderForDetail.id}`); d.notes.forEach(n => { const div = document.createElement('div'); div.className = 'py-1.5 border-b border-slate-50 last:border-0'; const span = document.createElement('span'); span.className = 'font-bold text-slate-700'; span.textContent = (n.author_name || 'Unknown') + ': '; div.appendChild(span); div.appendChild(document.createTextNode(n.note + ' ')); const time = document.createElement('span'); time.className = 'text-[8px] text-slate-400'; time.textContent = new Date(n.created_at).toLocaleString('en-IN'); div.appendChild(time); container.appendChild(div); }); }
                                                     addToast('Note added', 'success');
                                                 }} className="px-3 py-2 bg-amber-600 text-white rounded-lg text-xs font-bold hover:bg-amber-700 cursor-pointer"><i className="fa-solid fa-plus"></i></button>
                                             </div>
@@ -5063,7 +5063,7 @@
                                             <h4 className="font-bold text-slate-700 text-xs flex items-center gap-2 mb-3"><i className="fa-solid fa-clock-rotate-left text-purple-500"></i> Document Versions</h4>
                                             <button onClick={async () => {
                                                 const res = await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/versions`, { headers: getAuthHeaders() });
-                                                if (res.ok) { const d = await res.json(); document.getElementById(`versions-${crmSelectedOrderForDetail.id}`).innerHTML = d.versions.map(v => `<div class="py-1.5 border-b border-slate-50 text-xs"><span class="font-bold text-purple-700">v${v.version}</span> by ${v.author_name || 'Unknown'} · ${v.change_summary || 'No summary'} · <span class="text-slate-400">${new Date(v.created_at).toLocaleString('en-IN')}</span></div>`).join(''); }
+                                                if (res.ok) { const d = await res.json(); const versionsContainer = document.getElementById(`versions-${crmSelectedOrderForDetail.id}`); versionsContainer.innerText = ''; d.versions.forEach(v => { const div = document.createElement('div'); div.className = 'py-1.5 border-b border-slate-50 text-xs'; const vspan = document.createElement('span'); vspan.className = 'font-bold text-purple-700'; vspan.textContent = 'v' + v.version + ' by ' + (v.author_name || 'Unknown') + ' · ' + (v.change_summary || 'No summary') + ' · '; div.appendChild(vspan); div.appendChild(document.createTextNode(new Date(v.created_at).toLocaleString('en-IN'))); versionsContainer.appendChild(div); }); }
                                             }} className="px-3 py-1.5 bg-purple-50 text-purple-700 rounded-lg text-[10px] font-bold hover:bg-purple-100 cursor-pointer mb-2">Load Versions</button>
                                             <div id={`versions-${crmSelectedOrderForDetail.id}`} className="text-xs text-slate-500 max-h-[150px] overflow-y-auto"></div>
                                         </div>
@@ -5729,11 +5729,11 @@
                                                                 setMyDocs(data);
                                                             } else {
                                                                 setMyDocs([]);
-                                                                alert('Could not fetch documents. Please try again.');
+                                                                addToast('Could not fetch documents. Please try again.', 'error');
                                                             }
                                                         } catch (e) {
                                                             setMyDocs([]);
-                                                            alert('Error fetching your documents.');
+                                                            addToast('Error fetching your documents.', 'error');
                                                         }
                                                         setMyDocsLoading(false);
                                                     }}
@@ -5981,7 +5981,7 @@
                                                             <button onClick={() => { const text = `Create your legal agreement using Instadeed:\n\n${appLink}`; window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'); }} className="flex-1 bg-[#25D366] hover:bg-[#128C7E] text-white py-3 rounded-xl font-bold text-sm transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer">
                                                                 <i className="fa-brands fa-whatsapp text-lg"></i> Share on WhatsApp
                                                             </button>
-                                                            <button onClick={() => { navigator.clipboard.writeText(appLink); alert('App link copied!'); }} className="flex-1 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 py-3 rounded-xl font-bold text-sm transition-all shadow-sm cursor-pointer">
+                                                            <button onClick={() => { navigator.clipboard.writeText(appLink); addToast('App link copied!', 'success'); }} className="flex-1 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 py-3 rounded-xl font-bold text-sm transition-all shadow-sm cursor-pointer">
                                                                 <i className="fa-regular fa-copy mr-1"></i> Copy Link
                                                             </button>
                                                         </div>
@@ -6040,7 +6040,7 @@
                                             <button onClick={() => {
                                                 localStorage.removeItem('instadeed_user_session');
                                                 setUser(null);
-                                                alert("Signed out successfully.");
+                                                addToast("Signed out successfully.", 'success');
                                             }} className="text-slate-400 hover:text-rose-600 transition ml-1" title="Sign Out">
                                                 <i className="fa-solid fa-right-from-bracket"></i>
                                             </button>
@@ -11617,7 +11617,7 @@
                                                             {leegalityResult.sign_url}
                                                         </div>
                                                         <button
-                                                            onClick={() => { navigator.clipboard.writeText(leegalityResult.sign_url); alert('Signing URL copied!'); }}
+                                                            onClick={() => { navigator.clipboard.writeText(leegalityResult.sign_url); addToast('Signing URL copied!', 'success'); }}
                                                             className="mt-2 w-full py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-bold rounded-xl transition cursor-pointer"
                                                         >
                                                             <i className="fa-regular fa-copy mr-1"></i> Copy Sign URL
@@ -11676,10 +11676,10 @@
                                                                 fetchCrmOrders();
                                                             } else {
                                                                 const err = await res.json();
-                                                                alert('Failed: ' + (err.detail || 'Unknown error'));
+                                                                addToast('Failed: ' + (err.detail || 'Unknown error'), 'error');
                                                             }
                                                         } catch (e) {
-                                                            alert('Error sending for e-sign: ' + e.message);
+                                                            addToast('Error sending for e-sign: ' + e.message, 'error');
                                                         }
                                                         setLeegalitySending(false);
                                                     }}

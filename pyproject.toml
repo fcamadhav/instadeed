@@ -1,0 +1,13 @@
+[project]
+name = "instadeed"
+version = "2.0.0"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+asyncio_mode = "auto"
+
+[tool.flake8]
+max-line-length = 200
+ignore = ["E402", "E501", "W503", "F841"]

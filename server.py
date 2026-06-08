@@ -27,15 +27,17 @@ from slowapi.errors import RateLimitExceeded
 from fpdf import FPDF
 
 # --- Configuration ---
-JWT_SECRET = os.environ.get("JWT_SECRET", "instadeed-dev-secret-change-in-production")
+JWT_SECRET = os.environ.get("JWT_SECRET")
+if not JWT_SECRET:
+    raise RuntimeError("CRITICAL: JWT_SECRET environment variable must be set in production")
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRY_HOURS = 24
 DATABASE_FILE = "madhav_crm.db"
 STATIC_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # --- Leegality e-Sign Configuration ---
-LEEGALITY_AUTH_TOKEN = os.environ.get("LEEGALITY_AUTH_TOKEN", "awuvjhZrH0QxTFN1d2VhDX1ZUFF50E6z")
-LEEGALITY_PRIVATE_SALT = os.environ.get("LEEGALITY_PRIVATE_SALT", "YsZ0GTAGVREIF1fchgyWQkgarempLluT")
+LEEGALITY_AUTH_TOKEN = os.environ.get("LEEGALITY_AUTH_TOKEN")
+LEEGALITY_PRIVATE_SALT = os.environ.get("LEEGALITY_PRIVATE_SALT")
 LEEGALITY_BASE_URL = os.environ.get("LEEGALITY_BASE_URL", "https://sandbox.leegality.com/api")
 LEEGALITY_PROFILE_ID = os.environ.get("LEEGALITY_PROFILE_ID", "")
 
@@ -50,16 +52,42 @@ logging.basicConfig(
 )
 logger = logging.getLogger("instadeed")
 
-# --- Password Hashing (SHA-256 with salt) ---
-def hash_password(password: str) -> str:
-    salt = uuid.uuid4().hex[:16]
-    return salt + ":" + hashlib.sha256((salt + password).encode()).hexdigest()
+# --- Password Hashing (bcrypt) ---
+try:
+    import bcrypt as _bcrypt
+    def hash_password(password: str) -> str:
+        return _bcrypt.hashpw(password.encode(), _bcrypt.gensalt()).decode()
+    def verify_password(password: str, stored: str) -> bool:
+        return _bcrypt.checkpw(password.encode(), stored.encode())
+except ImportError:
+    import hashlib
+    logger.warning("bcrypt not installed; falling back to SHA-256. Install bcrypt for production.")
+    def hash_password(password: str) -> str:
+        salt = uuid.uuid4().hex[:16]
+        return salt + ":" + hashlib.sha256((salt + password).encode()).hexdigest()
+    def verify_password(password: str, stored: str) -> bool:
+        if ":" not in stored:
+            return False
+        salt, expected = stored.split(":", 1)
+        return hashlib.sha256((salt + password).encode()).hexdigest() == expected
 
-def verify_password(password: str, stored: str) -> bool:
-    if ":" not in stored:
-        return False
-    salt, expected = stored.split(":", 1)
-    return hashlib.sha256((salt + password).encode()).hexdigest() == expected
+# --- Input Validation ---
+import re
+VALID_EMAIL_RE = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+def validate_email(email: str) -> bool:
+    return bool(VALID_EMAIL_RE.match(email))
+def validate_password(password: str) -> tuple:
+    if len(password) < 8:
+        return (False, "Password must be at least 8 characters")
+    if not re.search(r'[A-Z]', password):
+        return (False, "Password must contain an uppercase letter")
+    if not re.search(r'[a-z]', password):
+        return (False, "Password must contain a lowercase letter")
+    if not re.search(r'\d', password):
+        return (False, "Password must contain a digit")
+    return (True, "")
+def validate_phone(phone: str) -> bool:
+    return bool(re.match(r'^\d{10}$', phone))
 
 # --- Rate Limiter (use X-Forwarded-For behind reverse proxy) ---
 def get_client_ip(request: Request) -> str:
@@ -71,18 +99,29 @@ def get_client_ip(request: Request) -> str:
 limiter = Limiter(key_func=get_client_ip)
 
 # --- Razorpay ---
-RAZORPAY_KEY_ID = os.environ.get("RAZORPAY_KEY_ID", "rzp_live_SwmTpRiDct3TaU")
-RAZORPAY_KEY_SECRET = os.environ.get("RAZORPAY_KEY_SECRET", "W071YhfOXIXyODVIZ5f7unOz")
-is_razorpay_valid = not ("YOUR_KEY" in RAZORPAY_KEY_ID or RAZORPAY_KEY_ID == "")
+RAZORPAY_KEY_ID = os.environ.get("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.environ.get("RAZORPAY_KEY_SECRET")
+is_razorpay_valid = False
 client = None
-if is_razorpay_valid:
+if RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET and "YOUR_KEY" not in RAZORPAY_KEY_ID:
     try:
         client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
+        is_razorpay_valid = True
     except Exception as e:
         logger.warning(f"Failed to initialize Razorpay: {e}")
-        is_razorpay_valid = False
 
 # --- Database ---
+class Database:
+    def __enter__(self):
+        self.conn = sqlite3.connect(DATABASE_FILE)
+        self.conn.row_factory = sqlite3.Row
+        return self.conn.cursor()
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is None:
+            self.conn.commit()
+        self.conn.close()
+        return False
+
 def init_db():
     conn = sqlite3.connect(DATABASE_FILE)
     cursor = conn.cursor()
@@ -284,9 +323,31 @@ def init_db():
         FOREIGN KEY (order_id) REFERENCES orders(id)
     )
     """)
+    # Indexes for performance
+    for idx_sql in [
+        "CREATE INDEX IF NOT EXISTS idx_orders_user ON orders(customer_phone)",
+        "CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status)",
+        "CREATE INDEX IF NOT EXISTS idx_orders_created ON orders(created_at)",
+        "CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)",
+        "CREATE INDEX IF NOT EXISTS idx_users_role ON users(role)",
+        "CREATE INDEX IF NOT EXISTS idx_page_events_session ON page_events(session_id)",
+        "CREATE INDEX IF NOT EXISTS idx_page_events_timestamp ON page_events(timestamp)",
+        "CREATE INDEX IF NOT EXISTS idx_activity_log_timestamp ON activity_log(timestamp)",
+        "CREATE INDEX IF NOT EXISTS idx_login_history_user ON login_history(user_id)",
+        "CREATE INDEX IF NOT EXISTS idx_order_notes_order ON order_notes(order_id)",
+        "CREATE INDEX IF NOT EXISTS idx_order_assignments_order ON order_assignments(order_id)",
+        "CREATE INDEX IF NOT EXISTS idx_document_versions_order ON document_versions(order_id)",
+        "CREATE INDEX IF NOT EXISTS idx_refunds_order ON refunds(order_id)",
+        "CREATE INDEX IF NOT EXISTS idx_notifications_created ON notifications(created_at)",
+        "CREATE INDEX IF NOT EXISTS idx_saved_drafts_phone ON saved_drafts(phone)",
+    ]:
+        try:
+            cursor.execute(idx_sql)
+        except Exception:
+            pass
     conn.commit()
     conn.close()
-    logger.info("Database initialized")
+    logger.info("Database initialized with indexes")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -296,18 +357,23 @@ async def lifespan(app: FastAPI):
     yield
 
 def create_default_admin():
+    admin_email = os.environ.get("ADMIN_EMAIL", "admin@instadeed.local")
+    admin_password = os.environ.get("ADMIN_PASSWORD")
+    if not admin_password:
+        logger.warning("ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.")
+        admin_password = uuid.uuid4().hex[:16]
     conn = sqlite3.connect(DATABASE_FILE)
     cursor = conn.cursor()
-    cursor.execute("SELECT id FROM users WHERE email = ?", ("admin@instadeed.local",))
+    cursor.execute("SELECT id FROM users WHERE email = ?", (admin_email,))
     if not cursor.fetchone():
         now = datetime.datetime.now().isoformat()
         uid = str(uuid.uuid4())
         cursor.execute(
             "INSERT INTO users (id, name, email, password_hash, role, is_active, created_at) VALUES (?, ?, ?, ?, ?, 1, ?)",
-            (uid, "Admin", "admin@instadeed.local", hash_password("admin123"), "admin", now)
+            (uid, "Admin", admin_email, hash_password(admin_password), "admin", now)
         )
         conn.commit()
-        logger.info("Default admin created (admin@instadeed.local / admin123)")
+        logger.info(f"Default admin created ({admin_email})")
     conn.close()
 
 # --- FastAPI App ---
@@ -315,13 +381,22 @@ app = FastAPI(title="Instadeed Backend", version="2.0.0", lifespan=lifespan)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
+ALLOWED_ORIGINS = os.environ.get("ALLOWED_ORIGINS", "https://instadeed.io,https://instadeed.onrender.com").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# --- Global Exception Handler ---
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    if isinstance(exc, HTTPException):
+        raise exc
+    logger.error(f"Unhandled exception on {request.method} {request.url.path}: {exc}")
+    raise HTTPException(status_code=500, detail="Internal server error")
 
 # --- Request Logging Middleware ---
 @app.middleware("http")
@@ -329,6 +404,13 @@ async def log_requests(request: Request, call_next):
     start = time.time()
     response = await call_next(request)
     duration = int((time.time() - start) * 1000)
+    # Security headers
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
     user_id = ""
     try:
         conn = sqlite3.connect(DATABASE_FILE)
@@ -490,6 +572,8 @@ class VerifyOTPRequest(BaseModel):
 @app.post("/api/auth/send-otp")
 @limiter.limit("5/minute")
 async def send_otp(request: Request, body: SendOTPRequest):
+    if not validate_email(body.email):
+        raise HTTPException(status_code=400, detail="Invalid email format")
     conn = sqlite3.connect(DATABASE_FILE)
     cursor = conn.cursor()
     cursor.execute("SELECT id, name, role FROM users WHERE email = ? AND is_active = 1", (body.email,))
@@ -497,28 +581,31 @@ async def send_otp(request: Request, body: SendOTPRequest):
     conn.close()
     if not user:
         raise HTTPException(status_code=404, detail="No account found with this email")
-    otp = "123456" if body.email == "admin@instadeed.local" else str(random.randint(100000, 999999))
+    otp = str(random.randint(100000, 999999))
     otp_store[body.email] = {"otp": otp, "expires": datetime.datetime.now() + datetime.timedelta(minutes=5)}
-    logger.info(f"OTP for {body.email}: {otp}")
+    try:
+        from src.backend.services.email import send_otp_email
+        sent = send_otp_email(body.email, otp)
+        if sent:
+            logger.info(f"OTP email sent to {body.email}")
+        else:
+            logger.info(f"OTP for {body.email}: {otp} (email delivery not configured)")
+    except Exception:
+        logger.info(f"OTP for {body.email}: {otp} (email delivery not configured)")
     return {"status": "success", "message": "OTP sent to your email"}
 
 @app.post("/api/auth/verify-otp")
 @limiter.limit("10/minute")
 async def verify_otp(request: Request, body: VerifyOTPRequest):
-    if body.email == "admin@instadeed.local" and body.otp == "123456":
-        pass
-    else:
-        if body.email not in otp_store:
-            raise HTTPException(status_code=400, detail="No OTP requested for this email")
-        record = otp_store[body.email]
-        if datetime.datetime.now() > record["expires"]:
-            del otp_store[body.email]
-            raise HTTPException(status_code=400, detail="OTP expired")
-        if record["otp"] != body.otp:
-            raise HTTPException(status_code=400, detail="Invalid OTP")
+    if body.email not in otp_store:
+        raise HTTPException(status_code=400, detail="No OTP requested for this email")
+    record = otp_store[body.email]
+    if datetime.datetime.now() > record["expires"]:
         del otp_store[body.email]
-    if body.email in otp_store:
-        del otp_store[body.email]
+        raise HTTPException(status_code=400, detail="OTP expired")
+    if record["otp"] != body.otp:
+        raise HTTPException(status_code=400, detail="Invalid OTP")
+    del otp_store[body.email]
     conn = sqlite3.connect(DATABASE_FILE)
     cursor = conn.cursor()
     cursor.execute("SELECT id, name, email, role FROM users WHERE email = ?", (body.email,))
@@ -546,6 +633,8 @@ class GoogleAuthRequest(BaseModel):
 @app.post("/api/auth/google")
 @limiter.limit("10/minute")
 async def google_auth(request: Request, body: GoogleAuthRequest):
+    if not validate_email(body.email):
+        raise HTTPException(status_code=400, detail="Invalid email format")
     conn = sqlite3.connect(DATABASE_FILE)
     cursor = conn.cursor()
     cursor.execute("SELECT id, name, email, role, is_active FROM users WHERE email = ?", (body.email,))
@@ -586,6 +675,13 @@ async def google_auth(request: Request, body: GoogleAuthRequest):
 @app.post("/api/auth/signup")
 @limiter.limit("5/minute")
 async def signup(request: Request, body: SignupRequest):
+    if not validate_email(body.email):
+        raise HTTPException(status_code=400, detail="Invalid email format")
+    pw_ok, pw_msg = validate_password(body.password)
+    if not pw_ok:
+        raise HTTPException(status_code=400, detail=pw_msg)
+    if not body.name or len(body.name.strip()) < 2:
+        raise HTTPException(status_code=400, detail="Name must be at least 2 characters")
     conn = sqlite3.connect(DATABASE_FILE)
     cursor = conn.cursor()
     cursor.execute("SELECT id FROM users WHERE email = ?", (body.email,))
@@ -607,6 +703,8 @@ async def signup(request: Request, body: SignupRequest):
 @app.post("/api/auth/login")
 @limiter.limit("10/minute")
 async def login(request: Request, body: LoginRequest):
+    if not validate_email(body.email):
+        raise HTTPException(status_code=400, detail="Invalid email format")
     conn = sqlite3.connect(DATABASE_FILE)
     cursor = conn.cursor()
     cursor.execute("SELECT id, name, email, password_hash, role, is_active FROM users WHERE email = ?", (body.email,))
@@ -1156,6 +1254,8 @@ async def get_expiring_rentals(request: Request, user: dict = Depends(get_curren
 
 @app.get("/api/config")
 async def get_config():
+    if not RAZORPAY_KEY_ID:
+        raise HTTPException(status_code=503, detail="Payment gateway not configured")
     return {
         "razorpay_key": RAZORPAY_KEY_ID,
         "version": "2.0.0",
@@ -1384,6 +1484,7 @@ async def leegality_status(order_id: str, request: Request, user: dict = Depends
 
 
 @app.post("/api/sign/leegality/webhook")
+@limiter.limit("10/minute")
 async def leegality_webhook(request: Request):
     try:
         body = await request.json()
@@ -1421,16 +1522,19 @@ async def admin_get_users(request: Request, user: dict = Depends(get_current_use
     search = request.query_params.get("search", "").strip()
     sort_by = request.query_params.get("sort_by", "created_at")
     sort_order = request.query_params.get("sort_order", "desc")
+    page = int(request.query_params.get("page", "1"))
+    per_page = int(request.query_params.get("per_page", "50"))
     allowed_sort = {"created_at", "name", "email", "last_login", "role"}
     if sort_by not in allowed_sort:
         sort_by = "created_at"
     direction = "DESC" if sort_order == "desc" else "ASC"
+    offset = max(0, (page - 1) * per_page)
     conn = sqlite3.connect(DATABASE_FILE)
     cursor = conn.cursor()
     if search:
-        cursor.execute(f"SELECT id, name, email, role, is_active, created_at, last_login FROM users WHERE name LIKE ? OR email LIKE ? ORDER BY {sort_by} {direction}", (f"%{search}%", f"%{search}%"))
+        cursor.execute(f"SELECT id, name, email, role, is_active, created_at, last_login FROM users WHERE name LIKE ? OR email LIKE ? ORDER BY {sort_by} {direction} LIMIT ? OFFSET ?", (f"%{search}%", f"%{search}%", per_page, offset))
     else:
-        cursor.execute(f"SELECT id, name, email, role, is_active, created_at, last_login FROM users ORDER BY {sort_by} {direction}")
+        cursor.execute(f"SELECT id, name, email, role, is_active, created_at, last_login FROM users ORDER BY {sort_by} {direction} LIMIT ? OFFSET ?", (per_page, offset))
     rows = cursor.fetchall()
     cursor.execute("SELECT COUNT(*) FROM users")
     total = cursor.fetchone()[0]
@@ -1438,7 +1542,7 @@ async def admin_get_users(request: Request, user: dict = Depends(get_current_use
     users_list = []
     for r in rows:
         users_list.append({"id": r[0], "name": r[1], "email": r[2], "role": r[3], "is_active": bool(r[4]), "created_at": r[5], "last_login": r[6]})
-    return {"users": users_list, "total": total}
+    return {"users": users_list, "total": total, "page": page, "per_page": per_page, "pages": max(1, -(-total // per_page))}
 
 @app.put("/api/admin/users/{user_id}")
 async def admin_update_user(user_id: str, body: AdminUpdateUserRequest, user: dict = Depends(get_current_user)):
@@ -2034,7 +2138,7 @@ async def drafts_send_otp(body: dict = Body(...)):
     phone = body.get("phone", "")
     if len(phone) != 10:
         return {"success": False, "error": "Invalid phone number"}
-    otp = "123456"  # Fixed OTP for demo
+    otp = os.environ.get("DEMO_OTP", str(random.randint(100000, 999999)))
     DRAFT_OTP_STORE[phone] = otp
     logger.info(f"Draft OTP for {phone}: {otp}")
     return {"success": True}
