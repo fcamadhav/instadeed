@@ -124,12 +124,27 @@ def init_db():
         name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
+        phone TEXT DEFAULT '',
+        location TEXT DEFAULT '',
+        device_info TEXT DEFAULT '',
         role TEXT DEFAULT 'user',
         is_active INTEGER DEFAULT 1,
         created_at TEXT,
         last_login TEXT
     )
     """)
+    try:
+        cursor.execute("ALTER TABLE users ADD COLUMN phone TEXT DEFAULT ''")
+    except Exception:
+        pass
+    try:
+        cursor.execute("ALTER TABLE users ADD COLUMN location TEXT DEFAULT ''")
+    except Exception:
+        pass
+    try:
+        cursor.execute("ALTER TABLE users ADD COLUMN device_info TEXT DEFAULT ''")
+    except Exception:
+        pass
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS api_keys (
         id TEXT PRIMARY KEY,
@@ -167,6 +182,106 @@ def init_db():
         user_id TEXT,
         duration_ms INTEGER,
         user_agent TEXT
+    )
+    """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS login_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT,
+        timestamp TEXT,
+        ip_address TEXT,
+        user_agent TEXT,
+        device_info TEXT DEFAULT '',
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )
+    """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS order_notes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        order_id TEXT,
+        note TEXT,
+        author_id TEXT,
+        created_at TEXT,
+        FOREIGN KEY (order_id) REFERENCES orders(id),
+        FOREIGN KEY (author_id) REFERENCES users(id)
+    )
+    """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS order_assignments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        order_id TEXT,
+        staff_id TEXT,
+        role TEXT DEFAULT 'attorney',
+        assigned_at TEXT,
+        FOREIGN KEY (order_id) REFERENCES orders(id),
+        FOREIGN KEY (staff_id) REFERENCES users(id)
+    )
+    """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS document_versions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        order_id TEXT,
+        version INTEGER DEFAULT 1,
+        form_data_snapshot TEXT,
+        created_at TEXT,
+        author_id TEXT,
+        change_summary TEXT DEFAULT '',
+        FOREIGN KEY (order_id) REFERENCES orders(id)
+    )
+    """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS refunds (
+        id TEXT PRIMARY KEY,
+        order_id TEXT,
+        amount REAL,
+        reason TEXT,
+        status TEXT DEFAULT 'PENDING',
+        created_at TEXT,
+        processed_at TEXT,
+        processed_by TEXT,
+        FOREIGN KEY (order_id) REFERENCES orders(id)
+    )
+    """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS coupons (
+        id TEXT PRIMARY KEY,
+        code TEXT UNIQUE,
+        type TEXT DEFAULT 'percentage',
+        value REAL,
+        max_uses INTEGER DEFAULT 0,
+        current_uses INTEGER DEFAULT 0,
+        min_amount REAL DEFAULT 0,
+        expires_at TEXT,
+        is_active INTEGER DEFAULT 1,
+        created_at TEXT
+    )
+    """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS notifications (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        type TEXT DEFAULT 'info',
+        recipient TEXT,
+        title TEXT,
+        message TEXT,
+        reference_type TEXT DEFAULT '',
+        reference_id TEXT DEFAULT '',
+        status TEXT DEFAULT 'pending',
+        created_at TEXT,
+        sent_at TEXT
+    )
+    """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS invoices (
+        id TEXT PRIMARY KEY,
+        order_id TEXT,
+        invoice_number TEXT UNIQUE,
+        amount REAL,
+        gst_amount REAL DEFAULT 0,
+        total REAL,
+        status TEXT DEFAULT 'PENDING',
+        created_at TEXT,
+        paid_at TEXT,
+        FOREIGN KEY (order_id) REFERENCES orders(id)
     )
     """)
     conn.commit()
@@ -411,6 +526,14 @@ async def verify_otp(request: Request, body: VerifyOTPRequest):
     now = datetime.datetime.now().isoformat()
     cursor.execute("UPDATE users SET last_login = ? WHERE id = ?", (now, user[0]))
     conn.commit()
+    # Record login history
+    try:
+        ip = get_client_ip(request)
+        ua = request.headers.get("user-agent", "")
+        cursor.execute("INSERT INTO login_history (user_id, timestamp, ip_address, user_agent) VALUES (?, ?, ?, ?)", (user[0], now, ip, ua))
+        conn.commit()
+    except Exception:
+        pass
     conn.close()
     token = create_token(user[0], user[2], user[3])
     return {"status": "success", "token": token, "user": {"id": user[0], "name": user[1], "email": user[2], "role": user[3]}}
@@ -435,12 +558,19 @@ async def google_auth(request: Request, body: GoogleAuthRequest):
             raise HTTPException(status_code=403, detail="Account deactivated")
         cursor.execute("UPDATE users SET last_login = ?, name = ? WHERE id = ?", (now, body.name, uid))
         conn.commit()
+        try:
+            ip = get_client_ip(request)
+            ua = request.headers.get("user-agent", "")
+            cursor.execute("INSERT INTO login_history (user_id, timestamp, ip_address, user_agent) VALUES (?, ?, ?, ?)", (uid, now, ip, ua))
+            conn.commit()
+        except Exception:
+            pass
         conn.close()
         token = create_token(uid, email, role)
         return {"status": "success", "token": token, "user": {"id": uid, "name": body.name, "email": email, "role": role, "is_new": False}}
     else:
         uid = str(uuid.uuid4())
-        dummy_hash = hash_password(uuid.uuid4().hex)  # no password for Google users
+        dummy_hash = hash_password(uuid.uuid4().hex)
         cursor.execute(
             "INSERT INTO users (id, name, email, password_hash, role, is_active, created_at, last_login) VALUES (?, ?, ?, ?, 'user', 1, ?, ?)",
             (uid, body.name, body.email, dummy_hash, now, now)
@@ -494,6 +624,12 @@ async def login(request: Request, body: LoginRequest):
     now = datetime.datetime.now().isoformat()
     cursor.execute("UPDATE users SET last_login = ? WHERE id = ?", (now, user_id))
     conn.commit()
+    # Record login history
+    try:
+        cursor.execute("INSERT INTO login_history (user_id, timestamp, ip_address, user_agent) VALUES (?, ?, ?, ?)", (user_id, now, get_client_ip(request), request.headers.get("user-agent", "")))
+        conn.commit()
+    except Exception:
+        pass
     conn.close()
     token = create_token(user_id, email, role)
     logger.info(f"User logged in: {email}")
@@ -1329,7 +1465,567 @@ async def admin_update_user(user_id: str, body: AdminUpdateUserRequest, user: di
     conn.close()
     return {"status": "success"}
 
-# --- Draft API (Save/Resume via OTP) ---
+# === ADVANCED ADMIN ENDPOINTS ===
+
+# --- User Detail & Tracking ---
+
+@app.get("/api/admin/users/{user_id}")
+async def admin_get_user_detail(user_id: str, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, email, phone, location, device_info, role, is_active, created_at, last_login FROM users WHERE id = ?", (user_id,))
+    row = cursor.fetchone()
+    if not row:
+        conn.close()
+        raise HTTPException(status_code=404, detail="User not found")
+    u = dict(row)
+    # Login history
+    cursor.execute("SELECT * FROM login_history WHERE user_id = ? ORDER BY id DESC LIMIT 50", (user_id,))
+    u["login_history"] = [dict(r) for r in cursor.fetchall()]
+    # Drafts
+    cursor.execute("SELECT id, doc_type, created_at, updated_at FROM saved_drafts WHERE phone = ? ORDER BY updated_at DESC", (u.get("phone", ""),))
+    u["drafts"] = [dict(r) for r in cursor.fetchall()]
+    # Orders & LTV
+    cursor.execute("SELECT COUNT(*) as order_count, COALESCE(SUM(amount), 0) as total_spent, MAX(created_at) as last_order FROM orders WHERE customer_email = ?", (u["email"],))
+    stats = dict(cursor.fetchone())
+    u["order_count"] = stats["order_count"]
+    u["total_spent"] = stats["total_spent"]
+    u["last_order"] = stats["last_order"]
+    conn.close()
+    return u
+
+@app.get("/api/admin/users/{user_id}/login-history")
+async def admin_get_login_history(user_id: str, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM login_history WHERE user_id = ? ORDER BY id DESC LIMIT 100", (user_id,))
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return {"history": rows}
+
+@app.get("/api/admin/users/{user_id}/drafts")
+async def admin_get_user_drafts(user_id: str, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT phone FROM users WHERE id = ?", (user_id,))
+    row = cursor.fetchone()
+    if not row:
+        conn.close()
+        raise HTTPException(status_code=404, detail="User not found")
+    phone = row[0] or ""
+    cursor.execute("SELECT id, doc_type, form_data, created_at, updated_at FROM saved_drafts WHERE phone = ? ORDER BY updated_at DESC", (phone,))
+    drafts = []
+    for r in cursor.fetchall():
+        drafts.append({"id": r[0], "doc_type": r[1], "form_data": json.loads(r[2]) if r[2] else {}, "created_at": r[3], "updated_at": r[4]})
+    conn.close()
+    return {"drafts": drafts}
+
+# --- Order Assignment & Staff ---
+
+class AssignStaffRequest(BaseModel):
+    staff_id: str
+    role: str = "attorney"
+
+@app.put("/api/admin/orders/{order_id}/assign")
+async def admin_assign_order(order_id: str, body: AssignStaffRequest, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    now = datetime.datetime.now().isoformat()
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM order_assignments WHERE order_id = ?", (order_id,))
+    cursor.execute("INSERT INTO order_assignments (order_id, staff_id, role, assigned_at) VALUES (?, ?, ?, ?)", (order_id, body.staff_id, body.role, now))
+    conn.commit()
+    conn.close()
+    return {"status": "success"}
+
+@app.get("/api/admin/orders/{order_id}/assignments")
+async def admin_get_assignments(order_id: str, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT oa.*, u.name as staff_name, u.email as staff_email
+        FROM order_assignments oa LEFT JOIN users u ON oa.staff_id = u.id
+        WHERE oa.order_id = ?
+    """, (order_id,))
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return {"assignments": rows}
+
+# --- Order Notes ---
+
+class AddNoteRequest(BaseModel):
+    note: str
+
+@app.get("/api/admin/orders/{order_id}/notes")
+async def admin_get_notes(order_id: str, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT on.*, u.name as author_name FROM order_notes on LEFT JOIN users u ON on.author_id = u.id WHERE on.order_id = ? ORDER BY on.id DESC
+    """, (order_id,))
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return {"notes": rows}
+
+@app.post("/api/admin/orders/{order_id}/notes")
+async def admin_add_note(order_id: str, body: AddNoteRequest, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    now = datetime.datetime.now().isoformat()
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO order_notes (order_id, note, author_id, created_at) VALUES (?, ?, ?, ?)", (order_id, body.note, user["sub"], now))
+    conn.commit()
+    conn.close()
+    return {"status": "success"}
+
+# --- Document Version History ---
+
+@app.get("/api/admin/orders/{order_id}/versions")
+async def admin_get_versions(order_id: str, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT dv.*, u.name as author_name FROM document_versions dv LEFT JOIN users u ON dv.author_id = u.id WHERE dv.order_id = ? ORDER BY dv.version DESC
+    """, (order_id,))
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return {"versions": rows}
+
+class SaveVersionRequest(BaseModel):
+    form_data_snapshot: dict
+    change_summary: str = ""
+
+@app.post("/api/admin/orders/{order_id}/versions")
+async def admin_save_version(order_id: str, body: SaveVersionRequest, request: Request, user: dict = Depends(get_current_user)):
+    now = datetime.datetime.now().isoformat()
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT COALESCE(MAX(version), 0) + 1 FROM document_versions WHERE order_id = ?", (order_id,))
+    next_ver = cursor.fetchone()[0]
+    cursor.execute("INSERT INTO document_versions (order_id, version, form_data_snapshot, created_at, author_id, change_summary) VALUES (?, ?, ?, ?, ?, ?)",
+                   (order_id, next_ver, json.dumps(body.form_data_snapshot), now, user["sub"], body.change_summary))
+    conn.commit()
+    conn.close()
+    return {"status": "success", "version": next_ver}
+
+# --- Refund Handling ---
+
+class RefundRequest(BaseModel):
+    amount: float
+    reason: str
+
+@app.post("/api/admin/orders/{order_id}/refund")
+async def admin_process_refund(order_id: str, body: RefundRequest, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    now = datetime.datetime.now().isoformat()
+    refund_id = f"REF-{uuid.uuid4().hex[:8].upper()}"
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, status FROM orders WHERE id = ?", (order_id,))
+    row = cursor.fetchone()
+    if not row:
+        conn.close()
+        raise HTTPException(status_code=404, detail="Order not found")
+    cursor.execute("INSERT INTO refunds (id, order_id, amount, reason, status, created_at, processed_at, processed_by) VALUES (?, ?, ?, ?, 'PROCESSED', ?, ?, ?)",
+                   (refund_id, order_id, body.amount, body.reason, now, now, user["sub"]))
+    cursor.execute("UPDATE orders SET status = 'REFUNDED', updated_at = ? WHERE id = ?", (now, order_id))
+    conn.commit()
+    conn.close()
+    return {"status": "success", "refund_id": refund_id}
+
+@app.get("/api/admin/refunds")
+async def admin_list_refunds(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM refunds ORDER BY created_at DESC")
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return {"refunds": rows}
+
+# --- Staff Roles & Permissions ---
+
+class StaffCreateRequest(BaseModel):
+    name: str
+    email: str
+    password: str = "staff123"
+    role: str = "support"
+
+@app.get("/api/admin/staff")
+async def admin_list_staff(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, email, role, is_active, created_at, last_login FROM users WHERE role IN ('admin', 'attorney', 'support', 'finance') ORDER BY created_at")
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return {"staff": rows}
+
+@app.post("/api/admin/staff")
+async def admin_create_staff(body: StaffCreateRequest, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    now = datetime.datetime.now().isoformat()
+    uid = str(uuid.uuid4())
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM users WHERE email = ?", (body.email,))
+    if cursor.fetchone():
+        conn.close()
+        raise HTTPException(status_code=409, detail="Email already exists")
+    allowed_roles = {"attorney", "support", "finance", "admin"}
+    role = body.role if body.role in allowed_roles else "support"
+    cursor.execute(
+        "INSERT INTO users (id, name, email, password_hash, role, is_active, created_at) VALUES (?, ?, ?, ?, ?, 1, ?)",
+        (uid, body.name, body.email, hash_password(body.password), role, now)
+    )
+    conn.commit()
+    conn.close()
+    return {"status": "success", "id": uid}
+
+@app.put("/api/admin/staff/{staff_id}")
+async def admin_update_staff(staff_id: str, body: AdminUpdateUserRequest, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    updates = []
+    params = []
+    if body.role is not None:
+        updates.append("role = ?")
+        params.append(body.role)
+    if body.is_active is not None:
+        updates.append("is_active = ?")
+        params.append(body.is_active)
+    if updates:
+        params.append(staff_id)
+        cursor.execute(f"UPDATE users SET {', '.join(updates)} WHERE id = ?", tuple(params))
+        conn.commit()
+    conn.close()
+    return {"status": "success"}
+
+# --- Coupon Management ---
+
+class CouponCreateRequest(BaseModel):
+    code: str
+    type: str = "percentage"
+    value: float
+    max_uses: int = 0
+    min_amount: float = 0
+    expires_at: str = ""
+
+@app.post("/api/admin/coupons")
+async def admin_create_coupon(body: CouponCreateRequest, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    now = datetime.datetime.now().isoformat()
+    cid = str(uuid.uuid4())
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM coupons WHERE code = ?", (body.code.upper(),))
+    if cursor.fetchone():
+        conn.close()
+        raise HTTPException(status_code=409, detail="Coupon code already exists")
+    cursor.execute("INSERT INTO coupons (id, code, type, value, max_uses, min_amount, expires_at, is_active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)",
+                   (cid, body.code.upper(), body.type, body.value, body.max_uses, body.min_amount, body.expires_at, now))
+    conn.commit()
+    conn.close()
+    return {"status": "success", "id": cid}
+
+@app.get("/api/admin/coupons")
+async def admin_list_coupons(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM coupons ORDER BY created_at DESC")
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return {"coupons": rows}
+
+@app.put("/api/admin/coupons/{coupon_id}")
+async def admin_update_coupon(coupon_id: str, body: CouponCreateRequest, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    now = datetime.datetime.now().isoformat()
+    cursor.execute("UPDATE coupons SET type=?, value=?, max_uses=?, min_amount=?, expires_at=?, is_active=1 WHERE id=?",
+                   (body.type, body.value, body.max_uses, body.min_amount, body.expires_at, coupon_id))
+    conn.commit()
+    conn.close()
+    return {"status": "success"}
+
+@app.delete("/api/admin/coupons/{coupon_id}")
+async def admin_delete_coupon(coupon_id: str, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM coupons WHERE id = ?", (coupon_id,))
+    conn.commit()
+    conn.close()
+    return {"status": "success"}
+
+@app.post("/api/validate-coupon")
+async def validate_coupon(body: dict = Body(...)):
+    code = body.get("code", "").upper()
+    amount = body.get("amount", 0)
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, type, value, max_uses, current_uses, min_amount, expires_at, is_active FROM coupons WHERE code = ?", (code,))
+    row = cursor.fetchone()
+    conn.close()
+    if not row:
+        return {"valid": False, "error": "Coupon not found"}
+    cid, ctype, value, max_uses, current_uses, min_amount, expires_at, is_active = row
+    if not is_active:
+        return {"valid": False, "error": "Coupon is inactive"}
+    if max_uses > 0 and current_uses >= max_uses:
+        return {"valid": False, "error": "Coupon usage limit reached"}
+    if expires_at and expires_at < datetime.datetime.now().isoformat()[:10]:
+        return {"valid": False, "error": "Coupon has expired"}
+    if amount < min_amount:
+        return {"valid": False, "error": f"Minimum order amount of ₹{int(min_amount)} required"}
+    if ctype == "percentage":
+        discount = amount * value / 100
+        if discount > 5000:
+            discount = 5000
+    else:
+        discount = value
+    return {"valid": True, "discount": discount, "type": ctype, "value": value, "code": code}
+
+# --- Notifications Panel ---
+
+class NotificationCreateRequest(BaseModel):
+    type: str = "info"
+    recipient: str
+    title: str
+    message: str
+    reference_type: str = ""
+    reference_id: str = ""
+
+@app.get("/api/admin/notifications")
+async def admin_list_notifications(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM notifications ORDER BY id DESC LIMIT 100")
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return {"notifications": rows}
+
+@app.post("/api/admin/notifications")
+async def admin_create_notification(body: NotificationCreateRequest, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    now = datetime.datetime.now().isoformat()
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO notifications (type, recipient, title, message, reference_type, reference_id, status, created_at, sent_at) VALUES (?, ?, ?, ?, ?, ?, 'sent', ?, ?)",
+                   (body.type, body.recipient, body.title, body.message, body.reference_type, body.reference_id, now, now))
+    conn.commit()
+    conn.close()
+    return {"status": "success"}
+
+@app.get("/api/admin/notifications/stats")
+async def admin_notification_stats(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM notifications")
+    total = cursor.fetchone()[0]
+    cursor.execute("SELECT type, COUNT(*) FROM notifications GROUP BY type")
+    type_breakdown = dict(cursor.fetchall())
+    cursor.execute("SELECT COUNT(*) FROM notifications WHERE created_at LIKE ?", (f"{datetime.date.today().isoformat()}%",))
+    today = cursor.fetchone()[0]
+    conn.close()
+    return {"total": total, "today": today, "type_breakdown": type_breakdown}
+
+# --- Invoice & GST Reports ---
+
+@app.get("/api/admin/invoices")
+async def admin_list_invoices(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT i.*, o.customer_name, o.customer_email, o.agreement_type, o.created_at as order_date
+        FROM invoices i LEFT JOIN orders o ON i.order_id = o.id ORDER BY i.created_at DESC
+    """)
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return {"invoices": rows}
+
+@app.post("/api/admin/invoices/generate/{order_id}")
+async def admin_generate_invoice(order_id: str, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, customer_name, amount FROM orders WHERE id = ?", (order_id,))
+    row = cursor.fetchone()
+    if not row:
+        conn.close()
+        raise HTTPException(status_code=404, detail="Order not found")
+    order_id, customer_name, amount = row
+    now = datetime.datetime.now().isoformat()
+    inv_id = str(uuid.uuid4())
+    inv_num = f"INV-{datetime.date.today().strftime('%Y%m%d')}-{uuid.uuid4().hex[:4].upper()}"
+    gst = round(amount * 0.18, 2)
+    total = amount + gst
+    cursor.execute("INSERT INTO invoices (id, order_id, invoice_number, amount, gst_amount, total, status, created_at) VALUES (?, ?, ?, ?, ?, ?, 'PENDING', ?)",
+                   (inv_id, order_id, inv_num, amount, gst, total, now))
+    conn.commit()
+    conn.close()
+    return {"status": "success", "invoice_id": inv_id, "invoice_number": inv_num}
+
+@app.get("/api/admin/invoices/gst-report")
+async def admin_gst_report(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT COALESCE(SUM(amount), 0) as total_sales, COALESCE(SUM(gst_amount), 0) as total_gst, COUNT(*) as invoice_count FROM invoices")
+    summary = dict(zip(["total_sales", "total_gst", "invoice_count"], cursor.fetchone()))
+    cursor.execute("SELECT DATE(created_at) as day, SUM(gst_amount) as gst FROM invoices GROUP BY DATE(created_at) ORDER BY day DESC LIMIT 30")
+    daily_gst = [{"date": r[0], "gst": r[1]} for r in cursor.fetchall()]
+    conn.close()
+    return {"summary": summary, "daily_gst": daily_gst}
+
+@app.put("/api/admin/invoices/{invoice_id}/pay")
+async def admin_mark_invoice_paid(invoice_id: str, request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    now = datetime.datetime.now().isoformat()
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("UPDATE invoices SET status = 'PAID', paid_at = ? WHERE id = ?", (now, invoice_id))
+    conn.commit()
+    conn.close()
+    return {"status": "success"}
+
+# --- Enhanced Analytics ---
+
+@app.get("/api/analytics/funnel")
+async def get_analytics_funnel(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    stages = ["PENDING_PAYMENT", "PAID", "DRAFTED", "COMPLETED", "SIGNED"]
+    funnel = {}
+    total = 0
+    cursor.execute("SELECT COUNT(*) FROM orders")
+    total = cursor.fetchone()[0]
+    funnel["total_started"] = total
+    for stage in stages:
+        cursor.execute("SELECT COUNT(*) FROM orders WHERE status = ?", (stage,))
+        funnel[stage.lower()] = cursor.fetchone()[0]
+    cursor.execute("SELECT COUNT(*) FROM orders WHERE created_at LIKE ?", (f"{datetime.date.today().isoformat()}%",))
+    funnel["today"] = cursor.fetchone()[0]
+    conn.close()
+    return funnel
+
+@app.get("/api/analytics/abandoned-drafts")
+async def get_abandoned_drafts(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM saved_drafts")
+    total_drafts = cursor.fetchone()[0]
+    cursor.execute("SELECT COUNT(*) FROM orders WHERE status = 'PENDING_PAYMENT'")
+    unpaid = cursor.fetchone()[0]
+    cursor.execute("SELECT COUNT(*) FROM orders")
+    total_orders = cursor.fetchone()[0]
+    abandoned_rate = round((total_drafts / (total_orders + total_drafts)) * 100, 1) if (total_orders + total_drafts) > 0 else 0
+    cursor.execute("SELECT COUNT(*) FROM saved_drafts WHERE updated_at LIKE ?", (f"{datetime.date.today().isoformat()}%",))
+    today_drafts = cursor.fetchone()[0]
+    conn.close()
+    return {"total_drafts": total_drafts, "unpaid_orders": unpaid, "total_orders": total_orders, "abandoned_rate": abandoned_rate, "today_drafts": today_drafts}
+
+@app.get("/api/analytics/heatmap")
+async def get_analytics_heatmap(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT location, COUNT(*) as cnt FROM users WHERE location != '' AND location IS NOT NULL GROUP BY location ORDER BY cnt DESC")
+    locations = [{"location": r[0], "count": r[1]} for r in cursor.fetchall()]
+    cursor.execute("SELECT COUNT(*) FROM users WHERE (location IS NULL OR location = '')")
+    unknown = cursor.fetchone()[0]
+    conn.close()
+    return {"locations": locations, "unknown": unknown}
+
+@app.get("/api/analytics/dropoff")
+async def get_analytics_dropoff(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    conn = sqlite3.connect(DATABASE_FILE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT event, COUNT(*) as cnt FROM page_events WHERE event IN ('form_start', 'form_step', 'form_complete', 'checkout_start', 'payment_complete') GROUP BY event ORDER BY cnt DESC")
+    events = dict(cursor.fetchall())
+    steps = ["form_start", "form_step", "form_complete", "checkout_start", "payment_complete"]
+    dropoff = []
+    prev = events.get("form_start", 0)
+    for s in steps:
+        curr = events.get(s, 0)
+        loss = prev - curr if prev > 0 else 0
+        loss_pct = round((loss / prev) * 100, 1) if prev > 0 else 0
+        dropoff.append({"step": s, "count": curr, "lost": loss, "loss_percentage": loss_pct})
+        prev = curr
+    conn.close()
+    return {"dropoff": dropoff, "raw_events": events}
+
+# --- Audit Trail ---
+
+@app.get("/api/admin/audit")
+async def admin_audit_trail(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    limit = int(request.query_params.get("limit", "200"))
+    conn = sqlite3.connect(DATABASE_FILE)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT al.*, u.name as user_name FROM activity_log al LEFT JOIN users u ON al.user_id = u.id ORDER BY al.id DESC LIMIT ?", (limit,))
+    rows = [dict(r) for r in cursor.fetchall()]
+    cursor.execute("SELECT COUNT(*) FROM activity_log")
+    total = cursor.fetchone()["COUNT(*)"]
+    conn.close()
+    return {"entries": rows, "total": total}
+
+# === DRAFT API (Save/Resume via OTP) ===
 DRAFT_OTP_STORE = {}
 DRAFT_DB_LOCK = threading.Lock()
 

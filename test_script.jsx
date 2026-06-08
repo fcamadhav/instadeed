@@ -2678,6 +2678,18 @@
             const [crmFilterType, setCrmFilterType] = useState('');
             const [crmSearch, setCrmSearch] = useState('');
             const [crmFilterToday, setCrmFilterToday] = useState(false);
+            const [crmStaff, setCrmStaff] = useState([]);
+            const [crmCoupons, setCrmCoupons] = useState([]);
+            const [crmNotifications, setCrmNotifications] = useState([]);
+            const [crmInvoices, setCrmInvoices] = useState([]);
+            const [crmInvoiceGstReport, setCrmInvoiceGstReport] = useState(null);
+            const [crmFunnelData, setCrmFunnelData] = useState(null);
+            const [crmAbandonedData, setCrmAbandonedData] = useState(null);
+            const [crmHeatmapData, setCrmHeatmapData] = useState(null);
+            const [crmDropoffData, setCrmDropoffData] = useState(null);
+            const [crmAuditData, setCrmAuditData] = useState(null);
+            const [crmSelectedUser, setCrmSelectedUser] = useState(null);
+            const [crmSelectedOrderForDetail, setCrmSelectedOrderForDetail] = useState(null);
             const [adminOtpStep, setAdminOtpStep] = useState('email');
             const [adminOtpEmail, setAdminOtpEmail] = useState('');
             const [adminOtpSending, setAdminOtpSending] = useState(false);
@@ -3230,6 +3242,58 @@
                 } catch (e) {
                     console.error("Failed to fetch users:", e);
                 }
+            };
+
+            const fetchCrmStaff = async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/api/admin/staff`, { headers: getAuthHeaders() });
+                    if (res.ok) { const d = await res.json(); setCrmStaff(d.staff || []); }
+                } catch(e) { console.error(e); }
+            };
+
+            const fetchCrmCoupons = async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/api/admin/coupons`, { headers: getAuthHeaders() });
+                    if (res.ok) { const d = await res.json(); setCrmCoupons(d.coupons || []); }
+                } catch(e) { console.error(e); }
+            };
+
+            const fetchCrmNotifications = async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/api/admin/notifications`, { headers: getAuthHeaders() });
+                    if (res.ok) { const d = await res.json(); setCrmNotifications(d.notifications || []); }
+                } catch(e) { console.error(e); }
+            };
+
+            const fetchCrmInvoices = async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/api/admin/invoices`, { headers: getAuthHeaders() });
+                    if (res.ok) { const d = await res.json(); setCrmInvoices(d.invoices || []); }
+                    const gst = await fetch(`${API_BASE}/api/admin/invoices/gst-report`, { headers: getAuthHeaders() });
+                    if (gst.ok) { setCrmInvoiceGstReport(await gst.json()); }
+                } catch(e) { console.error(e); }
+            };
+
+            const fetchCrmAnalyticsExtras = async () => {
+                try {
+                    const [f, a, h, d] = await Promise.all([
+                        fetch(`${API_BASE}/api/analytics/funnel`, { headers: getAuthHeaders() }).then(r => r.json()),
+                        fetch(`${API_BASE}/api/analytics/abandoned-drafts`, { headers: getAuthHeaders() }).then(r => r.json()),
+                        fetch(`${API_BASE}/api/analytics/heatmap`, { headers: getAuthHeaders() }).then(r => r.json()),
+                        fetch(`${API_BASE}/api/analytics/dropoff`, { headers: getAuthHeaders() }).then(r => r.json()),
+                    ]);
+                    setCrmFunnelData(f);
+                    setCrmAbandonedData(a);
+                    setCrmHeatmapData(h);
+                    setCrmDropoffData(d);
+                } catch(e) { console.error(e); }
+            };
+
+            const fetchCrmAudit = async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/api/admin/audit`, { headers: getAuthHeaders() });
+                    if (res.ok) { const d = await res.json(); setCrmAuditData(d); }
+                } catch(e) { console.error(e); }
             };
 
             const fetchUserOrders = async () => {
@@ -3856,6 +3920,22 @@
                             <button onClick={() => { setCrmView('activity'); loadTrackedEvents(); }} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'activity' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
                                 <i className="fa-solid fa-shoe-prints"></i> Activity
                             </button>
+                            <div className="w-px h-6 bg-slate-200"></div>
+                            <button onClick={() => { setCrmView('kanban'); fetchCrmOrders(); }} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'kanban' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
+                                <i className="fa-solid fa-columns"></i> Pipeline
+                            </button>
+                            <button onClick={() => { setCrmView('staff'); }} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'staff' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
+                                <i className="fa-solid fa-user-tie"></i> Staff
+                            </button>
+                            <button onClick={() => { setCrmView('coupons'); fetchCrmCoupons(); }} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'coupons' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
+                                <i className="fa-solid fa-tags"></i> Coupons
+                            </button>
+                            <button onClick={() => { setCrmView('notifications'); fetchCrmNotifications(); }} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'notifications' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
+                                <i className="fa-solid fa-bell"></i> Alerts
+                            </button>
+                            <button onClick={() => { setCrmView('invoices'); fetchCrmInvoices(); }} className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${crmView === 'invoices' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'}`}>
+                                <i className="fa-solid fa-file-invoice-dollar"></i> Invoices
+                            </button>
                         </div>
 
                         {/* Analytics widgets */}
@@ -4064,6 +4144,149 @@
                                 </table>
                             </div>
                         </div>
+
+                        {/* Enhanced Analytics (Funnel, Abandoned, Heatmap, Dropoff) */}
+                        {crmView === 'analytics' && (
+                            <div className="space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                        <i className="fa-solid fa-chart-simple text-indigo-600"></i>
+                                        Advanced Analytics
+                                    </h3>
+                                    <button onClick={fetchCrmAnalyticsExtras} className="px-3 py-2 bg-slate-50 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-100 cursor-pointer transition border border-slate-200">
+                                        <i className="fa-solid fa-arrows-rotate mr-1"></i> Load Data
+                                    </button>
+                                </div>
+
+                                {/* Conversion Funnel */}
+                                {crmFunnelData && (
+                                    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+                                        <h4 className="font-bold text-slate-800 text-xs flex items-center gap-2 mb-4"><i className="fa-solid fa-funnel-dollar text-blue-600"></i> Conversion Funnel</h4>
+                                        <div className="space-y-3">
+                                            {[
+                                                { key: 'total_started', label: 'Orders Started', color: 'bg-slate-200' },
+                                                { key: 'pending_payment', label: 'Pending Payment', color: 'bg-amber-400' },
+                                                { key: 'paid', label: 'Paid', color: 'bg-blue-500' },
+                                                { key: 'drafted', label: 'Drafted', color: 'bg-indigo-500' },
+                                                { key: 'completed', label: 'Completed', color: 'bg-emerald-500' },
+                                                { key: 'signed', label: 'Signed', color: 'bg-green-600' },
+                                            ].map((stage, i) => {
+                                                const count = crmFunnelData[stage.key] || 0;
+                                                const maxCount = crmFunnelData.total_started || 1;
+                                                const pct = Math.round((count / maxCount) * 100);
+                                                return (
+                                                    <div key={stage.key} className="flex items-center gap-3">
+                                                        <span className="text-[10px] font-bold text-slate-500 w-28 text-right">{stage.label}</span>
+                                                        <div className="flex-1 h-6 bg-slate-50 rounded-lg overflow-hidden">
+                                                            <div className={`h-full ${stage.color} rounded-lg transition-all duration-500`} style={{width: `${pct}%`}}></div>
+                                                        </div>
+                                                        <span className="text-xs font-bold text-slate-700 w-16">{count} ({pct}%)</span>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Abandoned Drafts */}
+                                {crmAbandonedData && (
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                                            <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Saved Drafts</span>
+                                            <div className="text-xl font-black text-amber-600 mt-1">{crmAbandonedData.total_drafts}</div>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                                            <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Unpaid Orders</span>
+                                            <div className="text-xl font-black text-rose-600 mt-1">{crmAbandonedData.unpaid_orders}</div>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                                            <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Abandoned Rate</span>
+                                            <div className="text-xl font-black text-indigo-600 mt-1">{crmAbandonedData.abandoned_rate}%</div>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                                            <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Today's Drafts</span>
+                                            <div className="text-xl font-black text-slate-800 mt-1">{crmAbandonedData.today_drafts}</div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Drop-off Analysis */}
+                                {crmDropoffData && (
+                                    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+                                        <h4 className="font-bold text-slate-800 text-xs flex items-center gap-2 mb-4"><i className="fa-solid fa-person-walking-arrow-right text-rose-500"></i> Form Step Drop-off</h4>
+                                        <div className="overflow-x-auto">
+                                            <table className="w-full text-left border-collapse text-xs">
+                                                <thead><tr className="bg-slate-50 text-[10px] uppercase font-bold text-slate-400 tracking-wider"><th className="px-4 py-2">Step</th><th className="px-4 py-2 text-center">Users</th><th className="px-4 py-2 text-center">Lost</th><th className="px-4 py-2 text-center">Drop-off</th></tr></thead>
+                                                <tbody className="divide-y divide-slate-50">
+                                                    {crmDropoffData.dropoff.map((d, i) => (
+                                                        <tr key={i} className="hover:bg-slate-50/50">
+                                                            <td className="px-4 py-2 font-medium text-slate-700">{d.step.replace('_', ' ')}</td>
+                                                            <td className="px-4 py-2 text-center font-bold text-slate-700">{d.count}</td>
+                                                            <td className="px-4 py-2 text-center text-rose-600 font-medium">{d.lost}</td>
+                                                            <td className="px-4 py-2 text-center">
+                                                                <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${d.loss_percentage > 30 ? 'bg-rose-50 text-rose-700' : d.loss_percentage > 10 ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700'}`}>{d.loss_percentage}%</span>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Geographic Heatmap */}
+                                {crmHeatmapData && crmHeatmapData.locations && crmHeatmapData.locations.length > 0 && (
+                                    <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+                                        <h4 className="font-bold text-slate-800 text-xs flex items-center gap-2 mb-4"><i className="fa-solid fa-map-location-dot text-emerald-500"></i> Geographic Distribution</h4>
+                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                            {crmHeatmapData.locations.map((loc, i) => (
+                                                <div key={i} className="flex items-center gap-2 bg-slate-50 rounded-lg px-3 py-2">
+                                                    <i className="fa-solid fa-location-dot text-slate-400 text-[9px]"></i>
+                                                    <span className="font-bold text-slate-700 text-xs flex-1">{loc.location}</span>
+                                                    <span className="bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded-full text-[9px] font-bold">{loc.count}</span>
+                                                </div>
+                                            ))}
+                                            {crmHeatmapData.unknown > 0 && (
+                                                <div className="flex items-center gap-2 bg-slate-50 rounded-lg px-3 py-2">
+                                                    <i className="fa-solid fa-question text-slate-400 text-[9px]"></i>
+                                                    <span className="font-bold text-slate-700 text-xs flex-1">Unknown</span>
+                                                    <span className="bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded-full text-[9px] font-bold">{crmHeatmapData.unknown}</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Audit Trail */}
+                                <button onClick={fetchCrmAudit} className="text-xs text-slate-500 hover:text-slate-700 font-medium flex items-center gap-1.5 cursor-pointer">
+                                    <i className="fa-solid fa-clipboard-list"></i> Load Audit Trail
+                                </button>
+                                {crmAuditData && (
+                                    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                        <div className="px-5 py-3 border-b border-slate-50 flex items-center justify-between">
+                                            <h4 className="font-bold text-slate-700 text-xs flex items-center gap-2"><i className="fa-solid fa-list text-slate-400"></i> Audit Trail ({crmAuditData.total} total)</h4>
+                                        </div>
+                                        <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
+                                            <table className="w-full text-left border-collapse text-[10px]">
+                                                <thead><tr className="bg-slate-50 text-[8px] uppercase font-bold text-slate-400 tracking-wider sticky top-0"><th className="px-3 py-2">Time</th><th className="px-3 py-2">Method</th><th className="px-3 py-2">Path</th><th className="px-3 py-2 text-center">Status</th><th className="px-3 py-2">User</th><th className="px-3 py-2 text-right">Duration</th></tr></thead>
+                                                <tbody className="divide-y divide-slate-50">
+                                                    {(crmAuditData.entries || []).slice(0, 100).map((e, i) => (
+                                                        <tr key={e.id || i} className="hover:bg-slate-50/50">
+                                                            <td className="px-3 py-1.5 text-slate-400 whitespace-nowrap">{e.timestamp ? new Date(e.timestamp).toLocaleString('en-IN') : '-'}</td>
+                                                            <td className="px-3 py-1.5"><span className={`px-1.5 py-0.5 rounded font-bold ${e.method === 'POST' ? 'bg-emerald-50 text-emerald-700' : e.method === 'GET' ? 'bg-blue-50 text-blue-700' : e.method === 'PUT' ? 'bg-amber-50 text-amber-700' : 'bg-rose-50 text-rose-700'}`}>{e.method}</span></td>
+                                                            <td className="px-3 py-1.5 text-slate-600 max-w-[200px] truncate">{e.path}</td>
+                                                            <td className="px-3 py-1.5 text-center"><span className={`px-1.5 py-0.5 rounded font-bold ${e.status_code < 300 ? 'text-emerald-700' : e.status_code < 400 ? 'text-amber-700' : 'text-rose-700'}`}>{e.status_code}</span></td>
+                                                            <td className="px-3 py-1.5 text-slate-500">{e.user_name || e.user_id?.slice(0,8) || '-'}</td>
+                                                            <td className="px-3 py-1.5 text-right text-slate-400">{e.duration_ms}ms</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
                         {/* Search & Filters */}
                         <div className="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm flex flex-col sm:flex-row gap-3">
@@ -4384,7 +4607,10 @@
                                                 </tr>
                                             ) : (
                                                 crmUsers.map((u, i) => (
-                                                    <tr key={u.id} className="hover:bg-slate-50/50 transition">
+                                                    <tr key={u.id} className="hover:bg-slate-50/50 transition cursor-pointer" onClick={async () => {
+                                                        const res = await fetch(`${API_BASE}/api/admin/users/${u.id}`, { headers: getAuthHeaders() });
+                                                        if (res.ok) { const d = await res.json(); setCrmSelectedUser(d); }
+                                                    }}>
                                                         <td className="px-5 py-4 font-bold text-slate-800">{u.name}</td>
                                                         <td className="px-5 py-4 text-slate-500">{u.email}</td>
                                                         <td className="px-5 py-4">
@@ -4438,6 +4664,467 @@
                                             )}
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Staff Management */}
+                        {crmView === 'staff' && (
+                            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                <div className="px-5 py-4 border-b border-slate-50 flex items-center justify-between">
+                                    <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                        <i className="fa-solid fa-user-tie text-indigo-600"></i>
+                                        Staff & Roles
+                                    </h3>
+                                    <button onClick={() => { const n = prompt('Name:'); const e = prompt('Email:'); const r = prompt('Role (attorney/support/finance):', 'support'); if (n && e) fetch(`${API_BASE}/api/admin/staff`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n, email: e, role: r, password: 'staff123' }) }).then(res => { if (res.ok) { addToast('Staff created', 'success'); fetchCrmStaff(); } else { res.json().then(d => addToast(d.detail || 'Error', 'error')); } }).catch(() => addToast('Failed', 'error')); }} className="px-3 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 cursor-pointer transition">
+                                        <i className="fa-solid fa-plus mr-1"></i> Add Staff
+                                    </button>
+                                </div>
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr className="bg-slate-50 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                                                <th className="px-5 py-3">Name</th>
+                                                <th className="px-5 py-3">Email</th>
+                                                <th className="px-5 py-3">Role</th>
+                                                <th className="px-5 py-3">Status</th>
+                                                <th className="px-5 py-3">Joined</th>
+                                                <th className="px-5 py-3">Last Login</th>
+                                                <th className="px-5 py-3 text-right">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-50 text-xs">
+                                            {crmStaff.map((s, i) => (
+                                                <tr key={s.id} className="hover:bg-slate-50/50 transition">
+                                                    <td className="px-5 py-4 font-bold text-slate-800">{s.name}</td>
+                                                    <td className="px-5 py-4 text-slate-500">{s.email}</td>
+                                                    <td className="px-5 py-4">
+                                                        <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${s.role === 'admin' ? 'bg-amber-50 text-amber-700' : s.role === 'attorney' ? 'bg-purple-50 text-purple-700' : s.role === 'finance' ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
+                                                            {s.role}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-5 py-4">
+                                                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-bold text-[10px] ${s.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}`}>
+                                                            <span className={`w-1.5 h-1.5 rounded-full ${s.is_active ? 'bg-emerald-500' : 'bg-rose-500'}`}></span>
+                                                            {s.is_active ? 'Active' : 'Inactive'}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-5 py-4 text-slate-500">{s.created_at ? new Date(s.created_at).toLocaleString('en-IN') : '-'}</td>
+                                                    <td className="px-5 py-4 text-slate-500">{s.last_login ? new Date(s.last_login).toLocaleString('en-IN') : '-'}</td>
+                                                    <td className="px-5 py-4 text-right">
+                                                        <div className="flex gap-1 justify-end">
+                                                            <button onClick={async () => { const newRole = prompt('New role (attorney/support/finance/admin):', s.role); if (newRole) { await fetch(`${API_BASE}/api/admin/staff/${s.id}`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ role: newRole }) }); fetchCrmStaff(); addToast('Role updated', 'success'); } }} className="px-2.5 py-1.5 bg-slate-50 text-slate-600 hover:bg-slate-100 rounded-lg text-[10px] font-bold cursor-pointer transition" title="Change Role"><i className="fa-solid fa-shield"></i></button>
+                                                            <button onClick={async () => { const nowActive = s.is_active ? 0 : 1; await fetch(`${API_BASE}/api/admin/staff/${s.id}`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ is_active: nowActive }) }); fetchCrmStaff(); addToast(nowActive ? 'Activated' : 'Deactivated', 'success'); }} className={`px-2.5 py-1.5 rounded-lg text-[10px] font-bold cursor-pointer transition ${s.is_active ? 'bg-rose-50 text-rose-600 hover:bg-rose-100' : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'}`} title={s.is_active ? 'Deactivate' : 'Activate'}><i className={`fa-solid ${s.is_active ? 'fa-ban' : 'fa-check'}`}></i></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {crmStaff.length === 0 && (
+                                                <tr><td colSpan="7" className="px-5 py-10 text-center text-slate-400 font-medium">No staff found. Click "Add Staff" to create.</td></tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Coupon Management */}
+                        {crmView === 'coupons' && (
+                            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                <div className="px-5 py-4 border-b border-slate-50 flex items-center justify-between">
+                                    <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                        <i className="fa-solid fa-tags text-indigo-600"></i>
+                                        Coupons ({crmCoupons.length})
+                                    </h3>
+                                    <button onClick={async () => {
+                                        const code = prompt('Coupon code:'); if (!code) return;
+                                        const type = prompt('Type (percentage/flat):', 'percentage');
+                                        const value = parseFloat(prompt('Value (e.g. 10 for 10% or 500 for flat):') || '0');
+                                        const maxUses = parseInt(prompt('Max uses (0 = unlimited):') || '0');
+                                        const minAmount = parseFloat(prompt('Min order amount (0 = none):') || '0');
+                                        const expires = prompt('Expiry (YYYY-MM-DD, leave blank for none):') || '';
+                                        const res = await fetch(`${API_BASE}/api/admin/coupons`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ code: code.toUpperCase(), type, value, max_uses: maxUses, min_amount: minAmount, expires_at: expires }) });
+                                        if (res.ok) { addToast('Coupon created', 'success'); fetchCrmCoupons(); } else { const d = await res.json(); addToast(d.detail || 'Error', 'error'); }
+                                    }} className="px-3 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 cursor-pointer transition">
+                                        <i className="fa-solid fa-plus mr-1"></i> Add Coupon
+                                    </button>
+                                </div>
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr className="bg-slate-50 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                                                <th className="px-5 py-3">Code</th>
+                                                <th className="px-5 py-3">Type</th>
+                                                <th className="px-5 py-3">Value</th>
+                                                <th className="px-5 py-3">Uses</th>
+                                                <th className="px-5 py-3">Min Order</th>
+                                                <th className="px-5 py-3">Expires</th>
+                                                <th className="px-5 py-3">Status</th>
+                                                <th className="px-5 py-3 text-right">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-50 text-xs">
+                                            {crmCoupons.map((c, i) => (
+                                                <tr key={c.id} className="hover:bg-slate-50/50 transition">
+                                                    <td className="px-5 py-4 font-bold text-slate-800">{c.code}</td>
+                                                    <td className="px-5 py-4"><span className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full font-bold text-[10px]">{c.type}</span></td>
+                                                    <td className="px-5 py-4 font-black text-slate-700">{c.type === 'percentage' ? `${c.value}%` : `₹${c.value}`}</td>
+                                                    <td className="px-5 py-4">{c.current_uses}{c.max_uses > 0 ? ` / ${c.max_uses}` : ' / ∞'}</td>
+                                                    <td className="px-5 py-4">{c.min_amount > 0 ? `₹${c.min_amount}` : '-'}</td>
+                                                    <td className="px-5 py-4 text-slate-500">{c.expires_at || '-'}</td>
+                                                    <td className="px-5 py-4">
+                                                        <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${c.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}`}>{c.is_active ? 'Active' : 'Inactive'}</span>
+                                                    </td>
+                                                    <td className="px-5 py-4 text-right">
+                                                        <button onClick={async () => { if (!confirm('Delete coupon?')) return; await fetch(`${API_BASE}/api/admin/coupons/${c.id}`, { method: 'DELETE', headers: getAuthHeaders() }); fetchCrmCoupons(); addToast('Deleted', 'success'); }} className="px-2.5 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg text-[10px] font-bold cursor-pointer transition"><i className="fa-solid fa-trash-can"></i></button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {crmCoupons.length === 0 && (
+                                                <tr><td colSpan="8" className="px-5 py-10 text-center text-slate-400 font-medium">No coupons created yet.</td></tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Notifications Panel */}
+                        {crmView === 'notifications' && (
+                            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                <div className="px-5 py-4 border-b border-slate-50 flex items-center justify-between">
+                                    <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                        <i className="fa-solid fa-bell text-indigo-600"></i>
+                                        Notifications ({crmNotifications.length})
+                                    </h3>
+                                    <div className="flex gap-2">
+                                        <button onClick={async () => {
+                                            const recipient = prompt('Recipient (email/phone):'); if (!recipient) return;
+                                            const title = prompt('Title:'); if (!title) return;
+                                            const msg = prompt('Message:'); if (!msg) return;
+                                            const type = prompt('Type (info/warning/success):', 'info');
+                                            await fetch(`${API_BASE}/api/admin/notifications`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ recipient, title, message: msg, type }) });
+                                            fetchCrmNotifications(); addToast('Notification sent', 'success');
+                                        }} className="px-3 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 cursor-pointer transition">
+                                            <i className="fa-solid fa-paper-plane mr-1"></i> Send
+                                        </button>
+                                        <button onClick={fetchCrmNotifications} className="px-3 py-2 bg-slate-50 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-100 cursor-pointer transition border border-slate-200">
+                                            <i className="fa-solid fa-arrows-rotate mr-1"></i> Refresh
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="divide-y divide-slate-50 max-h-[500px] overflow-y-auto">
+                                    {crmNotifications.map((n, i) => (
+                                        <div key={n.id} className="px-5 py-4 hover:bg-slate-50/50 transition">
+                                            <div className="flex items-start gap-3">
+                                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${n.type === 'warning' ? 'bg-amber-50 text-amber-600' : n.type === 'success' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'}`}>
+                                                    <i className={`fa-solid ${n.type === 'warning' ? 'fa-triangle-exclamation' : n.type === 'success' ? 'fa-circle-check' : 'fa-info'}`}></i>
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex items-center justify-between">
+                                                        <p className="font-bold text-slate-800 text-xs">{n.title}</p>
+                                                        <span className="text-[9px] text-slate-400">{n.created_at ? new Date(n.created_at).toLocaleString('en-IN') : ''}</span>
+                                                    </div>
+                                                    <p className="text-[11px] text-slate-500 mt-0.5">{n.message}</p>
+                                                    <div className="flex items-center gap-2 mt-1.5">
+                                                        <span className="text-[9px] text-slate-400">To: {n.recipient}</span>
+                                                        <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${n.status === 'sent' ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>{n.status}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {crmNotifications.length === 0 && (
+                                        <div className="px-5 py-10 text-center text-slate-400 font-medium text-xs">No notifications sent yet.</div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Invoices & GST */}
+                        {crmView === 'invoices' && (
+                            <div className="space-y-4">
+                                {crmInvoiceGstReport && (
+                                    <div className="grid grid-cols-3 gap-4">
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                                            <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Total Sales (taxable)</span>
+                                            <div className="text-xl font-black text-slate-800 mt-1">₹{crmInvoiceGstReport.summary?.total_sales?.toFixed(2)}</div>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                                            <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Total GST Collected</span>
+                                            <div className="text-xl font-black text-amber-600 mt-1">₹{crmInvoiceGstReport.summary?.total_gst?.toFixed(2)}</div>
+                                        </div>
+                                        <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                                            <span className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Total Invoices</span>
+                                            <div className="text-xl font-black text-indigo-600 mt-1">{crmInvoiceGstReport.summary?.invoice_count || 0}</div>
+                                        </div>
+                                    </div>
+                                )}
+                                {crmInvoiceGstReport?.daily_gst && crmInvoiceGstReport.daily_gst.length > 0 && (
+                                    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+                                        <h4 className="font-bold text-slate-800 text-xs flex items-center gap-2 mb-3"><i className="fa-solid fa-chart-bar text-amber-600"></i> Daily GST Collection (Last 30 days)</h4>
+                                        <div className="overflow-x-auto">
+                                            <table className="w-full text-left border-collapse text-xs">
+                                                <thead><tr className="bg-slate-50 text-[10px] uppercase font-bold text-slate-400 tracking-wider"><th className="px-4 py-2">Date</th><th className="px-4 py-2 text-right">GST</th></tr></thead>
+                                                <tbody className="divide-y divide-slate-50">
+                                                    {crmInvoiceGstReport.daily_gst.map((d, i) => (
+                                                        <tr key={i} className="hover:bg-slate-50/50"><td className="px-4 py-2 text-slate-600">{d.date}</td><td className="px-4 py-2 text-right font-bold text-slate-700">₹{d.gst.toFixed(2)}</td></tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                )}
+                                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                    <div className="px-5 py-4 border-b border-slate-50 flex items-center justify-between">
+                                        <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                            <i className="fa-solid fa-file-invoice-dollar text-indigo-600"></i>
+                                            All Invoices ({crmInvoices.length})
+                                        </h3>
+                                        <button onClick={fetchCrmInvoices} className="px-3 py-2 bg-slate-50 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-100 cursor-pointer transition border border-slate-200">
+                                            <i className="fa-solid fa-arrows-rotate mr-1"></i> Refresh
+                                        </button>
+                                    </div>
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr className="bg-slate-50 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                                                    <th className="px-5 py-3">Invoice #</th>
+                                                    <th className="px-5 py-3">Customer</th>
+                                                    <th className="px-5 py-3">Order</th>
+                                                    <th className="px-5 py-3 text-right">Amount</th>
+                                                    <th className="px-5 py-3 text-right">GST (18%)</th>
+                                                    <th className="px-5 py-3 text-right">Total</th>
+                                                    <th className="px-5 py-3">Status</th>
+                                                    <th className="px-5 py-3">Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-slate-50 text-xs">
+                                                {crmInvoices.map((inv, i) => (
+                                                    <tr key={inv.id} className="hover:bg-slate-50/50 transition">
+                                                        <td className="px-5 py-4 font-bold text-slate-800">{inv.invoice_number}</td>
+                                                        <td className="px-5 py-4 text-slate-500">{inv.customer_name || '-'}</td>
+                                                        <td className="px-5 py-4 text-slate-500">{inv.order_id?.slice(0,12)}..</td>
+                                                        <td className="px-5 py-4 text-right font-medium text-slate-700">₹{inv.amount?.toFixed(2)}</td>
+                                                        <td className="px-5 py-4 text-right font-medium text-amber-600">₹{inv.gst_amount?.toFixed(2)}</td>
+                                                        <td className="px-5 py-4 text-right font-black text-slate-800">₹{inv.total?.toFixed(2)}</td>
+                                                        <td className="px-5 py-4">
+                                                            <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${inv.status === 'PAID' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}`}>{inv.status}</span>
+                                                        </td>
+                                                        <td className="px-5 py-4 text-slate-500">{inv.created_at ? new Date(inv.created_at).toLocaleString('en-IN') : '-'}</td>
+                                                    </tr>
+                                                ))}
+                                                {crmInvoices.length === 0 && (
+                                                    <tr><td colSpan="8" className="px-5 py-10 text-center text-slate-400 font-medium">No invoices generated.</td></tr>
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Kanban Pipeline View */}
+                        {crmView === 'kanban' && (
+                            <div className="space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                        <i className="fa-solid fa-columns text-indigo-600"></i>
+                                        Order Pipeline
+                                    </h3>
+                                    <button onClick={fetchCrmOrders} className="px-3 py-2 bg-slate-50 text-slate-600 rounded-xl text-xs font-bold hover:bg-slate-100 cursor-pointer transition border border-slate-200">
+                                        <i className="fa-solid fa-arrows-rotate mr-1"></i> Refresh
+                                    </button>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-7 gap-3 overflow-x-auto">
+                                    {[
+                                        { key: 'PENDING_PAYMENT', label: 'Pending Payment', color: 'bg-amber-50 border-amber-200', badge: 'bg-amber-100 text-amber-700' },
+                                        { key: 'PAID', label: 'Paid', color: 'bg-blue-50 border-blue-200', badge: 'bg-blue-100 text-blue-700' },
+                                        { key: 'DRAFTED', label: 'Drafting', color: 'bg-indigo-50 border-indigo-200', badge: 'bg-indigo-100 text-indigo-700' },
+                                        { key: 'UNDER_REVIEW', label: 'Under Review', color: 'bg-purple-50 border-purple-200', badge: 'bg-purple-100 text-purple-700' },
+                                        { key: 'STAMPING', label: 'Stamping', color: 'bg-cyan-50 border-cyan-200', badge: 'bg-cyan-100 text-cyan-700' },
+                                        { key: 'NOTARIZATION', label: 'Notarization', color: 'bg-teal-50 border-teal-200', badge: 'bg-teal-100 text-teal-700' },
+                                        { key: 'DISPATCHED', label: 'Dispatched', color: 'bg-emerald-50 border-emerald-200', badge: 'bg-emerald-100 text-emerald-700' },
+                                    ].map(column => (
+                                        <div key={column.key} className={`${column.color} border rounded-xl p-3 min-w-[160px]`}>
+                                            <div className="flex items-center justify-between mb-3">
+                                                <span className="font-bold text-[10px] uppercase tracking-wider text-slate-600">{column.label}</span>
+                                                <span className={`px-1.5 py-0.5 rounded-full text-[8px] font-bold ${column.badge}`}>{crmOrders.filter(o => o.status === column.key).length}</span>
+                                            </div>
+                                            <div className="space-y-2 max-h-[500px] overflow-y-auto">
+                                                {crmOrders.filter(o => o.status === column.key).map(o => (
+                                                    <div key={o.id} className="bg-white rounded-lg p-2.5 border border-slate-100 shadow-xs text-[10px] hover:shadow-sm transition cursor-pointer" onClick={() => setCrmSelectedOrderForDetail(o)}>
+                                                        <div className="font-bold text-slate-800 truncate">{o.customer_name}</div>
+                                                        <div className="text-slate-400 truncate">{o.agreement_type} · ₹{o.amount}</div>
+                                                        <div className="text-[8px] text-slate-400 mt-0.5">{o.created_at?.slice(0,10)}</div>
+                                                    </div>
+                                                ))}
+                                                {crmOrders.filter(o => o.status === column.key).length === 0 && (
+                                                    <div className="text-[10px] text-slate-400 text-center py-4 italic">No orders</div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Order Detail Modal */}
+                        {crmSelectedOrderForDetail && (
+                            <div className="fixed inset-0 bg-black/60 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm" onClick={() => setCrmSelectedOrderForDetail(null)}>
+                                <div className="bg-white w-full max-w-3xl rounded-2xl border border-slate-100 shadow-lg max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                                    <div className="p-6">
+                                        <div className="flex items-center justify-between mb-6">
+                                            <h3 className="font-extrabold text-slate-800 text-lg flex items-center gap-2">
+                                                <i className="fa-solid fa-file-circle-info text-blue-600"></i>
+                                                Order Detail
+                                            </h3>
+                                            <button onClick={() => setCrmSelectedOrderForDetail(null)} className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-500 transition text-sm cursor-pointer">
+                                                <i className="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4 text-sm mb-6">
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Order ID</span><span className="font-bold text-slate-800">{crmSelectedOrderForDetail.id}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Customer</span><span className="font-bold text-slate-800">{crmSelectedOrderForDetail.customer_name}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Phone</span><span className="text-slate-600">{crmSelectedOrderForDetail.customer_phone}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Email</span><span className="text-slate-600">{crmSelectedOrderForDetail.customer_email}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Agreement</span><span className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full font-bold text-[10px]">{crmSelectedOrderForDetail.agreement_type}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Amount</span><span className="font-black text-slate-800">₹{crmSelectedOrderForDetail.amount}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Source</span><span className="text-slate-600">{crmSelectedOrderForDetail.source}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Status</span>
+                                                <select value={crmSelectedOrderForDetail.status} onChange={async (e) => { const newStatus = e.target.value; await fetch(`${API_BASE}/api/orders/${crmSelectedOrderForDetail.id}/status`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ status: newStatus }) }); setCrmSelectedOrderForDetail({...crmSelectedOrderForDetail, status: newStatus}); fetchCrmOrders(); addToast('Status updated', 'success'); }} className="px-2 py-1 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:outline-none cursor-pointer bg-white">
+                                                    {['PENDING_PAYMENT','PAID','DRAFTED','UNDER_REVIEW','STAMPING','NOTARIZATION','DISPATCHED','COMPLETED','SIGNED','REFUNDED'].map(s => (
+                                                        <option key={s} value={s}>{s.replace('_',' ')}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="col-span-2"><span className="text-[10px] uppercase font-bold text-slate-400 block">Created</span><span className="text-slate-500">{crmSelectedOrderForDetail.created_at}</span></div>
+                                        </div>
+
+                                        {/* Assign Staff */}
+                                        <div className="border-t border-slate-100 pt-4 mb-4">
+                                            <h4 className="font-bold text-slate-700 text-xs flex items-center gap-2 mb-3"><i className="fa-solid fa-user-plus text-indigo-500"></i> Assign Staff</h4>
+                                            <div className="flex gap-2">
+                                                <select id={`staff-select-${crmSelectedOrderForDetail.id}`} className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none bg-white">
+                                                    <option value="">Select staff...</option>
+                                                    {crmStaff.map(s => <option key={s.id} value={s.id}>{s.name} ({s.role})</option>)}
+                                                </select>
+                                                <select id={`staff-role-${crmSelectedOrderForDetail.id}`} className="px-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none bg-white">
+                                                    <option value="attorney">Attorney</option>
+                                                    <option value="support">Support</option>
+                                                    <option value="finance">Finance</option>
+                                                </select>
+                                                <button onClick={async () => {
+                                                    const sid = document.getElementById(`staff-select-${crmSelectedOrderForDetail.id}`).value;
+                                                    const role = document.getElementById(`staff-role-${crmSelectedOrderForDetail.id}`).value;
+                                                    if (!sid) return;
+                                                    await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/assign`, { method: 'PUT', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ staff_id: sid, role }) });
+                                                    addToast('Staff assigned', 'success');
+                                                }} className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 cursor-pointer"><i className="fa-solid fa-check mr-1"></i> Assign</button>
+                                            </div>
+                                        </div>
+
+                                        {/* Notes */}
+                                        <div className="border-t border-slate-100 pt-4 mb-4">
+                                            <h4 className="font-bold text-slate-700 text-xs flex items-center gap-2 mb-3"><i className="fa-solid fa-note-sticky text-amber-500"></i> Internal Notes</h4>
+                                            <div id={`notes-container-${crmSelectedOrderForDetail.id}`} className="text-xs text-slate-500 mb-2">Loading notes...</div>
+                                            <div className="flex gap-2">
+                                                <input id={`note-input-${crmSelectedOrderForDetail.id}`} type="text" placeholder="Add a note..." className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none" />
+                                                <button onClick={async () => {
+                                                    const note = document.getElementById(`note-input-${crmSelectedOrderForDetail.id}`).value;
+                                                    if (!note) return;
+                                                    await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/notes`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ note }) });
+                                                    document.getElementById(`note-input-${crmSelectedOrderForDetail.id}`).value = '';
+                                                    const res = await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/notes`, { headers: getAuthHeaders() });
+                                                    if (res.ok) { const d = await res.json(); document.getElementById(`notes-container-${crmSelectedOrderForDetail.id}`).innerHTML = d.notes.map(n => `<div class="py-1.5 border-b border-slate-50 last:border-0"><span class="font-bold text-slate-700">${n.author_name || 'Unknown'}:</span> ${n.note} <span class="text-[8px] text-slate-400">${new Date(n.created_at).toLocaleString('en-IN')}</span></div>`).join(''); }
+                                                    addToast('Note added', 'success');
+                                                }} className="px-3 py-2 bg-amber-600 text-white rounded-lg text-xs font-bold hover:bg-amber-700 cursor-pointer"><i className="fa-solid fa-plus"></i></button>
+                                            </div>
+                                        </div>
+
+                                        {/* Refund */}
+                                        <div className="border-t border-slate-100 pt-4">
+                                            <h4 className="font-bold text-slate-700 text-xs flex items-center gap-2 mb-3"><i className="fa-solid fa-rotate-left text-rose-500"></i> Refund / Cancel</h4>
+                                            <div className="flex gap-2">
+                                                <input id={`refund-amount-${crmSelectedOrderForDetail.id}`} type="number" placeholder="Amount" defaultValue={crmSelectedOrderForDetail.amount} className="w-32 px-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none" />
+                                                <input id={`refund-reason-${crmSelectedOrderForDetail.id}`} type="text" placeholder="Reason" className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none" />
+                                                <button onClick={async () => {
+                                                    if (!confirm('Process refund?')) return;
+                                                    const amount = document.getElementById(`refund-amount-${crmSelectedOrderForDetail.id}`).value;
+                                                    const reason = document.getElementById(`refund-reason-${crmSelectedOrderForDetail.id}`).value;
+                                                    const res = await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/refund`, { method: 'POST', headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' }, body: JSON.stringify({ amount: parseFloat(amount), reason }) });
+                                                    if (res.ok) { addToast('Refund processed', 'success'); fetchCrmOrders(); setCrmSelectedOrderForDetail(null); } else { addToast('Failed', 'error'); }
+                                                }} className="px-3 py-2 bg-rose-600 text-white rounded-lg text-xs font-bold hover:bg-rose-700 cursor-pointer">Process Refund</button>
+                                            </div>
+                                        </div>
+
+                                        {/* Version History */}
+                                        <div className="border-t border-slate-100 pt-4 mt-4">
+                                            <h4 className="font-bold text-slate-700 text-xs flex items-center gap-2 mb-3"><i className="fa-solid fa-clock-rotate-left text-purple-500"></i> Document Versions</h4>
+                                            <button onClick={async () => {
+                                                const res = await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/versions`, { headers: getAuthHeaders() });
+                                                if (res.ok) { const d = await res.json(); document.getElementById(`versions-${crmSelectedOrderForDetail.id}`).innerHTML = d.versions.map(v => `<div class="py-1.5 border-b border-slate-50 text-xs"><span class="font-bold text-purple-700">v${v.version}</span> by ${v.author_name || 'Unknown'} · ${v.change_summary || 'No summary'} · <span class="text-slate-400">${new Date(v.created_at).toLocaleString('en-IN')}</span></div>`).join(''); }
+                                            }} className="px-3 py-1.5 bg-purple-50 text-purple-700 rounded-lg text-[10px] font-bold hover:bg-purple-100 cursor-pointer mb-2">Load Versions</button>
+                                            <div id={`versions-${crmSelectedOrderForDetail.id}`} className="text-xs text-slate-500 max-h-[150px] overflow-y-auto"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* User Detail Modal */}
+                        {crmSelectedUser && (
+                            <div className="fixed inset-0 bg-black/60 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm" onClick={() => setCrmSelectedUser(null)}>
+                                <div className="bg-white w-full max-w-3xl rounded-2xl border border-slate-100 shadow-lg max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                                    <div className="p-6">
+                                        <div className="flex items-center justify-between mb-6">
+                                            <h3 className="font-extrabold text-slate-800 text-lg flex items-center gap-2">
+                                                <i className="fa-solid fa-user-circle text-blue-600"></i>
+                                                {crmSelectedUser.name}
+                                            </h3>
+                                            <button onClick={() => setCrmSelectedUser(null)} className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-500 transition text-sm cursor-pointer">
+                                                <i className="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4 text-sm mb-6">
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Email</span><span className="font-bold text-slate-800">{crmSelectedUser.email}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Phone</span><span className="text-slate-600">{crmSelectedUser.phone || '-'}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Role</span><span className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full font-bold text-[10px]">{crmSelectedUser.role}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Location</span><span className="text-slate-600">{crmSelectedUser.location || '-'}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Registered</span><span className="text-slate-500">{crmSelectedUser.created_at ? new Date(crmSelectedUser.created_at).toLocaleString('en-IN') : '-'}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Last Login</span><span className="text-slate-500">{crmSelectedUser.last_login ? new Date(crmSelectedUser.last_login).toLocaleString('en-IN') : '-'}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Total Orders</span><span className="font-black text-slate-800">{crmSelectedUser.order_count || 0}</span></div>
+                                            <div><span className="text-[10px] uppercase font-bold text-slate-400 block">Lifetime Value</span><span className="font-black text-emerald-600">₹{(crmSelectedUser.total_spent || 0).toFixed(0)}</span></div>
+                                        </div>
+                                        {/* Login History */}
+                                        {crmSelectedUser.login_history && crmSelectedUser.login_history.length > 0 && (
+                                            <div className="border-t border-slate-100 pt-4 mb-4">
+                                                <h4 className="font-bold text-slate-700 text-xs flex items-center gap-2 mb-3"><i className="fa-solid fa-clock-rotate-left text-slate-400"></i> Login History ({crmSelectedUser.login_history.length})</h4>
+                                                <div className="max-h-[200px] overflow-y-auto text-xs space-y-1.5">
+                                                    {crmSelectedUser.login_history.map((lh, i) => (
+                                                        <div key={lh.id || i} className="flex justify-between py-1 px-2 bg-slate-50 rounded-lg">
+                                                            <span className="text-slate-500">{lh.timestamp ? new Date(lh.timestamp).toLocaleString('en-IN') : '-'}</span>
+                                                            <span className="text-slate-400 text-[9px] truncate max-w-[200px]">{lh.ip_address} · {lh.user_agent?.slice(0, 40)}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                        {/* Drafts */}
+                                        {crmSelectedUser.drafts && crmSelectedUser.drafts.length > 0 && (
+                                            <div className="border-t border-slate-100 pt-4">
+                                                <h4 className="font-bold text-slate-700 text-xs flex items-center gap-2 mb-3"><i className="fa-solid fa-pen-to-square text-amber-500"></i> Saved Drafts ({crmSelectedUser.drafts.length})</h4>
+                                                <div className="space-y-1.5 text-xs">
+                                                    {crmSelectedUser.drafts.map((d, i) => (
+                                                        <div key={d.id} className="flex justify-between py-1.5 px-3 bg-amber-50 rounded-lg">
+                                                            <span className="font-bold text-slate-700">{d.doc_type}</span>
+                                                            <span className="text-slate-400">{d.updated_at ? new Date(d.updated_at).toLocaleString('en-IN') : '-'}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         )}
