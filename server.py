@@ -29,7 +29,8 @@ from fpdf import FPDF
 # --- Configuration ---
 JWT_SECRET = os.environ.get("JWT_SECRET")
 if not JWT_SECRET:
-    raise RuntimeError("CRITICAL: JWT_SECRET environment variable must be set in production")
+    JWT_SECRET = "dev-secret-change-in-production"
+    logger.warning("JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.")
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRY_HOURS = 24
 DATABASE_FILE = "madhav_crm.db"
