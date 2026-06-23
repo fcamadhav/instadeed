@@ -37,9 +37,11 @@ def main():
     babel_lib_pattern = r'<script src="https://unpkg\.com/@babel/standalone/babel\.min\.js"></script>'
     prod_content = re.sub(babel_lib_pattern, '<!-- Babel compiler library removed in production -->', dev_content)
 
-    # Replace the inline script block with out.js
+    # Replace the inline script block with out.js (with cache busting)
+    import time
+    timestamp = int(time.time())
     inline_script_pattern = r'(<script type="text/babel">)(.*?)(</script>)'
-    prod_content, count = re.subn(inline_script_pattern, r'<script src="out.js"></script>', prod_content, flags=re.DOTALL)
+    prod_content, count = re.subn(inline_script_pattern, f'<script src="out.js?v={timestamp}"></script>', prod_content, flags=re.DOTALL)
 
     if count > 0:
         with open('Madhav_Drafting_Hub.html', 'w', encoding='utf-8') as f:
