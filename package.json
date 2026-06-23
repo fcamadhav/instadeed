@@ -1,0 +1,15 @@
+{
+  "name": "madhav-legal-drafter",
+  "version": "1.0.0",
+  "description": "Madhav Legal Drafting Hub",
+  "main": "server.py",
+  "scripts": {
+    "build": "python build.py"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.0",
+    "@babel/preset-react": "^7.22.15"
+  }
+}
