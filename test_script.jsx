@@ -687,7 +687,6 @@
                 localStorage.setItem('instadeed_user', JSON.stringify(mockUser));
                 fetch('/api/auth/google', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(mockUser) }).catch(() => {});
                 onLogin(mockUser);
-                addToast("Signed in as " + mockUser.name, 'success');
             };
 
             const handleSendOtp = () => {
@@ -2622,8 +2621,7 @@
                 else if (activeTab === 'NOIDA_TRANSFER') name = buildDocumentName(noidaTransferData.plotNo, noidaTransferData.allotteeName, 'NOIDA Transfer');
                 else if (activeTab === 'GNIDA_PTM') name = buildDocumentName(gnidaPtmData.plotNo, gnidaPtmData.allotteeName, 'GNIDA PTM');
                 else if (activeTab === 'GNIDA_PACKAGE') name = buildDocumentName(gnidaPackageData.flatNo, gnidaPackageData.transferee1Name, 'GNIDA_5in1_Package');
-
-                else name = buildDocumentName(regData.propertyAddress ? regData.propertyAddress.split(',')[0] : '', regData.lessorName, 'Reg Rent Agreement');
+                else if (activeTab === 'REG_RENT') name = buildDocumentName(regData.propertyAddress ? regData.propertyAddress.split(',')[0] : '', regData.lessorName, 'Reg Rent Agreement');
 
                 document.title = name;
             }, [rentData, atsData, regData, tm48Data, gnidaData, mutationData, tmAppData, gnidaPtmData, activeTab]);
@@ -3306,16 +3304,19 @@
                     if (res.ok) {
                         const data = await res.json();
                         setUserOrders(Array.isArray(data) ? data : []);
+                    } else {
+                        setUserOrders([]);
                     }
                 } catch (e) {
                     console.error("Failed to fetch user orders:", e);
+                    setUserOrders([]);
                 }
                 setUserOrdersLoading(false);
             };
 
             useEffect(() => {
-                if (user && user.email) fetchUserOrders();
-            }, [user]);
+                if (activeTab === 'DASHBOARD' && user && user.email) fetchUserOrders();
+            }, [activeTab, user]);
 
             useEffect(() => {
                 if (activeTab === 'CRM' && isAdminLoggedIn) {
@@ -3649,7 +3650,7 @@
                                                     </td>
                                                     <td className="px-6 py-4 text-slate-500">{new Date(doc.created_at).toLocaleDateString('en-IN')}</td>
                                                     <td className="px-6 py-4 text-right">
-                                                        <a href={'${API_BASE}/api/customer/documents/' + doc.id + '/download'} target="_blank" className="px-3 py-1.5 bg-blue-50 border border-blue-100 hover:bg-blue-100 text-blue-600 text-[10px] font-bold rounded-lg transition cursor-pointer inline-flex items-center gap-1">
+                                                        <a href={`${API_BASE}/api/customer/documents/${doc.id}/download`} target="_blank" className="px-3 py-1.5 bg-blue-50 border border-blue-100 hover:bg-blue-100 text-blue-600 text-[10px] font-bold rounded-lg transition cursor-pointer inline-flex items-center gap-1">
                                                             <i className="fa-solid fa-download"></i> PDF
                                                         </a>
                                                     </td>
@@ -5297,7 +5298,7 @@
                                 <div className="flex items-center gap-2">
                                     {user ? (
                                         <div className="flex items-center gap-1.5">
-                                            <button onClick={() => setActiveTab('DASHBOARD')} className="px-3 py-1.5 bg-blue-50 border border-blue-100 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded-xl transition cursor-pointer">
+                                            <button onClick={() => { setActiveTab('DASHBOARD'); setFlowStep(1); }} className="px-3 py-1.5 bg-blue-50 border border-blue-100 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded-xl transition cursor-pointer">
                                                 <i className="fa-solid fa-layer-group mr-1"></i> My Docs
                                             </button>
                                             <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full py-1 pl-1 pr-3 shadow-sm text-xs text-slate-700">
@@ -6112,264 +6113,31 @@
                             })()}
 
                             {activeTab === 'HOME' && (
-                                <>
-                                    <div className="instadeed-solo-header mb-4 text-[11px] text-justify text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-100 leading-relaxed font-medium">
-                                        We specialise in preparing authority-specific composite documentation sets for GNIDA, NOIDA, GDA, and YEIDA. Each set contains documents drafted in prescribed formats delivered as a single, and a full legal package.
+                                <div className="bg-gradient-to-br from-blue-50 to-indigo-50/50 border border-blue-100 rounded-2xl p-5 text-center my-2 space-y-4 shadow-sm">
+                                    <div className="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center mx-auto shadow-md shadow-blue-200">
+                                        <i className="fa-solid fa-file-signature text-lg"></i>
                                     </div>
-
-                                    {/* Authority Selector - Segmented Control */}
-                                    <div className="instadeed-authority-selector bg-slate-100 p-1 rounded-xl flex gap-1 mb-4 border border-slate-200/50 overflow-x-auto scrollbar-hide">
-                                        {['ALL', 'GNIDA', 'NOIDA', 'GDA', 'YEIDA'].map(auth => (
-                                            <button
-                                                key={auth}
-                                                onClick={() => {
-                                                    setActiveAuthority(auth);
-                                                    // Reset active tab to first valid tab for this auth when switching
-                                                    if (auth === 'GNIDA') setActiveTab('TM_APP');
-                                                    else if (auth === 'NOIDA') setActiveTab('NOIDA_TRANSFER');
-                                                    else if (auth === 'ALL') setActiveTab('RENT');
-                                                    else setActiveTab('COMING_SOON');
-                                                }}
-                                                className={`flex-1 min-w-[80px] text-center px-2 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                                                    activeAuthority === auth
-                                                        ? 'bg-white text-slate-800 shadow-sm border border-slate-200/30'
-                                                        : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50/50'
-                                                }`}
-                                            >
-                                                {auth === 'ALL' ? 'General Docs' : auth}
-                                            </button>
-                                        ))}
+                                    <div className="space-y-1">
+                                        <h3 className="font-extrabold text-sm text-slate-800">Welcome to Drafting Hub</h3>
+                                        <p className="text-[11px] text-slate-500 leading-relaxed">
+                                            Select a legal template from the dashboard catalog to begin drafting.
+                                        </p>
                                     </div>
-
-                                    {/* Document Selection Grid */}
-                                    <div className="instadeed-doc-grid grid grid-cols-2 gap-2.5 mb-4">
-                                        {(activeAuthority === 'ALL') && (
-                                            <>
-                                                <button
-                                                    onClick={() => setActiveTab('RENT')}
-                                                    className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'RENT'
-                                                            ? 'bg-blue-50/80 border-blue-600 shadow-sm ring-1 ring-blue-100 text-blue-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-blue-100 hover:bg-blue-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'RENT' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-file-signature text-sm"></i>
-                                                    </div>
-                                                    <span className="font-bold text-[12px] mt-1 leading-tight">Rent Agreement</span>
-                                                    <span className="text-[10px] text-slate-400 font-normal leading-none">General draft</span>
-                                                </button>
-                                                
-                                                <button
-                                                    onClick={() => setActiveTab('ATS')}
-                                                    className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'ATS'
-                                                            ? 'bg-purple-50/80 border-purple-600 shadow-sm ring-1 ring-purple-100 text-purple-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-purple-100 hover:bg-purple-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'ATS' ? 'bg-purple-600 text-white' : 'bg-purple-50 text-purple-600 group-hover:bg-purple-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-file-contract text-sm"></i>
-                                                    </div>
-                                                    <span className="font-bold text-[12px] mt-1 leading-tight">Agreement to Sell</span>
-                                                    <span className="text-[10px] text-slate-400 font-normal leading-none">Sale agreement</span>
-                                                </button>
-
-                                                <button
-                                                    onClick={() => setActiveTab('REG_RENT')}
-                                                    className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'REG_RENT'
-                                                            ? 'bg-blue-50/80 border-indigo-600 shadow-sm ring-1 ring-blue-100 text-blue-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-blue-100 hover:bg-blue-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'REG_RENT' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-stamp text-sm"></i>
-                                                    </div>
-                                                    <span className="font-bold text-[12px] mt-1 leading-tight">Registered Rent</span>
-                                                    <span className="text-[10px] text-slate-400 font-normal leading-none">Authority format</span>
-                                                </button>
-
-                                                <button
-                                                    onClick={() => setActiveTab('TM48')}
-                                                    className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'TM48'
-                                                            ? 'bg-orange-50/80 border-orange-600 shadow-sm ring-1 ring-orange-100 text-orange-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-orange-100 hover:bg-orange-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'TM48' ? 'bg-orange-600 text-white' : 'bg-orange-50 text-orange-600 group-hover:bg-orange-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-trademark text-sm"></i>
-                                                    </div>
-                                                    <span className="font-bold text-[12px] mt-1 leading-tight">TM-48 Auth</span>
-                                                    <span className="text-[10px] text-slate-400 font-normal leading-none">Trademark Form</span>
-                                                </button>
-                                            </>
-                                        )}
-
-                                        {(activeAuthority === 'GNIDA') && (
-                                            <>
-                                                <button
-                                                    onClick={() => setActiveTab('GNIDA_PACKAGE')}
-                                                    className={`group col-span-2 flex flex-row items-center gap-3 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'GNIDA_PACKAGE'
-                                                            ? 'bg-gradient-to-r from-blue-500/10 to-blue-600/10 border-blue-500 shadow-sm ring-1 ring-blue-100 text-blue-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-blue-100 hover:bg-blue-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'GNIDA_PACKAGE' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-cubes text-sm"></i>
-                                                    </div>
-                                                    <div className="flex flex-col">
-                                                        <span className="font-extrabold text-[12px] leading-tight flex items-center gap-1.5">
-                                                            GNIDA 5-in-1 Package
-                                                            <span className="px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded font-black text-[8px] uppercase tracking-wider scale-90">Hot</span>
-                                                        </span>
-                                                        <span className="text-[10px] text-slate-400 font-normal leading-none mt-0.5">Fill all 5 documents in a single form</span>
-                                                    </div>
-                                                </button>
-                                                
-                                                <button
-                                                    onClick={() => setActiveTab('KYA')}
-                                                    className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'KYA'
-                                                            ? 'bg-yellow-50/80 border-yellow-600 shadow-sm ring-1 ring-yellow-100 text-yellow-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-yellow-100 hover:bg-yellow-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'KYA' ? 'bg-yellow-600 text-white' : 'bg-yellow-50 text-yellow-600 group-hover:bg-yellow-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-id-card text-sm"></i>
-                                                    </div>
-                                                    <span className="font-bold text-[12px] mt-1 leading-tight">Know Your Allottee</span>
-                                                    <span className="text-[10px] text-slate-400 font-normal leading-none">KYA Verification</span>
-                                                </button>
-                                                
-                                                <button
-                                                    onClick={() => setActiveTab('TM_APP')}
-                                                    className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'TM_APP'
-                                                            ? 'bg-rose-50/80 border-rose-600 shadow-sm ring-1 ring-rose-100 text-rose-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-rose-100 hover:bg-rose-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'TM_APP' ? 'bg-rose-600 text-white' : 'bg-rose-50 text-rose-600 group-hover:bg-rose-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-right-left text-sm"></i>
-                                                    </div>
-                                                    <span className="font-bold text-[12px] mt-1 leading-tight">Transfer Memo</span>
-                                                    <span className="text-[10px] text-slate-400 font-normal leading-none">TM Application</span>
-                                                </button>
-
-                                                <button
-                                                    onClick={() => setActiveTab('MUTATION')}
-                                                    className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'MUTATION'
-                                                            ? 'bg-blue-50/80 border-indigo-600 shadow-sm ring-1 ring-blue-100 text-blue-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-blue-100 hover:bg-blue-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'MUTATION' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-file-pen text-sm"></i>
-                                                    </div>
-                                                    <span className="font-bold text-[12px] mt-1 leading-tight">Mutation Form</span>
-                                                    <span className="text-[10px] text-slate-400 font-normal leading-none">Property Mutation</span>
-                                                </button>
-
-                                                <button
-                                                    onClick={() => setActiveTab('GNIDA_REGISTRY')}
-                                                    className={`group flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'GNIDA_REGISTRY'
-                                                            ? 'bg-cyan-50/80 border-cyan-600 shadow-sm ring-1 ring-cyan-100 text-cyan-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-cyan-100 hover:bg-cyan-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'GNIDA_REGISTRY' ? 'bg-cyan-600 text-white' : 'bg-cyan-50 text-cyan-600 group-hover:bg-cyan-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-book text-sm"></i>
-                                                    </div>
-                                                    <span className="font-bold text-[12px] mt-1 leading-tight">Registry Format</span>
-                                                    <span className="text-[10px] text-slate-400 font-normal leading-none">Official Registry</span>
-                                                </button>
-
-                                                <button
-                                                    onClick={() => setActiveTab('GNIDA_PTM')}
-                                                    className={`group col-span-2 flex flex-row items-center gap-3 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'GNIDA_PTM'
-                                                            ? 'bg-teal-50/80 border-teal-600 shadow-sm ring-1 ring-teal-100 text-teal-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-teal-100 hover:bg-teal-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'GNIDA_PTM' ? 'bg-teal-600 text-white' : 'bg-teal-50 text-teal-600 group-hover:bg-teal-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-file-contract text-sm"></i>
-                                                    </div>
-                                                    <div className="flex flex-col">
-                                                        <span className="font-bold text-[12px] leading-tight">Permission to Mortgage (PTM)</span>
-                                                        <span className="text-[10px] text-slate-400 font-normal leading-none">Authority mortgage format</span>
-                                                    </div>
-                                                </button>
-                                            </>
-                                        )}
-
-                                        {(activeAuthority === 'NOIDA') && (
-                                            <>
-                                                <button
-                                                    onClick={() => setActiveTab('NOIDA_TRANSFER')}
-                                                    className={`group col-span-2 flex flex-row items-center gap-3 p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                                                        activeTab === 'NOIDA_TRANSFER'
-                                                            ? 'bg-blue-50/80 border-blue-600 shadow-sm ring-1 ring-blue-100 text-blue-700'
-                                                            : 'bg-white border-slate-100 text-slate-700 hover:border-blue-100 hover:bg-blue-50/30'
-                                                    }`}
-                                                >
-                                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                                                        activeTab === 'NOIDA_TRANSFER' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-100/80'
-                                                    }`}>
-                                                        <i className="fa-solid fa-right-left text-sm"></i>
-                                                    </div>
-                                                    <div className="flex flex-col">
-                                                        <span className="font-bold text-[12px] leading-tight">Transfer Application</span>
-                                                        <span className="text-[10px] text-slate-400 font-normal leading-none">Official NOIDA Transfer</span>
-                                                    </div>
-                                                </button>
-                                            </>
-                                        )}
-
-                                        {(activeAuthority === 'GDA') && (
-                                            <div className="col-span-2 bg-slate-50 border border-slate-100 rounded-xl p-4 text-center">
-                                                <i className="fa-solid fa-lock text-slate-300 text-xl mb-1.5 block"></i>
-                                                <span className="font-bold text-xs text-slate-600 block">GDA Formats Locked</span>
-                                                <span className="text-[10px] text-slate-400">Drafting templates coming soon</span>
-                                            </div>
-                                        )}
-
-                                        
-
-                                        {(activeAuthority === 'YEIDA') && (
-                                            <div className="col-span-2 bg-slate-50 border border-slate-100 rounded-xl p-4 text-center">
-                                                <i className="fa-solid fa-lock text-slate-300 text-xl mb-1.5 block"></i>
-                                                <span className="font-bold text-xs text-slate-600 block">YEIDA Formats Locked</span>
-                                                <span className="text-[10px] text-slate-400">Drafting templates coming soon</span>
-                                            </div>
-                                        )}
+                                    <div className="bg-white/80 backdrop-blur-sm border border-slate-100 rounded-xl p-3.5 text-left text-[11px] text-slate-600 space-y-2 leading-relaxed">
+                                        <div className="flex items-start gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0"></span>
+                                            <span>Select authority-specific or general templates.</span>
+                                        </div>
+                                        <div className="flex items-start gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0"></span>
+                                            <span>Fill structured forms with real-time preview.</span>
+                                        </div>
+                                        <div className="flex items-start gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0"></span>
+                                            <span>Secure drafting, auto-saving & digital e-Sign.</span>
+                                        </div>
                                     </div>
-                                </>
+                                </div>
                             )}
 
                             {activeTab !== 'HOME' && activeTab !== 'CRM' && (
@@ -8100,7 +7868,7 @@
                                                 <h4 className="font-extrabold text-xs text-slate-800 mb-3 uppercase tracking-wider">Templates</h4>
                                                 <div className="flex flex-col gap-1.5">
                                                     {['Rent Agreement','Registered Rent','Agreement to Sell','TM-48 Trademark','GNIDA Package','KYC Forms'].map((t,i) => (
-                                                        <button key={i} onClick={() => { setActiveTab(btoa('HOME')); setActiveAuthority('ALL'); }} className="text-[11px] text-slate-400 hover:text-blue-600 font-medium transition text-left cursor-pointer">{t}</button>
+                                                        <button key={i} onClick={() => { setActiveTab('HOME'); setActiveAuthority('ALL'); }} className="text-[11px] text-slate-400 hover:text-blue-600 font-medium transition text-left cursor-pointer">{t}</button>
                                                     ))}
                                                 </div>
                                             </div>
