@@ -7,3 +7,5 @@ slowapi
 fpdf2
 requests
 python-multipart
+bcrypt
+python-dateutil
