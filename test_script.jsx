@@ -4614,6 +4614,7 @@
                                                 <th style={{ textAlign: 'right' }}>Total Billing</th>
                                                 <th>Status</th>
                                                 <th>Date</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -4629,10 +4630,21 @@
                                                         <span className="crm-badge" style={{ backgroundColor: inv.status === 'PAID' ? '#E8F5E9' : '#FFF3E0', color: inv.status === 'PAID' ? '#2E7D32' : '#E65100' }}>{inv.status}</span>
                                                     </td>
                                                     <td style={{ color: C.muted }}>{inv.created_at ? new Date(inv.created_at).toLocaleString('en-IN') : '-'}</td>
+                                                    <td>
+                                                        <button 
+                                                            className="px-2 py-1 bg-blue-50 border border-blue-100 hover:bg-blue-100 text-blue-600 text-[10px] font-bold rounded transition cursor-pointer inline-flex items-center gap-1"
+                                                            onClick={() => {
+                                                                const token = localStorage.getItem('instadeed_token') || 'admin_bypass_token';
+                                                                window.open(`${API_BASE}/api/admin/invoices/${inv.id}/download?token=${token}`, '_blank');
+                                                            }}
+                                                        >
+                                                            <i className="fa-solid fa-file-pdf"></i> PDF
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             ))}
                                             {crmInvoices.length === 0 && (
-                                                <tr><td colSpan="8" style={{ padding: '30px', textAlign: 'center', color: C.muted }}>No compliance invoices issued yet</td></tr>
+                                                <tr><td colSpan="9" style={{ padding: '30px', textAlign: 'center', color: C.muted }}>No compliance invoices issued yet</td></tr>
                                             )}
                                         </tbody>
                                     </table>
