@@ -2,6 +2,20 @@
         const { useState, useEffect, useCallback } = React;
         const ActiveFieldContext = React.createContext(null);
 
+        // --- Helper: Debounce ---
+        function debounce(func, wait) {
+            let timeout;
+            const debounced = function(...args) {
+                const context = this;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), wait);
+            };
+            debounced.cancel = function() {
+                clearTimeout(timeout);
+            };
+            return debounced;
+        }
+
         // --- Toast Notification System ---
         const ToastContext = React.createContext(null);
         const Toast = () => {
@@ -133,74 +147,107 @@
             };
 
         const Input = ({ label, name = "", type = "text", value = "", onChange, fullWidth, placeholder = "", as = "input", maxLength }) => {
+            const [localValue, setLocalValue] = useState(value);
+
+            useEffect(() => {
+                setLocalValue(value || "");
+            }, [value]);
+
+            const debouncedOnChange = useCallback(
+                debounce((val) => {
+                    onChange({
+                        target: { name, value: val }
+                    });
+                }, 300),
+                [onChange, name]
+            );
+
+            const handleChange = (e) => {
+                const val = e.target.value;
+                setLocalValue(val);
+                debouncedOnChange(val);
+            };
+
+            const handleBlur = (e) => {
+                debouncedOnChange.cancel && debouncedOnChange.cancel();
+                onChange(e);
+                if (setActiveField) {
+                    setActiveField(null);
+                }
+            };
+
             const getValidationClass = () => {
-                if (!value) return "border-gray-200 focus:border-blue-500 focus:ring-blue-500/10 hover:border-gray-300";
+                if (!localValue) return "border-gray-200 focus:border-blue-500 focus:ring-blue-500/10 hover:border-gray-300";
                 const lowerName = (name || "").toLowerCase();
                 if (lowerName.includes('aadhar') || lowerName.includes('aadhaar')) {
-                    const digits = value.replace(/\s/g, '');
+                    const digits = localValue.replace(/\s/g, '');
                     return digits.length === 12
                         ? "border-emerald-500 focus:border-emerald-600 focus:ring-emerald-500/10 bg-emerald-50/10"
                         : "border-amber-400 focus:border-amber-500 focus:ring-amber-500/10 bg-amber-50/5";
                 }
                 if (lowerName.includes('pan')) {
                     const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
-                    return (value.length === 10 && panRegex.test(value))
+                    return (localValue.length === 10 && panRegex.test(localValue))
                         ? "border-emerald-500 focus:border-emerald-600 focus:ring-emerald-500/10 bg-emerald-50/10"
                         : "border-amber-400 focus:border-amber-500 focus:ring-amber-500/10 bg-amber-50/5";
                 }
                 if (lowerName.includes('phone') || lowerName.includes('mobile')) {
-                    const digits = value.replace(/\D/g, '');
+                    const digits = localValue.replace(/\D/g, '');
                     return digits.length === 10
                         ? "border-emerald-500 focus:border-emerald-600 focus:ring-emerald-500/10 bg-emerald-50/10"
                         : "border-amber-400 focus:border-amber-500 focus:ring-amber-500/10 bg-amber-50/5";
                 }
                 if (lowerName.includes('pincode') || (name || "") === 'pinCode') {
-                    const digits = value.replace(/\D/g, '');
+                    const digits = localValue.replace(/\D/g, '');
                     return digits.length === 6
                         ? "border-emerald-500 focus:border-emerald-600 focus:ring-emerald-500/10 bg-emerald-50/10"
                         : "border-amber-400 focus:border-amber-500 focus:ring-amber-500/10 bg-amber-50/5";
                 }
                 return "border-gray-200 focus:border-blue-500 focus:ring-blue-500/10 hover:border-gray-300";
             };
+
             const getValidationBadge = () => {
-                if (!value) return null;
+                if (!localValue) return null;
                 const lowerName = (name || "").toLowerCase();
                 if (lowerName.includes('aadhar') || lowerName.includes('aadhaar')) {
-                    const digits = value.replace(/\s/g, '');
+                    const digits = localValue.replace(/\s/g, '');
                     return digits.length === 12
                         ? <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-check"></i> Valid 12-digit Aadhaar</span>
                         : <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-exclamation"></i> Enter 12-digit Aadhaar ({digits.length}/12)</span>;
                 }
                 if (lowerName.includes('pan')) {
                     const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
-                    return (value.length === 10 && panRegex.test(value))
+                    return (localValue.length === 10 && panRegex.test(localValue))
                         ? <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-check"></i> Valid PAN Format</span>
-                        : <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-exclamation"></i> Format: ABCDE1234F ({value.length}/10)</span>;
+                        : <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-exclamation"></i> Format: ABCDE1234F ({localValue.length}/10)</span>;
                 }
                 if (lowerName.includes('phone') || lowerName.includes('mobile')) {
-                    const digits = value.replace(/\D/g, '');
+                    const digits = localValue.replace(/\D/g, '');
                     return digits.length === 10
                         ? <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-check"></i> Valid 10-digit Mobile</span>
                         : <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-exclamation"></i> Enter 10-digit Mobile ({digits.length}/10)</span>;
                 }
                 if (lowerName.includes('pincode') || (name || "") === 'pinCode') {
-                    const digits = value.replace(/\D/g, '');
+                    const digits = localValue.replace(/\D/g, '');
                     return digits.length === 6
                         ? <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-check"></i> Valid 6-digit Pincode</span>
                         : <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 mt-1"><i className="fa-solid fa-circle-exclamation"></i> Enter 6-digit Pincode ({digits.length}/6)</span>;
                 }
                 return null;
             };
+
             const borderClass = getValidationClass();
-            const { activeField, setActiveField } = React.useContext(ActiveFieldContext);
+            const { activeField, setActiveField } = React.useContext(ActiveFieldContext) || {};
             return (
                 <div className={`mb-1 ${fullWidth ? 'w-full md:col-span-2' : ''}`}>
                     {label && <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">{label}</label>}
                     {as === 'textarea' ? (
                         <textarea
                             name={name}
-                            value={value}
-                            onChange={onChange}
+                            value={localValue}
+                            onChange={handleChange}
+                            onFocus={() => setActiveField && setActiveField(name)}
+                            onBlur={handleBlur}
                             maxLength={maxLength}
                             className={`w-full bg-white border rounded-lg px-3 py-2.5 text-gray-900 text-sm focus:outline-none focus:ring-4 transition-all font-ui shadow-sm placeholder:text-gray-300 min-h-[80px] ${borderClass}`}
                             placeholder={placeholder}
@@ -209,8 +256,10 @@
                         <input
                             type={type}
                             name={name}
-                            value={value}
-                            onChange={onChange}
+                            value={localValue}
+                            onChange={handleChange}
+                            onFocus={() => setActiveField && setActiveField(name)}
+                            onBlur={handleBlur}
                             maxLength={maxLength}
                             className={`w-full bg-white border rounded-lg px-3 py-2.5 text-gray-900 text-sm focus:outline-none focus:ring-4 transition-all font-ui shadow-sm placeholder:text-gray-300 ${borderClass}`}
                             placeholder={placeholder}
@@ -2685,6 +2734,20 @@
             };
             const [crmFilterType, setCrmFilterType] = useState('');
             const [crmSearch, setCrmSearch] = useState('');
+            const [crmSearchVal, setCrmSearchVal] = useState('');
+
+            const debouncedSetCrmSearch = useCallback(
+                debounce((val) => {
+                    setCrmSearch(val);
+                }, 300),
+                []
+            );
+
+            const handleCrmSearchChange = (val) => {
+                setCrmSearchVal(val);
+                debouncedSetCrmSearch(val);
+            };
+
             const [crmFilterToday, setCrmFilterToday] = useState(false);
             const [crmStaff, setCrmStaff] = useState([]);
             const [crmCoupons, setCrmCoupons] = useState([]);
@@ -4071,8 +4134,8 @@
                                     <input
                                         type="text"
                                         placeholder="Search by client name, phone, email, or order ID..."
-                                        value={crmSearch}
-                                        onChange={(e) => setCrmSearch(e.target.value)}
+                                        value={crmSearchVal}
+                                        onChange={(e) => handleCrmSearchChange(e.target.value)}
                                         className="crm-input w-full"
                                         style={{ paddingLeft: '36px' }}
                                     />

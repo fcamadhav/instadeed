@@ -18,6 +18,7 @@ import requests as http_requests
 
 from fastapi import FastAPI, Request, HTTPException, Depends, Body
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse, HTMLResponse, Response
 from pydantic import BaseModel
 import razorpay
@@ -169,6 +170,11 @@ class Database:
 
 def init_db():
     conn = sqlite3.connect(DATABASE_FILE)
+    try:
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("PRAGMA synchronous=NORMAL")
+    except Exception as e:
+        logger.warning(f"Failed to set WAL/synchronous PRAGMAs: {e}")
     cursor = conn.cursor()
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS orders (
@@ -444,6 +450,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # --- Global Exception Handler ---
 @app.exception_handler(Exception)
@@ -505,7 +512,10 @@ async def serve_js():
     js_path = os.path.join(STATIC_DIR, "out.js")
     if not os.path.exists(js_path):
         raise HTTPException(status_code=404, detail="JS bundle not found. Run build.py first.")
-    return FileResponse(js_path, media_type="application/javascript")
+    headers = {
+        "Cache-Control": "public, max-age=31536000, immutable"
+    }
+    return FileResponse(js_path, media_type="application/javascript", headers=headers)
 
 # serve_spa moved to the bottom of the file to prevent wildcard path conflicts
 
@@ -531,7 +541,9 @@ def verify_token(token: str) -> dict:
 def get_optional_user(request: Request) -> Optional[dict]:
     auth_header = request.headers.get("Authorization", "")
     token = None
-    if auth_header == "Bearer admin_bypass_token":
+    allow_bypass = os.environ.get("ALLOW_ADMIN_BYPASS", "0") == "1"
+    bypass_token = os.environ.get("ADMIN_BYPASS_TOKEN", "")
+    if allow_bypass and bypass_token and auth_header == f"Bearer {bypass_token}":
         return {"sub": "admin-id-bypass", "email": "admin@instadeed.local", "role": "admin"}
     elif auth_header.startswith("Bearer "):
         token = auth_header[7:]
@@ -539,7 +551,7 @@ def get_optional_user(request: Request) -> Optional[dict]:
         # Fallback to query parameter for token (e.g. for browser file downloads)
         q_token = request.query_params.get("token")
         if q_token:
-            if q_token == "admin_bypass_token":
+            if allow_bypass and bypass_token and q_token == bypass_token:
                 return {"sub": "admin-id-bypass", "email": "admin@instadeed.local", "role": "admin"}
             token = q_token
 

@@ -1,17 +1,44 @@
 import subprocess
 import os
 import re
+import sys
+import shutil
 
 def main():
     print("Step 1: Compiling test_script.jsx to out.js using Babel...")
-    babel_bin = os.path.join("node_modules", ".bin", "babel")
-    babel_cmd = f"{babel_bin} test_script.jsx --out-file out.js --presets=@babel/preset-react"
-    result = subprocess.run(babel_cmd, shell=True, capture_output=True, text=True)
-    if result.returncode != 0:
-        print("Babel compilation failed!")
-        print("Error details:", result.stderr)
-        return
-    print("Babel compiled successfully.")
+    
+    # Check if node is available
+    node_exists = shutil.which("node") is not None
+    
+    if not node_exists:
+        print("Warning: 'node' not found. Skipping JSX compilation. Will use existing out.js if present.")
+        if not os.path.exists("out.js"):
+            print("Error: out.js does not exist and 'node' is not available to compile it!")
+            sys.exit(1)
+    else:
+        babel_bin = os.path.join("node_modules", ".bin", "babel")
+        babel_cmd = f"{babel_bin} test_script.jsx --out-file out.js --presets=@babel/preset-react"
+        result = subprocess.run(babel_cmd, shell=True, capture_output=True, text=True)
+        if result.returncode != 0:
+            print("Babel compilation failed!")
+            print("Error details:", result.stderr)
+            sys.exit(1)
+        print("Babel compiled successfully.")
+
+        # Step 1b: Minifying out.js using Terser
+        terser_bin = os.path.join("node_modules", ".bin", "terser")
+        if os.path.exists(terser_bin) or shutil.which("terser") is not None:
+            print("Step 1b: Minifying out.js using Terser...")
+            cmd_path = terser_bin if os.path.exists(terser_bin) else "terser"
+            terser_cmd = f"{cmd_path} out.js -o out.js --compress --mangle"
+            minify_result = subprocess.run(terser_cmd, shell=True, capture_output=True, text=True)
+            if minify_result.returncode != 0:
+                print("Terser minification failed! Continuing with unminified bundle.")
+                print("Error details:", minify_result.stderr)
+            else:
+                print("Terser minified out.js successfully.")
+        else:
+            print("Warning: Terser not found. Bundle will not be minified.")
 
     # Read the current content of Madhav_Drafting_Hub.html
     # If it still has the inline script, we save it as the dev template
