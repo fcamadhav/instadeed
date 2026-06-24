@@ -4,7 +4,8 @@ import re
 
 def main():
     print("Step 1: Compiling test_script.jsx to out.js using Babel...")
-    babel_cmd = "node_modules\\.bin\\babel test_script.jsx --out-file out.js --presets=@babel/preset-react"
+    babel_bin = os.path.join("node_modules", ".bin", "babel")
+    babel_cmd = f"{babel_bin} test_script.jsx --out-file out.js --presets=@babel/preset-react"
     result = subprocess.run(babel_cmd, shell=True, capture_output=True, text=True)
     if result.returncode != 0:
         print("Babel compilation failed!")
