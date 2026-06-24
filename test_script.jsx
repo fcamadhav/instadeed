@@ -3473,11 +3473,16 @@
                 try { localStorage.setItem(`instadeed_draft_${activeTab}`, JSON.stringify(payload)); } catch(e) {}
             };
 
-            const handleOnlinePayment = async () => {
+            const handleOnlinePayment = async (directDetails = null) => {
                 trackEvent('form_complete', activeTab, '');
                 trackEvent('checkout_start', activeTab, '');
                 trackEvent('payment_initiated', activeTab, '');
                 const payload = getActiveDataPayload();
+                
+                const customerName = directDetails ? directDetails.name : (checkoutDetails.name || 'B2C Client');
+                const customerPhone = directDetails ? directDetails.phone : (checkoutDetails.phone || '0000000000');
+                const customerEmail = directDetails ? directDetails.email : (checkoutDetails.email || 'b2c@client.com');
+                
                 try {
                     // Dynamic pricing based on document type
                     const docPrices = {
@@ -3502,9 +3507,9 @@
                         body: JSON.stringify({
                             amount: orderAmount,
                             service_type: activeTab,
-                            customer_name: checkoutDetails.name || 'B2C Client',
-                            customer_phone: checkoutDetails.phone || '0000000000',
-                            customer_email: checkoutDetails.email || 'b2c@client.com',
+                            customer_name: customerName,
+                            customer_phone: customerPhone,
+                            customer_email: customerEmail,
                             form_data: payload
                         })
                     });
@@ -3579,9 +3584,9 @@
                                                 }
                                             },
                             prefill: {
-                                name: checkoutDetails.name,
-                                email: checkoutDetails.email,
-                                contact: checkoutDetails.phone
+                                name: customerName,
+                                email: customerEmail,
+                                contact: customerPhone
                             },
                             theme: { color: '#2563EB' }
                         };
@@ -3593,7 +3598,6 @@
                     addToast("Payment failed: " + e.message, 'error');
                 }
             };
-
             const loadRazorpayScript = () => {
                 return new Promise((resolve) => {
                     if (window.Razorpay) {
@@ -8036,14 +8040,27 @@
                                     if (isOfficeMode) {
                                         handleSaveOffline();
                                     } else {
-                                        // B2C Flow - pre-fill details from active data and show checkout modal
+                                        // B2C Flow - pre-fill details from active data, check session and do Express Checkout if complete
                                         const details = extractCustomerDetails();
-                                        setCheckoutDetails({
-                                            name: details.name || '',
-                                            phone: details.phone || '',
-                                            email: details.email || ''
-                                        });
-                                        setShowCheckoutModal(true);
+                                        const savedSession = localStorage.getItem('instadeed_user_session');
+                                        let sessionUser = {};
+                                        try {
+                                            if (savedSession) sessionUser = JSON.parse(savedSession);
+                                        } catch(e) {}
+                                        
+                                        const name = details.name || sessionUser.name || '';
+                                        const phone = (details.phone || sessionUser.phone || '').replace(/\D/g, '').slice(-10);
+                                        const email = details.email || sessionUser.email || '';
+                                        
+                                        if (name && phone.length === 10 && email) {
+                                            // Express Checkout
+                                            addToast("Initiating Express Checkout...", 'info');
+                                            handleOnlinePayment({ name, phone, email });
+                                        } else {
+                                            // Fallback to regular checkout modal
+                                            setCheckoutDetails({ name, phone, email });
+                                            setShowCheckoutModal(true);
+                                        }
                                     }
                                 }}>
                                     <i className="fa-solid fa-file-pdf"></i> {isOfficeMode ? 'Save & Print (Offline)' : 'Pay & Download Agreement'}
