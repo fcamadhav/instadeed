@@ -2726,7 +2726,7 @@
                 let saved = null; try { saved = localStorage.getItem('madhav_saved_drafts'); } catch(e) {}
                 if (saved) {
                     try {
-                        setSavedDrafts(JSON.parse(saved));
+                        const parsed = JSON.parse(saved); setSavedDrafts(Array.isArray(parsed) ? parsed : []);
                     } catch (e) { console.error("Error loading drafts", e); }
                 }
             }, []);
@@ -3225,7 +3225,7 @@
                     const res = await fetch(url, { headers: getAuthHeaders() });
                     if (res.ok) {
                         const data = await res.json();
-                        setCrmOrders(data);
+                        setCrmOrders(Array.isArray(data) ? data : []);
                     } else {
                         console.warn("CRM orders fetch failed:", res.status);
                         addToast("Failed to load orders. Check admin login.", 'error');
@@ -3303,22 +3303,22 @@
                     const res = await fetch(`${API_BASE}/api/admin/invoices`, { headers: getAuthHeaders() });
                     if (res.ok) { const d = await res.json(); setCrmInvoices(d.invoices || []); }
                     const gst = await fetch(`${API_BASE}/api/admin/invoices/gst-report`, { headers: getAuthHeaders() });
-                    if (gst.ok) { setCrmInvoiceGstReport(await gst.json()); }
+                    if (gst.ok) { const gstData = await gst.json(); setCrmInvoiceGstReport(gstData && gstData.summary ? gstData : null); }
                 } catch(e) { console.error(e); }
             };
 
             const fetchCrmAnalyticsExtras = async () => {
                 try {
                     const [f, a, h, d] = await Promise.all([
-                        fetch(`${API_BASE}/api/analytics/funnel`, { headers: getAuthHeaders() }).then(r => r.json()),
-                        fetch(`${API_BASE}/api/analytics/abandoned-drafts`, { headers: getAuthHeaders() }).then(r => r.json()),
-                        fetch(`${API_BASE}/api/analytics/heatmap`, { headers: getAuthHeaders() }).then(r => r.json()),
-                        fetch(`${API_BASE}/api/analytics/dropoff`, { headers: getAuthHeaders() }).then(r => r.json()),
+                        fetch(`${API_BASE}/api/analytics/funnel`, { headers: getAuthHeaders() }).then(r => r.ok ? r.json() : null).catch(() => null),
+                        fetch(`${API_BASE}/api/analytics/abandoned-drafts`, { headers: getAuthHeaders() }).then(r => r.ok ? r.json() : null).catch(() => null),
+                        fetch(`${API_BASE}/api/analytics/heatmap`, { headers: getAuthHeaders() }).then(r => r.ok ? r.json() : null).catch(() => null),
+                        fetch(`${API_BASE}/api/analytics/dropoff`, { headers: getAuthHeaders() }).then(r => r.ok ? r.json() : null).catch(() => null),
                     ]);
-                    setCrmFunnelData(f);
-                    setCrmAbandonedData(a);
-                    setCrmHeatmapData(h);
-                    setCrmDropoffData(d);
+                    setCrmFunnelData(f && Array.isArray(f.funnel) ? f : null);
+                    setCrmAbandonedData(a && typeof a.total_drafts !== 'undefined' ? a : null);
+                    setCrmHeatmapData(h && Array.isArray(h.locations) ? h : null);
+                    setCrmDropoffData(d && Array.isArray(d.dropoff) ? d : null);
                 } catch(e) { console.error(e); }
             };
 
