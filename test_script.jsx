@@ -1396,6 +1396,8 @@
             }, []);
 
             const [activeTab, setActiveTab] = useState(() => window.location.pathname.toLowerCase().startsWith('/admin') ? 'CRM' : 'HOME'); // 'RENT', 'ATS', 'NOIDA_TRANSFER' etc.
+            const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+            const [mobileViewTab, setMobileViewTab] = useState('form'); // 'form' or 'preview'
             const [gnidaPackageDocs, setGnidaPackageDocs] = useState({
                 kya: true,
                 tm: true,
@@ -6261,9 +6263,42 @@
                 ) : (
                     /* ===== EXISTING SIDEBAR + PREVIEW LAYOUT ===== */
                     <div className="flex flex-col lg:flex-row h-screen font-ui overflow-hidden app-layout-container">
+                        {/* Mobile Tab Toggle */}
+                        {activeTab !== 'HOME' && activeTab !== 'CRM' && activeTab !== 'DASHBOARD' && (
+                            <div className="flex lg:hidden bg-white border-b border-slate-100 shrink-0 z-30 w-full shadow-sm">
+                                <button 
+                                    onClick={() => setMobileViewTab('form')}
+                                    className={`flex-1 py-3.5 text-center text-xs font-extrabold transition-all border-b-2 ${mobileViewTab === 'form' ? 'text-blue-600 border-blue-600 bg-blue-50/10' : 'text-slate-400 border-transparent'}`}
+                                >
+                                    <i className="fa-solid fa-file-pen mr-1.5"></i> Edit Form
+                                </button>
+                                <button 
+                                    onClick={() => setMobileViewTab('preview')}
+                                    className={`flex-1 py-3.5 text-center text-xs font-extrabold transition-all border-b-2 ${mobileViewTab === 'preview' ? 'text-blue-600 border-blue-600 bg-blue-50/10' : 'text-slate-400 border-transparent'}`}
+                                >
+                                    <i className="fa-solid fa-file-invoice mr-1.5"></i> View Document
+                                </button>
+                            </div>
+                        )}
+
+                        {/* Collapse Sidebar Toggle (Desktop Only) */}
+                        {!viewOnlyMode && activeTab !== 'HOME' && activeTab !== 'CRM' && activeTab !== 'DASHBOARD' && (
+                            <button 
+                                onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                                className="hidden lg:flex fixed top-1/2 -translate-y-1/2 z-40 w-6 h-12 bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-400 hover:text-blue-600 rounded-r-xl shadow-md items-center justify-center transition-all cursor-pointer"
+                                style={{ 
+                                    left: isSidebarCollapsed ? '0px' : '480px',
+                                    transition: 'left 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s, border-color 0.2s, color 0.2s'
+                                }}
+                                title={isSidebarCollapsed ? "Expand Form Panel" : "Collapse Form Panel"}
+                            >
+                                <i className={`fa-solid ${isSidebarCollapsed ? 'fa-chevron-right text-[9px]' : 'fa-chevron-left text-[9px]'}`}></i>
+                            </button>
+                        )}
+
                     {/* Left Sidebar */}
                     {!viewOnlyMode && (
-                        <div className="w-full lg:w-[480px] bg-white border-r border-gray-200 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-10 app-sidebar h-full">
+                        <div className={`w-full lg:w-[480px] bg-white border-r border-gray-200 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-10 app-sidebar h-full transition-all duration-300 ${isSidebarCollapsed ? 'lg:w-0 lg:opacity-0 lg:overflow-hidden lg:border-none' : ''} ${mobileViewTab === 'preview' ? 'hidden lg:flex' : ''}`}>
                         {/* Header */}
                         <div className="px-6 py-5 border-b border-gray-100 bg-white/95 backdrop-blur-sm sticky top-0 z-20">
                             <div className="flex justify-between items-center mb-4">
@@ -8083,7 +8118,7 @@
                     )}
 
                     {/* Right Preview Area */}
-                    <div className={`flex-1 overflow-y-auto ${viewOnlyMode ? 'bg-slate-50 p-4 lg:p-10 w-full' : (activeTab === 'CRM' || activeTab === 'HOME' || activeTab === 'DASHBOARD' ? 'bg-slate-50 p-6 lg:p-10' : 'bg-dot-pattern p-8 lg:p-16')} flex flex-col items-center justify-start paper-page-container`}>
+                    <div className={`flex-1 overflow-y-auto ${viewOnlyMode ? 'bg-slate-50 p-4 lg:p-10 w-full' : (activeTab === 'CRM' || activeTab === 'HOME' || activeTab === 'DASHBOARD' ? 'bg-slate-50 p-6 lg:p-10' : 'bg-dot-pattern p-8 lg:p-16')} flex flex-col items-center justify-start paper-page-container ${mobileViewTab === 'form' && activeTab !== 'HOME' && activeTab !== 'CRM' && activeTab !== 'DASHBOARD' ? 'hidden lg:flex' : ''}`}>
                         {viewOnlyMode && (
                             <div className="w-full max-w-4xl bg-white border border-blue-100 rounded-2xl p-4 shadow-sm flex items-center justify-between gap-4 mb-6 z-20 sticky top-0 backdrop-blur-md bg-white/90">
                                 <div className="flex items-center gap-3">

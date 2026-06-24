@@ -2404,6 +2404,177 @@ footer {
 .cert-title { font-weight: 800; font-size: .8rem; color: #10B981 }
 .cert-body { font-size: .72rem; color: #065F46; margin-top: .1rem }
 
+/* ═══════════════════════
+   PREMIUM INTERACTIONS & OVERRIDES
+   ═══════════════════════ */
+
+/* Scroll-reveal entry transition */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Catalog Card Animations */
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: scale(0.95) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.doc-tile {
+  animation: cardFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Hover glow shadows for cards */
+.doc-tile:hover, .bento-card:hover, .aud-card:hover {
+  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.06), 0 0 0 1px rgba(37, 99, 235, 0.1) !important;
+  transform: translateY(-2px);
+}
+
+/* Layered Document Stack in Hero */
+.hero-visual {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  perspective: 1000px;
+}
+.doc-layer-back1, .doc-layer-back2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--rxl);
+  z-index: 1;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.doc-layer-back1 {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.015);
+  transform: translateZ(-20px) rotate(-3deg) scale(0.95) translateY(10px);
+}
+.doc-layer-back2 {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(15, 23, 42, 0.03);
+  transform: translateZ(-40px) rotate(4deg) scale(0.91) translateY(20px);
+}
+.doc-mockup {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: var(--rxl);
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.05);
+  padding: 1.8rem;
+  width: 100%;
+  backdrop-filter: blur(20px);
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+}
+.doc-mockup:hover {
+  transform: rotateY(-6deg) rotateX(4deg) translateY(-5px);
+  box-shadow: 0 45px 90px rgba(37, 99, 235, 0.08);
+}
+
+/* Mobile Hamburger Menu */
+.hamburger-btn {
+  display: none;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.hamburger-btn:hover {
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.nav-mobile-ctas {
+  display: none;
+}
+
+@media(max-width:1024px) {
+  .hamburger-btn {
+    display: flex;
+  }
+  .nav-inner {
+    justify-content: space-between;
+  }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.98);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(20px);
+    padding: 1.5rem;
+    gap: 0.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    z-index: 100;
+  }
+  .nav.mobile-open .nav-links {
+    display: flex;
+  }
+  .nav-link {
+    width: 100%;
+    padding: 0.65rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+  .nav-dropdown {
+    position: static;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    padding-left: 1rem;
+    display: none;
+  }
+  .nav-item:hover .nav-dropdown {
+    display: block;
+  }
+  .nav-right .nav-phone-pill, 
+  .nav-right .btn-nav-login, 
+  .nav-right .btn-nav-signup {
+    display: none;
+  }
+  .nav-mobile-ctas {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(15, 23, 42, 0.06);
+    width: 100%;
+  }
+  .nav-mobile-ctas .nav-phone-pill, 
+  .nav-mobile-ctas .btn-nav-login, 
+  .nav-mobile-ctas .btn-nav-signup {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0.65rem 1.25rem;
+    height: 44px;
+    font-size: 0.85rem;
+  }
+}
 </style>
 </head>
 <body>
@@ -2471,6 +2642,13 @@ footer {
       <span class="nav-link" onclick="scrollToSection('features')">Features</span>
       <span class="nav-link" onclick="scrollToSection('pricing')">Pricing</span>
       <span class="nav-link" onclick="scrollToSection('faq')">FAQs</span>
+      
+      <!-- Mobile Exclusive Actions -->
+      <div class="nav-mobile-ctas">
+        <div class="nav-phone-pill" style="justify-content:center"><i class="fa-solid fa-phone"></i> 1800-000-0000</div>
+        <button class="btn-nav-login btn-login" onclick="openAuth('login'); toggleMobileMenu()">Login</button>
+        <button class="btn-nav-signup btn-register" onclick="openAuth('register'); toggleMobileMenu()">Create free account</button>
+      </div>
     </div>
 
     <!-- RIGHT -->
@@ -2479,23 +2657,28 @@ footer {
       <button class="btn-nav-login btn-login" onclick="openAuth('login')">Login</button>
       <button class="btn-nav-signup btn-register" onclick="openAuth('register')">Create free account</button>
       <!-- User chip (shown after sign-in) -->
-<div class="user-chip" id="userChip" onclick="toggleUserMenu()">
-  <div class="user-avatar" id="userAvatar">U</div>
-  <span class="user-name" id="userName">User</span>
-  <i class="fa-solid fa-chevron-down" style="font-size:.55rem;margin-left:.15rem"></i>
-</div>
-<!-- User dropdown -->
-<div class="user-menu" id="userMenu" style="display:none;">
-  <div class="user-menu-header" id="userMenuEmail"></div>
-  <div class="user-menu-item" onclick="scrollToSection('pricing')">
-    <i class="fa-solid fa-file-contract" style="color:var(--blue-l);width:14px;margin-right:0.5rem;"></i> My Documents
-  </div>
-  <div class="user-menu-item" style="color:var(--rose);" onclick="signOut()">
-    <i class="fa-solid fa-right-from-bracket" style="color:var(--rose);width:14px;margin-right:0.5rem;"></i> Sign out
-  </div>
-</div>
+      <div class="user-chip" id="userChip" onclick="toggleUserMenu()">
+        <div class="user-avatar" id="userAvatar">U</div>
+        <span class="user-name" id="userName">User</span>
+        <i class="fa-solid fa-chevron-down" style="font-size:.55rem;margin-left:.15rem"></i>
+      </div>
+      <!-- User dropdown -->
+      <div class="user-menu" id="userMenu" style="display:none;">
+        <div class="user-menu-header" id="userMenuEmail"></div>
+        <div class="user-menu-item" onclick="scrollToSection('pricing')">
+          <i class="fa-solid fa-file-contract" style="color:var(--blue-l);width:14px;margin-right:0.5rem;"></i> My Documents
+        </div>
+        <div class="user-menu-item" style="color:var(--rose);" onclick="signOut()">
+          <i class="fa-solid fa-right-from-bracket" style="color:var(--rose);width:14px;margin-right:0.5rem;"></i> Sign out
+        </div>
       </div>
     </div>
+    
+    <!-- Mobile Hamburger Toggle Button -->
+    <button class="hamburger-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Toggle Navigation Menu">
+      <i class="fa-solid fa-bars" id="hamburgerIcon"></i>
+    </button>
+
   </div>
 </nav>
 
@@ -2538,6 +2721,8 @@ footer {
     <!-- Right — document mockup -->
     <div class="hero-right">
       <div class="hero-visual">
+        <div class="doc-layer-back1"></div>
+        <div class="doc-layer-back2"></div>
         <!-- Floating badge 1 -->
         <div class="float-card fc1">
           <div class="fci ic-g"><i class="fa-solid fa-check"></i></div>
@@ -2546,7 +2731,7 @@ footer {
         <!-- Main mockup -->
         <div class="doc-mockup">
           <div class="dm-header">
-            <div class="dm-icon"><i class="fa-solid fa-file-contract"></i></div>
+            <div class="dm-icon" id="heroMockupIcon"><i class="fa-solid fa-file-contract"></i></div>
             <div>
               <div class="dm-title" id="heroMockupTitle">Rent Agreement</div>
               <div class="dm-sub" id="heroMockupSub">Drafted in 3 minutes · Smart Form</div>
@@ -2560,7 +2745,7 @@ footer {
           <div class="dm-line w-half"></div>
           <div class="dm-line w-3q"></div>
           <div class="dm-sig-row">
-            <div class="dm-sig"><i class="fa-solid fa-fingerprint"></i> Aadhaar Signed</div>
+            <div class="dm-sig" id="heroMockupStamp"><i class="fa-solid fa-fingerprint"></i> Aadhaar Signed</div>
             <div class="dm-date">26 May 2025</div>
           </div>
         </div>
@@ -3628,28 +3813,80 @@ function showToast(msg){
 
 /* Interactive Hero Mockup Document Rotation */
 const mockupDocs = [
-  { name: "Rent Agreement", sub: "Landlord: Bhati Ji · Tenant: Sharma Ji" },
-  { name: "GNIDA Mutation", sub: "Allottee: Amit Kumar · Sector: Alpha II" },
-  { name: "Noida Transfer", sub: "Transferor: Raj Singh · Transferee: M. Lal" },
-  { name: "TM-48 Auth", sub: "Proprietor: Instadeed Tech · Class: 45" }
+  { name: "Rent Agreement", sub: "Landlord: Bhati Ji · Tenant: Sharma Ji", icon: "fa-file-contract", stamp: "Aadhaar Signed" },
+  { name: "GNIDA Mutation", sub: "Allottee: Amit Kumar · Sector: Alpha II", icon: "fa-landmark", stamp: "Submitted to GNIDA" },
+  { name: "Noida Transfer", sub: "Transferor: Raj Singh · Transferee: M. Lal", icon: "fa-building", stamp: "Lawyer Verified" },
+  { name: "TM-48 Auth", sub: "Proprietor: Instadeed Tech · Class: 45", icon: "fa-user-tie", stamp: "IP Registrar Copy" }
 ];
 let mockupIdx = 0;
 function cycleMockup() {
   const elTitle = document.getElementById('heroMockupTitle');
   const elSub = document.getElementById('heroMockupSub');
-  if(!elTitle || !elSub) return;
+  const elIcon = document.getElementById('heroMockupIcon');
+  const elStamp = document.getElementById('heroMockupStamp');
+  
+  if(!elTitle || !elSub || !elIcon || !elStamp) return;
   mockupIdx = (mockupIdx + 1) % mockupDocs.length;
   const doc = mockupDocs[mockupIdx];
+  
   elTitle.style.opacity = '0';
   elSub.style.opacity = '0';
+  elIcon.style.opacity = '0';
+  elStamp.style.opacity = '0';
+  
   setTimeout(() => {
     elTitle.textContent = doc.name;
     elSub.textContent = doc.sub;
+    elIcon.innerHTML = `<i class="fa-solid ${doc.icon}"></i>`;
+    elStamp.innerHTML = `<i class="fa-solid fa-fingerprint"></i> ${doc.stamp}`;
+    
     elTitle.style.opacity = '1';
     elSub.style.opacity = '1';
+    elIcon.style.opacity = '1';
+    elStamp.style.opacity = '1';
   }, 400);
 }
 setInterval(cycleMockup, 3800);
+
+/* Mobile Navigation Hamburger Menu Toggle */
+function toggleMobileMenu() {
+  const nav = document.getElementById('mainNav');
+  const icon = document.getElementById('hamburgerIcon');
+  if(!nav || !icon) return;
+  
+  nav.classList.toggle('mobile-open');
+  if(nav.classList.contains('mobile-open')) {
+    icon.classList.remove('fa-bars');
+    icon.classList.add('fa-xmark');
+  } else {
+    icon.classList.remove('fa-xmark');
+    icon.classList.add('fa-bars');
+  }
+}
+
+/* Scroll reveal Observer setup */
+document.addEventListener('DOMContentLoaded', () => {
+  // Add reveal class to sections we want to animate
+  const sectionsToReveal = document.querySelectorAll('section, .stats-bar, .trust-bar, footer');
+  sectionsToReveal.forEach(sec => sec.classList.add('reveal'));
+  
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+  };
+  
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        entry.target.classList.add('active');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+  
+  sectionsToReveal.forEach(sec => observer.observe(sec));
+});
 </script>
 </body>
 </html>
