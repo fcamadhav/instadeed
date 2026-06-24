@@ -269,6 +269,257 @@
                 </div>
             );
         };
+        // Centralized Schemas for Declarative Form Building
+        const KYA_SCHEMA = {
+            sections: [
+                {
+                    title: "Dated & Basic Info",
+                    icon: "fa-calendar",
+                    color: "yellow",
+                    fields: [
+                        { name: "dated", label: "Date (DD-MM-YYYY)", type: "text" }
+                    ]
+                },
+                {
+                    title: "Allottee Details",
+                    icon: "fa-user",
+                    color: "yellow",
+                    fields: [
+                        { name: "allotteeName", label: "Allottee Name", type: "text" },
+                        { name: "fatherSpouseName", label: "Father/Spouse Name", type: "text" }
+                    ]
+                },
+                {
+                    title: "Property Details",
+                    icon: "fa-building",
+                    color: "yellow",
+                    fields: [
+                        { name: "schemeName", label: "Scheme Name", type: "text", halfWidth: true },
+                        { name: "schemeCode", label: "Scheme Code", type: "text", halfWidth: true },
+                        { name: "allotmentNo", label: "Allotment No", type: "text", halfWidth: true },
+                        { name: "propertyNo", label: "Prop No", type: "text", halfWidth: true },
+                        { name: "block", label: "Block", type: "text", halfWidth: true },
+                        { name: "sector", label: "Sector", type: "text", halfWidth: true },
+                        { name: "allotmentDate", label: "Allotment Date (DD/MM/YYYY)", type: "text", halfWidth: true },
+                        { name: "plotSize", label: "Plot Size", type: "text", halfWidth: true }
+                    ]
+                },
+                {
+                    title: "Applicants",
+                    icon: "fa-users",
+                    color: "yellow",
+                    fields: [
+                        { type: "subheader", label: "Applicant 1" },
+                        { name: "allottee1Name", label: "Name", type: "text" },
+                        { name: "allottee1Mobile", label: "Mobile", type: "tel" },
+                        { name: "allottee1Email", label: "Email", type: "email" },
+                        { name: "allottee1DOB", label: "DOB (DDMMYYYY)", type: "text" },
+                        { name: "allottee1PAN", label: "PAN", type: "text", halfWidth: true },
+                        { name: "allottee1Aadhar", label: "Aadhar", type: "text", halfWidth: true },
+                        { name: "allottee1Voter", label: "Voter ID", type: "text", halfWidth: true },
+                        { name: "allottee1DL", label: "D. License", type: "text", halfWidth: true },
+                        { type: "subheader", label: "Applicant 2" },
+                        { name: "allottee2Name", label: "Name", type: "text" },
+                        { name: "allottee2Mobile", label: "Mobile", type: "tel" },
+                        { name: "allottee2Email", label: "Email", type: "email" },
+                        { name: "allottee2DOB", label: "DOB (DDMMYYYY)", type: "text" },
+                        { name: "allottee2PAN", label: "PAN", type: "text", halfWidth: true },
+                        { name: "allottee2Aadhar", label: "Aadhar", type: "text", halfWidth: true },
+                        { name: "allottee2Voter", label: "Voter ID", type: "text", halfWidth: true },
+                        { name: "allottee2DL", label: "D. License", type: "text", halfWidth: true }
+                    ]
+                },
+                {
+                    title: "Addresses",
+                    icon: "fa-map-location-dot",
+                    color: "yellow",
+                    fields: [
+                        { type: "header", label: "Correspondence Address" },
+                        { name: "corrAddress1", label: "Line 1", type: "text", placeholder: "House/Flat No., Street..." },
+                        { name: "corrAddress2", label: "Line 2", type: "text", placeholder: "Locality, Area..." },
+                        { name: "corrAddress3", label: "Line 3", type: "text", placeholder: "City, State, PIN..." },
+                        { name: "kyaSameAddress", label: "Same as Correspondence Address", type: "checkbox" },
+                        { type: "header", label: "Permanent Address" },
+                        { name: "permAddress1", label: "Line 1", type: "text", placeholder: "House/Flat No., Street...", showIf: "kyaSameAddress", showIfValue: false },
+                        { name: "permAddress2", label: "Line 2", type: "text", placeholder: "Locality, Area...", showIf: "kyaSameAddress", showIfValue: false },
+                        { name: "permAddress3", label: "Line 3", type: "text", placeholder: "City, State, PIN...", showIf: "kyaSameAddress", showIfValue: false }
+                    ]
+                }
+            ]
+        };
+
+        const GNIDA_SCHEMA = {
+            sections: [
+                {
+                    title: "Header & Dates",
+                    icon: "fa-calendar",
+                    color: "teal",
+                    isOpen: true,
+                    fields: [
+                        { name: "dated", label: "Dated (DD/MM/YYYY)", type: "text", placeholder: "DD MM YYYY" },
+                        { name: "allotmentDate", label: "Allotment Date", type: "date", halfWidth: true },
+                        { name: "allotmentNo", label: "Allotment No.", type: "text", halfWidth: true }
+                    ]
+                },
+                {
+                    title: "Top Form Details",
+                    icon: "fa-file-alt",
+                    color: "teal",
+                    isOpen: true,
+                    fields: [
+                        { name: "allotteeName", label: "Allottee Name", type: "text", halfWidth: true },
+                        { name: "propertyNo", label: "Property No", type: "text", halfWidth: true },
+                        { name: "fatherSpouseName", label: "Father/Spouse Name", type: "text", halfWidth: true },
+                        { name: "block", label: "Block/Estate", type: "text", halfWidth: true },
+                        { name: "schemeName", label: "Scheme Name", type: "text", halfWidth: true },
+                        { name: "sector", label: "Sector", type: "text", halfWidth: true },
+                        { name: "schemeCode", label: "Scheme Code", type: "text", halfWidth: true },
+                        { name: "plotSize", label: "Plot Size (Sq Mt)", type: "text", halfWidth: true }
+                    ]
+                },
+                {
+                    title: "1. Allottee Name (Grid)",
+                    icon: "fa-users",
+                    color: "teal",
+                    fields: [
+                        { name: "allottee1Name", label: "Allottee No. 1 Name", type: "text" },
+                        { name: "allottee2Name", label: "Allottee No. 2 Name", type: "text" }
+                    ]
+                },
+                {
+                    title: "2. Address (Grid)",
+                    icon: "fa-map-marked-alt",
+                    color: "teal",
+                    fields: [
+                        { type: "header", label: "A. Correspondence Address" },
+                        { name: "corrAddress", label: "Correspondence Address", type: "textarea", placeholder: "Enter full address here...", noLabel: true },
+                        { name: "gnidaSameAddress", label: "Same as Correspondence Address", type: "checkbox" },
+                        { type: "header", label: "B. Permanent Address" },
+                        { name: "permAddress", label: "Permanent Address", type: "textarea", placeholder: "Enter full address here...", noLabel: true }
+                    ]
+                },
+                {
+                    title: "Page 2: Contact, DOB & IDs",
+                    icon: "fa-id-card",
+                    color: "teal",
+                    fields: [
+                        { type: "subheader", label: "3. Contact No." },
+                        { name: "allottee1Mobile", label: "Allottee 1 Mobile", type: "tel", halfWidth: true },
+                        { name: "allottee2Mobile", label: "Allottee 2 Mobile", type: "tel", halfWidth: true },
+                        { type: "subheader", label: "4. E-mail ID" },
+                        { name: "allottee1Email", label: "Allottee 1 Email", type: "email" },
+                        { name: "allottee2Email", label: "Allottee 2 Email", type: "email" },
+                        { type: "subheader", label: "5. Date of Birth" },
+                        { name: "allottee1DOB", label: "Allottee 1 DOB", type: "text", placeholder: "DD MM YYYY", halfWidth: true },
+                        { name: "allottee2DOB", label: "Allottee 2 DOB", type: "text", placeholder: "DD MM YYYY", halfWidth: true },
+                        { type: "subheader", label: "6. Identity Proof" },
+                        { name: "allottee1PAN", label: "Allottee 1 PAN", type: "text", halfWidth: true },
+                        { name: "allottee2PAN", label: "Allottee 2 PAN", type: "text", halfWidth: true },
+                        { name: "allottee1Aadhar", label: "Allottee 1 Aadhar", type: "text", halfWidth: true },
+                        { name: "allottee2Aadhar", label: "Allottee 2 Aadhar", type: "text", halfWidth: true },
+                        { name: "allottee1Voter", label: "Allottee 1 Voter ID", type: "text", halfWidth: true },
+                        { name: "allottee2Voter", label: "Allottee 2 Voter ID", type: "text", halfWidth: true },
+                        { name: "allottee1DL", label: "Allottee 1 DL", type: "text", halfWidth: true },
+                        { name: "allottee2DL", label: "Allottee 2 DL", type: "text", halfWidth: true }
+                    ]
+                }
+            ]
+        };
+
+        const SchemaForm = ({ schema, data, onChange }) => {
+            return (
+                <div>
+                    {schema.sections.map((section, sIdx) => (
+                        <Section key={sIdx} title={section.title} icon={section.icon} color={section.color} isOpen={section.isOpen}>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
+                                {section.fields.map((field, fIdx) => {
+                                    if (field.showIf) {
+                                        const checkVal = data[field.showIf];
+                                        if (field.showIfValue === false && checkVal === true) {
+                                            return null;
+                                        }
+                                        if (field.showIfValue === true && checkVal !== true) {
+                                            return null;
+                                        }
+                                    }
+
+                                    if (field.type === 'header') {
+                                        return (
+                                            <div key={fIdx} className="col-span-2">
+                                                <label className="block text-[10px] font-bold text-slate-700 uppercase tracking-wider mt-4 mb-2 border-b border-gray-100 pb-1">
+                                                    {field.label}
+                                                </label>
+                                            </div>
+                                        );
+                                    }
+
+                                    if (field.type === 'subheader') {
+                                        return (
+                                            <div key={fIdx} className="col-span-2">
+                                                <label className={`block text-xs font-bold uppercase mt-3 mb-1 ${section.color === 'teal' ? 'text-teal-800' : 'text-gray-700'}`}>
+                                                    {field.label}
+                                                </label>
+                                            </div>
+                                        );
+                                    }
+
+                                    if (field.type === 'checkbox') {
+                                        return (
+                                            <div key={fIdx} className="col-span-2 flex items-center my-2">
+                                                <label className={`flex items-center space-x-2 p-2 rounded cursor-pointer w-fit ${section.color === 'teal' ? 'bg-teal-50 border border-teal-100 text-teal-800' : 'bg-yellow-50 border border-yellow-100 text-yellow-800'}`}>
+                                                    <input
+                                                        type="checkbox"
+                                                        className={`w-4 h-4 ${section.color === 'teal' ? 'accent-teal-600' : 'accent-yellow-600'}`}
+                                                        checked={data[field.name] || false}
+                                                        onChange={(e) => onChange(field.name, e.target.checked)}
+                                                    />
+                                                    <span className="text-xs font-bold uppercase">{field.label}</span>
+                                                </label>
+                                            </div>
+                                        );
+                                    }
+
+                                    if (field.type === 'textarea') {
+                                        return (
+                                            <div key={fIdx} className="col-span-2 mb-2">
+                                                {!field.noLabel && (
+                                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+                                                        {field.label}
+                                                    </label>
+                                                )}
+                                                <textarea
+                                                    name={field.name}
+                                                    value={data[field.name] || ''}
+                                                    onChange={(e) => onChange(field.name, e.target.value)}
+                                                    className={`w-full bg-white border rounded-lg px-3 py-2.5 text-gray-900 text-sm focus:outline-none focus:ring-4 transition-all font-ui shadow-sm placeholder:text-gray-300 min-h-[80px] ${section.color === 'teal' ? 'border-gray-200 focus:border-teal-500 focus:ring-teal-500/10' : 'border-gray-200 focus:border-yellow-500 focus:ring-yellow-500/10'}`}
+                                                    rows="3"
+                                                    placeholder={field.placeholder || "Enter details here..."}
+                                                ></textarea>
+                                            </div>
+                                        );
+                                    }
+
+                                    // Default to standard Input component
+                                    return (
+                                        <div key={fIdx} className={field.halfWidth ? "col-span-1" : "col-span-2"}>
+                                            <Input
+                                                label={field.label}
+                                                name={field.name}
+                                                value={data[field.name] || ''}
+                                                onChange={(e) => onChange(field.name, e.target.value)}
+                                                placeholder={field.placeholder}
+                                                type={field.type}
+                                            />
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </Section>
+                    ))}
+                </div>
+            );
+        };
+
 
         const Selector = ({ label, name, value, options, onChange }) => (
             <div className="mb-0">
@@ -1845,6 +2096,37 @@
                 gnidaSameAddress: false
             };
             const [gnidaData, setGnidaData] = useState(defaultGNIDAData);
+            const handleSchemaChange = (fieldName, val) => {
+                setGnidaData(prev => {
+                    const nextData = { ...prev, [fieldName]: val };
+                    if (fieldName === 'gnidaSameAddress') {
+                        if (val) {
+                            nextData.permAddress = prev.corrAddress || "";
+                        }
+                    }
+                    if (fieldName === 'kyaSameAddress') {
+                        if (val) {
+                            nextData.permAddress1 = prev.corrAddress1 || "";
+                            nextData.permAddress2 = prev.corrAddress2 || "";
+                            nextData.permAddress3 = prev.corrAddress3 || "";
+                        }
+                    }
+                    if (fieldName === 'corrAddress' && prev.gnidaSameAddress) {
+                        nextData.permAddress = val;
+                    }
+                    if (fieldName === 'corrAddress1' && prev.kyaSameAddress) {
+                        nextData.permAddress1 = val;
+                    }
+                    if (fieldName === 'corrAddress2' && prev.kyaSameAddress) {
+                        nextData.permAddress2 = val;
+                    }
+                    if (fieldName === 'corrAddress3' && prev.kyaSameAddress) {
+                        nextData.permAddress3 = val;
+                    }
+                    return nextData;
+                });
+            };
+
 
             const [rentData, setRentData] = useState(defaultRentData);
 
@@ -6644,103 +6926,7 @@
                             )}
 
                             {activeTab === 'KYA' && (
-                                <>
-                                    <Section title="Dated & Basic Info" icon="fa-calendar" color="yellow">
-                                        <Input label="Date (DD-MM-YYYY)" name="dated" value={gnidaData.dated} onChange={handleChange} />
-                                    </Section>
-
-                                    <Section title="Allottee Details" icon="fa-user" color="yellow">
-                                        <Input label="Allottee Name" name="allotteeName" value={gnidaData.allotteeName} onChange={handleChange} />
-                                        <Input label="Father/Spouse Name" name="fatherSpouseName" value={gnidaData.fatherSpouseName} onChange={handleChange} />
-                                    </Section>
-
-                                    <Section title="Property Details" icon="fa-building" color="yellow">
-                                        <div className="grid grid-cols-2 gap-2">
-                                            <Input label="Scheme Name" name="schemeName" value={gnidaData.schemeName} onChange={handleChange} />
-                                            <Input label="Scheme Code" name="schemeCode" value={gnidaData.schemeCode} onChange={handleChange} />
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-2">
-                                            <Input label="Allotment No" name="allotmentNo" value={gnidaData.allotmentNo} onChange={handleChange} />
-                                            <Input label="Prop No" name="propertyNo" value={gnidaData.propertyNo} onChange={handleChange} />
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-2">
-                                            <Input label="Block" name="block" value={gnidaData.block} onChange={handleChange} />
-                                            <Input label="Sector" name="sector" value={gnidaData.sector} onChange={handleChange} />
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-2">
-                                            <Input label="Allotment Date (DD/MM/YYYY)" name="allotmentDate" value={gnidaData.allotmentDate} onChange={handleChange} />
-                                            <Input label="Plot Size" name="plotSize" value={gnidaData.plotSize} onChange={handleChange} />
-                                        </div>
-                                    </Section>
-
-                                    <Section title="Applicants" icon="fa-users" color="yellow">
-                                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Applicant 1</label>
-                                        <div className="grid grid-cols-1 gap-2 mb-4">
-                                            <Input label="Name" name="allottee1Name" value={gnidaData.allottee1Name} onChange={handleChange} />
-                                            <Input label="Mobile" name="allottee1Mobile" value={gnidaData.allottee1Mobile} onChange={handleChange} />
-                                            <Input label="Email" name="allottee1Email" value={gnidaData.allottee1Email} onChange={handleChange} />
-                                            <Input label="DOB (DDMMYYYY)" name="allottee1DOB" value={gnidaData.allottee1DOB} onChange={handleChange} />
-                                            <div className="grid grid-cols-2 gap-2">
-                                                <Input label="PAN" name="allottee1PAN" value={gnidaData.allottee1PAN} onChange={handleChange} />
-                                                <Input label="Aadhar" name="allottee1Aadhar" value={gnidaData.allottee1Aadhar} onChange={handleChange} />
-                                            </div>
-                                            <div className="grid grid-cols-2 gap-2">
-                                                <Input label="Voter ID" name="allottee1Voter" value={gnidaData.allottee1Voter} onChange={handleChange} />
-                                                <Input label="D. License" name="allottee1DL" value={gnidaData.allottee1DL} onChange={handleChange} />
-                                            </div>
-                                        </div>
-
-                                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Applicant 2</label>
-                                        <div className="grid grid-cols-1 gap-2">
-                                            <Input label="Name" name="allottee2Name" value={gnidaData.allottee2Name} onChange={handleChange} />
-                                            <Input label="Mobile" name="allottee2Mobile" value={gnidaData.allottee2Mobile} onChange={handleChange} />
-                                            <Input label="Email" name="allottee2Email" value={gnidaData.allottee2Email} onChange={handleChange} />
-                                            <Input label="DOB (DDMMYYYY)" name="allottee2DOB" value={gnidaData.allottee2DOB} onChange={handleChange} />
-                                            <div className="grid grid-cols-2 gap-2">
-                                                <Input label="PAN" name="allottee2PAN" value={gnidaData.allottee2PAN} onChange={handleChange} />
-                                                <Input label="Aadhar" name="allottee2Aadhar" value={gnidaData.allottee2Aadhar} onChange={handleChange} />
-                                            </div>
-                                            <div className="grid grid-cols-2 gap-2">
-                                                <Input label="Voter ID" name="allottee2Voter" value={gnidaData.allottee2Voter} onChange={handleChange} />
-                                                <Input label="D. License" name="allottee2DL" value={gnidaData.allottee2DL} onChange={handleChange} />
-                                            </div>
-                                        </div>
-                                    </Section>
-
-                                    <Section title="Addresses" icon="fa-map-location-dot" color="yellow">
-                                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Correspondence Address</label>
-                                        <Input label="Line 1" name="corrAddress1" value={gnidaData.corrAddress1} onChange={handleChange} placeholder="House/Flat No., Street..." />
-                                        <Input label="Line 2" name="corrAddress2" value={gnidaData.corrAddress2} onChange={handleChange} placeholder="Locality, Area..." />
-                                        <Input label="Line 3" name="corrAddress3" value={gnidaData.corrAddress3} onChange={handleChange} placeholder="City, State, PIN..." />
-
-                                        <div className="flex items-center my-3">
-                                            <input
-                                                type="checkbox"
-                                                id="kyaSameAddress"
-                                                className="w-4 h-4 text-yellow-600 rounded focus:ring-yellow-500 border-gray-300 mr-2 cursor-pointer"
-                                                checked={gnidaData.kyaSameAddress || false}
-                                                onChange={(e) => {
-                                                    const isChecked = e.target.checked;
-                                                    setGnidaData(prev => ({
-                                                        ...prev,
-                                                        kyaSameAddress: isChecked,
-                                                        ...(isChecked ? {
-                                                            permAddress1: prev.corrAddress1,
-                                                            permAddress2: prev.corrAddress2,
-                                                            permAddress3: prev.corrAddress3
-                                                        } : {})
-                                                    }));
-                                                }}
-                                            />
-                                            <label htmlFor="kyaSameAddress" className="text-xs font-bold text-gray-500 cursor-pointer select-none">Same as Correspondence Address</label>
-                                        </div>
-
-                                        <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Permanent Address</label>
-                                        <Input label="Line 1" name="permAddress1" value={gnidaData.permAddress1} onChange={handleChange} placeholder="House/Flat No., Street..." />
-                                        <Input label="Line 2" name="permAddress2" value={gnidaData.permAddress2} onChange={handleChange} placeholder="Locality, Area..." />
-                                        <Input label="Line 3" name="permAddress3" value={gnidaData.permAddress3} onChange={handleChange} placeholder="City, State, PIN..." />
-                                    </Section>
-                                </>
+                                <SchemaForm schema={KYA_SCHEMA} data={gnidaData} onChange={handleSchemaChange} />
                             )}
 
 
@@ -7490,125 +7676,7 @@
                             )}
 
                             {activeTab === 'GNIDA' && (
-                                <>
-                                    <Section title="Header & Dates" icon="fa-calendar" color="teal" isOpen={true}>
-                                        <Input label="Dated (DD/MM/YYYY)" name="dated" value={gnidaData.dated} onChange={(e) => setGnidaData({ ...gnidaData, dated: e.target.value })} placeholder="DD MM YYYY" />
-                                        <div className="grid grid-cols-2 gap-2">
-                                            <Input label="Allotment Date" name="allotmentDate" type="date" value={gnidaData.allotmentDate} onChange={(e) => setGnidaData({ ...gnidaData, allotmentDate: e.target.value })} />
-                                            <Input label="Allotment No." name="allotmentNo" value={gnidaData.allotmentNo} onChange={(e) => setGnidaData({ ...gnidaData, allotmentNo: e.target.value })} />
-                                        </div>
-                                    </Section>
-
-                                    <Section title="Top Form Details" icon="fa-file-alt" color="teal" isOpen={true}>
-                                        <div className="grid grid-cols-2 gap-x-4">
-                                            <Input label="Allottee Name" name="allotteeName" value={gnidaData.allotteeName} onChange={(e) => setGnidaData({ ...gnidaData, allotteeName: e.target.value })} />
-                                            <Input label="Property No" name="propertyNo" value={gnidaData.propertyNo} onChange={(e) => setGnidaData({ ...gnidaData, propertyNo: e.target.value })} />
-
-                                            <Input label="Father/Spouse Name" name="fatherSpouseName" value={gnidaData.fatherSpouseName} onChange={(e) => setGnidaData({ ...gnidaData, fatherSpouseName: e.target.value })} />
-                                            <Input label="Block/Estate" name="block" value={gnidaData.block} onChange={(e) => setGnidaData({ ...gnidaData, block: e.target.value })} />
-
-                                            <Input label="Scheme Name" name="schemeName" value={gnidaData.schemeName} onChange={(e) => setGnidaData({ ...gnidaData, schemeName: e.target.value })} />
-                                            <Input label="Sector" name="sector" value={gnidaData.sector} onChange={(e) => setGnidaData({ ...gnidaData, sector: e.target.value })} />
-
-                                            <Input label="Scheme Code" name="schemeCode" value={gnidaData.schemeCode} onChange={(e) => setGnidaData({ ...gnidaData, schemeCode: e.target.value })} />
-                                            <Input label="Plot Size (Sq Mt)" name="plotSize" value={gnidaData.plotSize} onChange={(e) => setGnidaData({ ...gnidaData, plotSize: e.target.value })} />
-                                        </div>
-                                    </Section>
-
-                                    <Section title="1. Allottee Name (Grid)" icon="fa-users" color="teal">
-                                        <Input label="Allottee No. 1 Name" name="allottee1Name" value={gnidaData.allottee1Name} onChange={(e) => setGnidaData({ ...gnidaData, allottee1Name: e.target.value })} />
-                                        <Input label="Allottee No. 2 Name" name="allottee2Name" value={gnidaData.allottee2Name} onChange={(e) => setGnidaData({ ...gnidaData, allottee2Name: e.target.value })} />
-                                    </Section>
-
-                                    <Section title="2. Address (Grid)" icon="fa-map-marked-alt" color="teal">
-                                        <div className="mb-4">
-                                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">A. Correspondence Address</label>
-                                            <textarea
-                                                name="corrAddress"
-                                                value={gnidaData.corrAddress}
-                                                onChange={(e) => {
-                                                     const val = e.target.value;
-                                                     setGnidaData(prev => ({
-                                                         ...prev,
-                                                         corrAddress: val,
-                                                         ...(prev.gnidaSameAddress ? { permAddress: val } : {})
-                                                     }));
-                                                 }}
-                                                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm uppercase"
-                                                rows="3"
-                                                placeholder="Enter full address here..."
-                                            ></textarea>
-                                        </div>
-                                        <div className="mb-4">
-                                            <label className="flex items-center space-x-2 bg-teal-50 p-2 rounded border border-teal-100 cursor-pointer w-fit">
-                                                <input
-                                                    type="checkbox"
-                                                    className="accent-teal-600 w-4 h-4"
-                                                    checked={gnidaData.gnidaSameAddress || false}
-                                                    onChange={(e) => {
-                                                        const isChecked = e.target.checked;
-                                                        setGnidaData(prev => ({
-                                                            ...prev,
-                                                            gnidaSameAddress: isChecked,
-                                                            ...(isChecked ? {
-                                                                permAddress: prev.corrAddress
-                                                            } : {})
-                                                        }));
-                                                    }}
-                                                />
-                                                <span className="text-xs font-bold text-teal-800 uppercase">Same as Correspondence Address</span>
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs font-bold text-gray-700 uppercase mb-1">B. Permanent Address</label>
-                                            <textarea
-                                                name="permAddress"
-                                                value={gnidaData.permAddress}
-                                                onChange={(e) => setGnidaData({ ...gnidaData, permAddress: e.target.value })}
-                                                className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm uppercase"
-                                                rows="3"
-                                            ></textarea>
-                                        </div>
-                                    </Section>
-
-                                    <Section title="Page 2: Contact, DOB & IDs" icon="fa-id-card" color="teal">
-                                        <label className="block text-xs font-bold text-teal-800 uppercase mb-2 border-b border-teal-100 pb-1">3. Contact No.</label>
-                                        <div className="grid grid-cols-2 gap-2 mb-4">
-                                            <Input label="Allottee 1 Mobile" name="allottee1Mobile" value={gnidaData.allottee1Mobile} onChange={(e) => setGnidaData({ ...gnidaData, allottee1Mobile: e.target.value })} />
-                                            <Input label="Allottee 2 Mobile" name="allottee2Mobile" value={gnidaData.allottee2Mobile} onChange={(e) => setGnidaData({ ...gnidaData, allottee2Mobile: e.target.value })} />
-                                        </div>
-
-                                        <label className="block text-xs font-bold text-teal-800 uppercase mb-2 border-b border-teal-100 pb-1">4. E-mail ID</label>
-                                        <div className="grid grid-cols-1 gap-2 mb-4">
-                                            <Input label="Allottee 1 Email" name="allottee1Email" value={gnidaData.allottee1Email} onChange={(e) => setGnidaData({ ...gnidaData, allottee1Email: e.target.value })} />
-                                            <Input label="Allottee 2 Email" name="allottee2Email" value={gnidaData.allottee2Email} onChange={(e) => setGnidaData({ ...gnidaData, allottee2Email: e.target.value })} />
-                                        </div>
-
-                                        <label className="block text-xs font-bold text-teal-800 uppercase mb-2 border-b border-teal-100 pb-1">5. Date of Birth</label>
-                                        <div className="grid grid-cols-2 gap-2 mb-4">
-                                            <Input label="Allottee 1 DOB" name="allottee1DOB" value={gnidaData.allottee1DOB} onChange={(e) => setGnidaData({ ...gnidaData, allottee1DOB: e.target.value })} placeholder="DD MM YYYY" />
-                                            <Input label="Allottee 2 DOB" name="allottee2DOB" value={gnidaData.allottee2DOB} onChange={(e) => setGnidaData({ ...gnidaData, allottee2DOB: e.target.value })} placeholder="DD MM YYYY" />
-                                        </div>
-
-                                        <label className="block text-xs font-bold text-teal-800 uppercase mb-2 border-b border-teal-100 pb-1">6. Identity Proof</label>
-                                        <div className="grid grid-cols-2 gap-2 mb-2">
-                                            <Input label="Allottee 1 PAN" name="allottee1PAN" value={gnidaData.allottee1PAN} onChange={(e) => setGnidaData({ ...gnidaData, allottee1PAN: e.target.value })} />
-                                            <Input label="Allottee 2 PAN" name="allottee2PAN" value={gnidaData.allottee2PAN} onChange={(e) => setGnidaData({ ...gnidaData, allottee2PAN: e.target.value })} />
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-2 mb-2">
-                                            <Input label="Allottee 1 Aadhar" name="allottee1Aadhar" value={gnidaData.allottee1Aadhar} onChange={(e) => setGnidaData({ ...gnidaData, allottee1Aadhar: e.target.value })} />
-                                            <Input label="Allottee 2 Aadhar" name="allottee2Aadhar" value={gnidaData.allottee2Aadhar} onChange={(e) => setGnidaData({ ...gnidaData, allottee2Aadhar: e.target.value })} />
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-2 mb-2">
-                                            <Input label="Allottee 1 Voter ID" name="allottee1Voter" value={gnidaData.allottee1Voter} onChange={(e) => setGnidaData({ ...gnidaData, allottee1Voter: e.target.value })} />
-                                            <Input label="Allottee 2 Voter ID" name="allottee2Voter" value={gnidaData.allottee2Voter} onChange={(e) => setGnidaData({ ...gnidaData, allottee2Voter: e.target.value })} />
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-2">
-                                            <Input label="Allottee 1 DL" name="allottee1DL" value={gnidaData.allottee1DL} onChange={(e) => setGnidaData({ ...gnidaData, allottee1DL: e.target.value })} />
-                                            <Input label="Allottee 2 DL" name="allottee2DL" value={gnidaData.allottee2DL} onChange={(e) => setGnidaData({ ...gnidaData, allottee2DL: e.target.value })} />
-                                        </div>
-                                    </Section>
-                                </>
+                                <SchemaForm schema={GNIDA_SCHEMA} data={gnidaData} onChange={handleSchemaChange} />
                             )}
 
                             {activeTab === 'TM48' && (
