@@ -158,3 +158,140 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2026-06-02 03:24:22,086 | INFO     | GET / -> 200 (2ms)
 2026-06-02 03:24:22,136 | INFO     | GET /out.js -> 200 (2ms)
 2026-06-08 20:39:49,413 | WARNING  | JWT_SECRET not set â€” using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 03:14:19,640 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 03:14:19,836 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-24 03:14:20,070 | INFO     | Database initialized with indexes
+2026-06-24 03:14:20,070 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-24 03:40:05,050 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 03:40:05,179 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-24 03:40:05,225 | INFO     | Database initialized with indexes
+2026-06-24 03:40:05,225 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-24 03:47:13,683 | INFO     | GET / -> 200 (41ms)
+2026-06-24 03:47:13,749 | INFO     | GET /out.js -> 200 (3ms)
+2026-06-24 03:47:14,858 | INFO     | POST /api/track -> 200 (13ms)
+2026-06-24 03:47:15,126 | INFO     | GET /favicon.ico -> 200 (4ms)
+2026-06-24 03:47:24,418 | INFO     | New Google user registered: demo@user.com
+2026-06-24 03:47:24,431 | INFO     | POST /api/auth/google -> 200 (469ms)
+2026-06-24 03:47:25,871 | INFO     | POST /api/track -> 200 (45ms)
+2026-06-24 03:47:25,893 | INFO     | POST /api/track -> 200 (11ms)
+2026-06-24 03:47:25,911 | INFO     | POST /api/track -> 200 (29ms)
+2026-06-24 03:47:29,443 | INFO     | POST /api/drafts -> 200 (12ms)
+2026-06-24 03:47:34,884 | INFO     | POST /api/track -> 200 (16ms)
+2026-06-24 03:47:36,045 | INFO     | POST /api/track -> 200 (9ms)
+2026-06-24 03:47:36,058 | INFO     | GET /api/customer/documents -> 404 (0ms)
+2026-06-24 03:59:38,937 | INFO     | GET /admin -> 200 (38ms)
+2026-06-24 03:59:38,999 | INFO     | GET /out.js -> 200 (2ms)
+2026-06-24 03:59:39,384 | INFO     | POST /api/track -> 200 (11ms)
+2026-06-24 03:59:39,463 | INFO     | POST /api/track -> 200 (14ms)
+2026-06-24 03:59:39,539 | INFO     | GET /favicon.ico -> 200 (1ms)
+2026-06-24 03:59:43,263 | INFO     | POST /api/auth/google -> 200 (20ms)
+2026-06-24 03:59:43,280 | INFO     | GET /api/customer/documents -> 404 (2ms)
+2026-06-24 03:59:45,802 | INFO     | POST /api/auth/google -> 200 (20ms)
+2026-06-24 03:59:45,819 | INFO     | GET /api/customer/documents -> 404 (3ms)
+2026-06-24 03:59:50,551 | INFO     | POST /api/track -> 200 (9ms)
+2026-06-24 04:26:07,768 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 04:26:07,935 | INFO     | Database initialized with indexes
+2026-06-24 04:26:07,935 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-24 04:28:12,327 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 04:28:12,437 | INFO     | Database initialized with indexes
+2026-06-24 04:28:12,437 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-24 04:28:23,338 | INFO     | GET /api/health -> 404 (1ms)
+2026-06-24 04:28:33,961 | INFO     | GET / -> 200 (41ms)
+2026-06-24 04:29:20,223 | INFO     | GET / -> 200 (1ms)
+2026-06-24 04:29:20,234 | INFO     | GET / -> 200 (0ms)
+2026-06-24 04:29:20,244 | INFO     | GET / -> 200 (0ms)
+2026-06-24 04:29:20,258 | INFO     | GET / -> 200 (1ms)
+2026-06-24 04:29:20,341 | INFO     | GET /out.js -> 200 (2ms)
+2026-06-24 04:29:20,894 | INFO     | POST /api/track -> 200 (14ms)
+2026-06-24 04:29:21,012 | INFO     | POST /api/track -> 200 (28ms)
+2026-06-24 04:29:21,028 | INFO     | POST /api/track -> 200 (43ms)
+2026-06-24 04:29:21,059 | INFO     | POST /api/track -> 200 (32ms)
+2026-06-24 04:29:21,116 | INFO     | GET /favicon.ico -> 200 (1ms)
+2026-06-24 04:29:21,461 | INFO     | GET /favicon.ico -> 200 (1ms)
+2026-06-24 04:29:21,484 | INFO     | GET /favicon.ico -> 200 (2ms)
+2026-06-24 04:29:21,497 | INFO     | GET /favicon.ico -> 200 (1ms)
+2026-06-24 04:29:29,470 | INFO     | GET / -> 200 (2ms)
+2026-06-24 04:29:29,893 | INFO     | POST /api/track -> 200 (13ms)
+2026-06-24 04:29:30,046 | INFO     | GET /favicon.ico -> 200 (1ms)
+2026-06-24 04:29:33,424 | INFO     | POST /api/auth/google -> 200 (40ms)
+2026-06-24 04:29:34,737 | INFO     | POST /api/track -> 200 (9ms)
+2026-06-24 04:29:38,719 | INFO     | POST /api/auth/google -> 200 (19ms)
+2026-06-24 04:30:23,230 | INFO     | GET / -> 200 (0ms)
+2026-06-24 04:30:23,274 | INFO     | GET /out.js -> 200 (1ms)
+2026-06-24 04:30:23,427 | INFO     | GET / -> 200 (1ms)
+2026-06-24 04:30:23,794 | INFO     | POST /api/track -> 200 (13ms)
+2026-06-24 04:30:23,851 | INFO     | POST /api/track -> 200 (14ms)
+2026-06-24 04:30:23,887 | INFO     | POST /api/track -> 200 (18ms)
+2026-06-24 04:30:23,935 | INFO     | POST /api/track -> 200 (14ms)
+2026-06-24 04:30:23,957 | INFO     | GET /favicon.ico -> 200 (1ms)
+2026-06-24 04:30:24,071 | INFO     | GET /favicon.ico -> 200 (1ms)
+2026-06-24 12:09:20,520 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 12:09:22,752 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 12:09:22,889 | INFO     | Database initialized with indexes
+2026-06-24 12:09:22,890 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-24 12:11:24,573 | INFO     | GET /admin -> 200 (89ms)
+2026-06-24 12:11:24,699 | INFO     | GET /out.js -> 200 (10ms)
+2026-06-24 12:11:26,039 | INFO     | POST /api/track -> 200 (16ms)
+2026-06-24 12:11:26,240 | INFO     | GET /favicon.ico -> 200 (1ms)
+2026-06-24 12:11:30,558 | INFO     | POST /api/auth/google -> 200 (43ms)
+2026-06-24 12:11:57,928 | INFO     | POST /api/auth/google -> 200 (17ms)
+2026-06-24 12:45:57,481 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 12:50:17,374 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 12:50:17,484 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-24 12:50:17,581 | INFO     | Database initialized with indexes
+2026-06-24 12:50:17,582 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-24 12:50:21,464 | INFO     | GET /api/customer/documents -> 200 (5ms)
+2026-06-24 12:50:23,564 | INFO     | GET /api/admin/users -> 200 (49ms)
+2026-06-24 13:47:01,657 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 13:47:01,766 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-24 13:47:01,802 | INFO     | Database initialized with indexes
+2026-06-24 13:47:01,802 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-24 13:47:05,926 | INFO     | GET /api/admin/invoices/test-inv-1/download -> 200 (56ms)
+2026-06-24 14:30:52,521 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 14:30:52,640 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-24 14:30:52,680 | INFO     | Database initialized with indexes
+2026-06-24 14:30:52,680 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-24 14:30:56,535 | INFO     | GET /api/admin/invoices/test-inv-1/download -> 200 (29ms)
+2026-06-24 14:31:33,134 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 14:31:33,301 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-24 14:31:33,341 | INFO     | Database initialized with indexes
+2026-06-24 14:31:33,341 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-24 14:31:37,233 | INFO     | GET /api/customer/documents -> 200 (2ms)
+2026-06-24 14:31:39,298 | INFO     | GET /api/admin/users -> 200 (11ms)
+2026-06-24 14:39:00,950 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 14:39:01,068 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-24 14:39:01,107 | INFO     | Database initialized with indexes
+2026-06-24 14:39:01,108 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-24 14:39:45,417 | INFO     | GET / -> 200 (40ms)
+2026-06-24 14:39:45,454 | INFO     | GET /out.js -> 200 (2ms)
+2026-06-24 14:39:45,849 | INFO     | POST /api/track -> 200 (12ms)
+2026-06-24 14:39:45,883 | INFO     | POST /api/track -> 200 (12ms)
+2026-06-24 14:39:45,971 | INFO     | GET /favicon.ico -> 200 (2ms)
+2026-06-24 14:39:48,926 | INFO     | GET /orders -> 200 (13ms)
+2026-06-24 14:39:48,938 | INFO     | GET /analytics -> 200 (23ms)
+2026-06-24 14:39:48,949 | INFO     | GET /api/customers -> 200 (30ms)
+2026-06-24 14:39:48,970 | INFO     | GET /api/rentals/expiring -> 200 (7ms)
+2026-06-24 14:40:01,253 | INFO     | PUT /orders/MOCK_ORD_76F00DC5/status -> 401 (43ms)
+2026-06-24 14:40:08,756 | INFO     | GET /api/customers -> 200 (8ms)
+2026-06-24 14:40:15,345 | INFO     | GET /api/admin/users -> 200 (14ms)
+2026-06-24 14:40:16,560 | INFO     | GET /orders -> 200 (7ms)
+2026-06-24 14:40:19,793 | INFO     | GET /api/admin/coupons -> 200 (3ms)
+2026-06-24 14:40:20,725 | INFO     | GET /api/admin/invoices -> 200 (5ms)
+2026-06-24 14:40:20,746 | INFO     | GET /api/admin/invoices/gst-report -> 200 (5ms)
+2026-06-24 14:40:22,449 | INFO     | GET /api/admin/notifications -> 200 (5ms)
+2026-06-24 14:40:22,462 | INFO     | GET /api/rentals/expiring -> 200 (3ms)
+2026-06-24 14:44:10,358 | INFO     | GET / -> 200 (40ms)
+2026-06-24 14:45:29,626 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 14:45:29,766 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-24 14:45:29,817 | INFO     | Database initialized with indexes
+2026-06-24 14:45:29,818 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-24 14:45:36,829 | INFO     | GET / -> 200 (27ms)
+2026-06-24 14:58:29,322 | INFO     | GET / -> 200 (4ms)
+2026-06-24 14:58:30,624 | INFO     | GET /favicon.ico -> 200 (1ms)
+2026-06-24 15:26:28,967 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 15:26:29,125 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-24 15:26:29,198 | INFO     | Database initialized with indexes
+2026-06-24 15:26:29,199 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-24 15:26:35,600 | INFO     | GET / -> 200 (4ms)
+2026-06-24 18:52:05,932 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 18:52:06,475 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
