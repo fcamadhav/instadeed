@@ -303,3 +303,8 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2026-06-24 19:01:26,496 | INFO     | GET / -> 200 (27ms)
 2026-06-24 19:01:51,851 | INFO     | GET / -> 200 (0ms)
 2026-06-24 20:55:20,062 | INFO     | GET / -> 200 (2ms)
+2026-06-24 23:16:42,446 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-24 23:16:42,622 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-24 23:16:42,696 | INFO     | Database initialized with indexes
+2026-06-24 23:16:42,696 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-25 01:39:19,942 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.

@@ -1838,7 +1838,11 @@
                 transferee1Gst: '',
                 transferee1BankName: '',
                 transferee1BankAccount: '',
-                transferee1BankIfsc: ''
+                transferee1BankIfsc: '',
+                
+                // Controlled toggles
+                kyaSameAddress: false,
+                gnidaSameAddress: false
             };
             const [gnidaData, setGnidaData] = useState(defaultGNIDAData);
 
@@ -2974,7 +2978,19 @@
                 }
 
                 if (activeTab === 'GNIDA' || activeTab === 'KYA') {
-                    setGnidaData(prev => ({ ...prev, [name]: value }));
+                    setGnidaData(prev => {
+                        const nextData = { ...prev, [name]: value };
+                        if (name === 'corrAddress1' && prev.kyaSameAddress) {
+                            nextData.permAddress1 = value;
+                        } else if (name === 'corrAddress2' && prev.kyaSameAddress) {
+                            nextData.permAddress2 = value;
+                        } else if (name === 'corrAddress3' && prev.kyaSameAddress) {
+                            nextData.permAddress3 = value;
+                        } else if (name === 'corrAddress' && prev.gnidaSameAddress) {
+                            nextData.permAddress = value;
+                        }
+                        return nextData;
+                    });
                     return;
                 }
 
@@ -6702,10 +6718,18 @@
                                                 type="checkbox"
                                                 id="kyaSameAddress"
                                                 className="w-4 h-4 text-yellow-600 rounded focus:ring-yellow-500 border-gray-300 mr-2 cursor-pointer"
+                                                checked={gnidaData.kyaSameAddress || false}
                                                 onChange={(e) => {
-                                                    if (e.target.checked) {
-                                                        setGnidaData(prev => ({ ...prev, permAddress1: prev.corrAddress1, permAddress2: prev.corrAddress2, permAddress3: prev.corrAddress3 }));
-                                                    }
+                                                    const isChecked = e.target.checked;
+                                                    setGnidaData(prev => ({
+                                                        ...prev,
+                                                        kyaSameAddress: isChecked,
+                                                        ...(isChecked ? {
+                                                            permAddress1: prev.corrAddress1,
+                                                            permAddress2: prev.corrAddress2,
+                                                            permAddress3: prev.corrAddress3
+                                                        } : {})
+                                                    }));
                                                 }}
                                             />
                                             <label htmlFor="kyaSameAddress" className="text-xs font-bold text-gray-500 cursor-pointer select-none">Same as Correspondence Address</label>
@@ -7502,7 +7526,14 @@
                                             <textarea
                                                 name="corrAddress"
                                                 value={gnidaData.corrAddress}
-                                                onChange={(e) => setGnidaData({ ...gnidaData, corrAddress: e.target.value })}
+                                                onChange={(e) => {
+                                                     const val = e.target.value;
+                                                     setGnidaData(prev => ({
+                                                         ...prev,
+                                                         corrAddress: val,
+                                                         ...(prev.gnidaSameAddress ? { permAddress: val } : {})
+                                                     }));
+                                                 }}
                                                 className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-teal-500 focus:outline-none text-sm uppercase"
                                                 rows="3"
                                                 placeholder="Enter full address here..."
@@ -7513,13 +7544,16 @@
                                                 <input
                                                     type="checkbox"
                                                     className="accent-teal-600 w-4 h-4"
+                                                    checked={gnidaData.gnidaSameAddress || false}
                                                     onChange={(e) => {
-                                                        if (e.target.checked) {
-                                                            setGnidaData(prev => ({
-                                                                ...prev,
+                                                        const isChecked = e.target.checked;
+                                                        setGnidaData(prev => ({
+                                                            ...prev,
+                                                            gnidaSameAddress: isChecked,
+                                                            ...(isChecked ? {
                                                                 permAddress: prev.corrAddress
-                                                            }));
-                                                        }
+                                                            } : {})
+                                                        }));
                                                     }}
                                                 />
                                                 <span className="text-xs font-bold text-teal-800 uppercase">Same as Correspondence Address</span>
