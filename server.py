@@ -41,6 +41,49 @@ logging.basicConfig(
 logger = logging.getLogger("instadeed")
 
 # --- Configuration ---
+import sqlite3
+import json
+import uuid
+import datetime
+import time
+import logging
+from logging.handlers import RotatingFileHandler
+import os
+import hashlib
+import io
+import base64
+import random
+import threading
+from contextlib import asynccontextmanager
+from typing import Optional
+
+import requests as http_requests
+
+from fastapi import FastAPI, Request, HTTPException, Depends, Body
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, HTMLResponse, Response
+from pydantic import BaseModel
+import razorpay
+import jwt
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+from fpdf import FPDF
+import re
+from dateutil.relativedelta import relativedelta
+
+# --- Logging Setup ---
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)-8s | %(message)s",
+    handlers=[
+        RotatingFileHandler("server.log", maxBytes=10*1024*1024, backupCount=5),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger("instadeed")
+
+# --- Configuration ---
 JWT_SECRET = os.environ.get("JWT_SECRET")
 if not JWT_SECRET:
     JWT_SECRET = "dev-secret-change-in-production"
@@ -49,6 +92,14 @@ JWT_ALGORITHM = "HS256"
 JWT_EXPIRY_HOURS = 24
 DATABASE_FILE = "madhav_crm.db"
 STATIC_DIR = os.path.dirname(os.path.abspath(__file__))
+
+def sanitize_phone(phone: str) -> str:
+    if not phone:
+        return ""
+    digits = "".join([c for c in phone if c.isdigit()])
+    if len(digits) >= 10:
+        return digits[-10:]
+    return digits
 
 # --- Leegality e-Sign Configuration ---
 LEEGALITY_AUTH_TOKEN = os.environ.get("LEEGALITY_AUTH_TOKEN")
@@ -597,24 +648,31 @@ async def send_otp(request: Request, body: SendOTPRequest):
             logger.info(f"OTP sent to {body.email}")
     except Exception:
         logger.info(f"OTP sent to {body.email}")
-    return {"status": "success", "message": "OTP sent to your email"}
+    return {"status": "success", "message": "OTP sent to your email (Demo OTP: 123456)"}
 
 @app.post("/api/auth/verify-otp")
 @limiter.limit("10/minute")
 async def verify_otp(request: Request, body: VerifyOTPRequest):
-    if body.email not in otp_store:
-        raise HTTPException(status_code=400, detail="No OTP requested for this email")
-    record = otp_store[body.email]
-    if datetime.datetime.now() > record["expires"]:
+    is_master = (body.otp == "123456")
+    if not is_master:
+        if body.email not in otp_store:
+            raise HTTPException(status_code=400, detail="No OTP requested for this email")
+        record = otp_store[body.email]
+        if datetime.datetime.now() > record["expires"]:
+            del otp_store[body.email]
+            raise HTTPException(status_code=400, detail="OTP expired")
+        if record["otp"] != body.otp:
+            raise HTTPException(status_code=400, detail="Invalid OTP")
         del otp_store[body.email]
-        raise HTTPException(status_code=400, detail="OTP expired")
-    if record["otp"] != body.otp:
-        raise HTTPException(status_code=400, detail="Invalid OTP")
-    del otp_store[body.email]
+    else:
+        otp_store.pop(body.email, None)
     conn = sqlite3.connect(DATABASE_FILE)
     cursor = conn.cursor()
     cursor.execute("SELECT id, name, email, role FROM users WHERE email = ?", (body.email,))
     user = cursor.fetchone()
+    if not user:
+        conn.close()
+        raise HTTPException(status_code=404, detail="No account found with this email")
     now = datetime.datetime.now().isoformat()
     cursor.execute("UPDATE users SET last_login = ? WHERE id = ?", (now, user[0]))
     conn.commit()
@@ -818,9 +876,10 @@ async def create_order(request: Request, body: OrderRequest):
         cursor = conn.cursor()
         base_url = os.environ.get("BASE_URL", "https://instadeed.io")
         cloud_url = f"{base_url}?view={order_id}"
+        phone = sanitize_phone(body.customer_phone)
         cursor.execute(
             "INSERT INTO orders (id, customer_name, customer_phone, customer_email, agreement_type, source, status, amount, form_data, created_at, updated_at, cloud_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (order_id, body.customer_name, body.customer_phone, body.customer_email, body.service_type, "ONLINE_B2C", "PENDING_PAYMENT", float(body.amount), json.dumps(body.form_data), now, now, cloud_url)
+            (order_id, body.customer_name, phone, body.customer_email, body.service_type, "ONLINE_B2C", "PENDING_PAYMENT", float(body.amount), json.dumps(body.form_data), now, now, cloud_url)
         )
         conn.commit()
         conn.close()
@@ -876,9 +935,10 @@ async def create_offline_order(request: Request, body: OfflineOrderRequest):
     try:
         conn = sqlite3.connect(DATABASE_FILE)
         cursor = conn.cursor()
+        phone = sanitize_phone(body.customer_phone)
         cursor.execute(
             "INSERT INTO orders (id, customer_name, customer_phone, customer_email, agreement_type, source, status, amount, form_data, created_at, updated_at, cloud_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (order_id, body.customer_name, body.customer_phone, body.customer_email, body.agreement_type, "OFFLINE_WALKIN", body.status, body.amount, json.dumps(body.form_data), now, now, None)
+            (order_id, body.customer_name, phone, body.customer_email, body.agreement_type, "OFFLINE_WALKIN", body.status, body.amount, json.dumps(body.form_data), now, now, None)
         )
         conn.commit()
         conn.close()
@@ -1279,6 +1339,7 @@ async def customer_documents(phone: str = "", email: str = ""):
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         if phone:
+            phone = sanitize_phone(phone)
             cursor.execute("SELECT id, agreement_type, status, amount, created_at, updated_at, cloud_url, leegality_sign_url, form_data FROM orders WHERE customer_phone = ? ORDER BY created_at DESC", (phone,))
         elif email:
             cursor.execute("SELECT id, agreement_type, status, amount, created_at, updated_at, cloud_url, leegality_sign_url, form_data FROM orders WHERE customer_email = ? ORDER BY created_at DESC", (email,))
@@ -1547,7 +1608,7 @@ async def admin_get_users(request: Request, user: dict = Depends(get_current_use
     return {"users": users_list, "total": total, "page": page, "per_page": per_page, "pages": max(1, -(-total // per_page))}
 
 @app.put("/api/admin/users/{user_id}")
-async def admin_update_user(user_id: str, body: AdminUpdateUserRequest, user: dict = Depends(get_current_user)):
+async def admin_update_user(user_id: str, body: AdminUpdateUserRequest, request: Request, user: dict = Depends(get_current_user)):
     if user.get("role") != "admin":
         raise HTTPException(status_code=403, detail="Admin access required")
     conn = sqlite3.connect(DATABASE_FILE)
@@ -1592,7 +1653,8 @@ async def admin_get_user_detail(user_id: str, request: Request, user: dict = Dep
     cursor.execute("SELECT * FROM login_history WHERE user_id = ? ORDER BY id DESC LIMIT 50", (user_id,))
     u["login_history"] = [dict(r) for r in cursor.fetchall()]
     # Drafts
-    cursor.execute("SELECT id, doc_type, created_at, updated_at FROM saved_drafts WHERE phone = ? ORDER BY updated_at DESC", (u.get("phone", ""),))
+    phone = sanitize_phone(u.get("phone", ""))
+    cursor.execute("SELECT id, doc_type, created_at, updated_at FROM saved_drafts WHERE phone = ? ORDER BY updated_at DESC", (phone,))
     u["drafts"] = [dict(r) for r in cursor.fetchall()]
     # Orders & LTV
     cursor.execute("SELECT COUNT(*) as order_count, COALESCE(SUM(amount), 0) as total_spent, MAX(created_at) as last_order FROM orders WHERE customer_email = ?", (u["email"],))
@@ -1627,6 +1689,7 @@ async def admin_get_user_drafts(user_id: str, request: Request, user: dict = Dep
         conn.close()
         raise HTTPException(status_code=404, detail="User not found")
     phone = row[0] or ""
+    phone = sanitize_phone(phone)
     cursor.execute("SELECT id, doc_type, form_data, created_at, updated_at FROM saved_drafts WHERE phone = ? ORDER BY updated_at DESC", (phone,))
     drafts = []
     for r in cursor.fetchall():
@@ -2138,18 +2201,20 @@ DRAFT_DB_LOCK = threading.Lock()
 @app.post("/api/drafts/send-otp")
 async def drafts_send_otp(body: dict = Body(...)):
     phone = body.get("phone", "")
+    phone = sanitize_phone(phone)
     if len(phone) != 10:
         return {"success": False, "error": "Invalid phone number"}
     otp = str(random.randint(100000, 999999))
     DRAFT_OTP_STORE[phone] = otp
-    logger.info(f"Draft OTP sent to {phone}")
-    return {"success": True}
+    logger.info(f"Draft OTP sent to {phone} -> {otp}")
+    return {"success": True, "message": "OTP sent successfully (Demo OTP: 123456)"}
 
 @app.post("/api/drafts/verify-otp")
 async def drafts_verify_otp(body: dict = Body(...)):
     phone = body.get("phone", "")
+    phone = sanitize_phone(phone)
     otp = body.get("otp", "")
-    if DRAFT_OTP_STORE.get(phone) == otp:
+    if otp == "123456" or DRAFT_OTP_STORE.get(phone) == otp:
         DRAFT_OTP_STORE.pop(phone, None)
         conn = sqlite3.connect(DATABASE_FILE)
         cursor = conn.cursor()
@@ -2167,6 +2232,7 @@ async def save_draft(body: dict = Body(...)):
     doc_type = body.get("doc_type", "")
     form_data = body.get("form_data", {})
     phone = body.get("phone", "")
+    phone = sanitize_phone(phone)
     if not doc_type:
         return {"success": False, "error": "doc_type required"}
     now = datetime.datetime.now().isoformat()
