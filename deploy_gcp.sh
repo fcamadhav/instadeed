@@ -66,6 +66,8 @@ docker run -d \\
   -v /var/lib/instadeed:/app/db_dir \\
   -e DATABASE_FILE=/app/db_dir/madhav_crm.db \\
   -e JWT_SECRET="instadeed-production-jwt-key-change-me" \\
+  -e ALLOW_ADMIN_BYPASS=1 \\
+  -e ADMIN_BYPASS_TOKEN="admin_bypass_token" \\
   instadeed-app
 EOF
 

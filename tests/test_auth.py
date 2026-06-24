@@ -51,7 +51,9 @@ class TestAPI:
         data = resp.json()
         assert data["status"] == "ok"
 
-    async def test_config_endpoint_no_key(self, client):
+    async def test_config_endpoint_no_key(self, client, monkeypatch):
+        import server
+        monkeypatch.setattr(server, "RAZORPAY_KEY_ID", "")
         resp = await client.get("/api/config")
         assert resp.status_code == 503
 
