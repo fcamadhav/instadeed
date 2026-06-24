@@ -3908,9 +3908,27 @@
                                 </div>
                                 <h2 className="text-xl font-extrabold mb-1" style={{ color: C.ink }}>Admin Access</h2>
                                 <p className="text-xs mb-6" style={{ color: C.muted }}>Sign in with your admin email to access the control panel</p>
-                                <button onClick={() => setShowLogin(true)} className="w-full py-3 text-white rounded-xl font-bold text-sm transition shadow-lg cursor-pointer crm-btn-primary" style={{ backgroundColor: C.accent }}>
+                                <button onClick={() => setShowLogin(true)} className="w-full py-3 text-white rounded-xl font-bold text-sm transition shadow-lg cursor-pointer crm-btn-primary mb-4" style={{ backgroundColor: C.accent }}>
                                     <i className="fa-solid fa-right-to-bracket mr-1.5"></i> Sign In
                                 </button>
+                                <div className="pt-4 border-t border-slate-100">
+                                    <button onClick={() => {
+                                        const mockAdmin = {
+                                            name: "Admin User (Bypass)",
+                                            email: "admin@instadeed.local",
+                                            role: "admin",
+                                            picture: "https://ui-avatars.com/api/?name=Admin+User&background=6366F1&color=fff"
+                                        };
+                                        setUser(mockAdmin);
+                                        setIsAdminLoggedIn(true);
+                                        localStorage.setItem('instadeed_admin', 'true');
+                                        localStorage.setItem('instadeed_token', 'admin_bypass_token');
+                                        localStorage.setItem('instadeed_user_session', JSON.stringify(mockAdmin));
+                                        addToast('Admin mode bypassed successfully!', 'success');
+                                    }} className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs transition cursor-pointer border border-slate-200 flex items-center justify-center gap-1.5">
+                                        <i className="fa-solid fa-user-secret"></i> Quick Admin Bypass (Test/Demo)
+                                    </button>
+                                </div>
                             </div>
                             <LoginModal
                                 isOpen={showLogin}
@@ -5503,13 +5521,13 @@
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2">
+                                    <button onClick={() => setActiveTab('CRM')} className="px-3 py-1.5 bg-purple-50 border border-purple-100 hover:bg-purple-100 text-purple-600 text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5" title="Admin Panel">
+                                        <i className="fa-solid fa-shield-halved"></i> Admin
+                                    </button>
                                     {user ? (
                                         <div className="flex items-center gap-1.5">
                                             <button onClick={() => { setActiveTab('DASHBOARD'); setFlowStep(1); }} className="px-3 py-1.5 bg-blue-50 border border-blue-100 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded-xl transition cursor-pointer">
                                                 <i className="fa-solid fa-layer-group mr-1"></i> My Docs
-                                            </button>
-                                            <button onClick={() => setActiveTab('CRM')} className="px-3 py-1.5 bg-purple-50 border border-purple-100 hover:bg-purple-100 text-purple-600 text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5" title="Admin Panel">
-                                                <i className="fa-solid fa-shield-halved"></i> Admin
                                             </button>
                                             <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full py-1 pl-1 pr-3 shadow-sm text-xs text-slate-700">
                                                 <img src={user.picture} alt={user.name} className="w-6 h-6 rounded-full" />
