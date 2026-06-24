@@ -2415,7 +2415,7 @@ footer {
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
 }
-.reveal.active {
+.reveal.active, .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
@@ -3509,7 +3509,7 @@ function toggleFaq(q){
 window.addEventListener('scroll',()=>{document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>60);},{passive:true});
 
 /* Reveal */
-const ro=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});},{threshold:.09,rootMargin:'0px 0px -30px 0px'});
+const ro=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.classList.add('active');e.target.classList.add('visible');ro.unobserve(e.target);}});},{threshold:.09,rootMargin:'0px 0px -30px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
 /* Escape key */
