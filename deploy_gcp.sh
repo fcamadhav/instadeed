@@ -38,13 +38,9 @@ cat <<EOF > startup_script.sh
 #!/bin/bash
 # Startup script to clone, build, and run the container locally on the VM
 
-# 1. Install Docker
+# 1. Install Docker and Git
 apt-get update
-apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release git
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo "deb [arch=\$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \$(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-apt-get update
-apt-get install -y docker-ce docker-ce-cli containerd.io
+apt-get install -y docker.io git
 
 # 2. Setup persistent directory for the SQLite database on the VM host
 mkdir -p /var/lib/instadeed
