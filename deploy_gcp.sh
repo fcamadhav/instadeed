@@ -49,10 +49,16 @@ else
   echo "    Repository created successfully."
 fi
 
-# 5. Build Docker Image using Serverless Cloud Build
-echo "--> Building Docker image in the cloud..."
-gcloud builds submit --tag "$IMAGE_TAG" .
-echo "    Docker image built and pushed to Artifact Registry."
+# 5. Build and Push Docker Image locally in Cloud Shell
+echo "--> Authenticating Docker with Artifact Registry..."
+gcloud auth configure-docker ${REGION}-docker.pkg.dev --quiet
+
+echo "--> Building Docker image locally in Cloud Shell (this may take a few minutes)..."
+docker build -t "$IMAGE_TAG" .
+
+echo "--> Pushing Docker image to Artifact Registry..."
+docker push "$IMAGE_TAG"
+echo "    Docker image built and pushed successfully."
 
 # 6. Create the VM Startup Script
 echo "--> Generating GCE startup configuration..."
