@@ -105,7 +105,7 @@ fi
 rm -f startup_script.sh
 
 # Get VM IP Address
-VM_IP=$(gcloud compute instances describe "$VM_NAME" --zone="$ZONE" --format='get(networkInterfaces[0].accessConfigs[0].nativeApnIp)' 2>/dev/null || gcloud compute instances describe "$VM_NAME" --zone="$ZONE" --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
+VM_IP=$(gcloud compute instances describe "$VM_NAME" --zone="$ZONE" --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
 
 echo "=========================================================="
 echo "   DEPLOYMENT COMPLETED SUCCESSFULLY!"
