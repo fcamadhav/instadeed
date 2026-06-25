@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google" content="notranslate">
 <title>INSTADEED G.B. Nagar — Gautam Buddh Nagar's Premium Legal Drafting Suite</title>
 <meta name="description" content="Exclusively designed for Gautam Buddh Nagar (Noida, Greater Noida & Yamuna Expressway). Draft rent agreements, authority applications, and business documents online.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -420,7 +421,8 @@ img {
   background: rgba(15, 23, 42, 0.04);
   color: #0F172A;
 }
-.nav-auth-signed-in .nav-auth-signed-out {
+.nav-auth-signed-in .nav-auth-signed-out,
+body.nav-auth-signed-in .nav-auth-signed-out {
   display: none !important;
 }
 
@@ -2575,18 +2577,30 @@ footer {
       <span class="nav-link" onclick="scrollToSection('faq')">Support</span>
       
       <!-- Mobile Exclusive Actions -->
-      <div class="nav-mobile-ctas">
+      <!-- Mobile Exclusive Actions -->
+      <div class="nav-mobile-ctas nav-auth-signed-out">
         <button class="btn-nav-login btn-login" onclick="openAuth('login'); toggleMobileMenu()">Login</button>
         <button class="btn-nav-signup btn-register" onclick="openAuth('register'); toggleMobileMenu()">Get Started</button>
+      </div>
+
+      <!-- Mobile Signed-in Actions -->
+      <div class="nav-mobile-ctas nav-auth-signed-in-only" style="display: none; flex-direction: column; gap: 0.5rem; width: 100%;">
+        <div style="padding: 0.5rem 0; text-align: center; font-weight: 700; color: #0F172A; font-size: 0.85rem;" id="mobileUserEmail"></div>
+        <button class="btn-nav-login btn-login" onclick="scrollToSection('pricing'); toggleMobileMenu()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+          <i class="fa-solid fa-file-contract"></i> My Documents
+        </button>
+        <button class="btn-nav-signup btn-register" style="background: var(--rose); width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;" onclick="signOut(); toggleMobileMenu()">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign out
+        </button>
       </div>
     </div>
 
     <!-- RIGHT -->
     <div class="nav-right" id="navAuthArea">
-      <button class="btn-nav-login btn-login" onclick="openAuth('login')">Login</button>
-      <button class="btn-nav-signup btn-register" onclick="openAuth('register')">Get Started</button>
+      <button class="btn-nav-login btn-login nav-auth-signed-out" onclick="openAuth('login')">Login</button>
+      <button class="btn-nav-signup btn-register nav-auth-signed-out" onclick="openAuth('register')">Get Started</button>
       <!-- User chip (shown after sign-in) -->
-      <div class="user-chip" id="userChip" onclick="toggleUserMenu()">
+      <div class="user-chip" id="userChip" onclick="toggleUserMenu()" style="display: none;">
         <div class="user-avatar" id="userAvatar">U</div>
         <span class="user-name" id="userName">User</span>
         <i class="fa-solid fa-chevron-down" style="font-size:.55rem;margin-left:.15rem"></i>
@@ -3648,11 +3662,18 @@ function handleGoogleLogin(user){
 
 /* Apply logged-in state to nav */
 function applyLoggedInState(user){
+  document.body.classList.add('nav-auth-signed-in');
   const area = document.getElementById('navAuthArea');
   const chip = document.getElementById('userChip');
   const avatar = document.getElementById('userAvatar');
   const nameEl = document.getElementById('userName');
   const emailEl = document.getElementById('userMenuEmail');
+  const mobileEmailEl = document.getElementById('mobileUserEmail');
+  
+  const mobileSignedIn = document.querySelector('.nav-auth-signed-in-only');
+  if (mobileSignedIn) mobileSignedIn.style.display = 'flex';
+  if (mobileEmailEl) mobileEmailEl.textContent = user.email || '';
+
   if(!area) return;
   // Show chip, hide buttons
   area.classList.add('nav-auth-signed-in');
@@ -3687,6 +3708,10 @@ document.addEventListener('click', e=>{
 /* Sign out */
 function signOut(){
   localStorage.removeItem('instadeed_user_session');
+  document.body.classList.remove('nav-auth-signed-in');
+  const mobileSignedIn = document.querySelector('.nav-auth-signed-in-only');
+  if (mobileSignedIn) mobileSignedIn.style.display = 'none';
+
   const area = document.getElementById('navAuthArea');
   const chip = document.getElementById('userChip');
   if(area) area.classList.remove('nav-auth-signed-in');
@@ -3710,6 +3735,10 @@ window.addEventListener('storage', (e)=>{
     if(e.newValue){
       try{ applyLoggedInState(JSON.parse(e.newValue)); }catch(err){}
     } else {
+      document.body.classList.remove('nav-auth-signed-in');
+      const mobileSignedIn = document.querySelector('.nav-auth-signed-in-only');
+      if (mobileSignedIn) mobileSignedIn.style.display = 'none';
+
       const area = document.getElementById('navAuthArea');
       const chip = document.getElementById('userChip');
       if(area) area.classList.remove('nav-auth-signed-in');
