@@ -31,7 +31,7 @@
         const ToastBar = ({ toasts, removeToast }) => {
             if (!toasts.length) return null;
             return React.createElement('div', {
-                className: 'fixed top-4 right-4 z-[9999] flex flex-col gap-2 max-w-sm'
+                className: 'fixed top-4 right-4 z-[9999] flex flex-col gap-2 max-w-sm print:hidden'
             }, toasts.map(t => React.createElement('div', {
                 key: t.id,
                 className: `flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-semibold animate-in slide-in-from-right-2 fade-in duration-200 cursor-pointer ${t.type === 'success' ? 'bg-emerald-600 text-white' : t.type === 'error' ? 'bg-red-600 text-white' : t.type === 'warning' ? 'bg-amber-500 text-white' : 'bg-blue-600 text-white'}`,
