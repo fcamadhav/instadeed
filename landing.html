@@ -315,6 +315,36 @@ img { display:block; max-width:100%; }
   .hero-mockup-card { max-width:100%; }
 }
 
+.hero-usps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 2rem;
+  border-top: 1px solid var(--gray-200);
+  padding-top: 1.5rem;
+}
+.hero-usp-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--gray-600);
+  background: var(--gray-50);
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-100);
+}
+.hero-usp-item i {
+  font-size: 1rem;
+}
+.hero-usp-item:nth-child(1) i { color: #d97706; }
+.hero-usp-item:nth-child(2) i { color: #2563eb; }
+.hero-usp-item:nth-child(3) i { color: #059669; }
+
+@media (max-width: 850px) {
+  .hero-usps { justify-content: center; }
+}
+
 /* ═══════ TRUST BAR ═══════ */
 .trust-bar {
   background: linear-gradient(180deg, #FFFFFF 0%, var(--gray-50) 100%);
@@ -982,6 +1012,20 @@ img { display:block; max-width:100%; }
         <button class="btn-hero-ghost" onclick="document.getElementById('templates').scrollIntoView({behavior:'smooth'})">
           <i class="fa-regular fa-eye"></i> View Templates
         </button>
+      </div>
+      <div class="hero-usps">
+        <div class="hero-usp-item">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Agreement in <strong>10 Minutes</strong></span>
+        </div>
+        <div class="hero-usp-item">
+          <i class="fa-solid fa-indian-rupee-sign"></i>
+          <span>Rent Agreement at <strong>Rs. 300</strong></span>
+        </div>
+        <div class="hero-usp-item">
+          <i class="fa-solid fa-circle-check"></i>
+          <span><strong>Zero Correction</strong> Guarantee</span>
+        </div>
       </div>
     </div>
     <div class="hero-right">
