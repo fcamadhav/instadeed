@@ -60,21 +60,21 @@ def main():
             print("Error: Madhav_Drafting_Hub_dev.html template not found!")
             return
 
-    print("Step 3: Creating optimized production Madhav_Drafting_Hub.html...")
+    print("Step 3: Creating self-contained Madhav_Drafting_Hub.html...")
     # Remove the browser Babel compiler library script
     babel_lib_pattern = r'<script src="https://unpkg\.com/@babel/standalone/babel\.min\.js"></script>'
     prod_content = re.sub(babel_lib_pattern, '<!-- Babel compiler library removed in production -->', dev_content)
 
-    # Replace the inline script block with out.js (with cache busting)
-    import time
-    timestamp = int(time.time())
+    # Inline out.js directly into the HTML
     inline_script_pattern = r'(<script type="text/babel">)(.*?)(</script>)'
-    prod_content, count = re.subn(inline_script_pattern, f'<script src="out.js?v={timestamp}"></script>', prod_content, flags=re.DOTALL)
+    with open('out.js', 'r', encoding='utf-8') as f:
+        out_js = f.read()
+    prod_content, count = re.subn(inline_script_pattern, lambda m: f'<script>{out_js}</script>', prod_content, flags=re.DOTALL)
 
     if count > 0:
         with open('Madhav_Drafting_Hub.html', 'w', encoding='utf-8') as f:
             f.write(prod_content)
-        print("Successfully generated high-performance production Madhav_Drafting_Hub.html.")
+        print(f"Successfully generated self-contained Madhav_Drafting_Hub.html ({len(prod_content)//1024} KB).")
     else:
         print("Error: Could not replace inline script block.")
 
