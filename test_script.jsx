@@ -3068,7 +3068,6 @@
                 else if (activeTab === 'MUTATION') currentData = mutationData;
                 else if (activeTab === 'GNIDA') currentData = gnidaData;
                 else if (activeTab === 'GNIDA_REGISTRY') currentData = gnidaRegistryData;
-                else if (activeTab === 'GNIDA_REGISTRY') currentData = gnidaRegistryData;
                 else if (activeTab === 'GNIDA_PTM') currentData = gnidaPtmData;
                 else if (activeTab === 'TM48') currentData = tm48Data;
                 else if (activeTab === 'TM_APP') currentData = tmAppData;
@@ -6689,7 +6688,7 @@
                                                             const res = await fetch(`${API_BASE}/api/customer/documents?phone=${myDocsPhone}`);
                                                             if (res.ok) {
                                                                 const data = await res.json();
-                                                                setMyDocs(data);
+                                                                setMyDocs(Array.isArray(data) ? data : []);
                                                             } else {
                                                                 setMyDocs([]);
                                                                 addToast('Could not fetch documents. Please try again.', 'error');
