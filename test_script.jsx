@@ -1,5 +1,5 @@
 
-        const { useState, useEffect, useCallback } = React;
+        const { useState, useEffect, useCallback, useRef } = React;
         const ActiveFieldContext = React.createContext(null);
 
         // --- Helper: Debounce ---
@@ -1713,7 +1713,9 @@
             const [viewOrderId, setViewOrderId] = useState('');
             const [activeAuthority, setActiveAuthority] = useState('ALL');
             const [user, setUser] = useState(null);
-            const [showLogin, setShowLogin] = useState(false); 
+            const [showLogin, setShowLogin] = useState(false);
+            const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+            const profileRef = useRef(null);
             const [saveStatus, setSaveStatus] = useState('Auto-saved');
             const [activeField, setActiveField] = useState(null);
             const [myDocs, setMyDocs] = useState([]);
@@ -1740,6 +1742,16 @@
                 }
                 return initial;
             });
+
+            useEffect(() => {
+                const handleClickOutside = (e) => {
+                    if (profileRef.current && !profileRef.current.contains(e.target)) {
+                        setShowProfileDropdown(false);
+                    }
+                };
+                document.addEventListener('mousedown', handleClickOutside);
+                return () => document.removeEventListener('mousedown', handleClickOutside);
+            }, []);
 
             const getEsignDetails = (tabName) => {
                 // If the overall GNIDA package is signed, any individual child form is also signed
@@ -4245,97 +4257,87 @@
                 ];
 
                 return (
-                    <div className="w-full space-y-6 animate-in fade-in duration-200">
-                        {/* Search Bar */}
-                        <div className="w-full max-w-md mx-auto bg-white border border-slate-100 rounded-2xl p-2 shadow-sm">
-                            <div className="relative">
-                                <i className="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                                <input type="text" placeholder="Search templates..." value={librarySearch} onChange={(e) => setLibrarySearch(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl focus:border-blue-500 focus:outline-none text-xs font-bold text-slate-700" />
+                    <div className="w-full space-y-8 animate-in fade-in duration-200">
+                        {/* Search & Filter Row */}
+                        <div className="flex flex-col sm:flex-row items-center gap-3 max-w-2xl mx-auto">
+                            <div className="relative flex-1 w-full">
+                                <i className="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                                <input type="text" placeholder="Search templates..." value={librarySearch} onChange={(e) => setLibrarySearch(e.target.value)} className="w-full h-11 pl-10 pr-4 bg-white border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-50 focus:outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400" />
                             </div>
-                        </div>
-
-                        {/* Authority Dropdown */}
-                        <div className="w-full max-w-xs mx-auto">
-                            <div className="relative">
-                                <select value={landingAuth} onChange={e => { trackEvent('auth_filter', 'HOME', e.target.value); setLandingAuth(e.target.value); }} className="w-full appearance-none px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 focus:outline-none cursor-pointer shadow-sm">
-                                    <option value="ALL">All Docs — Rent, ATS, TM48</option>
+                            <div className="relative w-full sm:w-48">
+                                <select value={landingAuth} onChange={e => { trackEvent('auth_filter', 'HOME', e.target.value); setLandingAuth(e.target.value); }} className="w-full h-11 appearance-none px-4 pr-10 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 focus:outline-none cursor-pointer shadow-sm">
+                                    <option value="ALL">All Authorities</option>
                                     <option value="GNIDA">GNIDA (Greater Noida)</option>
                                     <option value="NOIDA">NOIDA Authority</option>
-                                    <option value="YEIDA">YEIDA (Yamuna Expressway)</option>
-                                    <option value="GDA">Ghaziabad (GDA)</option>
                                 </select>
-                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
-                                    <i className="fa-solid fa-chevron-down text-xs"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Featured Product Strip */}
-                        <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-100 shadow-sm p-4">
-                            <div className="flex items-center gap-3 transition-all duration-500" style={{ transform: `translateX(-${bannerIdx * 100}%)` }}>
-                                <div className="flex gap-4 min-w-full">
-                                    {banners.map((b, i) => (
-                                                    <div key={i} className="flex-1 flex items-center gap-4 bg-slate-50 rounded-xl p-4 cursor-pointer hover:shadow-sm transition" onClick={() => { trackEvent('banner_click', 'HOME', b.type); setActiveTab(b.type); setActiveAuthority('ALL'); setFlowStep(3); }}>
-                                            <div className={`w-12 h-12 rounded-xl bg-${b.color}-100 text-${b.color}-600 flex items-center justify-center shrink-0`}>
-                                                <i className={`fa-solid ${b.icon} text-lg`}></i>
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="font-extrabold text-sm text-slate-800">{b.title}</div>
-                                                <div className="text-[10px] text-slate-400 font-medium">{b.subtitle}</div>
-                                            </div>
-                                            <div className="text-right shrink-0">
-                                                <div className="font-black text-blue-600">{b.price}</div>
-                                                <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Shop Now</div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="flex justify-center gap-1.5 mt-3">
-                                {banners.map((_, i) => (
-                                    <button key={i} onClick={() => setBannerIdx(i)} className={`w-2 h-2 rounded-full transition-all ${i === bannerIdx ? 'bg-blue-600 w-5' : 'bg-slate-200 hover:bg-slate-300'}`} />
-                                ))}
+                                <i className="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
                             </div>
                         </div>
 
                         {/* Category Nav */}
-                        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide justify-center">
                             {[
                                 { key: 'ALL', label: 'All Products', icon: 'fa-cubes' },
                                 { key: 'REAL_ESTATE', label: 'Tenancy & Property', icon: 'fa-house-chimney' },
                                 { key: 'AUTHORITY', label: 'Authority Forms', icon: 'fa-building-columns' },
                                 { key: 'TRADE', label: 'Business & Trade', icon: 'fa-briefcase' }
                             ].map(cat => (
-                                <button key={cat.key} onClick={() => setLibraryFilter(cat.key)} className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer border whitespace-nowrap ${libraryFilter === cat.key ? 'bg-blue-600 border-indigo-600 text-white shadow-md' : 'bg-white border-slate-100 text-slate-600 hover:bg-slate-50 hover:text-slate-800 shadow-sm'}`}>
-                                    <i className={`fa-solid ${cat.icon}`}></i> {cat.label}
+                                <button key={cat.key} onClick={() => setLibraryFilter(cat.key)} className={`h-10 px-4 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer border whitespace-nowrap shrink-0 ${libraryFilter === cat.key ? 'bg-blue-600 border-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 shadow-sm'}`}>
+                                    <i className={`fa-solid ${cat.icon} text-[11px]`}></i> {cat.label}
                                 </button>
                             ))}
                         </div>
 
+                        {/* Featured Banner Carousel */}
+                        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-50 to-white border border-slate-100 shadow-sm p-5">
+                            <div className="flex transition-all duration-500" style={{ transform: `translateX(-${bannerIdx * 100}%)` }}>
+                                {banners.map((b, i) => (
+                                    <div key={i} className="min-w-full flex items-center gap-5 cursor-pointer" onClick={() => { trackEvent('banner_click', 'HOME', b.type); setActiveTab(b.type); setActiveAuthority('ALL'); setFlowStep(3); }}>
+                                        <div className="w-14 h-14 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                                            <i className={`fa-solid ${b.icon} text-xl`}></i>
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="font-extrabold text-sm text-slate-800">{b.title}</div>
+                                            <div className="text-[11px] text-slate-400 font-medium">{b.subtitle}</div>
+                                        </div>
+                                        <div className="text-right shrink-0">
+                                            <div className="font-black text-blue-600 text-sm">{b.price}</div>
+                                            <span className="insta-badge bg-blue-50 text-blue-600 border border-blue-100 text-[9px] !px-2.5 !py-1">Draft Now</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="flex justify-center gap-1.5 mt-4">
+                                {banners.map((_, i) => (
+                                    <button key={i} onClick={() => setBannerIdx(i)} className={`h-2 rounded-full transition-all cursor-pointer ${i === bannerIdx ? 'w-6 bg-blue-600' : 'w-2 bg-slate-200 hover:bg-slate-300'}`} />
+                                ))}
+                            </div>
+                        </div>
+
                         {/* Product Grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                             {filtered.length === 0 ? (
-                                <div className="col-span-full bg-white rounded-2xl border border-slate-100 p-12 text-center text-slate-400 font-medium">
-                                    <i className="fa-solid fa-magnifying-glass-minus text-3xl mb-3 block opacity-30"></i>
-                                    <div className="font-bold text-slate-600 mb-1">No templates yet for this authority</div>
-                                    <div className="text-xs">Select "All Docs" for Rent Agreement, ATS, and TM-48</div>
+                                <div className="col-span-full bg-white rounded-2xl border border-slate-100 p-14 text-center">
+                                    <i className="fa-solid fa-magnifying-glass-minus text-3xl mb-3 block text-slate-300"></i>
+                                    <div className="font-bold text-slate-600 text-sm mb-1">No templates yet for this authority</div>
+                                    <div className="text-xs text-slate-400">Select "All Docs" for Rent Agreement, ATS, and TM-48</div>
                                 </div>
                             ) : (
                                 filtered.map(t => (
-                                    <div key={t.type} className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group flex flex-col">
-                                        <div className={`h-28 bg-gradient-to-br from-${t.color}-50 to-white p-5 flex items-center justify-center relative`}>
+                                    <div key={t.type} className="bg-white rounded-2xl border border-slate-100 shadow-[var(--shadow-card)] overflow-hidden hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-200 group flex flex-col">
+                                        <div className={`h-28 bg-gradient-to-br from-${t.color}-50 to-white p-5 flex items-center justify-center relative overflow-hidden`}>
                                             <div className={`w-16 h-16 rounded-2xl bg-white shadow-sm border border-${t.color}-100 text-${t.color}-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
                                                 <i className={`fa-solid ${t.icon} text-2xl`}></i>
                                             </div>
-                                            <span className="absolute top-3 right-3 px-2 py-0.5 bg-white border border-slate-100 text-slate-600 rounded-full font-extrabold text-[9px] shadow-sm">{t.price}</span>
-                                            {t.type === 'RENT' && <span className="absolute top-3 left-3 px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded font-black text-[8px] uppercase tracking-wider">Best Seller</span>}
-                                            {t.type === 'GNIDA_REGISTRY' && <span className="absolute top-3 left-3 px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded font-black text-[8px] uppercase tracking-wider">Popular</span>}
+                                            <span className="absolute top-3 right-3 px-2.5 py-1 bg-white/90 backdrop-blur-sm border border-slate-100 text-slate-700 rounded-full font-extrabold text-[10px] shadow-sm">{t.price}</span>
+                                            {t.type === 'RENT' && <span className="absolute top-3 left-3 px-2 py-0.5 bg-amber-100 text-amber-700 rounded font-black text-[8px] uppercase tracking-wider shadow-sm">Best Seller</span>}
+                                            {t.type === 'GNIDA_REGISTRY' && <span className="absolute top-3 left-3 px-2 py-0.5 bg-purple-100 text-purple-700 rounded font-black text-[8px] uppercase tracking-wider shadow-sm">Popular</span>}
                                         </div>
                                         <div className="p-4 flex flex-col flex-1">
-                                            <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">{t.cat.replace('_', ' ')}</div>
-                                            <h3 className="font-extrabold text-sm text-slate-800 group-hover:text-blue-600 transition-colors leading-tight mb-1.5">{t.label}</h3>
-                                            <p className="text-[10px] text-slate-400 font-medium leading-relaxed flex-1">{t.desc}</p>
-                                            <button onClick={() => { trackEvent('template_select', 'HOME', t.type); setActiveTab(t.type); setActiveAuthority(t.auth); setFlowStep(3); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="mt-3 w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-sm cursor-pointer flex items-center justify-center gap-1.5">
+                                            <div className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.08em] mb-1">{t.cat.replace('_', ' ')}</div>
+                                            <h3 className="font-extrabold text-sm text-slate-800 group-hover:text-blue-600 transition-colors leading-snug mb-1.5">{t.label}</h3>
+                                            <p className="text-[10px] text-slate-400 font-medium leading-relaxed flex-1 line-clamp-3">{t.desc}</p>
+                                            <button onClick={() => { trackEvent('template_select', 'HOME', t.type); setActiveTab(t.type); setActiveAuthority(t.auth); setFlowStep(3); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="insta-btn-primary !h-10 !py-0 !text-[12px] !rounded-xl mt-3">
                                                 <i className="fa-solid fa-file-pen text-[10px]"></i> Draft Now
                                             </button>
                                         </div>
@@ -4352,10 +4354,12 @@
                                 { icon: 'fa-clock', label: 'Instant Download', value: 'Yes' },
                                 { icon: 'fa-shield', label: 'Secure', value: 'SSL' },
                             ].map((s, i) => (
-                                <div key={i} className="bg-white rounded-xl border border-slate-100 p-4 text-center shadow-sm">
-                                    <i className={`fa-solid ${s.icon} text-blue-600 text-lg mb-1.5 block`}></i>
-                                    <div className="font-black text-slate-800 text-lg">{s.value}</div>
-                                    <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">{s.label}</div>
+                                <div key={i} className="bg-white rounded-xl border border-slate-100 p-5 text-center shadow-[var(--shadow-card)]">
+                                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50/50 text-blue-600 flex items-center justify-center mx-auto mb-3">
+                                        <i className={`fa-solid ${s.icon} text-sm`}></i>
+                                    </div>
+                                    <div className="font-black text-slate-800 text-lg leading-none mb-1">{s.value}</div>
+                                    <div className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.08em]">{s.label}</div>
                                 </div>
                             ))}
                         </div>
@@ -6030,12 +6034,148 @@
                 ) : activeTab === 'HOME' ? (
                     /* ===== LANDING PAGE ===== */
                     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 font-ui overflow-y-auto" style={{fontFamily:'Plus Jakarta Sans, Inter, sans-serif'}}>
-                        {/* Nav Bar */}
-                        <div className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100">
-                            <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-                                <div style={{display:'inline-flex',alignItems:'center',gap:'8px',userSelect:'none',textDecoration:'none'}}>
-                                    <div style={{width:'32px',height:'32px',borderRadius:'9px',background:'#2563EB',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,boxShadow:'0 3px 10px rgba(37,99,235,.32), inset 0 1px 0 rgba(255,255,255,.18)'}}>
-                                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:'16px',height:'16px'}}>
+
+                        <style>{`
+                            :root {
+                                --primary: #2563EB;
+                                --primary-dark: #1D4ED8;
+                                --primary-light: #EFF6FF;
+                                --primary-glow: rgba(37,99,235,0.15);
+                                --accent-cyan: #06B6D4;
+                                --accent-emerald: #10B981;
+                                --accent-amber: #F59E0B;
+                                --accent-rose: #F43F5E;
+                                --accent-purple: #8B5CF6;
+                                --slate-50: #F8FAFC;
+                                --slate-100: #F1F5F9;
+                                --slate-200: #E2E8F0;
+                                --slate-300: #CBD5E1;
+                                --slate-400: #94A3B8;
+                                --slate-500: #64748B;
+                                --slate-600: #475569;
+                                --slate-700: #334155;
+                                --slate-800: #1E293B;
+                                --slate-900: #0F172A;
+                                --radius-sm: 8px;
+                                --radius-md: 12px;
+                                --radius-lg: 16px;
+                                --radius-xl: 20px;
+                                --radius-full: 9999px;
+                                --shadow-card: 0 1px 3px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.04);
+                                --shadow-card-hover: 0 10px 25px -5px rgba(15,23,42,0.08), 0 4px 10px -6px rgba(15,23,42,0.04);
+                                --shadow-dropdown: 0 15px 35px -8px rgba(15,23,42,0.12), 0 5px 12px -4px rgba(15,23,42,0.06);
+                                --shadow-btn: 0 4px 14px 0 rgba(37,99,235,0.2);
+                                --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+                                --font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
+                                --font-body: 'Inter', 'Plus Jakarta Sans', sans-serif;
+                            }
+                            .insta-grid-bg {
+                                background-image:
+                                    linear-gradient(rgba(37,99,235,0.03) 1px, transparent 1px),
+                                    linear-gradient(90deg, rgba(37,99,235,0.03) 1px, transparent 1px);
+                                background-size: 60px 60px;
+                            }
+                            .insta-grid-bg-dark {
+                                background-image:
+                                    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                                    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+                                background-size: 60px 60px;
+                            }
+                            .insta-gradient-text {
+                                background: linear-gradient(135deg, var(--primary), var(--accent-cyan), var(--accent-emerald));
+                                -webkit-background-clip: text;
+                                -webkit-text-fill-color: transparent;
+                                background-clip: text;
+                            }
+                            .insta-btn-primary {
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 8px;
+                                padding: 12px 28px;
+                                height: 48px;
+                                background: var(--primary);
+                                color: white;
+                                font-weight: 700;
+                                font-size: 0.875rem;
+                                border: none;
+                                border-radius: var(--radius-md);
+                                cursor: pointer;
+                                transition: all var(--transition);
+                                box-shadow: var(--shadow-btn);
+                            }
+                            .insta-btn-primary:hover {
+                                background: var(--primary-dark);
+                                transform: translateY(-1px);
+                                box-shadow: 0 8px 25px 0 rgba(37,99,235,0.35);
+                            }
+                            .insta-btn-secondary {
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 8px;
+                                padding: 12px 28px;
+                                height: 48px;
+                                background: transparent;
+                                color: var(--slate-700);
+                                font-weight: 600;
+                                font-size: 0.875rem;
+                                border: 1.5px solid var(--slate-200);
+                                border-radius: var(--radius-md);
+                                cursor: pointer;
+                                transition: all var(--transition);
+                            }
+                            .insta-btn-secondary:hover {
+                                border-color: var(--primary);
+                                color: var(--primary);
+                                background: var(--primary-light);
+                            }
+                            .insta-btn-ghost {
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 6px;
+                                padding: 8px 16px;
+                                height: 36px;
+                                background: transparent;
+                                color: var(--slate-500);
+                                font-weight: 600;
+                                font-size: 0.813rem;
+                                border: none;
+                                border-radius: var(--radius-sm);
+                                cursor: pointer;
+                                transition: all var(--transition);
+                            }
+                            .insta-btn-ghost:hover {
+                                background: var(--slate-100);
+                                color: var(--slate-700);
+                            }
+                            .insta-badge {
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 6px;
+                                padding: 4px 12px;
+                                border-radius: var(--radius-full);
+                                font-size: 0.688rem;
+                                font-weight: 700;
+                                letter-spacing: 0.05em;
+                                text-transform: uppercase;
+                            }
+                            .insta-section {
+                                padding: 80px 0;
+                            }
+                            @media (max-width: 768px) {
+                                .insta-section { padding: 48px 0; }
+                            }
+                        `}</style>
+
+                        {/* ====== HEADER / NAVBAR ====== */}
+                        <header className="sticky top-0 z-30 bg-white/85 backdrop-blur-lg border-b border-slate-100/80">
+                            <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+                                {/* Brand */}
+                                <a className="inline-flex items-center gap-2.5 no-underline cursor-pointer select-none" onClick={() => setActiveTab('HOME')}>
+                                    <div className="w-9 h-9 rounded-[10px] bg-[#2563EB] flex items-center justify-center shrink-0 shadow-[0_4px_12px_rgba(37,99,235,0.3),inset_0_1px_0_rgba(255,255,255,0.2)]">
+                                        <svg viewBox="0 0 20 20" fill="none" className="w-[18px] h-[18px]">
                                             <rect x="3" y="2" width="11" height="14" rx="1.5" fill="rgba(255,255,255,0.2)" stroke="white" strokeWidth="1.3"/>
                                             <line x1="6" y1="6" x2="11" y2="6" stroke="white" strokeWidth="1.1" strokeLinecap="round"/>
                                             <line x1="6" y1="9" x2="11" y2="9" stroke="white" strokeWidth="1.1" strokeLinecap="round"/>
@@ -6043,34 +6183,82 @@
                                             <path d="M13.5 13l3-3 1.5 1.5-3 3-2 .5.5-2z" fill="white" stroke="white" strokeWidth=".4" strokeLinejoin="round"/>
                                         </svg>
                                     </div>
-                                    <span style={{fontFamily:'Plus Jakarta Sans, sans-serif',fontWeight:900,fontSize:'1.35rem',letterSpacing:'-0.06em',lineHeight:1,display:'inline-flex',alignItems:'baseline',gap:0}}>
-                                        <span style={{color:'#0F172A'}}>insta</span><span style={{color:'#2563EB'}}>deed</span>
-                                        <span style={{fontFamily:'Plus Jakarta Sans, sans-serif',fontSize:'.6rem',fontWeight:800,color:'#fff',background:'#2563EB',width:'19px',height:'19px',borderRadius:'50%',marginLeft:'4px',alignSelf:'center',display:'inline-flex',alignItems:'center',justifyContent:'center',lineHeight:1,boxShadow:'0 2px 6px rgba(37,99,235,.25)'}}>in</span>
-                                    </span>
-                                </div>
+                                    <div className="flex items-baseline gap-0">
+                                        <span className="font-black tracking-[-0.06em] text-[1.35rem] leading-none text-slate-900" style={{fontFamily:'Plus Jakarta Sans, sans-serif'}}>insta</span>
+                                        <span className="font-black tracking-[-0.06em] text-[1.35rem] leading-none text-[#2563EB]" style={{fontFamily:'Plus Jakarta Sans, sans-serif'}}>deed</span>
+                                    </div>
+                                    <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-amber-200/60 bg-amber-50/70 text-[10px] font-extrabold text-amber-700 uppercase tracking-wider leading-none ml-0.5">G.B. Nagar</span>
+                                </a>
+
+                                {/* Right side */}
                                 <div className="flex items-center gap-2">
-                                    <button onClick={() => setActiveTab('CRM')} className="px-3 py-1.5 bg-purple-50 border border-purple-100 hover:bg-purple-100 text-purple-600 text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5" title="Admin Panel">
-                                        <i className="fa-solid fa-shield-halved"></i> Admin
+                                    {/* Admin */}
+                                    <button onClick={() => setActiveTab('CRM')} className="insta-btn-ghost hidden sm:flex" title="Admin Panel">
+                                        <i className="fa-solid fa-shield-halved text-[11px]"></i>
+                                        <span>Admin</span>
                                     </button>
+
                                     {user ? (
-                                        <div className="flex items-center gap-1.5">
-                                            <button onClick={() => { setActiveTab('DASHBOARD'); setFlowStep(1); }} className="px-3 py-1.5 bg-blue-50 border border-blue-100 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded-xl transition cursor-pointer">
-                                                <i className="fa-solid fa-layer-group mr-1"></i> My Docs
+                                        <div className="flex items-center gap-2 relative" ref={profileRef}>
+                                            {/* My Docs */}
+                                            <button onClick={() => { setActiveTab('DASHBOARD'); setFlowStep(1); }} className="insta-btn-ghost hidden sm:flex">
+                                                <i className="fa-solid fa-layer-group text-[11px]"></i>
+                                                <span>My Docs</span>
                                             </button>
-                                            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full py-1 pl-1 pr-3 shadow-sm text-xs text-slate-700">
-                                                <img src={user.picture} alt={user.name} className="w-6 h-6 rounded-full" />
-                                                <span className="font-semibold truncate max-w-[80px]">{user.name.split(' ')[0]}</span>
-                                                <button onClick={() => {localStorage.removeItem('instadeed_user_session');setUser(null);setIsAdminLoggedIn(false);localStorage.removeItem('instadeed_admin');}} className="text-slate-400 hover:text-rose-600 transition ml-1" title="Sign Out">
-                                                    <i className="fa-solid fa-right-from-bracket"></i>
-                                                </button>
-                                            </div>
+
+                                            {/* Profile trigger */}
+                                            <button onClick={() => setShowProfileDropdown(p => !p)} className="flex items-center gap-2 h-9 px-2 rounded-[10px] border border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer shrink-0">
+                                                <img src={user.picture} alt={user.name} className="w-6 h-6 rounded-full ring-2 ring-white shadow-sm" />
+                                                <span className="text-[13px] font-semibold text-slate-700 truncate max-w-[72px] leading-none">{user.name.split(' ')[0]}</span>
+                                                <i className={`fa-solid fa-chevron-down text-[9px] text-slate-400 transition-transform duration-200 ${showProfileDropdown ? 'rotate-180' : ''}`}></i>
+                                            </button>
+
+                                            {/* Dropdown card */}
+                                            {showProfileDropdown && (
+                                                <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-[14px] border border-slate-100 shadow-[0_15px_35px_-8px_rgba(15,23,42,0.15),0_5px_12px_-4px_rgba(15,23,42,0.07)] z-50 overflow-hidden animate-in fade-in zoom-in origin-top-right">
+                                                    <div className="px-4 py-3.5 border-b border-slate-50">
+                                                        <div className="flex items-center gap-3">
+                                                            <img src={user.picture} alt={user.name} className="w-9 h-9 rounded-full ring-2 ring-blue-50" />
+                                                            <div className="min-w-0">
+                                                                <div className="text-[13px] font-bold text-slate-800 truncate">{user.name}</div>
+                                                                <div className="text-[11px] text-slate-400 truncate">{user.email}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="p-1.5">
+                                                        <button onClick={() => { setShowProfileDropdown(false); setActiveTab('DASHBOARD'); setFlowStep(1); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer">
+                                                            <i className="fa-solid fa-layer-group text-slate-400 w-4 text-center text-[12px]"></i>
+                                                            My Documents
+                                                        </button>
+                                                        <button onClick={() => { setShowProfileDropdown(false); setActiveTab('DASHBOARD'); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer">
+                                                            <i className="fa-solid fa-user text-slate-400 w-4 text-center text-[12px]"></i>
+                                                            My Profile
+                                                        </button>
+                                                    </div>
+                                                    <div className="border-t border-slate-50 p-1.5">
+                                                        <button onClick={() => {localStorage.removeItem('instadeed_user_session');setUser(null);setIsAdminLoggedIn(false);localStorage.removeItem('instadeed_admin');setShowProfileDropdown(false);}} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer">
+                                                            <i className="fa-solid fa-right-from-bracket text-rose-400 w-4 text-center text-[12px]"></i>
+                                                            Sign Out
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     ) : (
-                                        <button onClick={() => setShowLogin(true)} style={{fontSize:'.72rem',fontWeight:700,color:'#2563EB',border:'1.5px solid #2563EB',borderRadius:'9999px',padding:'.32rem .85rem',background:'#EEF4FF',cursor:'pointer',fontFamily:'Inter,sans-serif'}}>Sign In</button>
+                                        <div className="flex items-center gap-2">
+                                            <button onClick={() => setShowLogin(true)} className="insta-btn-ghost hidden sm:flex">
+                                                <i className="fa-solid fa-arrow-right-to-bracket text-[11px]"></i>
+                                                <span>Sign In</span>
+                                            </button>
+                                            <button onClick={() => setShowLogin(true)} className="insta-btn-primary !h-9 !px-4 !py-0 !text-[13px] !shadow-none">
+                                                <span>Get Started</span>
+                                                <i className="fa-solid fa-arrow-right text-[10px]"></i>
+                                            </button>
+                                        </div>
                                     )}
                                 </div>
                             </div>
-                        </div>
+                        </header>
 
                         {/* Breadcrumb Bar */}
                         <div className="max-w-6xl mx-auto px-6 pt-3">
@@ -6099,44 +6287,52 @@
                             </div>
                         </div>
 
-                        {/* Hero Section */}
-                        <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-slate-950">
-                            <div className="absolute inset-0 bg-dot-pattern opacity-20"></div>
-                            <div className="absolute top-20 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
-                            <div className="absolute bottom-0 left-20 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl"></div>
-                            <div className="max-w-6xl mx-auto px-6 py-20 lg:py-28 text-center relative z-10">
-                                <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-400/20 rounded-full px-4 py-1.5 mb-6">
-                                    <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-                                    <span className="text-[11px] font-bold text-blue-300 uppercase tracking-wider">Greater Noida Legal Suite</span>
+                        {/* ====== HERO SECTION ====== */}
+                        <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-slate-950 insta-grid-bg-dark">
+                            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/8 rounded-full blur-[120px] translate-x-1/3 -translate-y-1/4"></div>
+                            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-cyan-500/5 rounded-full blur-[100px] -translate-x-1/4 translate-y-1/3"></div>
+                            <div className="max-w-6xl mx-auto px-6 py-24 lg:py-32 text-center relative z-10">
+                                <div className="inline-flex items-center gap-2 bg-white/8 border border-white/15 rounded-full px-5 py-2 mb-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]"></span>
+                                    <span className="text-[11px] font-bold text-blue-200/90 uppercase tracking-[0.08em]">Greater Noida Legal Suite</span>
                                 </div>
-                                <h1 className="text-4xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
-                                    Greater Noida Legal<br/>
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Documents, Instantly</span>
+                                <h1 className="text-[2.5rem] md:text-5xl lg:text-[3.75rem] font-extrabold text-white leading-[1.1] tracking-[-0.02em] mb-6 max-w-4xl mx-auto">
+                                    Draft, Stamp & e-Sign <br className="hidden sm:block"/>
+                                    <span className="insta-gradient-text">in under 3 minutes</span>
                                 </h1>
-                                <p className="text-slate-300 text-lg max-w-2xl mx-auto mb-10 font-medium">
-                                    Built exclusively for Greater Noida — standard GNIDA rent agreement, registry deed, 
-                                    mutation, TM-48, and more. Every template is accepted by GNIDA and local authorities. 
-                                    Fill, download, and eSign in minutes.
+                                <p className="text-slate-300/90 text-[1.05rem] md:text-lg max-w-2xl mx-auto mb-12 leading-relaxed font-medium">
+                                    Premium legal documentation built for Greater Noida — GNIDA rent agreement, registry deeds, 
+                                    mutation, TM-48, transfer memos, and more. Every template is authority-approved. Fill, eSign, and submit in minutes.
                                 </p>
-                                <div className="flex items-center justify-center gap-3 flex-wrap">
-                                    <button onClick={() => { trackEvent('browse_templates', 'HOME', 'hero_cta'); document.querySelector('.template-grid-section')?.scrollIntoView({behavior:'smooth'}); }} className="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-500/25 cursor-pointer">
-                                        <i className="fa-solid fa-file-circle-plus mr-2"></i> Browse Templates
+                                <div className="flex items-center justify-center gap-4 flex-wrap">
+                                    <button onClick={() => { trackEvent('browse_templates', 'HOME', 'hero_cta'); document.querySelector('.template-grid-section')?.scrollIntoView({behavior:'smooth'}); }} className="insta-btn-primary !h-[52px] !px-9 !text-[15px] !rounded-[14px] !shadow-lg !shadow-blue-500/30">
+                                        <i className="fa-solid fa-file-circle-plus text-base"></i>
+                                        Browse Templates
+                                        <i className="fa-solid fa-arrow-right text-[11px] opacity-70"></i>
                                     </button>
-                                    <button onClick={() => setShowLogin(true)} className="px-8 py-3.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-xl font-bold text-sm transition cursor-pointer">
-                                        <i className="fa-solid fa-user-plus mr-2"></i> Sign In
+                                    <button onClick={() => setShowLogin(true)} className="insta-btn-primary !h-[52px] !px-9 !text-[15px] !rounded-[14px] !bg-white/8 !hover:bg-white/15 !text-white !border !border-white/20 !shadow-none !backdrop-blur-sm">
+                                        <i className="fa-solid fa-user-plus text-base"></i>
+                                        Sign In Free
                                     </button>
                                 </div>
-                                <div className="flex items-center justify-center gap-6 mt-10 text-xs text-slate-400 font-semibold">
-                                    <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i className="fa-solid fa-check-circle text-emerald-400"></i>GNIDA Accepted</span>
-                                    <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i className="fa-solid fa-check-circle text-emerald-400"></i>Greater Noida Standard</span>
-                                    <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5"><i className="fa-solid fa-check-circle text-emerald-400"></i>Instant eSign</span>
+                                <div className="flex items-center justify-center gap-3 sm:gap-6 mt-12 flex-wrap">
+                                    {[
+                                        { icon: 'fa-check-circle', color: 'text-emerald-400', label: 'GNIDA Accepted' },
+                                        { icon: 'fa-check-circle', color: 'text-emerald-400', label: 'Greater Noida Standard' },
+                                        { icon: 'fa-bolt', color: 'text-cyan-400', label: 'Instant eSign' },
+                                    ].map((t, i) => (
+                                        <span key={i} className="inline-flex items-center gap-1.5 bg-white/6 border border-white/12 rounded-full px-4 py-2 text-[11px] font-semibold text-slate-300/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-sm">
+                                            <i className={`fa-solid ${t.icon} ${t.color} text-[10px]`}></i>
+                                            {t.label}
+                                        </span>
+                                    ))}
                                 </div>
                             </div>
-                        </div>
+                        </section>
 
-                        {/* Stats Strip */}
+                        {/* ====== STATS STRIP ====== */}
                         <div className="max-w-6xl mx-auto px-6 -mt-8 relative z-20">
-                            <div className="bg-white rounded-2xl border border-slate-100 shadow-lg p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
+                            <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_-8px_rgba(15,23,42,0.08)] p-7 grid grid-cols-2 md:grid-cols-4 gap-6">
                                 {[
                                     { icon: 'fa-file', label: 'GNIDA Templates', value: '12+' },
                                     { icon: 'fa-gavel', label: 'Greater Noida Approved', value: '100%' },
@@ -6144,53 +6340,55 @@
                                     { icon: 'fa-shield', label: 'Secure & SSL', value: 'Encrypted' },
                                 ].map((s, i) => (
                                     <div key={i} className="text-center">
-                                        <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-2">
-                                            <i className={`fa-solid ${s.icon} text-base`}></i>
+                                        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50/50 text-blue-600 flex items-center justify-center mx-auto mb-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                                            <i className={`fa-solid ${s.icon} text-[15px]`}></i>
                                         </div>
-                                        <div className="font-black text-slate-800 text-xl">{s.value}</div>
-                                        <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">{s.label}</div>
+                                        <div className="font-black text-slate-800 text-[1.35rem] leading-none mb-1">{s.value}</div>
+                                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.08em]">{s.label}</div>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        {/* How It Works */}
-                        <div className="max-w-6xl mx-auto px-6 pt-20 pb-12 text-center">
-                            <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full font-bold text-[10px] uppercase tracking-wider">Simple Process</span>
-                            <h2 className="text-2xl lg:text-3xl font-extrabold text-slate-900 mt-3 mb-10">How It Works</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* ====== HOW IT WORKS ====== */}
+                        <section className="max-w-6xl mx-auto px-6 py-24 text-center">
+                            <span className="insta-badge bg-blue-50 text-blue-600 border border-blue-100/60 mb-5">Simple Process</span>
+                            <h2 className="text-[1.75rem] md:text-[2.25rem] font-extrabold text-slate-900 tracking-[-0.02em] mt-3 mb-12 leading-tight">
+                                How It Works
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                                 {[
                                     { step: '1', icon: 'fa-file-circle-plus', title: 'Choose Template', desc: 'Pick from 12+ GNIDA-accepted templates — rent, registry, mutation, and more.' },
                                     { step: '2', icon: 'fa-pen-to-square', title: 'Fill & Review', desc: 'Smart form fields pre-configured for Greater Noida authority requirements.' },
                                     { step: '3', icon: 'fa-file-pdf', title: 'Download & Sign', desc: 'Export GNIDA-ready PDF, eSign via Leegality, or print for submission.' },
                                 ].map((h, i) => (
-                                    <div key={i} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 text-center hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-                                        <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 relative">
+                                    <div key={i} className="group bg-white rounded-2xl border border-slate-100 shadow-[var(--shadow-card)] p-8 text-center hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5 transition-all duration-300">
+                                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50/50 text-blue-600 flex items-center justify-center mx-auto mb-5 relative group-hover:scale-105 transition-transform duration-300">
                                             <i className={`fa-solid ${h.icon} text-xl`}></i>
-                                            <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-blue-600 text-white text-[10px] font-black flex items-center justify-center shadow-sm">{h.step}</div>
+                                            <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-blue-600 text-white text-[10px] font-black flex items-center justify-center shadow-sm shadow-blue-200">{h.step}</div>
                                         </div>
-                                        <h3 className="font-extrabold text-slate-800 text-sm mb-2">{h.title}</h3>
-                                        <p className="text-[11px] text-slate-400 font-medium leading-relaxed">{h.desc}</p>
+                                        <h3 className="font-extrabold text-slate-800 text-[15px] mb-2">{h.title}</h3>
+                                        <p className="text-[12px] text-slate-400 font-medium leading-relaxed max-w-[260px] mx-auto">{h.desc}</p>
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </section>
 
                         {/* Template Grid Anchor */}
                         <div className="template-grid-section"></div>
 
-                        {/* Step Indicator */}
+                        {/* ====== STEP INDICATOR ====== */}
                         {flowStep > 1 && (
-                            <div className="max-w-3xl mx-auto px-6 pb-8">
+                            <div className="max-w-3xl mx-auto px-6 pb-8 pt-6">
                                 <div className="flex items-center justify-center gap-0">
                                     {[{n:1,l:'Customer Info'},{n:2,l:'Choose Document'},{n:3,l:'Draft & Preview'}].map((s,i) => (
                                         <div key={s.n} className="flex items-center">
                                             <div className="flex items-center gap-2.5">
-                                                <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-extrabold transition-all duration-300 shadow-sm ${
-                                                    flowStep === s.n ? 'bg-blue-600 text-white shadow-blue-200 scale-110' :
+                                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-extrabold transition-all duration-300 shadow-sm ${
+                                                    flowStep === s.n ? 'bg-blue-600 text-white shadow-[0_4px_12px_rgba(37,99,235,0.3)] scale-110 ring-2 ring-blue-100' :
                                                     flowStep > s.n ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-400'
                                                 }`}>
-                                                    {flowStep > s.n ? <i className="fa-solid fa-check"></i> : s.n}
+                                                    {flowStep > s.n ? <i className="fa-solid fa-check text-xs"></i> : s.n}
                                                 </div>
                                                 <span className={`text-xs font-bold hidden sm:block ${flowStep === s.n ? 'text-slate-800' : 'text-slate-400'}`}>{s.l}</span>
                                             </div>
