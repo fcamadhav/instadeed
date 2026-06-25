@@ -2451,7 +2451,7 @@
                     try {
                         const u = JSON.parse(sessionStr);
                         setUser(u);
-                        if (u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); }
+                        if (u.role === 'admin' || u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); }
                     } catch (e) { console.error("Error loading session:", e); }
                 }
 
@@ -2462,7 +2462,7 @@
                             try {
                                 const u = JSON.parse(e.newValue);
                                 setUser(u);
-                                if (u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); }
+                                if (u.role === 'admin' || u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); }
                             } catch (err) { console.error("Error syncing session:", err); }
                         } else {
                             setUser(null);
@@ -4320,7 +4320,7 @@
                             <LoginModal
                                 isOpen={showLogin}
                                 onClose={() => setShowLogin(false)}
-                                onLogin={(u) => { setUser(u); setShowLogin(false); if (u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
+                                onLogin={(u) => { setUser(u); setShowLogin(false); if (u.role === 'admin' || u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
                             />
                         </div>
                     );
@@ -6521,7 +6521,7 @@
                         <LoginModal
                             isOpen={showLogin}
                             onClose={() => setShowLogin(false)}
-                            onLogin={(u) => { setUser(u); setShowLogin(false); if (u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
+                            onLogin={(u) => { setUser(u); setShowLogin(false); if (u.role === 'admin' || u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
                         />
                     </div>
                 ) : activeTab === 'SHARE' ? (
@@ -11803,7 +11803,7 @@
                         <LoginModal
                             isOpen={showLogin}
                             onClose={() => setShowLogin(false)}
-                            onLogin={(u) => { setUser(u); if (u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
+                            onLogin={(u) => { setUser(u); if (u.role === 'admin' || u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
                         />
 
                         {/* Share Modal */}
