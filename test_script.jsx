@@ -8999,6 +8999,11 @@
                                         handleSaveOffline();
                                     } else {
                                         // B2C Flow - pre-fill details from active data, check session and do Express Checkout if complete
+                                        if (!user && !localStorage.getItem('instadeed_user_session')) {
+                                            addToast('Please sign in to proceed with checkout', 'info');
+                                            setShowLogin(true);
+                                            return;
+                                        }
                                         const details = extractCustomerDetails();
                                         const savedSession = localStorage.getItem('instadeed_user_session');
                                         let sessionUser = {};
@@ -12488,39 +12493,9 @@
                         )}
                     </div>
 
-                        {/* Gated Authentication Overlay */}
-                        {!user && activeTab !== 'CRM' && (
-                            <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/60 backdrop-blur-md">
-                                <div className="relative max-w-md w-full mx-4">
-                                    <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-2xl text-center">
-                                        <div className="mb-6">
-                                            {/* Beautiful Lock Badge — matches brand styling */}
-                                            <div className="w-16 h-16 mx-auto rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center mb-4 shadow-[0_4px_20px_rgba(37,99,235,0.12)]">
-                                                <i className="fa-solid fa-lock text-blue-600 text-2xl"></i>
-                                            </div>
-                                            <h2 className="font-ui text-2xl font-black text-slate-800 tracking-tight mb-2">Authentication Required</h2>
-                                            <p className="font-ui text-sm text-slate-500 leading-relaxed px-2">Please sign in to access the drafting suite, manage your documents, and complete your registrations.</p>
-                                        </div>
-                                        <div className="space-y-3">
-                                            <button
-                                                onClick={() => setShowLogin(true)}
-                                                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-ui font-extrabold tracking-wide rounded-xl transition duration-150 text-sm shadow-md shadow-blue-200 cursor-pointer"
-                                            >
-                                                <i className="fa-solid fa-right-to-bracket mr-2"></i> Sign In to Proceed
-                                            </button>
-                                            <a href="landing.html" className="block w-full py-3 border border-slate-200 hover:bg-slate-50 text-slate-600 font-ui font-bold rounded-xl transition duration-150 text-xs cursor-pointer text-center">
-                                                <i className="fa-solid fa-arrow-left mr-2"></i> Return to Storefront
-                                            </a>
-                                        </div>
-                                        <div className="mt-6 text-[9px] text-slate-400 uppercase tracking-wider font-semibold flex items-center justify-center gap-1.5 select-none">
-                                            <i className="fa-solid fa-shield-halved text-blue-500 text-[10px]"></i> INSTADEED Secure Portal
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
+                        {/* Gated Authentication Overlay Removed */}
 
-                        {/* Checkout Modal */}
+{/* Checkout Modal */}
                         <CheckoutModal
                             isOpen={showCheckoutModal}
                             onClose={() => setShowCheckoutModal(false)}
