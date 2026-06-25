@@ -6940,12 +6940,11 @@
                                                 activeTab === 'ATS' ? 'Agreement to Sell' :
                                                 activeTab === 'REG_RENT' ? 'Registered Rent' :
                                                 activeTab === 'TM48' ? 'TM-48 Auth' :
-                                                activeTab === 'KYA' ? 'Know Your Allottee' :
+                                                activeTab === 'GNIDA' || activeTab === 'KYA' ? 'Know Your Allottee' :
                                                 activeTab === 'TM_APP' ? 'Transfer Memo' :
                                                 activeTab === 'MUTATION' ? 'Mutation Form' :
                                                 activeTab === 'GNIDA_REGISTRY' ? 'Registry Format' :
                                                 activeTab === 'GNIDA_PTM' ? 'Permission to Mortgage' :
-                                                
                                                 activeTab === 'NOIDA_TRANSFER' ? 'Noida Transfer' :
                                                 activeTab
                                             }
@@ -11943,13 +11942,15 @@
                             data={
                                 activeTab === 'RENT' ? rentData :
                                     activeTab === 'ATS' ? atsData :
+                                        activeTab === 'REG_RENT' ? regData :
                                         activeTab === 'MUTATION' ? mutationData :
-                                            activeTab === 'GNIDA' ? gnidaData :
+                                            activeTab === 'GNIDA' || activeTab === 'KYA' ? gnidaData :
                                                 activeTab === 'TM48' ? tm48Data :
                                                     activeTab === 'TM_APP' ? tmAppData :
                                                         activeTab === 'GNIDA_REGISTRY' ? gnidaRegistryData :
                                                             activeTab === 'GNIDA_PTM' ? gnidaPtmData :
-                                                            
+                                                                activeTab === 'GNIDA_PACKAGE' ? gnidaPackageData :
+                                                                activeTab === 'NOIDA_TRANSFER' ? noidaTransferData :
                                                                 regData
                             }
                             onImport={(data, type) => {
@@ -11961,13 +11962,15 @@
 
                                 if (target === 'RENT') setRentData(data);
                                 else if (target === 'ATS') setAtsData(data);
+                                else if (target === 'REG_RENT') setRegData(data);
                                 else if (target === 'MUTATION') setMutationData(data);
-                                else if (target === 'GNIDA') setGnidaData(data);
+                                else if (target === 'GNIDA' || target === 'KYA') setGnidaData(data);
                                 else if (target === 'TM48') setTm48Data(data);
                                 else if (target === 'TM_APP') setTmAppData(data);
                                 else if (target === 'GNIDA_REGISTRY') setGnidaRegistryData(data);
                                 else if (target === 'GNIDA_PTM') setGnidaPtmData(data);
-                                
+                                else if (target === 'GNIDA_PACKAGE') setGnidaPackageData(data);
+                                else if (target === 'NOIDA_TRANSFER') setNoidaTransferData(data);
                                 else setRegData(data);
                             }}
                         />

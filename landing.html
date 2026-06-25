@@ -152,6 +152,114 @@ img {
 }
 
 /* ═══════════════════════
+   BUTTON DESIGN SYSTEM
+   ═══════════════════════ */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--primary, #2563EB);
+  color: #FFFFFF !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.55rem 1.2rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  height: 38px;
+}
+.btn-primary:hover {
+  background-color: var(--primary-hover, #1D4ED8);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.22);
+  transform: translateY(-1px);
+}
+.btn-primary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--primary-light, #EFF6FF);
+  color: var(--primary, #2563EB) !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.55rem 1.2rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  height: 38px;
+}
+.btn-secondary:hover {
+  background-color: rgba(37, 99, 235, 0.15);
+  transform: translateY(-1px);
+}
+.btn-secondary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  color: var(--text-primary, #0F172A) !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 10px;
+  border: 1.5px solid var(--border-light, rgba(15, 23, 42, 0.1));
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  height: 38px;
+}
+.btn-outline:hover {
+  background-color: var(--bg-dark, #F8FAFC);
+  border-color: rgba(15, 23, 42, 0.2);
+  transform: translateY(-1px);
+}
+.btn-outline:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--rose, #F43F5E);
+  color: #FFFFFF !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.55rem 1.2rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.12);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  height: 38px;
+}
+.btn-danger:hover {
+  background-color: #E11D48;
+  box-shadow: 0 6px 16px rgba(244, 63, 94, 0.22);
+  transform: translateY(-1px);
+}
+.btn-danger:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ═══════════════════════
    NAV — Glassmorphism Light
    ═══════════════════════ */
 .nav {
@@ -288,8 +396,9 @@ img {
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
   flex-shrink: 0;
+  position: relative;
 }
 .nav-phone-pill {
   display: flex;
@@ -2577,19 +2686,18 @@ footer {
       <span class="nav-link" onclick="scrollToSection('faq')">Support</span>
       
       <!-- Mobile Exclusive Actions -->
-      <!-- Mobile Exclusive Actions -->
       <div class="nav-mobile-ctas nav-auth-signed-out">
-        <button class="btn-nav-login btn-login" onclick="openAuth('login'); toggleMobileMenu()">Login</button>
-        <button class="btn-nav-signup btn-register" onclick="openAuth('register'); toggleMobileMenu()">Get Started</button>
+        <button class="btn-outline btn-login" onclick="openAuth('login'); toggleMobileMenu()">Login</button>
+        <button class="btn-primary btn-register" onclick="openAuth('register'); toggleMobileMenu()">Get Started</button>
       </div>
 
       <!-- Mobile Signed-in Actions -->
       <div class="nav-mobile-ctas nav-auth-signed-in-only" style="display: none; flex-direction: column; gap: 0.5rem; width: 100%;">
         <div style="padding: 0.5rem 0; text-align: center; font-weight: 700; color: #0F172A; font-size: 0.85rem;" id="mobileUserEmail"></div>
-        <button class="btn-nav-login btn-login" onclick="scrollToSection('pricing'); toggleMobileMenu()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+        <button class="btn-outline btn-login" onclick="scrollToSection('pricing'); toggleMobileMenu()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
           <i class="fa-solid fa-file-contract"></i> My Documents
         </button>
-        <button class="btn-nav-signup btn-register" style="background: var(--rose); width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;" onclick="signOut(); toggleMobileMenu()">
+        <button class="btn-danger btn-register" onclick="signOut(); toggleMobileMenu()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
           <i class="fa-solid fa-right-from-bracket"></i> Sign out
         </button>
       </div>
@@ -2597,8 +2705,8 @@ footer {
 
     <!-- RIGHT -->
     <div class="nav-right" id="navAuthArea">
-      <button class="btn-nav-login btn-login nav-auth-signed-out" onclick="openAuth('login')">Login</button>
-      <button class="btn-nav-signup btn-register nav-auth-signed-out" onclick="openAuth('register')">Get Started</button>
+      <button class="btn-outline btn-login nav-auth-signed-out" onclick="openAuth('login')">Login</button>
+      <button class="btn-primary btn-register nav-auth-signed-out" onclick="openAuth('register')">Get Started</button>
       <!-- User chip (shown after sign-in) -->
       <div class="user-chip" id="userChip" onclick="toggleUserMenu()" style="display: none;">
         <div class="user-avatar" id="userAvatar">U</div>
