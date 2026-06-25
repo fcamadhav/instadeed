@@ -208,6 +208,18 @@ def init_db():
         cursor.execute("ALTER TABLE orders ADD COLUMN is_favorite INTEGER DEFAULT 0")
     except sqlite3.OperationalError:
         pass
+    try:
+        cursor.execute("ALTER TABLE orders ADD COLUMN estamp_number TEXT")
+    except sqlite3.OperationalError:
+        pass
+    try:
+        cursor.execute("ALTER TABLE orders ADD COLUMN estamp_cert_url TEXT")
+    except sqlite3.OperationalError:
+        pass
+    try:
+        cursor.execute("ALTER TABLE orders ADD COLUMN stamp_duty_paid REAL")
+    except sqlite3.OperationalError:
+        pass
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS users (
         id TEXT PRIMARY KEY,
@@ -2385,6 +2397,37 @@ async def admin_save_version(order_id: str, body: SaveVersionRequest, request: R
     conn.commit()
     conn.close()
     return {"status": "success", "version": next_ver}
+
+# --- e-Stamp Management ---
+
+class EstampUpdateRequest(BaseModel):
+    estamp_number: Optional[str] = None
+    estamp_cert_url: Optional[str] = None
+    stamp_duty_paid: Optional[float] = None
+
+@app.put("/api/admin/orders/{order_id}/estamp")
+async def admin_update_estamp(order_id: str, body: EstampUpdateRequest, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    now = datetime.datetime.now().isoformat()
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT id FROM orders WHERE id = ?", (order_id,))
+        row = cursor.fetchone()
+        if not row:
+            conn.close()
+            raise HTTPException(status_code=404, detail="Order not found")
+        
+        cursor.execute(
+            "UPDATE orders SET estamp_number = ?, estamp_cert_url = ?, stamp_duty_paid = ?, updated_at = ? WHERE id = ?",
+            (body.estamp_number, body.estamp_cert_url, body.stamp_duty_paid, now, order_id)
+        )
+        conn.commit()
+        conn.close()
+        return {"status": "success", "message": "e-Stamp details updated successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # --- Refund Handling ---
 

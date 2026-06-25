@@ -6189,6 +6189,101 @@
                                             </div>
                                         </div>
 
+                                        {/* e-Stamp Logging */}
+                                        <div className="border-t border-slate-100 pt-4 mb-4">
+                                            <h4 className="font-bold text-slate-700 text-xs flex items-center gap-2 mb-3"><i className="fa-solid fa-stamp text-blue-500"></i> e-Stamp Certificate</h4>
+                                            <div className="grid grid-cols-2 gap-3 mb-3">
+                                                <div>
+                                                    <label className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Certificate Number</label>
+                                                    <input 
+                                                        id={`estamp-num-${crmSelectedOrderForDetail.id}`} 
+                                                        type="text" 
+                                                        placeholder="IN-UP..." 
+                                                        defaultValue={crmSelectedOrderForDetail.estamp_number || ''} 
+                                                        className="crm-input w-full text-xs" 
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Stamp Duty Paid (Rs.)</label>
+                                                    <input 
+                                                        id={`estamp-duty-${crmSelectedOrderForDetail.id}`} 
+                                                        type="number" 
+                                                        placeholder="e.g. 100" 
+                                                        defaultValue={crmSelectedOrderForDetail.stamp_duty_paid || ''} 
+                                                        className="crm-input w-full text-xs" 
+                                                    />
+                                                </div>
+                                                <div className="col-span-2">
+                                                    <label className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Certificate PDF URL / Link</label>
+                                                    <input 
+                                                        id={`estamp-url-${crmSelectedOrderForDetail.id}`} 
+                                                        type="text" 
+                                                        placeholder="https://..." 
+                                                        defaultValue={crmSelectedOrderForDetail.estamp_cert_url || ''} 
+                                                        className="crm-input w-full text-xs" 
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="flex justify-between items-center">
+                                                {crmSelectedOrderForDetail.estamp_cert_url ? (
+                                                    <a 
+                                                        href={crmSelectedOrderForDetail.estamp_cert_url} 
+                                                        target="_blank" 
+                                                        rel="noreferrer" 
+                                                        className="text-xs font-semibold text-blue-600 hover:underline flex items-center gap-1"
+                                                    >
+                                                        <i className="fa-solid fa-file-pdf"></i> View Stamp
+                                                    </a>
+                                                ) : (
+                                                    <span className="text-[10px] text-slate-400">No certificate linked</span>
+                                                )}
+                                                <button 
+                                                    onClick={async () => {
+                                                        try {
+                                                            const numEl = document.getElementById(`estamp-num-${crmSelectedOrderForDetail.id}`);
+                                                            const dutyEl = document.getElementById(`estamp-duty-${crmSelectedOrderForDetail.id}`);
+                                                            const urlEl = document.getElementById(`estamp-url-${crmSelectedOrderForDetail.id}`);
+                                                            if (!numEl || !dutyEl || !urlEl) return;
+                                                            const num = numEl.value;
+                                                            const duty = parseFloat(dutyEl.value) || 0;
+                                                            const url = urlEl.value;
+                                                            
+                                                            const res = await fetch(`${API_BASE}/api/admin/orders/${crmSelectedOrderForDetail.id}/estamp`, {
+                                                                method: 'PUT',
+                                                                headers: {
+                                                                    ...getAuthHeaders(),
+                                                                    'Content-Type': 'application/json'
+                                                                },
+                                                                body: JSON.stringify({
+                                                                    estamp_number: num,
+                                                                    stamp_duty_paid: duty,
+                                                                    estamp_cert_url: url
+                                                                })
+                                                            });
+                                                            
+                                                            if (res.ok) {
+                                                                addToast('e-Stamp details saved', 'success');
+                                                                setCrmSelectedOrderForDetail({
+                                                                    ...crmSelectedOrderForDetail,
+                                                                    estamp_number: num,
+                                                                    stamp_duty_paid: duty,
+                                                                    estamp_cert_url: url
+                                                                });
+                                                                fetchCrmOrders();
+                                                            } else {
+                                                                addToast('Failed to save e-Stamp', 'error');
+                                                            }
+                                                        } catch(e) {
+                                                            addToast('Failed to save e-Stamp', 'error');
+                                                        }
+                                                    }} 
+                                                    className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 cursor-pointer border-0"
+                                                >
+                                                    Save e-Stamp
+                                                </button>
+                                            </div>
+                                        </div>
+
                                         {/* Refund */}
                                         <div className="border-t border-slate-100 pt-4">
                                             <h4 className="font-bold text-slate-700 text-xs flex items-center gap-2 mb-3"><i className="fa-solid fa-rotate-left text-rose-500"></i> Refund / Cancel</h4>
