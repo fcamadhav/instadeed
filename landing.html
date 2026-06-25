@@ -432,106 +432,121 @@ img { display:block; max-width:100%; }
 /* ═══════ HOW IT WORKS ═══════ */
 .how-section { background:var(--white); border-bottom:1px solid var(--gray-200); }
 .visual-how-flow {
+  margin-top: 3.5rem;
+  text-align: center;
+}
+.trend-line-container {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-.visual-step-card {
-  flex: 1;
-  background: #fff;
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-xl);
-  padding: 2.25rem 2rem;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.02), 0 8px 10px -6px rgba(0,0,0,0.02);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.visual-step-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--blue);
-  box-shadow: 0 20px 25px -5px rgba(59,130,246,0.05), 0 10px 10px -5px rgba(59,130,246,0.02);
-}
-.visual-step-icon-wrap {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 1.5rem;
-}
-.visual-step-num {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--blue);
-  color: #fff;
-  font-weight: 800;
-  font-size: 0.7rem;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  border: 2px solid #fff;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto 2.5rem auto;
+  padding: 0 50px;
 }
-.visual-step-icon {
+.trend-line {
+  position: absolute;
+  top: 36px;
+  left: 100px;
+  right: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #2563eb 0%, #4f46e5 50%, #059669 100%);
+  z-index: 1;
+}
+.trend-node {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 140px;
+}
+.trend-icon {
   width: 72px;
   height: 72px;
-  border-radius: 22px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
+  border: 4px solid #fff;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
 }
-.visual-step-icon.bg-blue {
-  background: #eff6ff;
-  color: #2563eb;
+.trend-node:hover .trend-icon {
+  transform: scale(1.12);
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
 }
-.visual-step-icon.bg-indigo {
-  background: #eef2ff;
-  color: #4f46e5;
+.trend-icon.bg-blue { background: #eff6ff; color: #2563eb; }
+.trend-icon.bg-indigo { background: #eef2ff; color: #4f46e5; }
+.trend-icon.bg-emerald { background: #ecfdf5; color: #059669; }
+
+.trend-num {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--gray-400);
+  background: var(--gray-100);
+  padding: 2px 10px;
+  border-radius: 12px;
 }
-.visual-step-icon.bg-emerald {
-  background: #ecfdf5;
-  color: #059669;
-}
-.visual-step-title {
-  font-size: 1.1rem;
+.trend-node:nth-child(2) .trend-num { color: #2563eb; background: #eff6ff; }
+.trend-node:nth-child(3) .trend-num { color: #4f46e5; background: #eef2ff; }
+.trend-node:nth-child(4) .trend-num { color: #059669; background: #ecfdf5; }
+
+.trend-label {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: var(--gray-800);
-  margin-bottom: 0.75rem;
 }
-.visual-step-desc {
-  font-size: 0.82rem;
-  color: var(--gray-400);
-  line-height: 1.5;
-}
-.visual-step-connector {
+
+.trend-descriptions {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 72px;
-  color: var(--gray-300);
-  font-size: 1rem;
-  align-self: flex-start;
-  margin-top: 1.5rem;
+  justify-content: space-between;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
 }
-@media (max-width: 850px) {
-  .visual-how-flow {
+.trend-desc-card {
+  flex: 1;
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.02);
+  transition: all 0.2s ease;
+  text-align: left;
+}
+.trend-desc-card:hover {
+  border-color: var(--blue);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+}
+.trend-desc-card p {
+  font-size: 0.82rem;
+  color: var(--gray-500);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .trend-line-container {
     flex-direction: column;
-    align-items: center;
-    gap: 2rem;
+    gap: 2.5rem;
+    padding: 0;
   }
-  .visual-step-card {
-    width: 100%;
-    max-w: 400px;
+  .trend-line {
+    top: 50px;
+    bottom: 50px;
+    left: 50%;
+    right: auto;
+    width: 4px;
+    height: calc(100% - 100px);
+    background: linear-gradient(180deg, #2563eb 0%, #4f46e5 50%, #059669 100%);
   }
-  .visual-step-connector {
-    transform: rotate(90deg);
-    height: auto;
-    margin: -0.5rem 0;
+  .trend-descriptions {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
   }
 }
 
@@ -1208,50 +1223,43 @@ img { display:block; max-width:100%; }
     </div>
     
     <div class="visual-how-flow">
-      <!-- Step 1 -->
-      <div class="visual-step-card">
-        <div class="visual-step-icon-wrap">
-          <div class="visual-step-num">1</div>
-          <div class="visual-step-icon bg-blue">
-            <i class="fa-solid fa-file-signature"></i>
-          </div>
+      <!-- The trend line connects these nodes -->
+      <div class="trend-line-container">
+        <div class="trend-line"></div>
+        
+        <!-- Node 1 -->
+        <div class="trend-node">
+          <div class="trend-icon bg-blue"><i class="fa-solid fa-file-signature"></i></div>
+          <div class="trend-num">1</div>
+          <div class="trend-label">Choose &amp; Draft</div>
         </div>
-        <h3 class="visual-step-title">Choose &amp; Draft</h3>
-        <p class="visual-step-desc">Pick from 12+ legally vetted templates and complete the guided form with auto-validations.</p>
-      </div>
-
-      <!-- Connector 1 -->
-      <div class="visual-step-connector">
-        <i class="fa-solid fa-chevron-right"></i>
-      </div>
-
-      <!-- Step 2 -->
-      <div class="visual-step-card">
-        <div class="visual-step-icon-wrap">
-          <div class="visual-step-num">2</div>
-          <div class="visual-step-icon bg-indigo">
-            <i class="fa-solid fa-credit-card"></i>
-          </div>
+        
+        <!-- Node 2 -->
+        <div class="trend-node">
+          <div class="trend-icon bg-indigo"><i class="fa-solid fa-credit-card"></i></div>
+          <div class="trend-num">2</div>
+          <div class="trend-label">Review &amp; Pay</div>
         </div>
-        <h3 class="visual-step-title">Review &amp; Pay</h3>
-        <p class="visual-step-desc">Instantly preview your formatted draft. Pay securely via UPI or Card (E-stamp certificate included).</p>
-      </div>
-
-      <!-- Connector 2 -->
-      <div class="visual-step-connector">
-        <i class="fa-solid fa-chevron-right"></i>
-      </div>
-
-      <!-- Step 3 -->
-      <div class="visual-step-card">
-        <div class="visual-step-icon-wrap">
-          <div class="visual-step-num">3</div>
-          <div class="visual-step-icon bg-emerald">
-            <i class="fa-solid fa-circle-down"></i>
-          </div>
+        
+        <!-- Node 3 -->
+        <div class="trend-node">
+          <div class="trend-icon bg-emerald"><i class="fa-solid fa-circle-down"></i></div>
+          <div class="trend-num">3</div>
+          <div class="trend-label">Sign &amp; Download</div>
         </div>
-        <h3 class="visual-step-title">Sign &amp; Download</h3>
-        <p class="visual-step-desc">Complete digital Aadhaar OTP signature (legally binding under IT Act) and download print-ready PDF.</p>
+      </div>
+      
+      <!-- Descriptions below -->
+      <div class="trend-descriptions">
+        <div class="trend-desc-card">
+          <p>Pick from 12+ legally vetted templates and complete the guided form with auto-validations.</p>
+        </div>
+        <div class="trend-desc-card">
+          <p>Instantly preview your formatted draft. Pay securely via UPI or Card (E-stamp certificate included).</p>
+        </div>
+        <div class="trend-desc-card">
+          <p>Complete digital Aadhaar OTP signature (legally binding under IT Act) and download print-ready PDF.</p>
+        </div>
       </div>
     </div>
   </div>
