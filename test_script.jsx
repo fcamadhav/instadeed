@@ -1195,7 +1195,7 @@
                         <div className="p-6 relative flex flex-col">
                             <button
                                 onClick={onClose}
-                                className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors text-sm"
+                                className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors text-sm border-0 cursor-pointer"
                             >
                                 <i className="fa-solid fa-xmark"></i>
                             </button>
@@ -1212,56 +1212,145 @@
                                 <div className="p-3 bg-blue-50 border border-blue-100 rounded-xl text-center text-xs text-blue-800 font-medium flex items-center justify-center gap-1.5">
                                     <i className="fa-solid fa-stamp text-blue-600"></i>
                                     {displayAmount === 0 ? (
-                                        <span className="text-emerald-600 font-bold">Free Document — No Payment Needed</span>
+                                        <span className="text-emerald-600 font-bold">Free Document  No Payment Needed</span>
                                     ) : (
                                         <>Drafting Fee: <strong>Rs. {displayAmount.toLocaleString('en-IN')}</strong> (Inclusive of all taxes)</>
                                     )}
                                 </div>
 
-                                <div className="space-y-3">
-                                    <div>
-                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Full Name</label>
-                                        <input
-                                            type="text"
-                                            value={checkoutDetails.name}
-                                            onChange={(e) => setCheckoutDetails(prev => ({ ...prev, name: e.target.value }))}
-                                            placeholder="e.g. Madhav Sharma"
-                                            className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-50 focus:outline-none bg-white text-slate-800"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Mobile Number</label>
-                                        <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-50 bg-white">
-                                            <span className="bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-500 border-r border-slate-200">+91</span>
-                                            <input
-                                                type="tel"
-                                                value={checkoutDetails.phone}
-                                                onChange={(e) => setCheckoutDetails(prev => ({ ...prev, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))}
-                                                placeholder="98765 43210"
-                                                className="w-full px-3 py-2.5 text-sm focus:outline-none text-slate-800"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Email Address</label>
-                                        <input
-                                            type="email"
-                                            value={checkoutDetails.email}
-                                            onChange={(e) => setCheckoutDetails(prev => ({ ...prev, email: e.target.value }))}
-                                            placeholder="name@example.com"
-                                            className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-50 focus:outline-none bg-white text-slate-800"
-                                        />
-                                    </div>
+                                <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl space-y-2.5 text-xs text-slate-600">
+                                    <div className="flex justify-between items-center"><span className="text-slate-400 font-semibold uppercase tracking-wider text-[9px]">Paying Account</span><span className="font-bold text-slate-800">{checkoutDetails.name || 'Client'}</span></div>
+                                    <div className="flex justify-between items-center"><span className="text-slate-400 font-semibold uppercase tracking-wider text-[9px]">Email Address</span><span className="font-bold text-slate-800">{checkoutDetails.email}</span></div>
+                                    {checkoutDetails.phone && checkoutDetails.phone !== '9999999999' && (
+                                        <div className="flex justify-between items-center"><span className="text-slate-400 font-semibold uppercase tracking-wider text-[9px]">Contact Mobile</span><span className="font-bold text-slate-800">+91 {checkoutDetails.phone}</span></div>
+                                    )}
                                 </div>
 
                                 <button
                                     onClick={onSubmit}
-                                    disabled={!checkoutDetails.name || checkoutDetails.phone.length !== 10}
-                                    className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all text-xs cursor-pointer text-center disabled:opacity-40 disabled:pointer-events-none mt-2 shadow-sm"
+                                    disabled={!checkoutDetails.name}
+                                    className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all text-xs cursor-pointer text-center disabled:opacity-40 disabled:pointer-events-none mt-2 shadow-sm border-0"
                                 >
                                     {displayAmount === 0 ? 'Create Free Document' : `Proceed to Pay Rs. ${displayAmount.toLocaleString('en-IN')}`}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const ShareDraftModal = ({ isOpen, onClose, shareUrl }) => {
+            const [copied, setCopied] = useState(false);
+            if (!isOpen) return null;
+
+            const handleCopy = () => {
+                navigator.clipboard.writeText(shareUrl);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            };
+
+            const handleWhatsApp = () => {
+                const text = `Please review this draft document before we initiate signatures and payment:\n\n${shareUrl}`;
+                const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+                window.open(url, '_blank');
+            };
+
+            return (
+                <div className="fixed inset-0 bg-black/60 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm transition-all" onClick={onClose}>
+                    <div className="bg-white w-full max-w-md rounded-2xl border border-slate-100 shadow-lg relative animate-in fade-in zoom-in duration-200" onClick={e => e.stopPropagation()}>
+                        <div className="p-6 relative flex flex-col items-center text-center">
+                            <button onClick={onClose} className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors text-sm border-0 cursor-pointer">
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
+
+                            <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4 shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
+                                <i className="fa-solid fa-share-nodes text-lg"></i>
+                            </div>
+
+                            <h3 className="font-extrabold text-slate-800 text-sm">Share Draft for Review</h3>
+                            <p className="text-xs text-slate-500 mt-2 max-w-sm">
+                                Generate a temporary read-only link to share with other parties (tenants, co-signers, legal advisors) to verify the clauses before initiating payment.
+                            </p>
+
+                            <div className="w-full mt-5 bg-slate-50 border border-slate-100 p-3 rounded-xl flex items-center gap-2 select-all font-mono text-[9px] text-slate-600 break-all text-left">
+                                {shareUrl}
+                            </div>
+
+                            <div className="flex gap-2 w-full mt-4">
+                                <button onClick={handleCopy} className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition text-xs border-0 cursor-pointer flex items-center justify-center gap-1.5">
+                                    <i className={`fa-solid ${copied ? 'fa-check' : 'fa-copy'}`}></i>
+                                    {copied ? 'Copied!' : 'Copy Link'}
+                                </button>
+                                <button onClick={handleWhatsApp} className="py-2.5 px-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition text-xs border-0 cursor-pointer flex items-center justify-center gap-1.5">
+                                    <i className="fa-brands fa-whatsapp text-sm"></i>
+                                    WhatsApp
+                                </button>
+                            </div>
+
+                            <span className="text-[10px] text-slate-400 mt-3 font-semibold uppercase tracking-wider flex items-center gap-1">
+                                <i className="fa-solid fa-clock"></i> Link expires in 7 days
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const SyncConflictModal = ({ conflict, onResolveLocal, onResolveCloud, onClose }) => {
+            if (!conflict) return null;
+
+            return (
+                <div className="fixed inset-0 bg-black/60 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">
+                    <div className="bg-white w-full max-w-lg rounded-2xl border border-slate-100 shadow-xl relative overflow-hidden" onClick={e => e.stopPropagation()}>
+                        <div className="p-6 flex flex-col">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shadow-[inset_0_1px_2px_rgba(217,119,6,0.05)]">
+                                    <i className="fa-solid fa-triangle-exclamation text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 className="font-extrabold text-slate-800 text-base">Unsaved Local Progress Found</h3>
+                                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Draft Sync Conflict: {conflict.type}</span>
+                                </div>
+                            </div>
+
+                            <p className="text-xs text-slate-500 leading-relaxed mb-5">
+                                We found differences between your offline browser draft and the version saved in the cloud. Choose which version you would like to restore:
+                            </p>
+
+                            <div className="grid grid-cols-2 gap-4 mb-6">
+                                <div className="border border-slate-100 hover:border-blue-200 bg-slate-50/50 hover:bg-blue-50/10 p-4 rounded-xl flex flex-col transition cursor-pointer group" onClick={onResolveLocal}>
+                                    <div className="flex items-center gap-1.5 mb-2">
+                                        <i className="fa-solid fa-laptop text-blue-600 text-xs"></i>
+                                        <span className="font-bold text-xs text-slate-700">Restore Local Draft</span>
+                                    </div>
+                                    <span className="text-[10px] text-slate-400 block mt-auto">Last edited offline:</span>
+                                    <span className="font-bold text-[11px] text-slate-600 mt-1">
+                                        {new Date(conflict.localTime).toLocaleString('en-IN')}
+                                    </span>
+                                    <span className="text-[10px] text-blue-600 font-bold mt-2 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                                        Keep offline copy <i className="fa-solid fa-arrow-right text-[8px]"></i>
+                                    </span>
+                                </div>
+
+                                <div className="border border-slate-100 hover:border-emerald-200 bg-slate-50/50 hover:bg-emerald-50/10 p-4 rounded-xl flex flex-col transition cursor-pointer group" onClick={onResolveCloud}>
+                                    <div className="flex items-center gap-1.5 mb-2">
+                                        <i className="fa-solid fa-cloud text-emerald-600 text-xs"></i>
+                                        <span className="font-bold text-xs text-slate-700">Pull Cloud Draft</span>
+                                    </div>
+                                    <span className="text-[10px] text-slate-400 block mt-auto">Saved in database:</span>
+                                    <span className="font-bold text-[11px] text-slate-600 mt-1">
+                                        {new Date(conflict.cloudTime).toLocaleString('en-IN')}
+                                    </span>
+                                    <span className="text-[10px] text-emerald-600 font-bold mt-2 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                                        Keep cloud copy <i className="fa-solid fa-arrow-right text-[8px]"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-end gap-2 border-t border-slate-50 pt-4">
+                                <button onClick={onClose} className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-xl transition text-xs border-0 cursor-pointer">
+                                    Resolve Later
                                 </button>
                             </div>
                         </div>
@@ -2626,6 +2715,41 @@
                 // Check URL parameter routing
                 const params = new URLSearchParams(window.location.search);
                 
+                const shareParam = params.get('share');
+                if (shareParam) {
+                    setViewOnlyMode(true);
+                    setActiveTab(null);
+                    fetch(`${API_BASE}/api/drafts/share/${shareParam}`)
+                        .then(r => {
+                            if (r.status === 410) throw new Error("This review link has expired.");
+                            if (!r.ok) throw new Error("Review draft not found.");
+                            return r.json();
+                        })
+                        .then(data => {
+                            if (data.success && data.form_data) {
+                                const docType = data.doc_type;
+                                if (docType === 'RENT') setRentData(data.form_data);
+                                else if (docType === 'ATS') setAtsData(data.form_data);
+                                else if (docType === 'MUTATION') setMutationData(data.form_data);
+                                else if (docType === 'GNIDA') setGnidaData(data.form_data);
+                                else if (docType === 'TM48') setTm48Data(data.form_data);
+                                else if (docType === 'TM_APP') setTmAppData(data.form_data);
+                                else if (docType === 'GNIDA_REGISTRY') setGnidaRegistryData(data.form_data);
+                                else if (docType === 'GNIDA_PTM') setGnidaPtmData(data.form_data);
+                                else setRegData(data.form_data);
+                                
+                                setActiveTab(docType);
+                                addToast("Loaded Shared Draft for Review (Read-only mode)", 'info');
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            addToast(err.message, 'error');
+                            setActiveTab('HOME');
+                        });
+                    return;
+                }
+                
                 // Cloud View Only Mode Detection
                 const viewParam = params.get('view');
                 if (viewParam) {
@@ -2773,6 +2897,15 @@
                         authority: activeAuthority
                     };
                     localStorage.setItem('madhav_legal_suite_v4_clean', JSON.stringify(suiteData));
+                    
+                    // Track local update timestamps
+                    if (activeTab !== 'HOME' && activeTab !== 'SHARE' && activeTab !== 'CRM' && activeTab !== 'DASHBOARD') {
+                        const nowStr = new Date().toISOString();
+                        const updatedTimes = { ...localUpdatedTimes, [activeTab]: nowStr };
+                        setLocalUpdatedTimes(updatedTimes);
+                        localStorage.setItem('madhav_local_updated_times', JSON.stringify(updatedTimes));
+                    }
+                    
                     setSaveStatus("Auto-saved");
                 }, 1000);
                 
@@ -3181,6 +3314,16 @@
             const [crmHeatmapData, setCrmHeatmapData] = useState(null);
             const [crmDropoffData, setCrmDropoffData] = useState(null);
             const [crmAuditData, setCrmAuditData] = useState(null);
+            const [crmTemplatesData, setCrmTemplatesData] = useState(null);
+            const [localUpdatedTimes, setLocalUpdatedTimes] = useState(() => {
+                try {
+                    const saved = localStorage.getItem('madhav_local_updated_times');
+                    return saved ? JSON.parse(saved) : {};
+                } catch(e) { return {}; }
+            });
+            const [syncConflictDoc, setSyncConflictDoc] = useState(null);
+            const [shareDraftToken, setShareDraftToken] = useState(null);
+            const [showShareDraftModal, setShowShareDraftModal] = useState(false);
             const [crmSelectedUser, setCrmSelectedUser] = useState(null);
             const [crmSelectedOrderForDetail, setCrmSelectedOrderForDetail] = useState(null);
             const [adminOtpStep, setAdminOtpStep] = useState('email');
@@ -3808,16 +3951,18 @@
 
             const fetchCrmAnalyticsExtras = async () => {
                 try {
-                    const [f, a, h, d] = await Promise.all([
+                    const [f, a, h, d, t] = await Promise.all([
                         fetch(`${API_BASE}/api/analytics/funnel`, { headers: getAuthHeaders() }).then(r => r.ok ? r.json() : null).catch(() => null),
                         fetch(`${API_BASE}/api/analytics/abandoned-drafts`, { headers: getAuthHeaders() }).then(r => r.ok ? r.json() : null).catch(() => null),
                         fetch(`${API_BASE}/api/analytics/heatmap`, { headers: getAuthHeaders() }).then(r => r.ok ? r.json() : null).catch(() => null),
                         fetch(`${API_BASE}/api/analytics/dropoff`, { headers: getAuthHeaders() }).then(r => r.ok ? r.json() : null).catch(() => null),
+                        fetch(`${API_BASE}/api/analytics/templates`, { headers: getAuthHeaders() }).then(r => r.ok ? r.json() : null).catch(() => null),
                     ]);
-                    setCrmFunnelData(f && Array.isArray(f.funnel) ? f : null);
+                    setCrmFunnelData(f && typeof f.total_started !== 'undefined' ? f : null);
                     setCrmAbandonedData(a && typeof a.total_drafts !== 'undefined' ? a : null);
                     setCrmHeatmapData(h && Array.isArray(h.locations) ? h : null);
                     setCrmDropoffData(d && Array.isArray(d.dropoff) ? d : null);
+                    setCrmTemplatesData(t && Array.isArray(t.templates) ? t : null);
                 } catch(e) { console.error(e); }
             };
 
@@ -3835,7 +3980,9 @@
                     const res = await fetch(`${API_BASE}/api/customer/documents?email=${encodeURIComponent(user.email)}`);
                     if (res.ok) {
                         const data = await res.json();
-                        setUserOrders(Array.isArray(data) ? data : []);
+                        const docsList = Array.isArray(data) ? data : [];
+                        setUserOrders(docsList);
+                        checkSyncConflicts(docsList);
                     } else {
                         setUserOrders([]);
                     }
@@ -3844,6 +3991,90 @@
                     setUserOrders([]);
                 }
                 setUserOrdersLoading(false);
+            };
+
+            const checkSyncConflicts = (docsList) => {
+                const drafts = docsList.filter(d => d.status === 'DRAFT');
+                if (drafts.length === 0) return;
+                
+                let localSuite = {};
+                try {
+                    const saved = localStorage.getItem('madhav_legal_suite_v4_clean');
+                    if (saved) localSuite = JSON.parse(saved);
+                } catch(e) {}
+                
+                for (const cloudDraft of drafts) {
+                    const type = cloudDraft.agreement_type;
+                    const typeKey = type.toLowerCase() === 'rent' ? 'rent' : 
+                                    type.toLowerCase() === 'ats' ? 'ats' : 
+                                    type.toLowerCase() === 'reg_rent' ? 'reg' : 
+                                    type.toLowerCase() === 'mutation' ? 'mutation' : 
+                                    type.toLowerCase() === 'gnida' || type.toLowerCase() === 'kya' ? 'gnida' : 
+                                    type.toLowerCase() === 'tm48' ? 'tm48' : 
+                                    type.toLowerCase() === 'tm_app' ? 'tmApp' : 
+                                    type.toLowerCase() === 'gnida_registry' ? 'gnidaRegistry' : 
+                                    type.toLowerCase() === 'gnida_ptm' ? 'gnidaPtm' : 
+                                    type.toLowerCase() === 'noida_transfer' ? 'noidaTransfer' : 
+                                    type.toLowerCase() === 'gnida_package' ? 'gnidaPackage' : '';
+                    
+                    if (!typeKey || !localSuite[typeKey]) continue;
+                    
+                    const localData = localSuite[typeKey];
+                    const cloudData = cloudDraft.form_data || {};
+                    
+                    const localStr = JSON.stringify(localData);
+                    const cloudStr = JSON.stringify(cloudData);
+                    
+                    if (localStr !== cloudStr) {
+                        const localTime = localUpdatedTimes[type] || new Date(0).toISOString();
+                        const cloudTime = cloudDraft.updated_at || new Date(0).toISOString();
+                        
+                        const diffMs = Math.abs(new Date(localTime) - new Date(cloudTime));
+                        if (diffMs > 10000) {
+                            setSyncConflictDoc({
+                                type: type,
+                                typeKey: typeKey,
+                                localData: localData,
+                                localTime: localTime,
+                                cloudDraftId: cloudDraft.id,
+                                cloudData: cloudData,
+                                cloudTime: cloudTime
+                            });
+                            break; // resolve one at a time
+                        }
+                    }
+                }
+            };
+
+            const handleShareDraft = async () => {
+                const payload = getActiveDataPayload();
+                try {
+                    addToast("Generating temporary review link...", 'info');
+                    const res = await fetch(`${API_BASE}/api/drafts/share`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            doc_type: activeTab,
+                            form_data: payload.payload
+                        })
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.success && data.token) {
+                            const baseUrl = window.location.href.split('?')[0].split('#')[0];
+                            const shareUrl = `${baseUrl}?share=${data.token}`;
+                            setShareDraftToken(shareUrl);
+                            setShowShareDraftModal(true);
+                        } else {
+                            addToast("Failed to generate share link", 'error');
+                        }
+                    } else {
+                        addToast("Server error generating share link", 'error');
+                    }
+                } catch(e) {
+                    console.error(e);
+                    addToast("Failed to connect to server", 'error');
+                }
             };
 
             useEffect(() => {
@@ -4186,40 +4417,99 @@
                                     No documents yet. Draft one now!
                                 </div>
                             ) : (
-                                <div className="overflow-x-auto">
-                                    <table className="w-full text-left border-collapse">
-                                        <thead>
-                                            <tr className="bg-slate-50 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                                                <th className="px-6 py-3">Document</th>
-                                                <th className="px-6 py-3">Amount</th>
-                                                <th className="px-6 py-3">Status</th>
-                                                <th className="px-6 py-3">Date</th>
-                                                <th className="px-6 py-3 text-right">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-slate-50 text-xs">
-                                            {userOrders.map((doc) => (
-                                                <tr key={doc.id} className="hover:bg-slate-50/50 transition">
-                                                    <td className="px-6 py-4 font-bold text-slate-700">{doc.agreement_type}</td>
-                                                    <td className="px-6 py-4 font-bold text-slate-800">\u20B9{doc.amount}</td>
-                                                    <td className="px-6 py-4">
-                                                        <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${
-                                                            doc.status === 'COMPLETED' || doc.status === 'SIGNED' ? 'bg-emerald-50 text-emerald-700' :
-                                                            doc.status === 'PAID' ? 'bg-purple-50 text-purple-700' :
-                                                            doc.status === 'PENDING_PAYMENT' ? 'bg-amber-50 text-amber-700' :
-                                                            'bg-slate-100 text-slate-600'
-                                                        }`}>{doc.status}</span>
-                                                    </td>
-                                                    <td className="px-6 py-4 text-slate-500">{new Date(doc.created_at).toLocaleDateString('en-IN')}</td>
-                                                    <td className="px-6 py-4 text-right">
-                                                        <a href={`${API_BASE}/api/customer/documents/${doc.id}/download`} target="_blank" className="px-3 py-1.5 bg-blue-50 border border-blue-100 hover:bg-blue-100 text-blue-600 text-[10px] font-bold rounded-lg transition cursor-pointer inline-flex items-center gap-1">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {userOrders.map((doc) => {
+                                        const prettyLabels = {
+                                            RENT: 'Rent Agreement',
+                                            REG_RENT: 'Registered Rent Agreement',
+                                            ATS: 'Agreement to Sell',
+                                            TM48: 'TM-48 Trademark',
+                                            GNIDA_PACKAGE: 'GNIDA 5-in-1',
+                                            KYA: 'KYA Verification',
+                                            TM_APP: 'Transfer Memo',
+                                            MUTATION: 'Mutation Form',
+                                            GNIDA_REGISTRY: 'GNIDA Registry',
+                                            GNIDA_PTM: 'GNIDA Mortgage',
+                                            NOIDA_TRANSFER: 'NOIDA Transfer',
+                                        };
+                                        const docLabel = prettyLabels[doc.agreement_type] || doc.agreement_type || 'Document';
+                                        
+                                        // Stepper progress logic
+                                        let currentStep = 0;
+                                        const isSentForSign = !!doc.leegality_sign_url;
+                                        if (doc.status === 'DRAFT' || doc.status === 'PENDING_PAYMENT') {
+                                            currentStep = 0;
+                                        } else if (doc.status === 'PAID') {
+                                            currentStep = isSentForSign ? 2 : 1;
+                                        } else if (doc.status === 'SIGNED') {
+                                            currentStep = 3;
+                                        } else if (doc.status === 'COMPLETED') {
+                                            currentStep = 4;
+                                        }
+                                        
+                                        return (
+                                            <div key={doc.id} className="bg-white rounded-2xl border border-slate-100 p-5 hover:shadow-md hover:border-slate-200 transition-all flex flex-col justify-between">
+                                                <div>
+                                                    <div className="flex justify-between items-start">
+                                                        <div>
+                                                            <h4 className="font-extrabold text-slate-800 text-sm">{docLabel}</h4>
+                                                            <span className="text-[10px] text-slate-400">{new Date(doc.created_at).toLocaleDateString('en-IN')}</span>
+                                                        </div>
+                                                        <span className="font-bold text-sm text-slate-800">\u20B9{doc.amount || 0}</span>
+                                                    </div>
+                                                    
+                                                    {/* Stepper Progress */}
+                                                    <div className="w-full mt-4 py-2 relative flex items-center justify-between">
+                                                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[2px] bg-slate-100 -z-1">
+                                                            <div className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-500" style={{ width: `${(currentStep / 4) * 100}%` }}></div>
+                                                        </div>
+                                                        {[
+                                                            { label: 'Drafting', icon: 'fa-pen-to-square' },
+                                                            { label: 'Paid', icon: 'fa-credit-card' },
+                                                            { label: isSentForSign ? 'Signing' : 'Sign', icon: 'fa-signature' },
+                                                            { label: 'Signed', icon: 'fa-file-signature' },
+                                                            { label: 'Done', icon: 'fa-circle-check' }
+                                                        ].map((step, idx) => {
+                                                            const isDone = idx < currentStep;
+                                                            const isAct = idx === currentStep;
+                                                            return (
+                                                                <div key={idx} className="flex flex-col items-center relative z-10">
+                                                                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold transition-all ${
+                                                                        isDone ? 'bg-indigo-600 text-white shadow-sm' : isAct ? 'bg-blue-600 text-white ring-4 ring-blue-50 scale-110 shadow-sm animate-pulse-subtle' : 'bg-white border border-slate-200 text-slate-400'
+                                                                    }`} title={step.label}>
+                                                                        <i className={`fa-solid ${step.icon}`}></i>
+                                                                    </div>
+                                                                    <span className={`text-[8px] font-bold mt-1 ${isAct ? 'text-blue-600 font-extrabold' : 'text-slate-400'}`}>{step.label}</span>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className="flex gap-2 mt-4 pt-3 border-t border-slate-50 justify-end">
+                                                    {doc.status === 'DRAFT' ? (
+                                                        <button
+                                                            onClick={() => {
+                                                                loadFromLibrary({
+                                                                    id: doc.id,
+                                                                    name: `${docLabel} Draft`,
+                                                                    type: doc.agreement_type,
+                                                                    data: doc.form_data
+                                                                });
+                                                            }}
+                                                            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition shadow-sm border-0 cursor-pointer"
+                                                        >
+                                                            Resume Draft
+                                                        </button>
+                                                    ) : (
+                                                        <a href={`${API_BASE}/api/customer/documents/${doc.id}/download`} target="_blank" className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 text-slate-600 text-xs font-bold rounded-lg transition cursor-pointer inline-flex items-center gap-1 no-underline">
                                                             <i className="fa-solid fa-download"></i> PDF
                                                         </a>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             )}
                         </div>
@@ -6718,12 +7008,34 @@
                                                                 <div className="min-w-0 flex-1">
                                                                     <div className="font-bold text-sm text-slate-800 truncate">{doc.agreement_type}</div>
                                                                     <div className="flex items-center gap-2 mt-0.5">
-                                                                        <span className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${
-                                                                            doc.status === 'SIGNED' || doc.status === 'COMPLETED' ? 'bg-emerald-100 text-emerald-800' :
-                                                                            doc.status === 'PAID' ? 'bg-purple-100 text-purple-800' : 'bg-amber-100 text-amber-800'
-                                                                        }`}>{doc.status}</span>
-                                                                        <span className="text-[10px] text-slate-400">{new Date(doc.created_at).toLocaleDateString('en-IN')}</span>
-                                                                    </div>
+                                                                            {(() => {
+                                                                                const currentStep = doc.status === 'DRAFT' ? 1 : 
+                                                                                                    doc.status === 'PAID' ? (doc.leegality_sign_url ? 3 : 2) : 
+                                                                                                    doc.status === 'SIGNED' ? 4 : 
+                                                                                                    doc.status === 'COMPLETED' ? 5 : 1;
+                                                                                const stepLabels = ['Drafting', 'Paid', 'Signing', 'e-Signed', 'Completed'];
+                                                                                const stepColor = doc.status === 'COMPLETED' ? 'bg-emerald-500' : 'bg-blue-500';
+                                                                                return (
+                                                                                    <div className="flex flex-col w-full gap-1.5">
+                                                                                        <div className="flex items-center gap-2">
+                                                                                            <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${
+                                                                                                doc.status === 'SIGNED' || doc.status === 'COMPLETED' ? 'bg-emerald-100 text-emerald-800' :
+                                                                                                doc.status === 'PAID' ? 'bg-purple-100 text-purple-800' :
+                                                                                                doc.status === 'DRAFT' ? 'bg-violet-100 text-violet-800' : 'bg-amber-100 text-amber-800'
+                                                                                            }`}>{stepLabels[currentStep - 1]}</span>
+                                                                                            <span className="text-[10px] text-slate-400">{new Date(doc.created_at).toLocaleDateString('en-IN')}</span>
+                                                                                        </div>
+                                                                                        {doc.status !== 'DRAFT' && (
+                                                                                            <div className="w-full">
+                                                                                                <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                                                                                                    <div className={`h-full ${stepColor} transition-all duration-500`} style={{ width: `${(currentStep / 5) * 100}%` }}></div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        )}
+                                                                                    </div>
+                                                                                );
+                                                                            })()}
+                                                                        </div>
                                                                 </div>
                                                             </div>
                                                             <div className="flex items-center gap-1.5 shrink-0 ml-3">
@@ -7196,7 +7508,11 @@
                                         React.createElement('button', {
                                             onClick: () => setShowDraftLoadModal(true),
                                             className: 'shrink-0 px-3 py-1.5 bg-slate-100 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 text-slate-600 hover:text-emerald-600 text-[10px] font-bold rounded-lg transition flex items-center gap-1.5 cursor-pointer'
-                                        }, React.createElement('i', { className: 'fa-solid fa-folder-open' }), 'Load')
+                                        }, React.createElement('i', { className: 'fa-solid fa-folder-open' }), 'Load'),
+                                        React.createElement('button', {
+                                            onClick: handleShareDraft,
+                                            className: 'shrink-0 px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 text-slate-600 hover:text-indigo-600 text-[10px] font-bold rounded-lg transition flex items-center gap-1.5 cursor-pointer'
+                                        }, React.createElement('i', { className: 'fa-solid fa-share-nodes' }), 'Share')
                                     )
                                 });
                             })()}
@@ -8599,15 +8915,9 @@
                                         const phone = (details.phone || sessionUser.phone || '').replace(/\D/g, '').slice(-10);
                                         const email = details.email || sessionUser.email || '';
                                         
-                                        if (name && phone.length === 10 && email) {
-                                            // Express Checkout
-                                            addToast("Initiating Express Checkout...", 'info');
-                                            handleOnlinePayment({ name, phone, email });
-                                        } else {
-                                            // Fallback to regular checkout modal
-                                            setCheckoutDetails({ name, phone, email });
-                                            setShowCheckoutModal(true);
-                                        }
+                                        const cleanPhone = phone || '9999999999';
+                                        setCheckoutDetails({ name, phone: cleanPhone, email });
+                                        setShowCheckoutModal(true);
                                     }
                                 }}>
                                     <i className="fa-solid fa-file-pdf"></i> {isOfficeMode ? 'Save & Print (Offline)' : 'Pay & Download Agreement'}
@@ -12131,6 +12441,63 @@
                             isOpen={showLogin}
                             onClose={() => setShowLogin(false)}
                             onLogin={(u) => { setUser(u); if (u.role === 'admin' || u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
+                        />
+
+                        {/* Share Draft Modal */}
+                        <ShareDraftModal
+                            isOpen={showShareDraftModal}
+                            onClose={() => setShowShareDraftModal(false)}
+                            shareUrl={shareDraftToken}
+                        />
+
+                        {/* Sync Conflict Resolution Modal */}
+                        <SyncConflictModal
+                            conflict={syncConflictDoc}
+                            onClose={() => setSyncConflictDoc(null)}
+                            onResolveLocal={async () => {
+                                if (!syncConflictDoc) return;
+                                const docType = syncConflictDoc.type;
+                                const data = syncConflictDoc.localData;
+                                addToast("Syncing local draft to cloud...", 'info');
+                                try {
+                                    await fetch(`${API_BASE}/api/drafts`, {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ 
+                                            doc_type: docType, 
+                                            form_data: data, 
+                                            phone: user?.phone || '',
+                                            email: user?.email || ''
+                                        })
+                                    });
+                                    addToast("Synced local draft to cloud!", 'success');
+                                    const nowStr = new Date().toISOString();
+                                    const updatedTimes = { ...localUpdatedTimes, [docType]: nowStr };
+                                    setLocalUpdatedTimes(updatedTimes);
+                                    localStorage.setItem('madhav_local_updated_times', JSON.stringify(updatedTimes));
+                                } catch(e) { console.error("Cloud draft sync failed:", e); }
+                                setSyncConflictDoc(null);
+                            }}
+                            onResolveCloud={() => {
+                                if (!syncConflictDoc) return;
+                                const docType = syncConflictDoc.type;
+                                const data = syncConflictDoc.cloudData;
+                                addToast("Restoring cloud draft locally...", 'info');
+                                if (docType === 'RENT') setRentData(data);
+                                else if (docType === 'ATS') setAtsData(data);
+                                else if (docType === 'MUTATION') setMutationData(data);
+                                else if (docType === 'GNIDA') setGnidaData(data);
+                                else if (docType === 'TM48') setTm48Data(data);
+                                else if (docType === 'TM_APP') setTmAppData(data);
+                                else if (docType === 'GNIDA_REGISTRY') setGnidaRegistryData(data);
+                                else if (docType === 'GNIDA_PTM') setGnidaPtmData(data);
+                                else setRegData(data);
+                                
+                                const updatedTimes = { ...localUpdatedTimes, [docType]: syncConflictDoc.cloudTime };
+                                setLocalUpdatedTimes(updatedTimes);
+                                localStorage.setItem('madhav_local_updated_times', JSON.stringify(updatedTimes));
+                                setSyncConflictDoc(null);
+                            }}
                         />
 
                         {/* Share Modal */}

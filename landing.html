@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google" content="notranslate">
-<title>Instadeed — Draft, Stamp & e-Sign Legal Documents in Minutes</title>
-<meta name="description" content="Exclusively designed for Gautam Buddh Nagar (Noida, Greater Noida & Yamuna Expressway). Draft rent agreements, authority applications, and business documents online.">
+<title>Instadeed — Legal Drafting, e-Stamp & e-Sign Platform for G.B. Nagar</title>
+<meta name="description" content="Gautam Buddh Nagar's trusted platform for legal documents. Draft rent agreements, GNIDA mutations, NOIDA transfers — with e-stamp & e-sign.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -14,11 +14,13 @@
 <style>
 :root {
   --navy: #0B1124;
-  --navy-light: #1A2340;
-  --navy-mid: #2A3A5C;
+  --navy-2: #111B33;
+  --navy-3: #1A2A4A;
+  --navy-light: #2A3A5C;
   --blue: #2952CC;
   --blue-hover: #1D3F9E;
   --blue-light: #EEF2FF;
+  --blue-glow: rgba(41,82,204,0.25);
   --cyan: #06B6D4;
   --teal: #0D9488;
   --emerald: #10B981;
@@ -42,891 +44,746 @@
   --radius-md: 10px;
   --radius-lg: 14px;
   --radius-xl: 20px;
+  --radius-2xl: 24px;
   --radius-full: 9999px;
 }
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top:80px; }
 body {
-  font-family: var(--font-body);
-  background: var(--white);
-  color: var(--gray-900);
-  line-height: 1.6;
-  overflow-x: hidden;
+  font-family: var(--font-body); background: var(--white);
+  color: var(--gray-900); line-height:1.6; overflow-x:hidden;
+  -webkit-font-smoothing: antialiased;
 }
-a { text-decoration: none; color: inherit; }
-button { font-family: inherit; cursor: pointer; border: none; background: none; }
-img { display: block; max-width: 100%; }
+a { text-decoration:none; color:inherit; }
+button { font-family:inherit; cursor:pointer; border:none; background:none; }
+img { display:block; max-width:100%; }
 
-/* ═══ HEADER / NAV ═══ */
+/* ═══════ HEADER ═══════ */
 .top-announce {
-  background: linear-gradient(90deg, #0B1124 0%, #1A2340 50%, #0B1124 100%);
-  padding: 0.55rem 1.5rem;
-  text-align: center;
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: rgba(255,255,255,0.85);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  position: relative;
-  z-index: 310;
+  background: linear-gradient(90deg, #0B1124, #1A2A4A, #0B1124);
+  padding: 0.5rem 1.5rem; text-align:center;
+  font-size:0.75rem; font-weight:500; color:rgba(255,255,255,0.6);
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  position:relative; z-index:310;
+  letter-spacing:0.02em;
 }
-.top-announce strong { color: #fff; }
+.top-announce strong { color:#fff; font-weight:600; }
 
 .nav {
-  position: sticky;
-  top: 0;
-  z-index: 300;
+  position:sticky; top:0; z-index:300;
   background: var(--navy);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom:1px solid rgba(255,255,255,0.05);
   transition: all 0.2s;
 }
 .nav-inner {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0.9rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  max-width:1280px; margin:0 auto;
+  padding:0 1.5rem; height:64px;
+  display:flex; align-items:center; justify-content:space-between;
 }
-.logo-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  flex-shrink: 0;
-}
+.logo-wrap { display:flex; align-items:center; gap:0.6rem; flex-shrink:0; }
 .logo-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
+  width:32px; height:32px; border-radius:8px;
   background: linear-gradient(135deg, var(--blue), #4F7BFF);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 12px rgba(41,82,204,0.35);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 2px 10px rgba(41,82,204,0.3);
 }
-.logo-mark svg { width: 18px; height: 18px; fill: white; }
+.logo-mark svg { width:17px; height:17px; fill:white; }
 .logo-text {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.25rem;
-  color: #fff;
-  letter-spacing: -0.02em;
+  font-family:var(--font-display); font-weight:800;
+  font-size:1.2rem; color:#fff; letter-spacing:-0.02em;
 }
-.logo-text span { color: #4F7BFF; }
+.logo-text span { color:#4F7BFF; }
 
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 1.75rem;
-  list-style: none;
-}
+.nav-links { display:flex; align-items:center; gap:0.25rem; list-style:none; height:100%; }
+.nav-item { position:relative; height:100%; display:flex; align-items:center; }
 .nav-link {
-  color: rgba(255,255,255,0.6);
-  font-size: 0.875rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  transition: color 0.2s;
-  cursor: pointer;
-  padding: 0.25rem 0;
-  white-space: nowrap;
+  display:flex; align-items:center; gap:0.35rem;
+  padding:0 1rem; height:100%;
+  color:rgba(255,255,255,0.55); font-size:0.85rem; font-weight:500;
+  transition:color 0.15s; white-space:nowrap;
+  cursor:pointer;
 }
-.nav-link:hover { color: #fff; }
-.nav-link i.chevron { font-size: 0.65rem; transition: transform 0.2s; }
-.nav-link:hover i.chevron { transform: rotate(180deg); }
+.nav-link:hover { color:#fff; }
+.nav-link i.chevron { font-size:0.6rem; transition:transform 0.15s; }
+.nav-link:hover i.chevron { transform:rotate(180deg); }
 
+/* Mega Dropdown */
 .nav-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(8px);
-  background: #fff;
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-md);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-  padding: 0.5rem;
-  display: none;
-  min-width: 220px;
-  z-index: 100;
+  position:absolute; top:100%; left:50%;
+  transform:translateX(-50%) translateY(8px);
+  background:#fff; border:1px solid var(--gray-200);
+  border-radius:var(--radius-lg); min-width:240px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.12);
+  padding:0.5rem; display:none; z-index:100;
+  opacity:0; transition:all 0.15s;
 }
-.nav-item { position: relative; }
-.nav-item:hover .nav-dropdown { display: block; }
+.nav-item:hover .nav-dropdown { display:block; opacity:1; }
 .dd-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--gray-700);
-  transition: all 0.15s;
-  cursor: pointer;
-  white-space: nowrap;
+  display:flex; align-items:center; gap:0.75rem;
+  padding:0.55rem 0.75rem; border-radius:var(--radius-sm);
+  font-size:0.85rem; font-weight:500; color:var(--gray-700);
+  transition:all 0.12s; cursor:pointer;
 }
-.dd-item:hover { background: var(--blue-light); color: var(--blue); }
-.dd-icon { width: 20px; color: var(--blue); text-align: center; font-size: 0.85rem; }
+.dd-item:hover { background:var(--blue-light); color:var(--blue); }
+.dd-item .dd-icon {
+  width:32px; height:32px; border-radius:var(--radius-sm);
+  background:var(--blue-light); color:var(--blue);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.85rem; flex-shrink:0;
+}
+.dd-item .dd-text { display:flex; flex-direction:column; }
+.dd-item .dd-title { font-weight:600; font-size:0.85rem; color:var(--gray-800); }
+.dd-item .dd-desc { font-size:0.7rem; color:var(--gray-400); margin-top:0.1rem; }
 
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-shrink: 0;
+/* Country selector */
+.country-selector {
+  position:relative; display:flex; align-items:center; height:100%;
+  cursor:pointer; padding:0 0.6rem;
 }
-.btn-nav {
-  background: transparent;
-  color: rgba(255,255,255,0.7);
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 0.5rem 0.75rem;
-  border-radius: var(--radius-sm);
-  transition: all 0.15s;
+.country-selector > span {
+  display:flex; align-items:center; gap:0.35rem;
+  color:rgba(255,255,255,0.5); font-size:0.8rem; font-weight:500;
+  transition:color 0.15s;
 }
-.btn-nav:hover { color: #fff; }
-.btn-nav-primary {
-  background: var(--blue);
-  color: #fff;
-  font-size: 0.85rem;
-  font-weight: 700;
-  padding: 0.55rem 1.15rem;
-  border-radius: var(--radius-md);
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
+.country-selector:hover > span { color:#fff; }
+.country-selector i.chevron { font-size:0.55rem; }
+.country-dropdown {
+  position:absolute; top:100%; right:0;
+  background:#fff; border:1px solid var(--gray-200);
+  border-radius:var(--radius-lg); min-width:200px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.12);
+  padding:0.5rem; display:none; z-index:100;
 }
-.btn-nav-primary:hover { background: var(--blue-hover); transform: translateY(-1px); box-shadow: 0 4px 15px rgba(41,82,204,0.3); }
+.country-selector:hover .country-dropdown { display:block; }
+.country-item {
+  display:flex; align-items:center; gap:0.6rem;
+  padding:0.45rem 0.7rem; border-radius:var(--radius-sm);
+  font-size:0.8rem; font-weight:500; color:var(--gray-600);
+  transition:all 0.12s; cursor:pointer;
+}
+.country-item:hover { background:var(--gray-50); color:var(--gray-800); }
+.country-item .flag { font-size:1.1rem; }
+
+.nav-right { display:flex; align-items:center; gap:0.5rem; flex-shrink:0; }
+.btn-nav-ghost {
+  background:transparent; color:rgba(255,255,255,0.6);
+  font-size:0.85rem; font-weight:600; padding:0.5rem 0.85rem;
+  border-radius:var(--radius-sm); transition:all 0.15s;
+}
+.btn-nav-ghost:hover { color:#fff; }
+.btn-nav-cta {
+  display:inline-flex; align-items:center; gap:0.45rem;
+  background:var(--blue); color:#fff;
+  font-size:0.85rem; font-weight:700;
+  padding:0.55rem 1.1rem; border-radius:var(--radius-md);
+  transition:all 0.2s;
+}
+.btn-nav-cta:hover { background:var(--blue-hover); transform:translateY(-1px); box-shadow:0 4px 15px rgba(41,82,204,0.3); }
+.btn-nav-cta svg { width:14px; height:14px; fill:currentColor; }
 
 /* Mobile */
-.mobile-toggle { display: none; color: #fff; font-size: 1.25rem; cursor: pointer; padding: 0.25rem; }
-@media (max-width: 900px) {
-  .nav-links, .nav-right .btn-nav, .nav-right .nav-phone { display: none; }
-  .mobile-toggle { display: block; }
+.mobile-toggle { display:none; color:#fff; font-size:1.2rem; cursor:pointer; padding:0.25rem; }
+@media (max-width:900px) {
+  .nav-links, .country-selector, .btn-nav-ghost { display:none; }
+  .mobile-toggle { display:block; }
   .nav.mobile-open .nav-links {
-    display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0;
-    background: var(--navy); padding: 1rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.06);
-    gap: 0.75rem; align-items: stretch;
+    display:flex; flex-direction:column; position:absolute; top:100%; left:0; right:0;
+    background:var(--navy); padding:1rem 1.5rem; gap:0.25rem;
+    align-items:stretch; height:auto;
   }
-  .nav.mobile-open .nav-links .nav-item .nav-dropdown { display: none; }
-  .nav.mobile-open .nav-right .btn-nav,
-  .nav.mobile-open .nav-right .nav-phone { display: inline-flex; }
-  .nav.mobile-open .nav-right { flex-wrap: wrap; }
+  .nav.mobile-open .nav-links .nav-item .nav-dropdown { display:none; }
+  .nav.mobile-open .country-selector { display:flex; padding:0.5rem 0; }
 }
 
-/* ═══ HERO ═══ */
+/* ═══════ HERO ═══════ */
 .hero {
   background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
-  padding: 5rem 1.5rem 4rem;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+  padding: 4rem 1.5rem 5rem;
+  position:relative; overflow:hidden;
 }
 .hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(var(--gray-200) 1px, transparent 1px), linear-gradient(90deg, var(--gray-200) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse at center, black, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black, transparent 70%);
-  opacity: 0.4;
-  pointer-events: none;
+  content:''; position:absolute; inset:0;
+  background-image:
+    linear-gradient(var(--gray-200) 1px, transparent 1px),
+    linear-gradient(90deg, var(--gray-200) 1px, transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse at 40% 50%, black, transparent 65%);
+  -webkit-mask-image:radial-gradient(ellipse at 40% 50%, black, transparent 65%);
+  opacity:0.35; pointer-events:none;
 }
-.hero-inner { max-width: 800px; margin: 0 auto; position: relative; z-index: 10; }
+.hero-inner {
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:3rem; align-items:center; position:relative; z-index:10;
+}
+.hero-left { text-align:left; }
 .hero-rating {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #fff;
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-full);
-  padding: 0.35rem 1rem 0.35rem 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--gray-600);
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  display:inline-flex; align-items:center; gap:0.4rem;
+  background:#fff; border:1px solid var(--gray-200);
+  border-radius:var(--radius-full); padding:0.3rem 1rem 0.3rem 0.5rem;
+  font-size:0.8rem; font-weight:600; color:var(--gray-500);
+  margin-bottom:1.5rem; box-shadow:0 2px 10px rgba(0,0,0,0.03);
 }
-.hero-rating .stars { color: #F59E0B; font-size: 0.75rem; letter-spacing: 0.05em; }
-.hero-rating strong { color: var(--gray-900); }
-
+.hero-rating strong { color:var(--gray-900); margin-right:0.15rem; }
+.hero-rating .stars { color:var(--amber); display:inline-flex; }
+.hero-rating .stars i { font-size:0.65rem; margin-right:0.05rem; }
 .hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5.5vw, 3.6rem);
-  font-weight: 900;
-  line-height: 1.1;
-  color: var(--gray-900);
-  margin-bottom: 1.25rem;
-  letter-spacing: -0.03em;
+  font-family:var(--font-display); font-size:clamp(2.2rem, 4vw, 3.2rem);
+  font-weight:900; line-height:1.1; color:var(--gray-900);
+  margin-bottom:1rem; letter-spacing:-0.03em;
 }
 .hero-title .grad {
-  background: linear-gradient(135deg, #2952CC 0%, #06B6D4 50%, #0D9488 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  background:linear-gradient(135deg, #2952CC 0%, #06B6D4 50%, #0D9488 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
 }
 .hero-sub {
-  font-size: 1.1rem;
-  color: var(--gray-500);
-  margin-bottom: 2.5rem;
-  line-height: 1.6;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  font-size:1rem; color:var(--gray-500);
+  margin-bottom:2rem; line-height:1.7; max-width:480px;
 }
+.hero-actions { display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap; }
+.btn-hero {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  background:var(--blue); color:#fff;
+  font-size:0.9rem; font-weight:700;
+  padding:0.75rem 1.5rem; border-radius:var(--radius-md);
+  transition:all 0.2s;
+}
+.btn-hero:hover { background:var(--blue-hover); transform:translateY(-1px); box-shadow:0 6px 20px rgba(41,82,204,0.3); }
+.btn-hero svg { width:15px; height:15px; fill:currentColor; }
+.btn-hero-ghost {
+  display:inline-flex; align-items:center; gap:0.4rem;
+  background:transparent; color:var(--gray-600);
+  font-size:0.85rem; font-weight:600;
+  padding:0.75rem 1.25rem; border-radius:var(--radius-md);
+  border:1px solid var(--gray-200); transition:all 0.15s;
+}
+.btn-hero-ghost:hover { border-color:var(--gray-300); color:var(--gray-800); }
 
-/* Search */
-.search-box {
-  max-width: 560px;
-  margin: 0 auto 2.5rem;
-  position: relative;
+.hero-right {
+  display:flex; justify-content:center;
+  position:relative;
 }
-.search-inner {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-lg);
-  padding: 0.35rem 0.35rem 0.35rem 1.25rem;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-  transition: all 0.2s;
+.hero-mockup-card {
+  background:#fff; border:1px solid var(--gray-200);
+  border-radius:var(--radius-2xl); padding:1.5rem;
+  box-shadow:0 20px 50px rgba(0,0,0,0.06);
+  width:100%; max-width:460px;
 }
-.search-inner:focus-within { border-color: var(--blue); box-shadow: 0 4px 24px rgba(41,82,204,0.1); }
-.search-inner i { color: var(--gray-400); font-size: 1rem; margin-right: 0.75rem; }
-.search-inner input {
-  border: none; outline: none; width: 100%; font-size: 0.95rem;
-  color: var(--gray-900); background: transparent; font-family: var(--font-body);
+.hero-mockup-header {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:1.25rem;
 }
-.search-inner input::placeholder { color: var(--gray-400); }
-.search-inner button {
-  background: var(--blue); color: #fff; border: none;
-  padding: 0.6rem 1.25rem; border-radius: var(--radius-md);
-  font-weight: 700; font-size: 0.85rem; cursor: pointer;
-  transition: all 0.2s; white-space: nowrap;
+.hero-mockup-tabs { display:flex; gap:0.25rem; }
+.hero-mockup-tab {
+  padding:0.3rem 0.65rem; border-radius:var(--radius-sm);
+  font-size:0.7rem; font-weight:600; color:var(--gray-400);
+  background:var(--gray-100); cursor:pointer; transition:all 0.12s;
 }
-.search-inner button:hover { background: var(--blue-hover); }
-.autocomplete-dropdown {
-  position: absolute; top: 100%; left: 0; right: 0;
-  background: #fff; border: 1px solid var(--gray-200);
-  border-radius: var(--radius-md); box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-  margin-top: 0.4rem; z-index: 50; max-height: 300px; overflow-y: auto;
-  display: none; padding: 0.4rem; text-align: left;
+.hero-mockup-tab.active { background:var(--blue); color:#fff; }
+.hero-mockup-time { font-size:0.7rem; color:var(--gray-400); display:flex; align-items:center; gap:0.3rem; }
+.hero-mockup-body {
+  background:var(--gray-50); border:1px solid var(--gray-200);
+  border-radius:var(--radius-lg); padding:1.25rem;
 }
-.autocomplete-dropdown.show { display: block; }
-.auto-item {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0.55rem 0.75rem; border-radius: var(--radius-sm);
-  cursor: pointer; transition: all 0.15s;
+.hero-mockup-doc {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0.75rem 0; border-bottom:1px solid var(--gray-200);
 }
-.auto-item:hover { background: var(--blue-light); }
-.auto-item-left { display: flex; align-items: center; gap: 0.75rem; }
-.auto-item-left i { color: var(--blue); font-size: 0.9rem; width: 20px; }
-.auto-item-title { font-size: 0.875rem; font-weight: 500; color: var(--gray-800); }
-.auto-item-meta { font-size: 0.75rem; color: var(--gray-400); }
-
-/* Hero mockup */
-.hero-mockup {
-  max-width: 600px;
-  margin: 0 auto;
-  background: #fff;
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-xl);
-  padding: 1rem 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+.hero-mockup-doc:last-child { border-bottom:none; }
+.hero-mockup-doc-left { display:flex; align-items:center; gap:0.75rem; }
+.hero-mockup-doc-icon {
+  width:36px; height:36px; border-radius:var(--radius-sm);
+  background:var(--blue-light); color:var(--blue);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.9rem;
 }
-.hero-mockup-left { display: flex; align-items: center; gap: 0.75rem; text-align: left; }
-.hero-mockup-icon {
-  width: 40px; height: 40px; border-radius: var(--radius-md);
-  background: var(--blue-light); color: var(--blue);
-  display: flex; align-items: center; justify-content: center; font-size: 1rem;
-  flex-shrink: 0; transition: all 0.3s;
-}
-.hero-mockup-info h4 { font-size: 0.9rem; font-weight: 700; color: var(--gray-800); transition: all 0.3s; }
-.hero-mockup-info p { font-size: 0.75rem; color: var(--gray-400); transition: all 0.3s; }
+.hero-mockup-doc-info h4 { font-size:0.85rem; font-weight:700; color:var(--gray-800); }
+.hero-mockup-doc-info p { font-size:0.7rem; color:var(--gray-400); }
 .hero-mockup-badge {
-  font-size: 0.7rem; font-weight: 700; color: var(--emerald);
-  background: #ECFDF5; padding: 0.25rem 0.6rem; border-radius: var(--radius-sm);
-  display: flex; align-items: center; gap: 0.3rem; transition: all 0.3s;
+  font-size:0.65rem; font-weight:700; padding:0.2rem 0.55rem;
+  border-radius:var(--radius-full); background:#ECFDF5; color:var(--emerald);
+  display:flex; align-items:center; gap:0.25rem;
 }
 
-/* ═══ STATS BAR ═══ */
-.stats-bar {
-  background: var(--navy);
-  padding: 2.75rem 1.5rem;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+@media (max-width:850px) {
+  .hero-inner { grid-template-columns:1fr; text-align:center; }
+  .hero-left { text-align:center; }
+  .hero-sub { margin-left:auto; margin-right:auto; }
+  .hero-actions { justify-content:center; }
+  .hero-right { order:-1; }
+  .hero-mockup-card { max-width:100%; }
+}
+
+/* ═══════ TRUST BAR ═══════ */
+.trust-bar {
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--gray-50) 100%);
+  padding: 1.5rem 1.5rem 2.5rem;
+  border-bottom:1px solid var(--gray-200);
+}
+.trust-bar-inner { max-width:1200px; margin:0 auto; }
+.trust-bar-label {
+  text-align:center; font-size:0.75rem; font-weight:600;
+  color:var(--gray-400); text-transform:uppercase; letter-spacing:0.08em;
+  margin-bottom:1.5rem;
+}
+.trust-bar-logos {
+  display:flex; align-items:center; justify-content:center;
+  gap:2.5rem; flex-wrap:wrap;
+}
+.trust-logo {
+  height:28px; opacity:0.35; transition:opacity 0.2s;
+  font-size:0.75rem; font-weight:700; color:var(--gray-400);
+  white-space:nowrap; letter-spacing:0.02em;
+}
+.trust-logo:hover { opacity:0.6; }
+
+/* ═══════ STATS ═══════ */
+.stats-section {
+  padding: 3.5rem 1.5rem;
+  background: var(--white);
+  border-bottom:1px solid var(--gray-200);
 }
 .stats-grid {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  text-align: center;
+  max-width:1100px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:2rem; text-align:center;
 }
+.stat-item {}
 .stat-num {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 900;
-  color: #fff;
-  line-height: 1.2;
+  font-family:var(--font-display);
+  font-size:2rem; font-weight:900;
+  color:var(--gray-900); line-height:1.2;
+  display:flex; align-items:center; justify-content:center;
+  gap:0.5rem;
 }
+.stat-num i { font-size:1rem; color:var(--blue); }
 .stat-label {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: rgba(255,255,255,0.5);
-  margin-top: 0.2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size:0.8rem; font-weight:500;
+  color:var(--gray-400); margin-top:0.2rem;
 }
-@media (max-width: 700px) {
-  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-}
+@media (max-width:700px) { .stats-grid { grid-template-columns:repeat(2,1fr); } }
 
-/* ═══ SECTIONS COMMON ═══ */
-section { position: relative; }
-.wrapper { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
-.sp { padding: 5rem 0; }
-.sec-head { text-align: center; margin-bottom: 3.5rem; }
+/* ═══════ SECTIONS COMMON ═══════ */
+.wrapper { max-width:1200px; margin:0 auto; padding:0 1.5rem; }
+.sp { padding:5rem 0; }
+.sec-head { text-align:center; margin-bottom:3rem; }
 .sec-label {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--blue);
-  background: var(--blue-light); border: 1px solid rgba(41,82,204,0.15);
-  border-radius: var(--radius-full); padding: 0.3rem 0.9rem; margin-bottom: 1rem;
+  display:inline-flex; align-items:center; gap:0.4rem;
+  font-size:0.7rem; font-weight:800; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--blue);
+  background:var(--blue-light); border:1px solid rgba(41,82,204,0.12);
+  border-radius:var(--radius-full); padding:0.3rem 0.85rem; margin-bottom:0.75rem;
 }
 .sec-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3.2vw, 2.4rem);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  color: var(--gray-900);
-  line-height: 1.2;
-  margin-bottom: 0.75rem;
+  font-family:var(--font-display);
+  font-size:clamp(1.6rem, 3vw, 2.2rem);
+  font-weight:900; letter-spacing:-0.03em;
+  color:var(--gray-900); line-height:1.2; margin-bottom:0.75rem;
 }
-.sec-sub {
-  color: var(--gray-500);
-  font-size: 1.05rem;
-  max-width: 550px;
-  margin: 0 auto;
-  line-height: 1.7;
-}
+.sec-title em { font-style:normal; background:linear-gradient(135deg,var(--blue),var(--cyan)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.sec-sub { color:var(--gray-400); font-size:1rem; max-width:550px; margin:0 auto; line-height:1.7; }
 
-/* ═══ FEATURES ═══ */
-.features-section { background: var(--gray-50); }
+/* ═══════ FEATURES ═══════ */
+.features-section { background:var(--gray-50); border-bottom:1px solid var(--gray-200); }
 .features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
 }
 .feature-card {
-  background: #fff;
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-xl);
-  padding: 2.25rem;
-  transition: all 0.25s;
-  text-align: left;
+  background:#fff; border:1px solid var(--gray-200);
+  border-radius:var(--radius-xl); padding:2.25rem 2rem;
+  transition:all 0.25s; text-align:left;
 }
 .feature-card:hover {
-  box-shadow: 0 12px 30px rgba(0,0,0,0.04);
-  transform: translateY(-2px);
-  border-color: var(--blue);
+  box-shadow:0 15px 35px rgba(0,0,0,0.04);
+  transform:translateY(-3px); border-color:var(--blue);
 }
 .feat-icon {
-  width: 48px; height: 48px; border-radius: var(--radius-md);
-  background: var(--blue-light); color: var(--blue);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.15rem; margin-bottom: 1.25rem;
+  width:44px; height:44px; border-radius:var(--radius-md);
+  background:var(--blue-light); color:var(--blue);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem; margin-bottom:1.25rem;
 }
 .feature-card h3 {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--gray-900);
-  margin-bottom: 0.5rem;
+  font-family:var(--font-display); font-size:1.05rem;
+  font-weight:800; color:var(--gray-900); margin-bottom:0.5rem;
 }
-.feature-card p {
-  font-size: 0.875rem;
-  color: var(--gray-500);
-  line-height: 1.6;
-  margin-bottom: 1.25rem;
+.feature-card > p {
+  font-size:0.85rem; color:var(--gray-400);
+  line-height:1.65; margin-bottom:1.25rem;
 }
-.feat-dots {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+.feat-list { list-style:none; display:flex; flex-direction:column; gap:0.6rem; margin-bottom:1.5rem; }
+.feat-list li {
+  font-size:0.8rem; color:var(--gray-600);
+  display:flex; align-items:flex-start; gap:0.5rem;
 }
-.feat-dots li {
-  font-size: 0.8rem;
-  color: var(--gray-600);
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-.feat-dots li i { color: var(--emerald); font-size: 0.65rem; margin-top: 0.3rem; }
+.feat-list li i { color:var(--emerald); font-size:0.6rem; margin-top:0.35rem; flex-shrink:0; }
 .feat-link {
-  font-size: 0.85rem; font-weight: 700; color: var(--blue);
-  display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;
-  transition: all 0.15s;
+  font-size:0.85rem; font-weight:700; color:var(--blue);
+  display:inline-flex; align-items:center; gap:0.35rem;
+  transition:all 0.15s; cursor:pointer;
 }
-.feat-link:hover { gap: 0.6rem; color: var(--blue-hover); }
+.feat-link:hover { gap:0.6rem; color:var(--blue-hover); }
+.feat-link svg { width:14px; height:14px; fill:currentColor; }
 
-@media (max-width: 850px) {
-  .features-grid { grid-template-columns: 1fr; }
-}
+@media (max-width:850px) { .features-grid { grid-template-columns:1fr; } }
 
-/* ═══ DOCUMENTS GRID ═══ */
-.doc-section { background: #fff; }
-.doc-tabs {
-  display: flex; justify-content: center; gap: 0.5rem;
-  margin-bottom: 2.5rem; border-bottom: 1px solid var(--gray-200);
-  padding-bottom: 0.75rem; flex-wrap: wrap;
+/* ═══════ HOW IT WORKS ═══════ */
+.how-section { background:var(--white); border-bottom:1px solid var(--gray-200); }
+.how-grid {
+  display:grid; grid-template-columns:1.2fr 0.8fr;
+  gap:3rem; align-items:center;
 }
-.doc-tab {
-  background: none; border: none; padding: 0.5rem 1.25rem;
-  font-size: 0.9rem; font-weight: 600; color: var(--gray-400);
-  cursor: pointer; position: relative; transition: color 0.2s;
-  font-family: var(--font-body);
+.how-steps { display:flex; flex-direction:column; gap:1rem; }
+.how-step {
+  background:#fff; border:1px solid var(--gray-200);
+  border-radius:var(--radius-lg); padding:1.15rem 1.35rem;
+  display:flex; align-items:flex-start; gap:1rem;
+  cursor:pointer; transition:all 0.2s; text-align:left;
 }
-.doc-tab:hover { color: var(--gray-700); }
-.doc-tab.active { color: var(--blue); }
-.doc-tab.active::after {
-  content: ''; position: absolute; bottom: -0.875rem; left: 0; right: 0;
-  height: 2px; background: var(--blue); border-radius: var(--radius-full);
+.how-step:hover { border-color:var(--blue); transform:translateX(4px); }
+.how-step.active { border-color:var(--blue); background:var(--blue-light); }
+.how-num {
+  width:28px; height:28px; border-radius:50%;
+  background:var(--blue-light); color:var(--blue);
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:0.8rem; flex-shrink:0;
 }
-.doc-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.25rem;
-}
-.doc-card {
-  background: #fff;
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  cursor: pointer;
-  transition: all 0.25s;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-}
-.doc-card:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(0,0,0,0.04); }
-.doc-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.doc-icon {
-  width: 42px; height: 42px; border-radius: var(--radius-md);
-  display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
-  transition: transform 0.2s;
-}
-.doc-card:hover .doc-icon { transform: scale(1.05); }
-.doc-cat-badge {
-  font-size: 0.65rem; font-weight: 700; color: var(--gray-500);
-  background: var(--gray-100); padding: 0.2rem 0.5rem; border-radius: var(--radius-sm);
-}
-.doc-title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--gray-900); margin-bottom: 0.4rem; }
-.doc-desc { font-size: 0.8rem; color: var(--gray-400); line-height: 1.5; margin-bottom: 1rem; flex-grow: 1; }
-.doc-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--gray-100); padding-top: 0.85rem; }
-.doc-price { font-weight: 800; font-size: 1.1rem; color: var(--gray-900); font-family: var(--font-display); }
-.doc-price span { font-size: 0.65rem; font-weight: 600; color: var(--gray-400); display: block; }
-.doc-btn {
-  border: none; padding: 0.45rem 0.9rem; border-radius: var(--radius-full);
-  font-weight: 700; font-size: 0.75rem; cursor: pointer;
-  display: flex; align-items: center; gap: 0.3rem; transition: all 0.2s;
-}
-.doc-btn i { transition: transform 0.2s; }
-.doc-card:hover .doc-btn i { transform: translateX(3px); }
+.how-step.active .how-num { background:var(--blue); color:#fff; }
+.how-info h4 { font-weight:700; font-size:0.9rem; color:var(--gray-800); margin-bottom:0.15rem; }
+.how-info p { font-size:0.8rem; color:var(--gray-400); line-height:1.4; }
 
-/* Category colors */
-.cat-gnida .doc-icon { background: #FFFBEB; color: #D97706; }
-.cat-gnida:hover { border-color: #F59E0B; }
-.cat-gnida .doc-btn { background: #FFFBEB; color: #D97706; }
-.cat-gnida:hover .doc-btn { background: #F59E0B; color: #fff; }
+.how-preview {
+  background:#fff; border:1px solid var(--gray-200);
+  border-radius:var(--radius-xl); padding:1.5rem;
+  box-shadow:0 12px 30px rgba(0,0,0,0.03);
+}
+.how-preview-header {
+  display:flex; justify-content:space-between; align-items:center;
+  border-bottom:1px solid var(--gray-100); padding-bottom:0.75rem; margin-bottom:1rem;
+}
+.how-preview-header h4 { font-size:0.85rem; font-weight:700; color:var(--gray-800); display:flex; align-items:center; gap:0.5rem; }
+.how-preview-header h4 i { color:var(--blue); }
+.how-status-badge {
+  font-size:0.68rem; font-weight:700; padding:0.2rem 0.55rem;
+  border-radius:var(--radius-full);
+}
+.preview-tracker {
+  background:var(--gray-50); border:1px solid var(--gray-200);
+  border-radius:var(--radius-md); padding:0.7rem 1rem;
+  display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;
+}
+.preview-tracker-left { display:flex; align-items:center; gap:0.6rem; }
+.preview-avatar {
+  width:28px; height:28px; border-radius:50%;
+  background:var(--blue-light); color:var(--blue);
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:0.7rem;
+}
+.preview-name { font-size:0.78rem; font-weight:600; color:var(--gray-800); }
+.preview-role { font-size:0.65rem; color:var(--gray-400); }
 
-.cat-noida .doc-icon { background: var(--blue-light); color: var(--blue); }
-.cat-noida:hover { border-color: var(--blue); }
-.cat-noida .doc-btn { background: var(--blue-light); color: var(--blue); }
-.cat-noida:hover .doc-btn { background: var(--blue); color: #fff; }
-
-.cat-prop .doc-icon { background: #ECFDF5; color: var(--emerald); }
-.cat-prop:hover { border-color: var(--emerald); }
-.cat-prop .doc-btn { background: #ECFDF5; color: var(--emerald); }
-.cat-prop:hover .doc-btn { background: var(--emerald); color: #fff; }
-
-.cat-biz .doc-icon { background: #F5F3FF; color: var(--purple); }
-.cat-biz:hover { border-color: var(--purple); }
-.cat-biz .doc-btn { background: #F5F3FF; color: var(--purple); }
-.cat-biz:hover .doc-btn { background: var(--purple); color: #fff; }
-
-/* ═══ WORKFLOW ═══ */
-.workflow-section { background: var(--gray-50); }
-.workflow-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 3.5rem;
-  align-items: center;
-}
-.workflow-steps { display: flex; flex-direction: column; gap: 1rem; }
-.wf-step {
-  background: #fff; border: 1px solid var(--gray-200);
-  border-radius: var(--radius-lg); padding: 1.15rem 1.35rem;
-  display: flex; align-items: flex-start; gap: 1rem;
-  cursor: pointer; transition: all 0.2s; text-align: left;
-}
-.wf-step:hover { border-color: var(--blue); transform: translateX(4px); }
-.wf-step.active { border-color: var(--blue); background: var(--blue-light); }
-.wf-num {
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--blue-light); color: var(--blue);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 0.8rem; flex-shrink: 0;
-}
-.wf-step.active .wf-num { background: var(--blue); color: #fff; }
-.wf-info h4 { font-weight: 700; font-size: 0.95rem; color: var(--gray-800); margin-bottom: 0.15rem; }
-.wf-info p { font-size: 0.8rem; color: var(--gray-400); line-height: 1.4; }
-.wf-preview {
-  background: #fff; border: 1px solid var(--gray-200);
-  border-radius: var(--radius-xl); padding: 1.5rem;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.03);
-  display: flex; flex-direction: column; gap: 1rem;
-}
-.wf-preview-header {
-  display: flex; justify-content: space-between; align-items: center;
-  border-bottom: 1px solid var(--gray-100); padding-bottom: 0.75rem;
-}
-.wf-preview-header h4 { font-size: 0.85rem; font-weight: 700; color: var(--gray-800); display: flex; align-items: center; gap: 0.5rem; }
-.wf-preview-header h4 i { color: var(--blue); }
-.wf-status {
-  font-size: 0.7rem; font-weight: 700; color: var(--emerald);
-  background: #ECFDF5; padding: 0.2rem 0.5rem; border-radius: var(--radius-full);
-}
-.sig-tracker {
-  background: var(--gray-50); border: 1px solid var(--gray-200);
-  border-radius: var(--radius-md); padding: 0.75rem 1rem;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.sig-tracker-left { display: flex; align-items: center; gap: 0.65rem; }
-.sig-avatar {
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--blue-light); color: var(--blue);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 0.75rem;
-}
-.sig-name { font-size: 0.8rem; font-weight: 600; color: var(--gray-800); }
-.sig-role { font-size: 0.68rem; color: var(--gray-400); }
-.sig-badge {
-  font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.5rem;
-  border-radius: var(--radius-sm);
-}
-.sig-badge.done { background: #ECFDF5; color: var(--emerald); }
-.sig-badge.pending { background: #FEF3C7; color: var(--amber); }
-
-@media (max-width: 850px) {
-  .workflow-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .wf-preview { order: -1; }
+@media (max-width:850px) {
+  .how-grid { grid-template-columns:1fr; gap:2rem; }
+  .how-preview { order:-1; }
 }
 
-/* ═══ TESTIMONIALS ═══ */
-.testi-section { background: #fff; }
+/* ═══════ TESTIMONIALS ═══════ */
+.testi-section { background:var(--gray-50); border-bottom:1px solid var(--gray-200); }
 .testi-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
 }
 .testi-card {
-  background: var(--gray-50);
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-xl);
-  padding: 1.75rem;
-  transition: all 0.2s;
-  text-align: left;
+  background:#fff; border:1px solid var(--gray-200);
+  border-radius:var(--radius-xl); padding:1.75rem;
+  transition:all 0.2s; text-align:left;
 }
-.testi-card:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(0,0,0,0.03); }
-.testi-stars { color: var(--amber); font-size: 0.8rem; margin-bottom: 0.85rem; }
-.testi-text { font-size: 0.88rem; color: var(--gray-600); line-height: 1.7; margin-bottom: 1.25rem; font-style: italic; }
-.testi-author { display: flex; align-items: center; gap: 0.65rem; }
+.testi-card:hover { transform:translateY(-3px); box-shadow:0 15px 30px rgba(0,0,0,0.03); }
+.testi-quote { color:var(--blue); font-size:2rem; line-height:1; margin-bottom:0.5rem; opacity:0.3; font-family:Georgia,serif; }
+.testi-text { font-size:0.88rem; color:var(--gray-600); line-height:1.7; margin-bottom:1.25rem; }
+.testi-author { display:flex; align-items:center; gap:0.65rem; border-top:1px solid var(--gray-100); padding-top:1rem; }
 .testi-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 0.8rem; color: #fff; flex-shrink: 0;
+  width:36px; height:36px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:0.78rem; color:#fff; flex-shrink:0;
 }
-.testi-name { font-weight: 700; font-size: 0.85rem; color: var(--gray-800); }
-.testi-role { font-size: 0.72rem; color: var(--gray-400); }
+.testi-name { font-weight:700; font-size:0.85rem; color:var(--gray-800); }
+.testi-role { font-size:0.72rem; color:var(--gray-400); }
 
-@media (max-width: 800px) {
-  .testi-grid { grid-template-columns: 1fr; }
-}
+@media (max-width:800px) { .testi-grid { grid-template-columns:1fr; } }
 
-/* ═══ CTA ═══ */
+/* ═══════ CTA ═══════ */
 .cta-section {
-  background: linear-gradient(135deg, var(--navy) 0%, #1A2340 100%);
-  padding: 4rem 1.5rem;
-  text-align: center;
+  background: var(--navy);
+  padding:4rem 1.5rem; text-align:center;
 }
 .cta-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  font-weight: 900;
-  color: #fff;
-  margin-bottom: 0.75rem;
+  font-family:var(--font-display);
+  font-size:clamp(1.5rem, 2.8vw, 2rem);
+  font-weight:900; color:#fff; margin-bottom:0.75rem;
 }
 .cta-sub {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.5);
-  margin-bottom: 2rem;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
+  font-size:0.95rem; color:rgba(255,255,255,0.4);
+  margin-bottom:2rem; max-width:480px; margin-left:auto; margin-right:auto;
 }
-.cta-buttons { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-.cta-btn-primary {
-  background: var(--blue); color: #fff; font-weight: 700;
-  padding: 0.75rem 1.75rem; border-radius: var(--radius-md);
-  font-size: 0.9rem; transition: all 0.2s;
-  display: inline-flex; align-items: center; gap: 0.5rem;
+.cta-actions { display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap; }
+.cta-primary {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  background:var(--blue); color:#fff; font-weight:700;
+  padding:0.75rem 1.75rem; border-radius:var(--radius-md);
+  font-size:0.9rem; transition:all 0.2s;
 }
-.cta-btn-primary:hover { background: var(--blue-hover); transform: translateY(-1px); box-shadow: 0 4px 15px rgba(41,82,204,0.3); }
-.cta-btn-secondary {
-  background: rgba(255,255,255,0.1); color: #fff; font-weight: 600;
-  padding: 0.75rem 1.75rem; border-radius: var(--radius-md);
-  font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.15);
-  transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
+.cta-primary:hover { background:var(--blue-hover); transform:translateY(-1px); box-shadow:0 4px 20px rgba(41,82,204,0.3); }
+.cta-secondary {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  background:rgba(255,255,255,0.08); color:#fff; font-weight:600;
+  padding:0.75rem 1.75rem; border-radius:var(--radius-md);
+  font-size:0.9rem; border:1px solid rgba(255,255,255,0.1);
+  transition:all 0.15s;
 }
-.cta-btn-secondary:hover { background: rgba(255,255,255,0.15); }
+.cta-secondary:hover { background:rgba(255,255,255,0.12); }
 
-/* ═══ FOOTER ═══ */
+/* ═══════ FOOTER ═══════ */
 .footer {
   background: var(--navy);
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding: 4rem 1.5rem 2rem;
+  border-top:1px solid rgba(255,255,255,0.04);
+  padding:3.5rem 1.5rem 2rem;
 }
 .footer-grid {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 2.5rem;
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr;
+  gap:2.5rem;
 }
-.footer-brand .logo-text { font-size: 1.15rem; }
+.footer-brand .logo-text { font-size:1.1rem; }
 .footer-brand p {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.4);
-  margin-top: 1rem;
-  line-height: 1.6;
-  max-width: 300px;
+  font-size:0.82rem; color:rgba(255,255,255,0.3);
+  margin-top:0.85rem; line-height:1.65; max-width:280px;
 }
 .footer h4 {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 1rem;
+  font-size:0.75rem; font-weight:700; color:#fff;
+  text-transform:uppercase; letter-spacing:0.08em; margin-bottom:1rem;
 }
-.footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.footer-links { list-style:none; display:flex; flex-direction:column; gap:0.5rem; }
 .footer-links a {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.4);
-  transition: color 0.15s;
+  font-size:0.82rem; color:rgba(255,255,255,0.35);
+  transition:color 0.15s;
 }
-.footer-links a:hover { color: #fff; }
+.footer-links a:hover { color:#fff; }
 .footer-bottom {
-  max-width: 1200px;
-  margin: 2.5rem auto 0;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  max-width:1200px; margin:2.5rem auto 0;
+  padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.04);
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;
 }
-.footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
-.footer-social { display: flex; gap: 0.75rem; }
+.footer-bottom p { font-size:0.78rem; color:rgba(255,255,255,0.25); }
+.footer-social { display:flex; gap:0.6rem; }
 .footer-social a {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.85rem; transition: all 0.15s;
+  width:30px; height:30px; border-radius:50%;
+  background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.3);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.8rem; transition:all 0.15s;
 }
-.footer-social a:hover { background: var(--blue); color: #fff; }
+.footer-social a:hover { background:var(--blue); color:#fff; }
 
-@media (max-width: 800px) {
-  .footer-grid { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 500px) {
-  .footer-grid { grid-template-columns: 1fr; }
-}
+@media (max-width:800px) { .footer-grid { grid-template-columns:1fr 1fr; } }
+@media (max-width:500px) { .footer-grid { grid-template-columns:1fr; } }
 
-/* ═══ AUTH MODAL ═══ */
+/* ═══════ AUTH MODAL ═══════ */
 .modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(4px); z-index: 1000;
-  display: none; align-items: center; justify-content: center; padding: 1rem;
+  position:fixed; inset:0; background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(6px); z-index:1000;
+  display:none; align-items:center; justify-content:center; padding:1rem;
 }
-.modal-overlay.open { display: flex; }
+.modal-overlay.open { display:flex; }
 .modal-box {
-  background: #fff; border-radius: var(--radius-xl);
-  width: 100%; max-width: 420px; padding: 2rem;
-  position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+  background:#fff; border-radius:var(--radius-xl);
+  width:100%; max-width:420px; padding:2rem;
+  position:relative; box-shadow:0 25px 60px rgba(0,0,0,0.15);
 }
 .modal-close {
-  position: absolute; top: 1rem; right: 1rem;
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--gray-100); color: var(--gray-500);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.85rem; cursor: pointer; transition: all 0.15s;
+  position:absolute; top:1rem; right:1rem;
+  width:30px; height:30px; border-radius:50%;
+  background:var(--gray-100); color:var(--gray-500);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.85rem; cursor:pointer; transition:all 0.15s;
 }
-.modal-close:hover { background: var(--gray-200); color: var(--gray-700); }
-.modal-title {
-  font-family: var(--font-display); font-weight: 800;
-  font-size: 1.25rem; color: var(--gray-900); margin-bottom: 0.25rem;
-}
-.modal-sub { font-size: 0.85rem; color: var(--gray-400); margin-bottom: 1.5rem; }
+.modal-close:hover { background:var(--gray-200); color:var(--gray-700); }
+.modal-title { font-family:var(--font-display); font-weight:800; font-size:1.2rem; color:var(--gray-900); margin-bottom:0.25rem; }
+.modal-sub { font-size:0.85rem; color:var(--gray-400); margin-bottom:1.5rem; }
 .modal-input {
-  width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--gray-200);
-  border-radius: var(--radius-md); font-size: 0.9rem; font-family: var(--font-body);
-  outline: none; transition: all 0.15s; margin-bottom: 0.75rem;
+  width:100%; padding:0.75rem 1rem; border:1px solid var(--gray-200);
+  border-radius:var(--radius-md); font-size:0.9rem; font-family:var(--font-body);
+  outline:none; transition:all 0.15s; margin-bottom:0.75rem;
 }
-.modal-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(41,82,204,0.1); }
+.modal-input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(41,82,204,0.08); }
 .modal-btn {
-  width: 100%; padding: 0.75rem; border: none; border-radius: var(--radius-md);
-  font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.15s;
-  font-family: var(--font-body);
+  width:100%; padding:0.75rem; border:none; border-radius:var(--radius-md);
+  font-weight:700; font-size:0.9rem; cursor:pointer; transition:all 0.15s;
+  font-family:var(--font-body);
 }
-.modal-btn-primary { background: var(--blue); color: #fff; }
-.modal-btn-primary:hover { background: var(--blue-hover); }
+.modal-btn-primary { background:var(--blue); color:#fff; }
+.modal-btn-primary:hover { background:var(--blue-hover); }
 .modal-btn-google {
-  background: #fff; color: var(--gray-700);
-  border: 1px solid var(--gray-200); display: flex; align-items: center;
-  justify-content: center; gap: 0.5rem; margin-bottom: 0.75rem;
+  background:#fff; color:var(--gray-700);
+  border:1px solid var(--gray-200); display:flex; align-items:center;
+  justify-content:center; gap:0.5rem; margin-bottom:0.75rem;
 }
-.modal-btn-google:hover { background: var(--gray-50); border-color: var(--gray-300); }
-.modal-divider {
-  display: flex; align-items: center; gap: 0.75rem; margin: 1rem 0;
-  color: var(--gray-400); font-size: 0.8rem;
-}
-.modal-divider::before, .modal-divider::after { content: ''; flex: 1; height: 1px; background: var(--gray-200); }
-
-/* OTP */
-.otp-row { display: flex; gap: 0.5rem; justify-content: center; margin: 1rem 0; }
+.modal-btn-google:hover { background:var(--gray-50); border-color:var(--gray-300); }
+.modal-divider { display:flex; align-items:center; gap:0.75rem; margin:1rem 0; color:var(--gray-400); font-size:0.8rem; }
+.modal-divider::before, .modal-divider::after { content:''; flex:1; height:1px; background:var(--gray-200); }
+.otp-row { display:flex; gap:0.5rem; justify-content:center; margin:1rem 0; }
 .otp-box {
-  width: 42px; height: 48px; text-align: center; font-size: 1.1rem;
-  font-weight: 700; border: 1px solid var(--gray-200); border-radius: var(--radius-sm);
-  outline: none; transition: all 0.15s;
+  width:40px; height:46px; text-align:center; font-size:1.1rem;
+  font-weight:700; border:1px solid var(--gray-200); border-radius:var(--radius-sm);
+  outline:none; transition:all 0.15s;
 }
-.otp-box:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(41,82,204,0.1); }
-.otp-box.filled { border-color: var(--blue); background: var(--blue-light); }
+.otp-box:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(41,82,204,0.08); }
+.otp-box.filled { border-color:var(--blue); background:var(--blue-light); }
 
-/* ═══ ESIGN MODAL ═══ */
-.esign-steps { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem; }
-.esign-step {
-  width: 28px; height: 28px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.75rem; font-weight: 700;
-}
-.esign-step.active { background: var(--blue); color: #fff; }
-.esign-step.done { background: var(--emerald); color: #fff; }
-.esign-step.pending { background: var(--gray-100); color: var(--gray-400); }
-.esign-line { width: 40px; height: 2px; background: var(--gray-200); }
-.esign-line.done { background: var(--emerald); }
-
-/* ═══ TOAST ═══ */
-.toast {
-  position: fixed; bottom: 24px; right: 24px; z-index: 2000;
-  background: var(--gray-900); color: #fff;
-  padding: 0.75rem 1.25rem; border-radius: var(--radius-md);
-  font-size: 0.85rem; font-weight: 600;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  display: flex; align-items: center; gap: 0.5rem;
-  transform: translateY(100px); opacity: 0;
-  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  pointer-events: none;
-}
-
-/* ═══ REVEAL ═══ */
-.reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s cubic-bezier(0.16,1,0.3,1); }
-.reveal.active, .reveal.visible { opacity: 1; transform: translateY(0); }
-
-/* ═══ POPULAR STRIP ═══ */
-.popular-strip {
-  background: var(--gray-50);
-  border-bottom: 1px solid var(--gray-200);
-  padding: 1.25rem 1.5rem;
-}
-.pop-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; align-items: center; gap: 1rem;
-  overflow-x: auto; scrollbar-width: none;
-}
-.pop-inner::-webkit-scrollbar { display: none; }
-.pop-label {
-  font-size: 0.7rem; font-weight: 800; color: var(--gray-400);
-  text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; flex-shrink: 0;
-}
-.pop-sep { width: 1px; height: 18px; background: var(--gray-200); flex-shrink: 0; }
-.pop-chip {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  background: #fff; border: 1px solid var(--gray-200);
-  border-radius: var(--radius-full); padding: 0.35rem 0.9rem;
-  font-size: 0.8rem; font-weight: 600; color: var(--gray-600);
-  white-space: nowrap; cursor: pointer; transition: all 0.15s; flex-shrink: 0;
-}
-.pop-chip:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
-.pop-chip.hot { background: #FFF7ED; border-color: #FED7AA; color: #EA580C; }
-.pop-chip.hot:hover { background: #FFEDD5; }
-
-/* ═══ USER CHIP ═══ */
+/* ═══════ USER CHIP ═══════ */
 .user-chip {
-  display: none; align-items: center; gap: 0.5rem;
-  padding: 0.3rem 0.75rem; background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: var(--radius-full); cursor: pointer; position: relative;
-  transition: all 0.15s;
+  display:none; align-items:center; gap:0.5rem;
+  padding:0.25rem 0.65rem; background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--radius-full); cursor:pointer; position:relative;
+  transition:all 0.15s;
 }
-.user-chip:hover { background: rgba(255,255,255,0.1); }
+.user-chip:hover { background:rgba(255,255,255,0.1); }
 .user-avatar {
-  width: 24px; height: 24px; border-radius: 50%;
-  background: var(--blue); color: #fff; font-weight: 700;
-  font-size: 0.7rem; display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
+  width:22px; height:22px; border-radius:50%;
+  background:var(--blue); color:#fff; font-weight:700;
+  font-size:0.65rem; display:flex; align-items:center; justify-content:center; overflow:hidden;
 }
-.user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.user-name { font-size: 0.8rem; font-weight: 600; color: #fff; }
+.user-avatar img { width:100%; height:100%; object-fit:cover; }
+.user-name { font-size:0.78rem; font-weight:600; color:#fff; }
 .user-menu {
-  position: absolute; top: calc(100% + 8px); right: 0;
-  background: #fff; border: 1px solid var(--gray-200);
-  border-radius: var(--radius-md); width: 200px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-  display: none; z-index: 1000; padding: 0.5rem;
+  position:absolute; top:calc(100% + 8px); right:0;
+  background:#fff; border:1px solid var(--gray-200);
+  border-radius:var(--radius-md); width:200px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.1);
+  display:none; z-index:1000; padding:0.5rem;
 }
-.user-menu-header { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--gray-100); margin-bottom: 0.4rem; }
-.user-menu-email { font-size: 0.7rem; color: var(--gray-400); word-break: break-all; }
+.user-menu-header { padding:0.5rem 0.75rem; border-bottom:1px solid var(--gray-100); margin-bottom:0.4rem; }
+.user-menu-email { font-size:0.7rem; color:var(--gray-400); word-break:break-all; }
 .user-menu-item {
-  display: flex; align-items: center; gap: 0.6rem;
-  padding: 0.45rem 0.75rem; font-size: 0.8rem; font-weight: 600;
-  color: var(--gray-600); border-radius: var(--radius-sm); transition: all 0.15s; cursor: pointer;
+  display:flex; align-items:center; gap:0.6rem;
+  padding:0.45rem 0.75rem; font-size:0.78rem; font-weight:600;
+  color:var(--gray-600); border-radius:var(--radius-sm); transition:all 0.15s; cursor:pointer;
 }
-.user-menu-item:hover { background: var(--gray-50); color: var(--gray-800); }
+.user-menu-item:hover { background:var(--gray-50); color:var(--gray-800); }
 
-/* ═══ RESPONSIVE ═══ */
-.nav-phone { color: rgba(255,255,255,0.5); font-size: 0.8rem; font-weight: 500; display: flex; align-items: center; gap: 0.35rem; }
-@media (max-width: 900px) {
-  .nav-phone { display: none; }
+/* ═══════ TOAST ═══════ */
+.toast {
+  position:fixed; bottom:24px; right:24px; z-index:2000;
+  background:var(--gray-900); color:#fff;
+  padding:0.7rem 1.25rem; border-radius:var(--radius-md);
+  font-size:0.85rem; font-weight:600;
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+  display:flex; align-items:center; gap:0.5rem;
+  transform:translateY(100px); opacity:0;
+  transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  pointer-events:none;
 }
+
+/* ═══════ REVEAL ═══════ */
+.reveal { opacity:0; transform:translateY(25px); transition:all 0.6s cubic-bezier(0.16,1,0.3,1); }
+.reveal.active, .reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ═══════ AUDIENCE ═══════ */
+.audience-section { padding:4rem 0; background:var(--gray-50); border-bottom:1px solid var(--gray-200); }
+.audience-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; }
+.audience-card { background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius-xl); padding:1.75rem; text-align:left; transition:all .2s; cursor:pointer; }
+.audience-card:hover { transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,0,0,0.04); border-color:var(--blue); }
+.audience-card .ac-icon { width:40px; height:40px; border-radius:var(--radius-md); margin-bottom:1rem; display:flex; align-items:center; justify-content:center; font-size:1rem; }
+.audience-card h3 { font-family:var(--font-display); font-size:.95rem; font-weight:800; color:var(--gray-900); margin-bottom:.35rem; }
+.audience-card p { font-size:.82rem; color:var(--gray-400); line-height:1.55; }
+.audience-card .ac-link { font-size:.8rem; font-weight:700; color:var(--blue); display:inline-flex; align-items:center; gap:.3rem; margin-top:1rem; transition:gap .15s; cursor:pointer; }
+.audience-card .ac-link:hover { gap:.55rem; }
+@media (max-width:750px) { .audience-grid { grid-template-columns:1fr; } }
+
+/* ═══════ WHY CHOOSE ═══════ */
+.why-section { padding:4.5rem 0; background:var(--white); border-bottom:1px solid var(--gray-200); }
+.why-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; }
+.why-card { text-align:center; padding:2rem 1.5rem; }
+.why-card .wc-icon { width:52px; height:52px; border-radius:50%; margin:0 auto 1rem; display:flex; align-items:center; justify-content:center; font-size:1.2rem; background:var(--blue-light); color:var(--blue); }
+.why-card h3 { font-family:var(--font-display); font-size:1.05rem; font-weight:800; color:var(--gray-900); margin-bottom:.5rem; }
+.why-card p { font-size:.85rem; color:var(--gray-400); line-height:1.6; max-width:300px; margin:0 auto; }
+@media (max-width:700px) { .why-grid { grid-template-columns:1fr; } }
+
+/* ═══════ PRICING ═══════ */
+.pricing-section { padding:5rem 0; background:var(--gray-50); border-bottom:1px solid var(--gray-200); }
+.pricing-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem; }
+.pricing-card { background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius-xl); padding:2rem 1.5rem; text-align:left; position:relative; transition:all .2s; }
+.pricing-card:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,0.05); }
+.pricing-card.featured { border-color:var(--blue); box-shadow:0 0 0 1px var(--blue), 0 12px 30px rgba(41,82,204,0.06); }
+.pc-badge { display:inline-block; font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; padding:.2rem .55rem; border-radius:var(--radius-full); background:var(--gray-100); color:var(--gray-500); margin-bottom:.75rem; }
+.pricing-card.featured .pc-badge { background:var(--blue); color:#fff; }
+.pc-name { font-family:var(--font-display); font-size:1rem; font-weight:800; color:var(--gray-900); margin-bottom:.25rem; }
+.pc-desc { font-size:.75rem; color:var(--gray-400); margin-bottom:1rem; line-height:1.5; }
+.pc-price { font-family:var(--font-display); font-size:1.6rem; font-weight:900; color:var(--gray-900); margin-bottom:.2rem; }
+.pc-price span { font-size:.85rem; font-weight:600; color:var(--gray-400); }
+.pc-original { font-size:.75rem; color:var(--gray-400); text-decoration:line-through; margin-bottom:1rem; }
+.pc-original .saved { color:var(--emerald); font-weight:700; text-decoration:none; }
+.pc-features { list-style:none; margin:1.5rem 0; display:flex; flex-direction:column; gap:.55rem; }
+.pc-features li { font-size:.78rem; color:var(--gray-600); display:flex; align-items:center; gap:.5rem; }
+.pc-features li i { font-size:.55rem; color:var(--emerald); width:14px; text-align:center; }
+.pc-features li .na { color:var(--gray-300); }
+.pc-btn { display:block; text-align:center; padding:.65rem; border-radius:var(--radius-md); font-weight:700; font-size:.85rem; transition:all .15s; background:var(--blue); color:#fff; }
+.pc-btn:hover { background:var(--blue-hover); transform:translateY(-1px); box-shadow:0 4px 15px rgba(41,82,204,0.3); }
+.pc-btn-outline { background:transparent; color:var(--blue); border:1px solid var(--gray-200); }
+.pc-btn-outline:hover { border-color:var(--blue); background:var(--blue-light); box-shadow:none; }
+@media (max-width:900px) { .pricing-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:500px) { .pricing-grid { grid-template-columns:1fr; } }
+
+/* ═══════ EXPERT ═══════ */
+.expert-section { padding:4rem 0; background:var(--white); border-bottom:1px solid var(--gray-200); }
+.expert-grid { display:grid; grid-template-columns:1.2fr 0.8fr; gap:3rem; align-items:center; }
+.expert-left { text-align:left; }
+.expert-left h2 { font-family:var(--font-display); font-size:clamp(1.4rem,2.8vw,1.8rem); font-weight:900; color:var(--gray-900); line-height:1.2; margin-bottom:.75rem; }
+.expert-left p { font-size:.88rem; color:var(--gray-400); line-height:1.7; margin-bottom:1.5rem; max-width:450px; }
+.expert-bullets { list-style:none; display:flex; flex-direction:column; gap:.65rem; margin-bottom:1.5rem; }
+.expert-bullets li { font-size:.82rem; color:var(--gray-600); display:flex; align-items:flex-start; gap:.5rem; }
+.expert-bullets li i { color:var(--emerald); font-size:.6rem; margin-top:.35rem; flex-shrink:0; }
+.expert-right { text-align:center; }
+.expert-card { background:var(--blue-light); border-radius:var(--radius-xl); padding:2rem 1.5rem; border:1px solid rgba(41,82,204,0.1); }
+.expert-avatar { width:64px; height:64px; border-radius:50%; background:var(--blue); color:#fff; margin:0 auto .75rem; display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:800; }
+.expert-card h4 { font-family:var(--font-display); font-weight:800; font-size:1rem; color:var(--gray-900); }
+.expert-card .ec-label { font-size:.72rem; color:var(--blue); font-weight:600; margin-bottom:.75rem; }
+.expert-card .ec-stats { display:flex; justify-content:center; gap:1.5rem; margin:.75rem 0; }
+.expert-card .ec-stat { text-align:center; }
+.expert-card .ec-stat-num { font-family:var(--font-display); font-weight:900; font-size:1.1rem; color:var(--gray-900); }
+.expert-card .ec-stat-label { font-size:.65rem; color:var(--gray-400); }
+@media (max-width:750px) { .expert-grid { grid-template-columns:1fr; gap:2rem; } }
+
+/* ═══════ BRANDS ═══════ */
+.brands-section { padding:2.5rem 0; background:var(--gray-50); border-bottom:1px solid var(--gray-200); text-align:center; }
+.brands-grid { display:flex; align-items:center; justify-content:center; gap:2.5rem; flex-wrap:wrap; }
+.brand-logo { height:28px; opacity:.3; transition:opacity .2s; font-size:.75rem; font-weight:700; color:var(--gray-400); white-space:nowrap; display:flex; align-items:center; gap:.4rem; }
+.brand-logo i { font-size:.9rem; }
+.brand-logo:hover { opacity:.6; }
+
+/* ═══════ FAQ ═══════ */
+.faq-section { padding:5rem 0; background:var(--white); border-bottom:1px solid var(--gray-200); }
+.faq-list { max-width:720px; margin:0 auto; }
+.faq-item { border-bottom:1px solid var(--gray-200); }
+.faq-item:first-child { border-top:1px solid var(--gray-200); }
+.faq-question { display:flex; align-items:center; justify-content:space-between; padding:1.15rem 0; cursor:pointer; transition:color .15s; text-align:left; width:100%; font-family:var(--font-body); font-size:.92rem; font-weight:600; color:var(--gray-700); background:none; border:none; }
+.faq-question:hover { color:var(--blue); }
+.faq-question i { font-size:.7rem; color:var(--gray-300); transition:transform .2s; flex-shrink:0; }
+.faq-item.open .faq-question i { transform:rotate(180deg); color:var(--blue); }
+.faq-answer { max-height:0; overflow:hidden; transition:max-height .3s ease, padding .3s ease; padding:0; font-size:.85rem; color:var(--gray-400); line-height:1.7; }
+.faq-item.open .faq-answer { max-height:300px; padding:0 0 1.15rem; }
 </style>
 </head>
 <body>
 
-<!-- TOP ANNOUNCE -->
 <div class="top-announce">
-  <i class="fa-solid fa-gavel" style="margin-right:0.4rem;opacity:0.6"></i>
-  Gautam Buddh Nagar's trusted platform for legal document drafting &amp; e-signing
+  <i class="fa-solid fa-gavel" style="margin-right:0.35rem;opacity:0.5"></i>
+  Gautam Buddh Nagar's trusted legal documentation platform — <strong>Draft, Stamp & e-Sign</strong>
 </div>
 
-<!-- NAV -->
+<!-- ═══ HEADER ═══ -->
 <nav class="nav" id="mainNav">
   <div class="nav-inner">
     <a href="#" class="logo-wrap">
@@ -940,37 +797,95 @@ section { position: relative; }
       <li class="nav-item">
         <a class="nav-link">Products <i class="fa-solid fa-chevron-down chevron"></i></a>
         <div class="nav-dropdown">
-          <a class="dd-item" href="Madhav_Drafting_Hub.html"><span class="dd-icon"><i class="fa-solid fa-file-contract"></i></span> Rent Agreement</a>
-          <a class="dd-item" href="Madhav_Drafting_Hub.html"><span class="dd-icon"><i class="fa-solid fa-landmark"></i></span> GNIDA Mutation</a>
-          <a class="dd-item" href="Madhav_Drafting_Hub.html"><span class="dd-icon"><i class="fa-solid fa-building"></i></span> NOIDA Transfer</a>
-          <a class="dd-item" href="Madhav_Drafting_Hub.html"><span class="dd-icon"><i class="fa-solid fa-user-tie"></i></span> TM-48 / Trademark</a>
-          <a class="dd-item" href="Madhav_Drafting_Hub.html"><span class="dd-icon"><i class="fa-solid fa-cubes"></i></span> All Products</a>
+          <a class="dd-item" href="Madhav_Drafting_Hub.html">
+            <span class="dd-icon"><i class="fa-solid fa-file-contract"></i></span>
+            <span class="dd-text">
+              <span class="dd-title">Rent Agreement</span>
+              <span class="dd-desc">e-Stamped & digitally signed</span>
+            </span>
+          </a>
+          <a class="dd-item" href="Madhav_Drafting_Hub.html">
+            <span class="dd-icon"><i class="fa-solid fa-landmark"></i></span>
+            <span class="dd-text">
+              <span class="dd-title">GNIDA Mutation</span>
+              <span class="dd-desc">Authority mutation forms</span>
+            </span>
+          </a>
+          <a class="dd-item" href="Madhav_Drafting_Hub.html">
+            <span class="dd-icon"><i class="fa-solid fa-building"></i></span>
+            <span class="dd-text">
+              <span class="dd-title">NOIDA Transfer</span>
+              <span class="dd-desc">Transfer memo application</span>
+            </span>
+          </a>
+          <a class="dd-item" href="Madhav_Drafting_Hub.html">
+            <span class="dd-icon"><i class="fa-solid fa-cubes"></i></span>
+            <span class="dd-text">
+              <span class="dd-title">GNIDA 5-in-1 Package</span>
+              <span class="dd-desc">Complete bundle of forms</span>
+            </span>
+          </a>
+          <a class="dd-item" href="Madhav_Drafting_Hub.html">
+            <span class="dd-icon"><i class="fa-solid fa-user-tie"></i></span>
+            <span class="dd-text">
+              <span class="dd-title">TM-48 Trademark</span>
+              <span class="dd-desc">Trademark authorization</span>
+            </span>
+          </a>
         </div>
       </li>
       <li class="nav-item">
         <a class="nav-link">Resources <i class="fa-solid fa-chevron-down chevron"></i></a>
         <div class="nav-dropdown">
-          <a class="dd-item" href="#"><span class="dd-icon"><i class="fa-solid fa-newspaper"></i></span> Blog</a>
-          <a class="dd-item" href="#"><span class="dd-icon"><i class="fa-solid fa-circle-question"></i></span> FAQs</a>
-          <a class="dd-item" href="#"><span class="dd-icon"><i class="fa-solid fa-video"></i></span> Tutorials</a>
-          <a class="dd-item" href="#"><span class="dd-icon"><i class="fa-solid fa-scale-balanced"></i></span> Legal Guide</a>
+          <a class="dd-item" href="#">
+            <span class="dd-icon"><i class="fa-solid fa-newspaper"></i></span>
+            <span class="dd-text">
+              <span class="dd-title">Blog</span>
+              <span class="dd-desc">Legal guides & updates</span>
+            </span>
+          </a>
+          <a class="dd-item" href="#faq">
+            <span class="dd-icon"><i class="fa-solid fa-circle-question"></i></span>
+            <span class="dd-text">
+              <span class="dd-title">FAQs</span>
+              <span class="dd-desc">Frequently asked questions</span>
+            </span>
+          </a>
+          <a class="dd-item" href="#">
+            <span class="dd-icon"><i class="fa-solid fa-video"></i></span>
+            <span class="dd-text">
+              <span class="dd-title">Tutorials</span>
+              <span class="dd-desc">Step-by-step guides</span>
+            </span>
+          </a>
         </div>
       </li>
-      <li class="nav-item"><a class="nav-link" href="#docs">Templates</a></li>
+      <li class="nav-item"><a class="nav-link" href="#templates">Documents</a></li>
       <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
     </ul>
 
     <div class="nav-right">
-      <span class="nav-phone"><i class="fa-solid fa-phone"></i> +91 9876543210</span>
-      <button class="btn-nav" onclick="openAuth('login')">Sign In</button>
-      <a href="Madhav_Drafting_Hub.html" class="btn-nav-primary"><i class="fa-solid fa-right-to-bracket"></i> Dashboard</a>
+      <div class="country-selector">
+        <span><i class="fa-solid fa-globe" style="font-size:0.8rem"></i> IN <i class="fa-solid fa-chevron-down chevron"></i></span>
+        <div class="country-dropdown">
+          <div class="country-item"><span class="flag">🇮🇳</span> India</div>
+          <div class="country-item"><span class="flag">🇺🇸</span> USA</div>
+          <div class="country-item"><span class="flag">🇦🇪</span> UAE</div>
+          <div class="country-item"><span class="flag">🇸🇬</span> Singapore</div>
+        </div>
+      </div>
+      <button class="btn-nav-ghost" onclick="openAuth('login')">Sign In</button>
+      <a href="Madhav_Drafting_Hub.html" class="btn-nav-cta">
+        Dashboard
+        <svg viewBox="0 0 15 15"><path d="M8.5 2L7.5 3l4.5 4.5H0v1h12L7.5 13l1 1 5.5-5.5L14 7.5l.5-.5z"/></svg>
+      </a>
       <span class="user-chip" id="userChip" onclick="toggleUserMenu()">
         <span class="user-avatar" id="userAvatar">U</span>
         <span class="user-name" id="userName">User</span>
-        <i class="fa-solid fa-chevron-down" style="font-size:0.6rem;color:rgba(255,255,255,0.4)"></i>
+        <i class="fa-solid fa-chevron-down" style="font-size:0.55rem;color:rgba(255,255,255,0.4)"></i>
         <div class="user-menu" id="userMenu">
           <div class="user-menu-header">
-            <div style="font-size:0.8rem;font-weight:700;color:var(--gray-800)" id="userMenuName">User</div>
+            <div style="font-size:0.78rem;font-weight:700;color:var(--gray-800)" id="userMenuName">User</div>
             <div class="user-menu-email" id="userMenuEmail">user@email.com</div>
           </div>
           <div class="user-menu-item" onclick="window.location.href='Madhav_Drafting_Hub.html'"><i class="fa-solid fa-file"></i> My Documents</div>
@@ -978,200 +893,522 @@ section { position: relative; }
           <div class="user-menu-item" onclick="signOut()" style="color:var(--rose)"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</div>
         </div>
       </span>
-      <span class="mobile-toggle" id="hamburgerIcon" onclick="toggleMobileMenu()"><i class="fa-solid fa-bars" id="hamburgerIconInner"></i></span>
+      <span class="mobile-toggle" onclick="toggleMobileMenu()"><i class="fa-solid fa-bars" id="hamburgerIcon"></i></span>
     </div>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ═══ HERO ═══ -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-rating">
-      <span class="stars">★★★★★</span>
-      <span><strong>4.8</strong> (1.2K+ reviews)</span>
-    </div>
-    <h1 class="hero-title">
-      Draft, Stamp &amp; e-Sign<br>
-      <span class="grad">Legal Documents in Minutes</span>
-    </h1>
-    <p class="hero-sub">
-      Exclusively for Gautam Buddh Nagar — Noida, Greater Noida &amp; Yamuna Expressway.
-      Rent agreements, authority applications, property documents &amp; more.
-    </p>
-    <div class="search-box">
-      <div class="search-inner">
-        <i class="fa-solid fa-search"></i>
-        <input type="text" id="heroSearchInput" placeholder="Search documents..." autocomplete="off" oninput="handleSearch(this.value)">
-        <button onclick="handleSearchSubmit()">Search</button>
+    <div class="hero-left">
+      <div class="hero-rating">
+        <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
+        <span><strong>4.8</strong> 1.2K+ reviews</span>
       </div>
-      <div class="autocomplete-dropdown" id="searchDropdown"></div>
+      <h1 class="hero-title">
+        Draft, Stamp &amp; e-Sign<br>
+        <span class="grad">Legal Documents</span>
+      </h1>
+      <p class="hero-sub">
+        Exclusively for Gautam Buddh Nagar — Noida, Greater Noida &amp; Yamuna Expressway.
+        AI-powered drafting, government e-stamping &amp; Aadhaar e-signing in one platform.
+      </p>
+      <div class="hero-actions">
+        <a href="Madhav_Drafting_Hub.html" class="btn-hero">
+          Start Drafting Free
+          <svg viewBox="0 0 15 15"><path d="M8.5 2L7.5 3l4.5 4.5H0v1h12L7.5 13l1 1 5.5-5.5L14 7.5l.5-.5z"/></svg>
+        </a>
+        <button class="btn-hero-ghost" onclick="document.getElementById('templates').scrollIntoView({behavior:'smooth'})">
+          <i class="fa-regular fa-eye"></i> View Templates
+        </button>
+      </div>
     </div>
-
-    <div class="hero-mockup">
-      <div class="hero-mockup-left">
-        <div class="hero-mockup-icon" id="heroMockupIcon"><i class="fa-solid fa-file-contract"></i></div>
-        <div class="hero-mockup-info">
-          <h4 id="heroMockupTitle">Rent Agreement</h4>
-          <p id="heroMockupSub">Landlord: Bhati Ji · Tenant: Sharma Ji</p>
+    <div class="hero-right">
+      <div class="hero-mockup-card">
+        <div class="hero-mockup-header">
+          <div class="hero-mockup-tabs">
+            <span class="hero-mockup-tab active">Draft</span>
+            <span class="hero-mockup-tab">Preview</span>
+            <span class="hero-mockup-tab">Signed</span>
+          </div>
+          <span class="hero-mockup-time"><i class="fa-regular fa-clock"></i> Just now</span>
+        </div>
+        <div class="hero-mockup-body">
+          <div class="hero-mockup-doc" id="hmDoc1">
+            <div class="hero-mockup-doc-left">
+              <div class="hero-mockup-doc-icon" id="hmIcon1"><i class="fa-solid fa-file-contract"></i></div>
+              <div class="hero-mockup-doc-info">
+                <h4 id="hmTitle1">Rent Agreement</h4>
+                <p id="hmSub1">Landlord: Bhati Ji · Tenant: Sharma Ji</p>
+              </div>
+            </div>
+            <span class="hero-mockup-badge" id="hmBadge1"><i class="fa-solid fa-check"></i> Drafted</span>
+          </div>
+          <div class="hero-mockup-doc">
+            <div class="hero-mockup-doc-left">
+              <div class="hero-mockup-doc-icon" style="background:#FFFBEB;color:#D97706"><i class="fa-solid fa-landmark"></i></div>
+              <div class="hero-mockup-doc-info">
+                <h4>GNIDA Mutation</h4>
+                <p>Allottee: Amit Kumar · Sector: Alpha II</p>
+              </div>
+            </div>
+            <span class="hero-mockup-badge" style="background:#FEF3C7;color:#D97706"><i class="fa-solid fa-clock"></i> Pending</span>
+          </div>
+          <div class="hero-mockup-doc">
+            <div class="hero-mockup-doc-left">
+              <div class="hero-mockup-doc-icon" style="background:#EEF2FF;color:#2952CC"><i class="fa-solid fa-building"></i></div>
+              <div class="hero-mockup-doc-info">
+                <h4>NOIDA Transfer</h4>
+                <p>Transferor: Raj Singh · Transferee: M. Lal</p>
+              </div>
+            </div>
+            <span class="hero-mockup-badge" style="background:#ECFDF5;color:#10B981"><i class="fa-solid fa-fingerprint"></i> e-Signed</span>
+          </div>
         </div>
       </div>
-      <span class="hero-mockup-badge" id="heroMockupStamp"><i class="fa-solid fa-fingerprint"></i> Aadhaar Signed</span>
     </div>
   </div>
 </section>
 
-<!-- STATS BAR -->
-<div class="stats-bar">
+<!-- ═══ TRUST BAR ═══ -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <div class="trust-bar-label">Trusted by professionals across G.B. Nagar</div>
+    <div class="trust-bar-logos">
+      <span class="trust-logo"><i class="fa-solid fa-scale-balanced" style="margin-right:0.3rem"></i> Legal Firms</span>
+      <span class="trust-logo"><i class="fa-solid fa-building" style="margin-right:0.3rem"></i> Property Dealers</span>
+      <span class="trust-logo"><i class="fa-solid fa-landmark" style="margin-right:0.3rem"></i> GNIDA Office</span>
+      <span class="trust-logo"><i class="fa-solid fa-bank" style="margin-right:0.3rem"></i> Banks & NBFCs</span>
+      <span class="trust-logo"><i class="fa-solid fa-user-tie" style="margin-right:0.3rem"></i> Advocates</span>
+      <span class="trust-logo"><i class="fa-solid fa-users" style="margin-right:0.3rem"></i> 30,000+ Clients</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats-section">
   <div class="stats-grid">
-    <div><div class="stat-num">30,000+</div><div class="stat-label">Documents Drafted</div></div>
-    <div><div class="stat-num">5,000+</div><div class="stat-label">Happy Clients</div></div>
-    <div><div class="stat-num">12+</div><div class="stat-label">Document Types</div></div>
-    <div><div class="stat-num">99.9%</div><div class="stat-label">Uptime</div></div>
+    <div class="stat-item">
+      <div class="stat-num"><i class="fa-solid fa-file"></i> 30,000+</div>
+      <div class="stat-label">Documents Drafted</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num"><i class="fa-solid fa-users"></i> 5,000+</div>
+      <div class="stat-label">Happy Clients</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num"><i class="fa-solid fa-cubes"></i> 12+</div>
+      <div class="stat-label">Document Types</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num"><i class="fa-solid fa-shield"></i> 99.9%</div>
+      <div class="stat-label">Uptime Guaranteed</div>
+    </div>
   </div>
 </div>
 
-<!-- POPULAR DOCS STRIP -->
-<div class="popular-strip">
-  <div class="pop-inner">
-    <span class="pop-label"><i class="fa-solid fa-bolt" style="color:var(--amber)"></i> Popular</span>
-    <span class="pop-sep"></span>
-    <span class="pop-chip hot" onclick="openDoc('rent')"><i class="fa-solid fa-file-signature"></i> Rent Agreement</span>
-    <span class="pop-chip" onclick="openDoc('gnida')"><i class="fa-solid fa-landmark"></i> GNIDA Mutation</span>
-    <span class="pop-chip" onclick="openDoc('noida')"><i class="fa-solid fa-building"></i> NOIDA Transfer</span>
-    <span class="pop-chip" onclick="openDoc('trademark')"><i class="fa-solid fa-user-tie"></i> TM-48</span>
-    <span class="pop-chip" onclick="openDoc('sale')"><i class="fa-solid fa-handshake"></i> Agreement to Sell</span>
+<!-- ═══ AUDIENCE ═══ -->
+<section class="audience-section">
+  <div class="wrapper">
+    <div class="sec-head">
+      <span class="sec-label"><i class="fa-solid fa-users"></i> Who It's For</span>
+      <h2 class="sec-title">Designed for everyone in <em>G.B. Nagar</em></h2>
+      <p class="sec-sub">From property owners to legal professionals — Instadeed simplifies legal documentation for every use case.</p>
+    </div>
+    <div class="audience-grid">
+      <div class="audience-card" onclick="window.location.href='Madhav_Drafting_Hub.html'">
+        <div class="ac-icon" style="background:#EEF2FF;color:#2952CC"><i class="fa-solid fa-building"></i></div>
+        <h3>Property Owners</h3>
+        <p>Draft rent agreements, sale deeds, and mutation forms for your Noida &amp; Greater Noida properties in minutes.</p>
+        <span class="ac-link">Start Drafting <svg viewBox="0 0 15 15" style="width:12px;height:12px;fill:currentColor"><path d="M8.5 2L7.5 3l4.5 4.5H0v1h12L7.5 13l1 1 5.5-5.5L14 7.5l.5-.5z"/></svg></span>
+      </div>
+      <div class="audience-card" onclick="window.location.href='Madhav_Drafting_Hub.html'">
+        <div class="ac-icon" style="background:#ECFDF5;color:#10B981"><i class="fa-solid fa-user"></i></div>
+        <h3>Tenants &amp; Residents</h3>
+        <p>Get your rent agreement with e-stamp and Aadhaar e-sign in under 5 minutes. No paperwork, no delays.</p>
+        <span class="ac-link">Draft Now <svg viewBox="0 0 15 15" style="width:12px;height:12px;fill:currentColor"><path d="M8.5 2L7.5 3l4.5 4.5H0v1h12L7.5 13l1 1 5.5-5.5L14 7.5l.5-.5z"/></svg></span>
+      </div>
+      <div class="audience-card" onclick="window.location.href='Madhav_Drafting_Hub.html'">
+        <div class="ac-icon" style="background:#FFF7ED;color:#F97316"><i class="fa-solid fa-handshake"></i></div>
+        <h3>Property Dealers</h3>
+        <p>Generate GNIDA forms, NOIDA transfers, and sale agreements for your clients in bulk. Saves hours per deal.</p>
+        <span class="ac-link">Explore Plans <svg viewBox="0 0 15 15" style="width:12px;height:12px;fill:currentColor"><path d="M8.5 2L7.5 3l4.5 4.5H0v1h12L7.5 13l1 1 5.5-5.5L14 7.5l.5-.5z"/></svg></span>
+      </div>
+      <div class="audience-card" onclick="window.location.href='Madhav_Drafting_Hub.html'">
+        <div class="ac-icon" style="background:#F5F3FF;color:#8B5CF6"><i class="fa-solid fa-scale-balanced"></i></div>
+        <h3>Advocates &amp; Legal Pros</h3>
+        <p>Draft legally vetted documents for clients with integrated e-stamping. Reduce turnaround time dramatically.</p>
+        <span class="ac-link">Get Started <svg viewBox="0 0 15 15" style="width:12px;height:12px;fill:currentColor"><path d="M8.5 2L7.5 3l4.5 4.5H0v1h12L7.5 13l1 1 5.5-5.5L14 7.5l.5-.5z"/></svg></span>
+      </div>
+      <div class="audience-card" onclick="window.location.href='Madhav_Drafting_Hub.html'">
+        <div class="ac-icon" style="background:#FFFBEB;color:#D97706"><i class="fa-solid fa-briefcase"></i></div>
+        <h3>Businesses &amp; Firms</h3>
+        <p>Manage employee rent agreements, vendor contracts, and property documentation from a single dashboard.</p>
+        <span class="ac-link">Learn More <svg viewBox="0 0 15 15" style="width:12px;height:12px;fill:currentColor"><path d="M8.5 2L7.5 3l4.5 4.5H0v1h12L7.5 13l1 1 5.5-5.5L14 7.5l.5-.5z"/></svg></span>
+      </div>
+      <div class="audience-card" onclick="window.location.href='Madhav_Drafting_Hub.html'">
+        <div class="ac-icon" style="background:#FEF2F2;color:#EF4444"><i class="fa-solid fa-globe"></i></div>
+        <h3>NRIs &amp; Out-of-Town</h3>
+        <p>Manage your Noida properties remotely. Draft, e-stamp, and e-sign documents from anywhere in the world.</p>
+        <span class="ac-link">Start Remote <svg viewBox="0 0 15 15" style="width:12px;height:12px;fill:currentColor"><path d="M8.5 2L7.5 3l4.5 4.5H0v1h12L7.5 13l1 1 5.5-5.5L14 7.5l.5-.5z"/></svg></span>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
-<!-- FEATURES -->
+<!-- ═══ WHY CHOOSE ═══ -->
+<section class="why-section">
+  <div class="wrapper">
+    <div class="sec-head">
+      <span class="sec-label"><i class="fa-solid fa-star"></i> Why Instadeed</span>
+      <h2 class="sec-title">The smarter way to handle <em>legal documents</em></h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="wc-icon"><i class="fa-solid fa-wallet"></i></div>
+        <h3>Maximum Cost Savings</h3>
+        <p>Save thousands on legal fees and notary charges. DIY drafting with e-stamp at a fraction of traditional costs.</p>
+      </div>
+      <div class="why-card">
+        <div class="wc-icon"><i class="fa-solid fa-headset"></i></div>
+        <h3>24x7 Expert Support</h3>
+        <p>Our legal documentation team is available around the clock via chat, phone, or email to guide you.</p>
+      </div>
+      <div class="why-card">
+        <div class="wc-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3>100% Legal Validity</h3>
+        <p>Government e-Stamp and Aadhaar e-Sign make every document legally valid and admissible in court.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES ═══ -->
 <section class="features-section sp">
   <div class="wrapper">
     <div class="sec-head">
       <span class="sec-label"><i class="fa-solid fa-bolt"></i> Everything You Need</span>
-      <h2 class="sec-title">A complete legal documentation suite</h2>
-      <p class="sec-sub">From drafting to e-signing, manage every step of your legal document workflow in one place.</p>
+      <h2 class="sec-title">A complete legal documentation <em>suite</em></h2>
+      <p class="sec-sub">From drafting to e-signing, manage your entire legal document workflow in one platform.</p>
     </div>
     <div class="features-grid">
       <div class="feature-card">
         <div class="feat-icon"><i class="fa-solid fa-file-pen"></i></div>
         <h3>Smart Document Drafting</h3>
-        <p>AI-powered form filling with auto-calculations, validation, and real-time preview. No legal expertise needed.</p>
-        <ul class="feat-dots">
-          <li><i class="fa-solid fa-check"></i> Interactive smart forms</li>
-          <li><i class="fa-solid fa-check"></i> Auto-fill &amp; calculations</li>
+        <p>AI-powered forms with auto-calculations, validation, and real-time preview. No legal expertise required.</p>
+        <ul class="feat-list">
+          <li><i class="fa-solid fa-check"></i> Interactive smart forms with auto-fill</li>
+          <li><i class="fa-solid fa-check"></i> Auto-calculations &amp; field validation</li>
           <li><i class="fa-solid fa-check"></i> Real-time document preview</li>
         </ul>
-        <a href="Madhav_Drafting_Hub.html" class="feat-link">Start Drafting <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="Madhav_Drafting_Hub.html" class="feat-link">
+          Start Drafting
+          <svg viewBox="0 0 15 15"><path d="M8.5 2L7.5 3l4.5 4.5H0v1h12L7.5 13l1 1 5.5-5.5L14 7.5l.5-.5z"/></svg>
+        </a>
       </div>
       <div class="feature-card">
         <div class="feat-icon"><i class="fa-solid fa-stamp"></i></div>
         <h3>e-Stamp &amp; e-Sign</h3>
-        <p>Integrated Government e-Stamping and Aadhaar-based e-Signing. Generate legally valid documents instantly.</p>
-        <ul class="feat-dots">
-          <li><i class="fa-solid fa-check"></i> Government e-Stamping</li>
-          <li><i class="fa-solid fa-check"></i> Aadhaar OTP e-Sign</li>
-          <li><i class="fa-solid fa-check"></i> Leegality integration</li>
+        <p>Integrated Government e-Stamping and Aadhaar-based digital signing. Legally valid documents instantly.</p>
+        <ul class="feat-list">
+          <li><i class="fa-solid fa-check"></i> Government e-Stamping integration</li>
+          <li><i class="fa-solid fa-check"></i> Aadhaar OTP-based e-Signing</li>
+          <li><i class="fa-solid fa-check"></i> Leegality digital signature support</li>
         </ul>
-        <a href="Madhav_Drafting_Hub.html" class="feat-link">Explore e-Sign <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="Madhav_Drafting_Hub.html" class="feat-link">
+          Explore e-Sign
+          <svg viewBox="0 0 15 15"><path d="M8.5 2L7.5 3l4.5 4.5H0v1h12L7.5 13l1 1 5.5-5.5L14 7.5l.5-.5z"/></svg>
+        </a>
       </div>
       <div class="feature-card">
         <div class="feat-icon"><i class="fa-solid fa-cloud-arrow-down"></i></div>
         <h3>Instant Downloads &amp; Sharing</h3>
-        <p>Download stamped PDFs instantly, share via secure links, or print directly from the platform.</p>
-        <ul class="feat-dots">
-          <li><i class="fa-solid fa-check"></i> PDF download with stamps</li>
-          <li><i class="fa-solid fa-check"></i> Secure sharing links</li>
-          <li><i class="fa-solid fa-check"></i> Print-ready output</li>
+        <p>Download stamped PDFs instantly, share via secure links, or print from any device.</p>
+        <ul class="feat-list">
+          <li><i class="fa-solid fa-check"></i> PDF download with e-Stamp certificates</li>
+          <li><i class="fa-solid fa-check"></i> Secure document sharing links</li>
+          <li><i class="fa-solid fa-check"></i> Print-ready with all signatures</li>
         </ul>
-        <a href="Madhav_Drafting_Hub.html" class="feat-link">View Samples <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="Madhav_Drafting_Hub.html" class="feat-link">
+          View Samples
+          <svg viewBox="0 0 15 15"><path d="M8.5 2L7.5 3l4.5 4.5H0v1h12L7.5 13l1 1 5.5-5.5L14 7.5l.5-.5z"/></svg>
+        </a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- DOCUMENTS GRID -->
-<section class="doc-section sp" id="docs">
+<!-- ═══ DOCUMENTS ═══ -->
+<section class="features-section sp" id="templates" style="background:var(--white);border-top:1px solid var(--gray-200)">
   <div class="wrapper">
     <div class="sec-head">
       <span class="sec-label"><i class="fa-solid fa-folder-open"></i> Document Library</span>
-      <h2 class="sec-title">All templates at your fingertips</h2>
-      <p class="sec-sub">Choose from 12+ legally vetted document templates ready for instant drafting.</p>
+      <h2 class="sec-title">12+ professionally drafted <em>templates</em></h2>
+      <p class="sec-sub">Choose from 12+ legally vetted document templates for all your needs.</p>
     </div>
-    <div class="doc-tabs" id="docTabs">
-      <button class="doc-tab active" data-cat="all" onclick="filterDocs('all',this)">All</button>
-      <button class="doc-tab" data-cat="gnida" onclick="filterDocs('gnida',this)">GNIDA</button>
-      <button class="doc-tab" data-cat="noida" onclick="filterDocs('noida',this)">NOIDA</button>
-      <button class="doc-tab" data-cat="property" onclick="filterDocs('property',this)">Property</button>
-      <button class="doc-tab" data-cat="business" onclick="filterDocs('business',this)">Business</button>
-    </div>
-    <div class="doc-grid" id="docGrid"></div>
+    <div class="features-grid" style="grid-template-columns:repeat(4,1fr);gap:1rem" id="docGrid"></div>
   </div>
 </section>
 
-<!-- WORKFLOW -->
-<section class="workflow-section sp">
+<!-- ═══ PRICING ═══ -->
+<section class="pricing-section" id="pricing">
+  <div class="wrapper">
+    <div class="sec-head">
+      <span class="sec-label"><i class="fa-solid fa-rupee-sign"></i> Plans &amp; Pricing</span>
+      <h2 class="sec-title">Simple, transparent <em>pricing</em></h2>
+      <p class="sec-sub">Choose the plan that fits your needs. All plans include e-stamp &amp; e-sign capabilities.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <span class="pc-badge">Starter</span>
+        <div class="pc-name">Free</div>
+        <div class="pc-desc">Perfect for one-off documents</div>
+        <div class="pc-price">₹0 <span>lifetime</span></div>
+        <ul class="pc-features">
+          <li><i class="fa-solid fa-check"></i> 1 Rent Agreement</li>
+          <li><i class="fa-solid fa-check"></i> Aadhaar e-Sign</li>
+          <li><i class="fa-solid fa-check"></i> PDF download</li>
+          <li><i class="fa-solid fa-check"></i> 30-day access</li>
+          <li><i class="fa-solid fa-check na"></i> <span class="na">GNIDA &amp; NOIDA forms</span></li>
+          <li><i class="fa-solid fa-check na"></i> <span class="na">Bulk documents</span></li>
+          <li><i class="fa-solid fa-check na"></i> <span class="na">Priority support</span></li>
+        </ul>
+        <a href="Madhav_Drafting_Hub.html" class="pc-btn pc-btn-outline">Get Started Free</a>
+      </div>
+      <div class="pricing-card featured">
+        <span class="pc-badge">Most Popular</span>
+        <div class="pc-name">Professional</div>
+        <div class="pc-desc">For individuals &amp; property owners</div>
+        <div class="pc-price">₹2,499 <span>/yr</span></div>
+        <div class="pc-original">₹4,999 <span class="saved">Save 50%</span></div>
+        <ul class="pc-features">
+          <li><i class="fa-solid fa-check"></i> Unlimited documents</li>
+          <li><i class="fa-solid fa-check"></i> All property templates</li>
+          <li><i class="fa-solid fa-check"></i> GNIDA &amp; NOIDA forms</li>
+          <li><i class="fa-solid fa-check"></i> Government e-Stamp</li>
+          <li><i class="fa-solid fa-check"></i> Aadhaar e-Sign</li>
+          <li><i class="fa-solid fa-check na"></i> <span class="na">Bulk generation</span></li>
+          <li><i class="fa-solid fa-check na"></i> <span class="na">Priority support</span></li>
+        </ul>
+        <a href="Madhav_Drafting_Hub.html" class="pc-btn">Buy Professional</a>
+      </div>
+      <div class="pricing-card">
+        <span class="pc-badge">Business</span>
+        <div class="pc-name">₹7,999 <span>/yr</span></div>
+        <div class="pc-desc">For property dealers &amp; firms</div>
+        <div class="pc-original">₹14,999 <span class="saved">Save 46%</span></div>
+        <ul class="pc-features">
+          <li><i class="fa-solid fa-check"></i> Everything in Professional</li>
+          <li><i class="fa-solid fa-check"></i> Bulk document generation</li>
+          <li><i class="fa-solid fa-check"></i> CSV/Excel import</li>
+          <li><i class="fa-solid fa-check"></i> Branded PDFs</li>
+          <li><i class="fa-solid fa-check"></i> Priority chat support</li>
+          <li><i class="fa-solid fa-check"></i> Client document portal</li>
+          <li><i class="fa-solid fa-check na"></i> <span class="na">API access</span></li>
+        </ul>
+        <a href="Madhav_Drafting_Hub.html" class="pc-btn">Buy Business</a>
+      </div>
+      <div class="pricing-card">
+        <span class="pc-badge">Enterprise</span>
+        <div class="pc-name">Custom</div>
+        <div class="pc-desc">For law firms &amp; large orgs</div>
+        <div class="pc-price">Let's talk</div>
+        <ul class="pc-features">
+          <li><i class="fa-solid fa-check"></i> Everything in Business</li>
+          <li><i class="fa-solid fa-check"></i> API &amp; white-label access</li>
+          <li><i class="fa-solid fa-check"></i> Custom template builder</li>
+          <li><i class="fa-solid fa-check"></i> Dedicated account manager</li>
+          <li><i class="fa-solid fa-check"></i> SLA guarantees</li>
+          <li><i class="fa-solid fa-check"></i> SSO &amp; team management</li>
+          <li><i class="fa-solid fa-check"></i> 24x7 phone support</li>
+        </ul>
+        <a href="#" class="pc-btn pc-btn-outline" onclick="openAuth('register');return false">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how-section sp">
   <div class="wrapper">
     <div class="sec-head">
       <span class="sec-label"><i class="fa-solid fa-arrow-trend-up"></i> How It Works</span>
-      <h2 class="sec-title">Three simple steps to your legal document</h2>
+      <h2 class="sec-title">Six simple steps to your <em>legal document</em></h2>
     </div>
-    <div class="workflow-grid">
-      <div class="workflow-steps">
-        <div class="wf-step active" onclick="setWfStep(1,this)">
-          <div class="wf-num">1</div>
-          <div class="wf-info">
-            <h4>Fill Smart Form</h4>
-            <p>Answer simple questions — our forms handle the legal complexity automatically.</p>
+    <div class="how-grid">
+      <div class="how-steps">
+        <div class="how-step active" onclick="setStep(1,this)">
+          <div class="how-num">1</div>
+          <div class="how-info">
+            <h4>Choose Document</h4>
+            <p>Pick from 12+ legally vetted templates — rent, property, GNIDA, NOIDA, and more.</p>
           </div>
         </div>
-        <div class="wf-step" onclick="setWfStep(2,this)">
-          <div class="wf-num">2</div>
-          <div class="wf-info">
-            <h4>e-Stamp &amp; e-Sign</h4>
-            <p>Apply Government e-Stamp and sign digitally using Aadhaar OTP or Leegality.</p>
+        <div class="how-step" onclick="setStep(2,this)">
+          <div class="how-num">2</div>
+          <div class="how-info">
+            <h4>Fill Details</h4>
+            <p>Answer simple questions in our smart form — auto-calculations &amp; validation handle the complexity.</p>
           </div>
         </div>
-        <div class="wf-step" onclick="setWfStep(3,this)">
-          <div class="wf-num">3</div>
-          <div class="wf-info">
-            <h4>Download &amp; Share</h4>
-            <p>Get your stamped, signed PDF instantly. Download, print, or share a secure link.</p>
+        <div class="how-step" onclick="setStep(3,this)">
+          <div class="how-num">3</div>
+          <div class="how-info">
+            <h4>Preview</h4>
+            <p>Review your completed draft in real-time with all fields populated and formatted.</p>
+          </div>
+        </div>
+        <div class="how-step" onclick="setStep(4,this)">
+          <div class="how-num">4</div>
+          <div class="how-info">
+            <h4>Pay</h4>
+            <p>Secure payment via UPI, card, or netbanking. E-stamp fee included in checkout.</p>
+          </div>
+        </div>
+        <div class="how-step" onclick="setStep(5,this)">
+          <div class="how-num">5</div>
+          <div class="how-info">
+            <h4>e-Sign</h4>
+            <p>Sign digitally using Aadhaar OTP — legally valid under the IT Act, 2000.</p>
+          </div>
+        </div>
+        <div class="how-step" onclick="setStep(6,this)">
+          <div class="how-num">6</div>
+          <div class="how-info">
+            <h4>Download</h4>
+            <p>Get your stamped &amp; signed PDF instantly. Download, print, or share a secure link.</p>
           </div>
         </div>
       </div>
-      <div class="wf-preview" id="wfPreview">
-        <div class="wf-preview-header">
+      <div class="how-preview" id="howPreview">
+        <div class="how-preview-header">
           <h4><i class="fa-solid fa-file-contract"></i> <span id="previewTitle">Rent Agreement.pdf</span></h4>
-          <span class="wf-status" id="previewStatus">Draft Ready</span>
+          <span class="how-status-badge" id="previewStatus" style="background:#ECFDF5;color:var(--emerald)">Ready</span>
         </div>
-        <div id="previewBody"></div>
+        <div id="previewBody">
+          <div class="preview-tracker">
+            <div class="preview-tracker-left">
+              <div style="width:28px;height:28px;border-radius:50%;background:#ECFDF5;color:var(--emerald);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0"><i class="fa-solid fa-check"></i></div>
+              <div><div class="preview-name">Document Selected</div><div class="preview-role">Rent Agreement · ₹299</div></div>
+            </div>
+            <span class="how-status-badge" style="background:#ECFDF5;color:var(--emerald);font-size:0.62rem"><i class="fa-solid fa-check"></i> Done</span>
+          </div>
+          <div class="preview-tracker">
+            <div class="preview-tracker-left">
+              <div style="width:28px;height:28px;border-radius:50%;background:#ECFDF5;color:var(--emerald);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0"><i class="fa-solid fa-check"></i></div>
+              <div><div class="preview-name">Details Filled</div><div class="preview-role">Landlord: Bhati Ji · Tenant: Sharma Ji</div></div>
+            </div>
+            <span class="how-status-badge" style="background:#ECFDF5;color:var(--emerald);font-size:0.62rem"><i class="fa-solid fa-check"></i> Done</span>
+          </div>
+          <div class="preview-tracker">
+            <div class="preview-tracker-left">
+              <div style="width:28px;height:28px;border-radius:50%;background:#FEF3C7;color:var(--amber);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0">3</div>
+              <div><div class="preview-name">Preview &amp; Verify</div><div class="preview-role">Review all fields before payment</div></div>
+            </div>
+            <span class="how-status-badge" style="background:#FEF3C7;color:var(--amber);font-size:0.62rem"><i class="fa-regular fa-clock"></i> Current</span>
+          </div>
+          <div class="preview-tracker">
+            <div class="preview-tracker-left">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--gray-100);color:var(--gray-300);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0">4</div>
+              <div><div class="preview-name" style="color:var(--gray-400)">Pay &amp; e-Stamp</div><div class="preview-role">UPI, card, or netbanking</div></div>
+            </div>
+            <span class="how-status-badge" style="background:var(--gray-100);color:var(--gray-300);font-size:0.62rem">Pending</span>
+          </div>
+          <div class="preview-tracker">
+            <div class="preview-tracker-left">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--gray-100);color:var(--gray-300);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0">5</div>
+              <div><div class="preview-name" style="color:var(--gray-400)">Aadhaar e-Sign</div><div class="preview-role">OTP-based digital signature</div></div>
+            </div>
+            <span class="how-status-badge" style="background:var(--gray-100);color:var(--gray-300);font-size:0.62rem">Pending</span>
+          </div>
+          <div class="preview-tracker">
+            <div class="preview-tracker-left">
+              <div style="width:28px;height:28px;border-radius:50%;background:var(--gray-100);color:var(--gray-300);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0">6</div>
+              <div><div class="preview-name" style="color:var(--gray-400)">Download PDF</div><div class="preview-role">Stamped &amp; signed document</div></div>
+            </div>
+            <span class="how-status-badge" style="background:var(--gray-100);color:var(--gray-300);font-size:0.62rem">Pending</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
+<!-- ═══ EXPERT ═══ -->
+<section class="expert-section">
+  <div class="wrapper">
+    <div class="expert-grid">
+      <div class="expert-left">
+        <span class="sec-label" style="margin-bottom:.75rem;display:inline-flex"><i class="fa-solid fa-user-tie"></i> Expert Help Available</span>
+        <h2>Need help drafting your legal document?<br>Hire our <em style="font-style:normal;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">verified experts</em></h2>
+        <p>Get your document drafted, reviewed, e-stamped, and e-signed by qualified legal professionals in under 24 hours.</p>
+        <ul class="expert-bullets">
+          <li><i class="fa-solid fa-check"></i> Senior legal expert assigned within the hour — no queues</li>
+          <li><i class="fa-solid fa-check"></i> All details captured upfront — no back and forth</li>
+          <li><i class="fa-solid fa-check"></i> Document drafted, stamped, and signed in one go</li>
+          <li><i class="fa-solid fa-check"></i> Average turnaround: 12 hours</li>
+        </ul>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+          <a href="Madhav_Drafting_Hub.html" class="btn-hero">
+            Hire a Legal Expert
+            <svg viewBox="0 0 15 15"><path d="M8.5 2L7.5 3l4.5 4.5H0v1h12L7.5 13l1 1 5.5-5.5L14 7.5l.5-.5z"/></svg>
+          </a>
+          <button class="btn-hero-ghost" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">
+            <i class="fa-regular fa-eye"></i> View Plans
+          </button>
+        </div>
+      </div>
+      <div class="expert-right">
+        <div class="expert-card">
+          <div class="expert-avatar">AK</div>
+          <h4>Adv. Ananya Kapoor</h4>
+          <div class="ec-label">Senior Legal Document Specialist</div>
+          <div class="ec-stats">
+            <div class="ec-stat">
+              <div class="ec-stat-num">1,200+</div>
+              <div class="ec-stat-label">Docs Done</div>
+            </div>
+            <div class="ec-stat">
+              <div class="ec-stat-num">4.9★</div>
+              <div class="ec-stat-label">Rating</div>
+            </div>
+            <div class="ec-stat">
+              <div class="ec-stat-num">4hr</div>
+              <div class="ec-stat-label">Avg. Filing</div>
+            </div>
+          </div>
+          <div style="font-size:.72rem;color:var(--gray-400);margin-top:.75rem;border-top:1px solid rgba(41,82,204,0.08);padding-top:.75rem">
+            <i class="fa-solid fa-award" style="color:var(--blue)"></i> Verified by Instadeed &bull; 5+ years experience
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
 <section class="testi-section sp">
   <div class="wrapper">
     <div class="sec-head">
-      <span class="sec-label"><i class="fa-solid fa-comments"></i> Trusted by Professionals</span>
-      <h2 class="sec-title">What our users say</h2>
+      <span class="sec-label"><i class="fa-solid fa-comments"></i> Testimonials</span>
+      <h2 class="sec-title">Trusted by industry <em>professionals</em></h2>
     </div>
     <div class="testi-grid">
       <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">"Made my rent agreement in 5 minutes. Aadhaar e-sign was seamless. Highly recommended for Noida residents."</p>
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Made my rent agreement in 5 minutes with e-stamp and Aadhaar e-sign. Seamless experience, highly recommended for Noida residents.</p>
         <div class="testi-author">
           <div class="testi-avatar" style="background:#2952CC">AK</div>
           <div>
             <div class="testi-name">Anil Kumar</div>
-            <div class="testi-role">Tenant, Sector 62 Noida</div>
+            <div class="testi-role">Tenant, Sector 62, Noida</div>
           </div>
         </div>
       </div>
       <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">"The GNIDA mutation form used to take days. Now I fill it online and submit in minutes. Game changer for property dealers."</p>
+        <div class="testi-quote">"</div>
+        <p class="testi-text">The GNIDA mutation form used to take days. Now I fill it online and submit in minutes. A game changer for property dealers in Greater Noida.</p>
         <div class="testi-author">
           <div class="testi-avatar" style="background:#0D9488">RS</div>
           <div>
@@ -1181,13 +1418,13 @@ section { position: relative; }
         </div>
       </div>
       <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">"Excellent platform for legal documentation. The e-stamping integration saves us a trip to the bank every time."</p>
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Excellent platform for legal documentation. The e-stamping integration saves us a trip to the bank every single time. Brilliant for advocates.</p>
         <div class="testi-author">
           <div class="testi-avatar" style="background:#8B5CF6">PM</div>
           <div>
             <div class="testi-name">Priya Mehra</div>
-            <div class="testi-role">Advocate, Noida Courts</div>
+            <div class="testi-role">Advocate, Noida District Courts</div>
           </div>
         </div>
       </div>
@@ -1195,31 +1432,110 @@ section { position: relative; }
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section">
-  <h2 class="cta-title">Ready to draft your legal document?</h2>
-  <p class="cta-sub">Join 30,000+ users who trust Instadeed for their legal documentation needs.</p>
-  <div class="cta-buttons">
-    <a href="Madhav_Drafting_Hub.html" class="cta-btn-primary"><i class="fa-solid fa-right-to-bracket"></i> Start Drafting Free</a>
-    <button class="cta-btn-secondary" onclick="openAuth('register')"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+<!-- ═══ BRANDS ═══ -->
+<div class="brands-section">
+  <div class="wrapper">
+    <span class="sec-label" style="margin-bottom:1.5rem;display:inline-flex"><i class="fa-solid fa-building"></i> Trusted by employees from G.B. Nagar's leading organizations</span>
+    <div class="brands-grid">
+      <span class="brand-logo"><i class="fa-solid fa-city"></i> GNIDA Authority</span>
+      <span class="brand-logo"><i class="fa-solid fa-building-columns"></i> NOIDA Authority</span>
+      <span class="brand-logo"><i class="fa-solid fa-bank"></i> YEIDA</span>
+      <span class="brand-logo"><i class="fa-solid fa-landmark"></i> District Court</span>
+      <span class="brand-logo"><i class="fa-solid fa-house-building"></i> Supertech</span>
+      <span class="brand-logo"><i class="fa-solid fa-building"></i> ATS Group</span>
+      <span class="brand-logo"><i class="fa-solid fa-tower"></i> Jaypee Group</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FAQ ═══ -->
+<section class="faq-section" id="faq">
+  <div class="wrapper">
+    <div class="sec-head">
+      <span class="sec-label"><i class="fa-solid fa-circle-question"></i> FAQs</span>
+      <h2 class="sec-title">Frequently asked <em>questions</em></h2>
+      <p class="sec-sub">Can't find your question? <a href="#" onclick="openAuth('register');return false" style="color:var(--blue);font-weight:600;text-decoration:underline">Email us</a></p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">What documents can I draft on Instadeed? <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="faq-answer">You can draft Rent Agreements, Registered Rent Agreements, Agreement to Sell, Property Mutation Forms, GNIDA Mutation &amp; Registry forms, NOIDA Transfer Memos, GNIDA 5-in-1 Package, KYA (Know Your Allottee) forms, and TM-48 Trademark Authorization — 12+ legally vetted templates.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">Is the e-stamp legally valid? <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="faq-answer">Yes. We use Government-authorised e-Stamping through Stock Holding Corporation of India (SHCIL) and NSDL. The e-stamp certificate is legally valid under the Indian Stamp Act, 1899 and accepted by all courts in India.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">How does Aadhaar e-signing work? <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="faq-answer">Aadhaar e-Sign uses your Aadhaar number and an OTP sent to your registered mobile number. The e-signature is issued by NSDL e-Governance and legally valid under the IT Act, 2000. It takes just 2 minutes.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">How long does it take to get a completed document? <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="faq-answer">With the DIY mode, you can draft, e-stamp, and e-sign a document in under 10 minutes. With our Assisted (expert) mode, your document is typically completed within 12 hours — often in as little as 4 hours for simple documents.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">Can I get a registered rent agreement through Instadeed? <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="faq-answer">Yes, we offer a Registered Rent Agreement service (₹4,999) that includes e-stamping, e-signing, and physical registration with the Sub-Registrar of Assurance. Our team handles the entire process on your behalf.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">What is GNIDA Mutation and why do I need it? <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="faq-answer">GNIDA Mutation is the official process to update the property records after purchase, inheritance, or ownership change in Greater Noida Industrial Development Authority areas. It is mandatory for all GNIDA residential properties under the leasehold system.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">Is my data safe and secure? <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="faq-answer">Absolutely. Instadeed uses 128-bit SSL encryption for all data transmission. Documents are stored in secure, ISO 27001-certified data centres. We never share your personal data with unaffiliated third parties. All Aadhaar e-Sign transactions are handled by NSDL directly.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">What payment methods do you accept? <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="faq-answer">We accept all major payment methods including UPI (GPay, PhonePe, Paytm), net banking, credit/debit cards, and NEFT/IMPS bank transfer. E-stamp fees are separate and handled via the Government e-Stamping portal.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">Can I get a refund if I'm not satisfied? <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="faq-answer">Yes. If your document cannot be completed due to a technical issue on our side, we offer a full refund. DIY document fees are non-refundable once drafted, but Assisted plan payments are covered by our satisfaction guarantee. See our Refund Policy for details.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">Do I need to visit any office in person? <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="faq-answer">No. The entire process — from drafting to e-stamping to e-signing — is fully online. You never need to visit a bank, notary, or government office. For Registered Rent Agreements, our team handles the sub-registrar visit on your behalf.</div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+  <h2 class="cta-title">Ready to draft your legal document?</h2>
+  <p class="cta-sub">Join 30,000+ users who trust Instadeed for their legal documentation needs in G.B. Nagar.</p>
+  <div class="cta-actions">
+    <a href="Madhav_Drafting_Hub.html" class="cta-primary">
+      Start Drafting Free
+      <svg viewBox="0 0 15 15" style="width:14px;height:14px;fill:currentColor"><path d="M8.5 2L7.5 3l4.5 4.5H0v1h12L7.5 13l1 1 5.5-5.5L14 7.5l.5-.5z"/></svg>
+    </a>
+    <button class="cta-secondary" onclick="openAuth('register')"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
 <footer class="footer">
   <div class="footer-grid">
     <div class="footer-brand">
       <span class="logo-text">Insta<span>deed</span></span>
       <p>Gautam Buddh Nagar's premier legal documentation platform. Draft, stamp, and e-sign documents online.</p>
+      <div class="footer-social" style="margin-top:1.25rem">
+        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
     </div>
     <div>
       <h4>Products</h4>
       <ul class="footer-links">
         <li><a href="Madhav_Drafting_Hub.html">Rent Agreement</a></li>
+        <li><a href="Madhav_Drafting_Hub.html">Registered Rent</a></li>
         <li><a href="Madhav_Drafting_Hub.html">GNIDA Mutation</a></li>
         <li><a href="Madhav_Drafting_Hub.html">GNIDA Registry</a></li>
+        <li><a href="Madhav_Drafting_Hub.html">GNIDA 5-in-1</a></li>
         <li><a href="Madhav_Drafting_Hub.html">NOIDA Transfer</a></li>
-        <li><a href="Madhav_Drafting_Hub.html">TM-48 / Trademark</a></li>
       </ul>
     </div>
     <div>
@@ -1227,8 +1543,9 @@ section { position: relative; }
       <ul class="footer-links">
         <li><a href="#">Help Center</a></li>
         <li><a href="#">Legal Guide</a></li>
-        <li><a href="#">Tutorials</a></li>
+        <li><a href="#">How-To Videos</a></li>
         <li><a href="#">FAQs</a></li>
+        <li><a href="#">Blog</a></li>
         <li><a href="#">Contact Support</a></li>
       </ul>
     </div>
@@ -1236,77 +1553,78 @@ section { position: relative; }
       <h4>Company</h4>
       <ul class="footer-links">
         <li><a href="#">About Us</a></li>
+        <li><a href="#">Careers</a></li>
         <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Terms of Use</a></li>
         <li><a href="#">Refund Policy</a></li>
+        <li><a href="#">Trust &amp; Safety</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Tools</h4>
+      <ul class="footer-links">
+        <li><a href="#">e-Stamp Calculator</a></li>
+        <li><a href="#">Rent Calculator</a></li>
+        <li><a href="#">Stamp Duty Rates</a></li>
+        <li><a href="#">Property Tax Check</a></li>
+        <li><a href="#">GNIDA Plot Search</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>&copy; 2026 Instadeed. All rights reserved.</p>
-    <div class="footer-social">
-      <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-      <a href="#"><i class="fa-brands fa-twitter"></i></a>
-      <a href="#"><i class="fa-brands fa-youtube"></i></a>
-      <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+    <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+      <p>&copy; 2026 Instadeed (by Defmacro Software). All rights reserved.</p>
+      <div style="display:flex;gap:.75rem;align-items:center">
+        <span style="display:flex;align-items:center;gap:.3rem;font-size:.7rem;color:rgba(255,255,255,0.35)"><i class="fa-solid fa-shield" style="color:var(--blue)"></i> ISO 27001</span>
+        <span style="display:flex;align-items:center;gap:.3rem;font-size:.7rem;color:rgba(255,255,255,0.35)"><i class="fa-solid fa-lock" style="color:var(--blue)"></i> 128-bit SSL</span>
+        <span style="display:flex;align-items:center;gap:.3rem;font-size:.7rem;color:rgba(255,255,255,0.35)"><i class="fa-solid fa-certificate" style="color:var(--blue)"></i> Verified</span>
+      </div>
     </div>
   </div>
 </footer>
 
-<!-- AUTH MODAL -->
+<!-- ═══ AUTH MODAL ═══ -->
 <div class="modal-overlay" id="authModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeAuth()"><i class="fa-solid fa-xmark"></i></button>
     <div id="authPhoneStep" style="display:block">
       <h3 class="modal-title">Welcome to Instadeed</h3>
-      <p class="modal-sub">Sign in to start drafting your documents</p>
-      <button class="modal-btn modal-btn-google" onclick="signInWithGoogle()">
-        <i class="fa-brands fa-google" style="color:#EA4335"></i> Continue with Google
-      </button>
-      <div class="modal-divider">or continue with phone</div>
-      <input class="modal-input" id="phoneNum" type="tel" placeholder="Enter your mobile number" oninput="checkPhone()">
-      <button class="modal-btn modal-btn-primary" id="btnSendOtp" onclick="sendOtp()" style="opacity:0.5;pointer-events:none">Send OTP</button>
-    </div>
-    <div id="authOtpStep" style="display:none">
-      <h3 class="modal-title">Verify OTP</h3>
-      <p class="modal-sub">Enter the 6-digit code sent to <strong id="otpPhoneNum">+91 XXXXX XXXXX</strong></p>
-      <div class="otp-row" id="otpRow">
-        <input class="otp-box" id="ob0" maxlength="1" oninput="otpNext(this,0)" onkeydown="otpKey(event,0)">
-        <input class="otp-box" id="ob1" maxlength="1" oninput="otpNext(this,1)" onkeydown="otpKey(event,1)">
-        <input class="otp-box" id="ob2" maxlength="1" oninput="otpNext(this,2)" onkeydown="otpKey(event,2)">
-        <input class="otp-box" id="ob3" maxlength="1" oninput="otpNext(this,3)" onkeydown="otpKey(event,3)">
-        <input class="otp-box" id="ob4" maxlength="1" oninput="otpNext(this,4)" onkeydown="otpKey(event,4)">
-        <input class="otp-box" id="ob5" maxlength="1" oninput="otpNext(this,5)" onkeydown="otpKey(event,5)">
-      </div>
-      <button class="modal-btn modal-btn-primary" id="btnVerifyOtp" onclick="verifyOtp()" style="opacity:0.5;pointer-events:none">Verify &amp; Sign In</button>
-      <div style="text-align:center;margin-top:0.75rem;font-size:0.8rem;color:var(--gray-400)">
-        <span id="resendTimer"></span>
-        <a href="#" id="resendLink" onclick="resendOtp();return false" style="display:none;color:var(--blue);font-weight:600">Resend OTP</a>
-      </div>
-      <button class="modal-btn" style="background:none;color:var(--gray-400);font-size:0.8rem;margin-top:0.5rem" onclick="authBackToPhone()"><i class="fa-solid fa-arrow-left"></i> Back</button>
+      <p class="modal-sub">Sign in via Google to start drafting your documents</p>
+      <button class="modal-btn modal-btn-google" onclick="signInWithGoogle()"><i class="fa-brands fa-google" style="color:#EA4335"></i> Continue with Google</button>
     </div>
   </div>
 </div>
 
-<!-- ESIGN MODAL -->
+<!-- ═══ EDITOR OVERLAY ═══ -->
+<div class="modal-overlay" id="editorOverlay">
+  <div class="modal-box" style="max-width:92vw;height:90vh;padding:0;display:flex;flex-direction:column;overflow:hidden;border-radius:var(--radius-2xl)">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border-bottom:1px solid var(--gray-200);flex-shrink:0">
+      <div>
+        <strong id="edtDocName" style="font-size:0.9rem;color:var(--gray-800)"></strong>
+        <span style="font-size:0.72rem;color:var(--gray-400);margin-left:0.5rem" id="edtDocSub">Smart Form Editor</span>
+      </div>
+      <div style="display:flex;gap:0.5rem">
+        <button onclick="dlDoc()" style="display:inline-flex;align-items:center;gap:0.35rem;background:var(--blue);color:#fff;font-size:0.8rem;font-weight:700;padding:0.45rem 0.85rem;border-radius:var(--radius-md);border:none;cursor:pointer"><i class="fa-solid fa-download"></i> PDF</button>
+        <button onclick="openEsignDoc()" style="display:inline-flex;align-items:center;gap:0.35rem;background:var(--emerald);color:#fff;font-size:0.8rem;font-weight:700;padding:0.45rem 0.85rem;border-radius:var(--radius-md);border:none;cursor:pointer"><i class="fa-solid fa-fingerprint"></i> e-Sign</button>
+        <button onclick="closeEditor()" class="modal-close" style="position:static;width:28px;height:28px;font-size:0.8rem"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <iframe id="editorFrame" style="flex:1;border:none;width:100%"></iframe>
+  </div>
+</div>
+
+<!-- ═══ ESIGN MODAL (inline) ═══ -->
 <div class="modal-overlay" id="esignOverlay">
-  <div class="modal-box" style="max-width:480px">
+  <div class="modal-box" style="max-width:460px">
     <button class="modal-close" onclick="closeEsign()"><i class="fa-solid fa-xmark"></i></button>
     <h3 class="modal-title" style="display:flex;align-items:center;gap:0.5rem"><i class="fa-solid fa-fingerprint" style="color:var(--blue)"></i> Aadhaar e-Sign</h3>
     <p class="modal-sub">Document: <strong id="esDocLabel"></strong></p>
-    <div class="esign-steps">
-      <div class="esign-step active" id="esS1">1</div>
-      <div class="esign-line" id="el1"></div>
-      <div class="esign-step pending" id="esS2">2</div>
-      <div class="esign-line" id="el2"></div>
-      <div class="esign-step pending" id="esS3">3</div>
-    </div>
-    <div id="ep1" style="display:block">
+    <div id="esignStep1">
       <input class="modal-input" id="aadNum" type="text" placeholder="Aadhaar Number" oninput="fmtAadhaar(this)">
       <input class="modal-input" id="aadName" type="text" placeholder="Name as on Aadhaar">
       <button class="modal-btn modal-btn-primary" onclick="esS1Next()">Send OTP</button>
     </div>
-    <div id="ep2" style="display:none">
+    <div id="esignStep2" style="display:none">
       <p style="font-size:0.85rem;color:var(--gray-500);margin-bottom:1rem">OTP sent to mobile ending in <strong id="mMob"></strong></p>
       <div class="otp-row">
         <input class="otp-box" id="o1" maxlength="1" oninput="oFwd(this,'o2')" onkeydown="oBk(event,this,'')">
@@ -1316,60 +1634,47 @@ section { position: relative; }
         <input class="otp-box" id="o5" maxlength="1" oninput="oFwd(this,'o6')" onkeydown="oBk(event,this,'o4')">
         <input class="otp-box" id="o6" maxlength="1" oninput="oFwd(this,'')" onkeydown="oBk(event,this,'o5')">
       </div>
-      <p style="font-size:0.75rem;color:var(--gray-400);text-align:center">Resend in <span id="otpClock">05:00</span></p>
+      <p style="font-size:0.72rem;color:var(--gray-400);text-align:center">Resend in <span id="otpClock">05:00</span></p>
       <button class="modal-btn modal-btn-primary" style="margin-top:0.5rem" onclick="esS2Next()">Verify &amp; Sign</button>
       <button class="modal-btn" style="background:none;color:var(--gray-400)" onclick="esBack()">Back</button>
     </div>
-    <div id="ep3" style="display:none;text-align:center">
-      <div style="font-size:3rem;color:var(--emerald);margin-bottom:1rem"><i class="fa-solid fa-circle-check"></i></div>
-      <h3 style="font-family:var(--font-display);font-weight:800;color:var(--gray-800)">Signed Successfully!</h3>
-      <p id="certInfo" style="font-size:0.8rem;color:var(--gray-400);margin:0.5rem 0 1.5rem"></p>
+    <div id="esignStep3" style="display:none;text-align:center">
+      <div style="font-size:3rem;color:var(--emerald);margin-bottom:0.75rem"><i class="fa-solid fa-circle-check"></i></div>
+      <h3 style="font-family:var(--font-display);font-weight:800;color:var(--gray-800);font-size:1.15rem">Signed Successfully!</h3>
+      <p id="certInfo" style="font-size:0.78rem;color:var(--gray-400);margin:0.5rem 0 1.5rem"></p>
       <button class="modal-btn modal-btn-primary" onclick="closeEsign()">Done</button>
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="authToast"></div>
 
 <script>
-/* ═══════════════════════════════════════════════
-   DOCUMENT DATA
-   ═══════════════════════════════════════════════ */
+/* ═══════ DATA ═══════ */
 const DOCS = [
-  // GNIDA
-  { id:'GNIDA_MUTATION', name:'GNIDA Mutation', cat:'gnida', icon:'fa-landmark', desc:'Mutation application for GNIDA residential/commercial properties.', price:'₹2,000', color:'#D97706', bg:'#FFFBEB' },
-  { id:'GNIDA_REGISTRY', name:'GNIDA Registry', cat:'gnida', icon:'fa-file-lines', desc:'Property registry with GNIDA authority.', price:'₹5,000', color:'#D97706', bg:'#FFFBEB' },
-  { id:'KYA', name:'Know Your Allottee (KYA)', cat:'gnida', icon:'fa-id-card', desc:'KYA form for GNIDA allottee verification.', price:'₹500', color:'#D97706', bg:'#FFFBEB' },
-  { id:'GNIDA_PTM', name:'Permission to Mortgage', cat:'gnida', icon:'fa-handshake', desc:'PTM form for GNIDA property mortgage.', price:'₹3,500', color:'#D97706', bg:'#FFFBEB' },
-  { id:'GNIDA_PACKAGE', name:'GNIDA 5-in-1 Package', cat:'gnida', icon:'fa-cubes', desc:'Complete bundle of all GNIDA forms.', price:'₹10,000', color:'#D97706', bg:'#FFFBEB' },
-  // NOIDA
-  { id:'NOIDA_TRANSFER', name:'NOIDA Transfer', cat:'noida', icon:'fa-building', desc:'Transfer application for NOIDA authority properties.', price:'₹1,500', color:'#2952CC', bg:'#EEF2FF' },
-  { id:'TM_APP', name:'Transfer Memo Application', cat:'noida', icon:'fa-file-pen', desc:'Transfer memo for NOIDA property transfer.', price:'₹2,000', color:'#2952CC', bg:'#EEF2FF' },
-  // Property
-  { id:'RENT', name:'Rent Agreement', cat:'property', icon:'fa-file-contract', desc:'Standard rent agreement with e-stamp & e-sign support.', price:'₹299', color:'#10B981', bg:'#ECFDF5' },
-  { id:'REG_RENT', name:'Registered Rent Agreement', cat:'property', icon:'fa-file-signature', desc:'Register your rent agreement with sub-registrar.', price:'₹4,999', color:'#10B981', bg:'#ECFDF5' },
-  { id:'ATS', name:'Agreement to Sell', cat:'property', icon:'fa-handshake', desc:'Sale agreement for property transactions.', price:'₹299', color:'#10B981', bg:'#ECFDF5' },
-  { id:'MUTATION', name:'Mutation Form', cat:'property', icon:'fa-arrows-rotate', desc:'Property mutation application form.', price:'₹1,500', color:'#10B981', bg:'#ECFDF5' },
-  // Business
-  { id:'TM48', name:'TM-48 Trademark', cat:'business', icon:'fa-user-tie', desc:'Trademark authorization form (TM-48).', price:'₹500', color:'#8B5CF6', bg:'#F5F3FF' },
+  { id:'RENT', name:'Rent Agreement', cat:'Rent', icon:'fa-file-contract', desc:'Standard rent agreement with e-stamp & e-sign.', price:'₹299', color:'#10B981', bg:'#ECFDF5' },
+  { id:'REG_RENT', name:'Registered Rent', cat:'Rent', icon:'fa-file-signature', desc:'Register rent agreement with sub-registrar.', price:'₹4,999', color:'#10B981', bg:'#ECFDF5' },
+  { id:'ATS', name:'Agreement to Sell', cat:'Property', icon:'fa-handshake', desc:'Sale agreement for property transactions.', price:'₹299', color:'#10B981', bg:'#ECFDF5' },
+  { id:'MUTATION', name:'Mutation Form', cat:'Property', icon:'fa-arrows-rotate', desc:'Property mutation application.', price:'₹1,500', color:'#D97706', bg:'#FFFBEB' },
+  { id:'GNIDA_MUTATION', name:'GNIDA Mutation', cat:'GNIDA', icon:'fa-landmark', desc:'Mutation for GNIDA residential properties.', price:'₹2,000', color:'#D97706', bg:'#FFFBEB' },
+  { id:'GNIDA_REGISTRY', name:'GNIDA Registry', cat:'GNIDA', icon:'fa-file-lines', desc:'Property registry with GNIDA authority.', price:'₹5,000', color:'#D97706', bg:'#FFFBEB' },
+  { id:'KYA', name:'KYA Verification', cat:'GNIDA', icon:'fa-id-card', desc:'Know Your Allottee form for GNIDA.', price:'₹500', color:'#D97706', bg:'#FFFBEB' },
+  { id:'GNIDA_PACKAGE', name:'GNIDA 5-in-1', cat:'GNIDA', icon:'fa-cubes', desc:'Complete bundle of all GNIDA forms.', price:'₹10,000', color:'#D97706', bg:'#FFFBEB' },
+  { id:'NOIDA_TRANSFER', name:'NOIDA Transfer', cat:'NOIDA', icon:'fa-building', desc:'Transfer application for NOIDA properties.', price:'₹1,500', color:'#2952CC', bg:'#EEF2FF' },
+  { id:'TM_APP', name:'Transfer Memo', cat:'NOIDA', icon:'fa-file-pen', desc:'Transfer memo for NOIDA.', price:'₹2,000', color:'#2952CC', bg:'#EEF2FF' },
+  { id:'TM48', name:'TM-48 Trademark', cat:'Business', icon:'fa-user-tie', desc:'Trademark authorization form.', price:'₹500', color:'#8B5CF6', bg:'#F5F3FF' },
 ];
-
-/* ═══ HEADER / AUTH ═══ */
 const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID';
-let currentDoc = null;
-let resendInterval = null;
-let otpIv = null;
+let currentDoc = null, resendInterval = null, otpIv = null;
+let mockupInterval;
 
+/* ═══ HEADER ═══ */
 function toggleMobileMenu(){
   const nav = document.getElementById('mainNav');
-  const icon = document.getElementById('hamburgerIconInner');
+  const icon = document.getElementById('hamburgerIcon');
   nav.classList.toggle('mobile-open');
-  if(nav.classList.contains('mobile-open')){ icon.classList.remove('fa-bars'); icon.classList.add('fa-xmark'); }
-  else { icon.classList.remove('fa-xmark'); icon.classList.add('fa-bars'); }
+  icon.classList.toggle('fa-bars'); icon.classList.toggle('fa-xmark');
 }
-
-/* User */
 function toggleUserMenu(){
   const m = document.getElementById('userMenu');
   m.style.display = m.style.display === 'none' ? 'block' : 'none';
@@ -1382,16 +1687,31 @@ document.addEventListener('click', e => {
 function signOut(){
   localStorage.removeItem('instadeed_user_session');
   document.body.classList.remove('nav-auth-signed-in');
-  const area = document.getElementById('navAuthArea');
   const chip = document.getElementById('userChip');
-  if(area) area.classList.remove('nav-auth-signed-in');
   if(chip) chip.style.display = 'none';
   document.getElementById('userMenu').style.display = 'none';
   if(typeof google !== 'undefined' && google.accounts) google.accounts.id.disableAutoSelect();
   showToast('Signed out successfully');
 }
 
-/* Auth Modal */
+/* ═══ DOCS GRID ═══ */
+function renderDocs(){
+  const grid = document.getElementById('docGrid');
+  grid.innerHTML = DOCS.map(d => `
+    <div class="feature-card" style="cursor:pointer;padding:1.25rem" onclick="openDoc('${d.id}')">
+      <div style="width:36px;height:36px;border-radius:var(--radius-sm);background:${d.bg};color:${d.color};display:flex;align-items:center;justify-content:center;font-size:0.9rem;margin-bottom:0.75rem"><i class="fa-solid ${d.icon}"></i></div>
+      <h3 style="font-size:0.9rem;margin-bottom:0.3rem">${d.name}</h3>
+      <p style="font-size:0.75rem;color:var(--gray-400);line-height:1.5;margin-bottom:0.75rem">${d.desc}</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--gray-100);padding-top:0.65rem">
+        <span style="font-weight:800;font-size:0.9rem;color:var(--gray-800)">${d.price}</span>
+        <span style="font-size:0.7rem;font-weight:700;background:${d.bg};color:${d.color};padding:0.2rem 0.55rem;border-radius:var(--radius-full)">${d.cat}</span>
+      </div>
+    </div>
+  `).join('');
+}
+renderDocs();
+
+/* ═══ AUTH ═══ */
 function openAuth(v){
   document.getElementById('authModal').classList.add('open');
   document.getElementById('authPhoneStep').style.display = 'block';
@@ -1407,8 +1727,6 @@ function closeAuth(){
   clearInterval(resendInterval);
 }
 document.getElementById('authModal').addEventListener('click', function(e){ if(e.target === this) closeAuth(); });
-
-/* Auth — Phone */
 function checkPhone(){
   const v = document.getElementById('phoneNum').value.replace(/\D/g,'');
   document.getElementById('phoneNum').value = v;
@@ -1433,30 +1751,18 @@ function authBackToPhone(){
   document.getElementById('authPhoneStep').style.display = 'block';
   document.getElementById('authOtpStep').style.display = 'none';
   clearInterval(resendInterval);
-  setTimeout(()=>document.getElementById('phoneNum').focus(),100);
 }
 function startResendTimer(){
-  let t=30;
-  const link=document.getElementById('resendLink');
-  const timer=document.getElementById('resendTimer');
-  link.style.display = 'none';
-  timer.textContent = '(resend in '+t+'s)';
+  let t=30; const link=document.getElementById('resendLink'), timer=document.getElementById('resendTimer');
+  link.style.display = 'none'; timer.textContent = '(resend in '+t+'s)';
   clearInterval(resendInterval);
-  resendInterval = setInterval(()=>{
-    t--;
-    timer.textContent = '(resend in '+t+'s)';
-    if(t<=0){ clearInterval(resendInterval); link.style.display='inline'; timer.textContent=''; }
-  },1000);
+  resendInterval = setInterval(()=>{ t--; timer.textContent = '(resend in '+t+'s)'; if(t<=0){ clearInterval(resendInterval); link.style.display='inline'; timer.textContent=''; } },1000);
 }
 function resendOtp(){ sendOtp(); }
 function otpNext(el,idx){
-  el.value=el.value.replace(/\D/g,'').slice(-1);
-  el.classList.toggle('filled', el.value!=='');
-  let full=true;
-  for(let i=0;i<6;i++) if(!document.getElementById('ob'+i).value) full=false;
-  const btn=document.getElementById('btnVerifyOtp');
-  btn.style.opacity = full?'1':'.5';
-  btn.style.pointerEvents = full?'auto':'none';
+  el.value=el.value.replace(/\D/g,'').slice(-1); el.classList.toggle('filled', el.value!=='');
+  let full=true; for(let i=0;i<6;i++) if(!document.getElementById('ob'+i).value) full=false;
+  const btn=document.getElementById('btnVerifyOtp'); btn.style.opacity = full?'1':'.5'; btn.style.pointerEvents = full?'auto':'none';
   if(el.value && idx<5) document.getElementById('ob'+(idx+1)).focus();
 }
 function otpKey(e,idx){
@@ -1465,22 +1771,18 @@ function otpKey(e,idx){
   if(e.key==='ArrowRight'&&idx<5) document.getElementById('ob'+(idx+1)).focus();
 }
 function verifyOtp(){
-  let code='';
-  for(let i=0;i<6;i++) code+=document.getElementById('ob'+i).value;
+  let code=''; for(let i=0;i<6;i++) code+=document.getElementById('ob'+i).value;
   if(code.length<6){ showToast('Enter the 6-digit OTP'); return; }
   const phone = document.getElementById('phoneNum').value;
   const btn=document.getElementById('btnVerifyOtp');
-  btn.innerHTML='<i class="fa-solid fa-circle-notch fa-spin" style="margin-right:.4rem"></i>Verifying...';
-  btn.style.opacity='.7'; btn.style.pointerEvents='none';
+  btn.innerHTML='<i class="fa-solid fa-circle-notch fa-spin"></i> Verifying...'; btn.style.opacity='.7'; btn.style.pointerEvents='none';
   setTimeout(()=>{
     const user={ name:'User '+phone.slice(-4), phone:'+91'+phone, email:phone+'@instadeed.com', picture:null };
-    handleGoogleLogin(user);
-    clearInterval(resendInterval);
-    btn.innerHTML='Verify & Sign In';
+    handleGoogleLogin(user); clearInterval(resendInterval); btn.innerHTML='Verify & Sign In';
   }, 1200);
 }
 
-/* Google Auth */
+/* ═══ GOOGLE AUTH ═══ */
 function initGoogle(){
   if(typeof google === 'undefined' || !google.accounts) return;
   if(GOOGLE_CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID') return;
@@ -1491,111 +1793,36 @@ function signInWithGoogle(){
     const mockUser = { name:"Demo Signee", email:"google.signee@instadeed.com", picture:"https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" };
     handleGoogleLogin(mockUser); return;
   }
-  try{
-    google.accounts.id.prompt((notification)=>{
-      if(notification.isNotDisplayed() || notification.isSkippedMoment()){
-        google.accounts.oauth2.initTokenClient({
-          client_id: GOOGLE_CLIENT_ID, scope:'email profile',
-          callback: (resp)=>{ if(resp.access_token) fetchGoogleProfile(resp.access_token); }
-        }).requestAccessToken();
-      }
-    });
-  }catch(e){ console.warn('Google GSI error:',e); }
+  try{ google.accounts.id.prompt((n)=>{ if(n.isNotDisplayed()||n.isSkippedMoment()){ google.accounts.oauth2.initTokenClient({client_id:GOOGLE_CLIENT_ID,scope:'email profile',callback:(r)=>{ if(r.access_token) fetchGoogleProfile(r.access_token); }}).requestAccessToken(); }}); }
+  catch(e){ console.warn('Google GSI error:',e); }
 }
-function handleGoogleCredential(response){
-  try{ const payload = JSON.parse(atob(response.credential.split('.')[1])); handleGoogleLogin({ name:payload.name, email:payload.email, picture:payload.picture }); }
-  catch(e){ console.error('Google credential error',e); }
-}
-async function fetchGoogleProfile(token){
-  try{ const r=await fetch('https://www.googleapis.com/oauth2/v2/userinfo',{headers:{Authorization:'Bearer '+token}}); const u=await r.json(); handleGoogleLogin({name:u.name,email:u.email,picture:u.picture}); }
-  catch(e){ console.error('Google profile fetch error',e); }
-}
+function handleGoogleCredential(r){ try{ const p=JSON.parse(atob(r.credential.split('.')[1])); handleGoogleLogin({name:p.name,email:p.email,picture:p.picture}); }catch(e){} }
+async function fetchGoogleProfile(t){ try{ const r=await fetch('https://www.googleapis.com/oauth2/v2/userinfo',{headers:{Authorization:'Bearer '+t}}); const u=await r.json(); handleGoogleLogin({name:u.name,email:u.email,picture:u.picture}); }catch(e){} }
 function handleGoogleLogin(user){
   localStorage.setItem('instadeed_user_session', JSON.stringify(user));
-  applyLoggedInState(user);
-  closeAuth();
+  applyLoggedInState(user); closeAuth();
   showToast('Welcome, '+user.name.split(' ')[0]+'!');
 }
 function applyLoggedInState(user){
   document.body.classList.add('nav-auth-signed-in');
-  const chip = document.getElementById('userChip');
-  const avatar = document.getElementById('userAvatar');
-  const nameEl = document.getElementById('userName');
-  const emailEl = document.getElementById('userMenuEmail');
+  const chip = document.getElementById('userChip'); const avatar = document.getElementById('userAvatar');
+  const nameEl = document.getElementById('userName'); const emailEl = document.getElementById('userMenuEmail');
   const nameMenu = document.getElementById('userMenuName');
-  if(!chip) return;
-  chip.style.display = 'flex';
-  nameEl.textContent = user.name.split(' ')[0];
-  if(nameMenu) nameMenu.textContent = user.name;
+  if(!chip) return; chip.style.display = 'flex';
+  nameEl.textContent = user.name.split(' ')[0]; if(nameMenu) nameMenu.textContent = user.name;
   if(emailEl) emailEl.textContent = user.email||'';
   if(user.picture){ avatar.innerHTML = '<img src="'+user.picture+'" alt="avatar">'; }
   else { avatar.textContent = (user.name||'U')[0].toUpperCase(); }
 }
 
-/* ═══ SEARCH ═══ */
-function handleSearch(q){
-  const dd = document.getElementById('searchDropdown');
-  if(!q.trim()){ dd.classList.remove('show'); return; }
-  const results = DOCS.filter(d => d.name.toLowerCase().includes(q.toLowerCase()) || d.cat.toLowerCase().includes(q.toLowerCase()));
-  if(results.length===0){ dd.classList.remove('show'); return; }
-  dd.innerHTML = results.map(d => `
-    <div class="auto-item" onclick="handleSearchSelect('${d.id}')">
-      <div class="auto-item-left">
-        <i class="fa-solid ${d.icon}"></i>
-        <span class="auto-item-title">${d.name}</span>
-      </div>
-      <span class="auto-item-meta">${d.cat.toUpperCase()}</span>
-    </div>
-  `).join('');
-  dd.classList.add('show');
-}
-function handleSearchSelect(id){
-  document.getElementById('heroSearchInput').value = '';
-  document.getElementById('searchDropdown').classList.remove('show');
-  openDoc(id);
-}
-function handleSearchSubmit(){
-  const q = document.getElementById('heroSearchInput').value.trim();
-  if(q) handleSearchSelect(q);
-}
-
-/* ═══ DOCS GRID ═══ */
-function renderDocs(cat){
-  const grid = document.getElementById('docGrid');
-  const filtered = cat === 'all' ? DOCS : DOCS.filter(d => d.cat === cat);
-  grid.innerHTML = filtered.map(d => `
-    <div class="doc-card cat-${d.cat}" onclick="openDoc('${d.id}')">
-      <div class="doc-card-header">
-        <div class="doc-icon" style="background:${d.bg};color:${d.color}"><i class="fa-solid ${d.icon}"></i></div>
-        <span class="doc-cat-badge">${d.cat.toUpperCase()}</span>
-      </div>
-      <h3 class="doc-title">${d.name}</h3>
-      <p class="doc-desc">${d.desc}</p>
-      <div class="doc-footer">
-        <div class="doc-price">${d.price} <span>starting</span></div>
-        <button class="doc-btn" style="background:${d.bg};color:${d.color}">Draft <i class="fa-solid fa-arrow-right"></i></button>
-      </div>
-    </div>
-  `).join('');
-}
-let currentCat = 'all';
-function filterDocs(cat, btn){
-  currentCat = cat;
-  document.querySelectorAll('.doc-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  renderDocs(cat);
-}
-renderDocs('all');
-
-/* ═══ OPEN DOC ═══ */
+/* ═══ DOC / EDITOR ═══ */
 function openDoc(id){
   const doc = DOCS.find(d => d.id === id);
   if(!doc){ window.location.href = 'Madhav_Drafting_Hub.html'; return; }
   currentDoc = doc;
   document.getElementById('edtDocName').textContent = doc.name;
   document.getElementById('edtDocSub').textContent = 'Smart Form Editor';
-  const url = 'Madhav_Drafting_Hub.html?v='+Date.now()+'&solo=1&doc='+encodeURIComponent(id)+'&name='+encodeURIComponent(doc.name);
-  document.getElementById('editorFrame').src = url;
+  document.getElementById('editorFrame').src = 'Madhav_Drafting_Hub.html?v='+Date.now()+'&solo=1&doc='+encodeURIComponent(id)+'&name='+encodeURIComponent(doc.name);
   document.getElementById('editorOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1606,75 +1833,11 @@ function closeEditor(){
   currentDoc = null;
 }
 function dlDoc(){
-  const frame = document.getElementById('editorFrame');
-  if(frame && frame.contentWindow){ frame.contentWindow.focus(); frame.contentWindow.print(); }
-  else { alert('Downloading PDF…\n\n(Connect your backend to enable PDF export.)'); }
+  const f = document.getElementById('editorFrame');
+  if(f && f.contentWindow){ f.contentWindow.focus(); f.contentWindow.print(); }
+  else { alert('PDF export coming soon!'); }
 }
-
-/* ═══ WORKFLOW ═══ */
-function setWfStep(n, el){
-  document.querySelectorAll('.wf-step').forEach(s => s.classList.remove('active'));
-  if(el) el.classList.add('active');
-  const previewTitle = document.getElementById('previewTitle');
-  const previewStatus = document.getElementById('previewStatus');
-  const body = document.getElementById('previewBody');
-  if(n===1){
-    previewTitle.textContent = 'Rent Agreement.pdf';
-    previewStatus.textContent = 'Draft Ready';
-    previewStatus.style.color = 'var(--emerald)';
-    previewStatus.style.background = '#ECFDF5';
-    body.innerHTML = `
-      <div class="sig-tracker">
-        <div class="sig-tracker-left">
-          <div class="sig-avatar">L</div>
-          <div><div class="sig-name">Landlord</div><div class="sig-role">Bhati Ji</div></div>
-        </div>
-        <span class="sig-badge pending">Pending</span>
-      </div>
-      <div class="sig-tracker" style="margin-top:0.5rem">
-        <div class="sig-tracker-left">
-          <div class="sig-avatar">T</div>
-          <div><div class="sig-name">Tenant</div><div class="sig-role">Sharma Ji</div></div>
-        </div>
-        <span class="sig-badge pending">Pending</span>
-      </div>
-    `;
-  } else if(n===2){
-    previewTitle.textContent = 'Government e-Stamp.pdf';
-    previewStatus.textContent = 'Stamping Verified';
-    previewStatus.style.color = 'var(--emerald)';
-    previewStatus.style.background = '#ECFDF5';
-    body.innerHTML = `
-      <div style="border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:0.75rem;background:var(--gray-50);text-align:center">
-        <div style="font-weight:700;font-size:0.8rem;color:var(--gray-800);margin-bottom:0.25rem">e-Stamp Cert: IN-DL7729188090</div>
-        <div style="font-size:0.7rem;color:var(--gray-400)">Denomination: ₹100.00 • Delhi State</div>
-      </div>
-    `;
-  } else if(n===3){
-    previewTitle.textContent = 'Aadhaar eSign Report';
-    previewStatus.textContent = 'Signed & Secure';
-    previewStatus.style.color = 'var(--emerald)';
-    previewStatus.style.background = '#ECFDF5';
-    body.innerHTML = `
-      <div class="sig-tracker">
-        <div class="sig-tracker-left">
-          <div class="sig-avatar">L</div>
-          <div><div class="sig-name">Ashok Kumar</div><div class="sig-role">Aadhaar verified OTP</div></div>
-        </div>
-        <span class="sig-badge done">eSigned</span>
-      </div>
-      <div class="sig-tracker" style="margin-top:0.5rem">
-        <div class="sig-tracker-left">
-          <div class="sig-avatar">T</div>
-          <div><div class="sig-name">Mohnish Nirwan</div><div class="sig-role">Aadhaar verified OTP</div></div>
-        </div>
-        <span class="sig-badge done">eSigned</span>
-      </div>
-    `;
-  }
-}
-
-/* ═══ ESIGN ═══ */
+function openEsignDoc(){ openEsign(); }
 function openEsign(){
   if(!currentDoc) return;
   document.getElementById('esDocLabel').textContent = currentDoc.name;
@@ -1687,31 +1850,23 @@ function closeEsign(){
 }
 document.getElementById('esignOverlay').addEventListener('click', function(e){ if(e.target===this) closeEsign(); });
 function resetEs(){
-  setEsStep(1);
+  document.getElementById('esignStep1').style.display = 'block';
+  document.getElementById('esignStep2').style.display = 'none';
+  document.getElementById('esignStep3').style.display = 'none';
   document.getElementById('aadNum').value = '';
   document.getElementById('aadName').value = '';
   ['o1','o2','o3','o4','o5','o6'].forEach(id=>document.getElementById(id).value='');
   if(otpIv) clearInterval(otpIv);
 }
-function setEsStep(n){
-  [1,2,3].forEach(i=>{
-    document.getElementById('esS'+i).classList.toggle('active', i===n);
-    document.getElementById('esS'+i).classList.toggle('pending', i>n);
-    document.getElementById('esS'+i).classList.toggle('done', i<n);
-    document.getElementById('ep'+i).style.display = i===n ? 'block' : 'none';
-    if(i<3){
-      const line = document.getElementById('el'+i);
-      line.classList.toggle('done', i<n);
-    }
-  });
-}
 function fmtAadhaar(el){ let v=el.value.replace(/\D/g,'').substring(0,12); el.value=v.replace(/(\d{4})(?=\d)/g,'$1 '); }
 function esS1Next(){
   const a=document.getElementById('aadNum').value.replace(/\s/g,''), n=document.getElementById('aadName').value.trim();
   if(a.length!==12){ showToast('Enter a valid 12-digit Aadhaar number'); return; }
-  if(!n){ showToast('Enter your name as per Aadhaar'); return; }
+  if(!n){ showToast('Enter name as on Aadhaar'); return; }
   document.getElementById('mMob').textContent = 'xxxxxxxx'+a.slice(-2);
-  setEsStep(2); startOtpTimer(300); document.getElementById('o1').focus();
+  document.getElementById('esignStep1').style.display = 'none';
+  document.getElementById('esignStep2').style.display = 'block';
+  startOtpTimer(300); document.getElementById('o1').focus();
 }
 function esS2Next(){
   const otp=['o1','o2','o3','o4','o5','o6'].map(id=>document.getElementById(id).value).join('');
@@ -1720,11 +1875,16 @@ function esS2Next(){
   const nm=document.getElementById('aadName').value.trim();
   const now=new Date();
   const ds=now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})+' '+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
-  document.getElementById('certInfo').textContent = 'Signed: '+ds+' | By: '+nm+' | Authority: NSDL e-Gov (Aadhaar OTP eSign)';
+  document.getElementById('certInfo').textContent = 'Signed: '+ds+' | By: '+nm+' | NSDL e-Gov (Aadhaar)';
   if(currentDoc) localStorage.setItem('instadeed_signed_'+currentDoc.id, JSON.stringify({signed:true,signerName:nm,signedAt:ds}));
-  setEsStep(3);
+  document.getElementById('esignStep2').style.display = 'none';
+  document.getElementById('esignStep3').style.display = 'block';
 }
-function esBack(){ if(otpIv) clearInterval(otpIv); setEsStep(1); }
+function esBack(){
+  if(otpIv) clearInterval(otpIv);
+  document.getElementById('esignStep1').style.display = 'block';
+  document.getElementById('esignStep2').style.display = 'none';
+}
 function startOtpTimer(s){
   if(otpIv) clearInterval(otpIv); let r=s;
   function u(){ const m=Math.floor(r/60).toString().padStart(2,'0'), sec=(r%60).toString().padStart(2,'0'); const el=document.getElementById('otpClock'); if(el) el.textContent=m+':'+sec; if(r<=0) clearInterval(otpIv); r--; }
@@ -1733,94 +1893,76 @@ function startOtpTimer(s){
 function oFwd(el,nid){ if(el.value.length===1&&nid) document.getElementById(nid).focus(); }
 function oBk(e,el,pid){ if(e.key==='Backspace'&&el.value===''&&pid) document.getElementById(pid).focus(); }
 
-/* ═══ HERO MOCKUP ROTATION ═══ */
-const mockupDocs = [
-  { name:"Rent Agreement", sub:"Landlord: Bhati Ji · Tenant: Sharma Ji", icon:"fa-file-contract", stamp:"Aadhaar Signed" },
-  { name:"GNIDA Mutation", sub:"Allottee: Amit Kumar · Sector: Alpha II", icon:"fa-landmark", stamp:"Submitted to GNIDA" },
-  { name:"Noida Transfer", sub:"Transferor: Raj Singh · Transferee: M. Lal", icon:"fa-building", stamp:"Lawyer Verified" },
-  { name:"TM-48 Auth", sub:"Proprietor: Instadeed Tech · Class: 45", icon:"fa-user-tie", stamp:"IP Registrar Copy" }
-];
-let mockupIdx = 0;
-function cycleMockup(){
-  const elTitle = document.getElementById('heroMockupTitle');
-  const elSub = document.getElementById('heroMockupSub');
-  const elIcon = document.getElementById('heroMockupIcon');
-  const elStamp = document.getElementById('heroMockupStamp');
-  if(!elTitle || !elSub || !elIcon || !elStamp) return;
-  mockupIdx = (mockupIdx + 1) % mockupDocs.length;
-  const doc = mockupDocs[mockupIdx];
-  elTitle.style.opacity = '0'; elSub.style.opacity = '0'; elIcon.style.opacity = '0'; elStamp.style.opacity = '0';
-  setTimeout(() => {
-    elTitle.textContent = doc.name; elSub.textContent = doc.sub;
-    elIcon.innerHTML = '<i class="fa-solid '+doc.icon+'"></i>';
-    elStamp.innerHTML = '<i class="fa-solid fa-fingerprint"></i> '+doc.stamp;
-    elTitle.style.opacity = '1'; elSub.style.opacity = '1'; elIcon.style.opacity = '1'; elStamp.style.opacity = '1';
-  }, 400);
+/* ═══ HOW IT WORKS ═══ */
+function setStep(n, el){
+  document.querySelectorAll('.how-step').forEach(s => s.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const t = document.getElementById('previewTitle');
+  const s = document.getElementById('previewStatus');
+  const b = document.getElementById('previewBody');
+  const active = (num, label, role, status) => `<div class="preview-tracker"><div class="preview-tracker-left"><div style="width:28px;height:28px;border-radius:50%;${status==='done'?'background:#ECFDF5;color:var(--emerald)':status==='current'?'background:#EEF2FF;color:var(--blue)':'background:var(--gray-100);color:var(--gray-300)'};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0">${status==='done'?'<i class=\"fa-solid fa-check\"></i>':num}</div><div><div class="preview-name"${status==='pending'?' style=\"color:var(--gray-400)\"':''}>${label}</div><div class="preview-role">${role}</div></div></div><span class="how-status-badge" style="background:${status==='done'?'#ECFDF5':status==='current'?'#EEF2FF':'var(--gray-100)'};color:${status==='done'?'var(--emerald)':status==='current'?'var(--blue)':'var(--gray-300)'};font-size:0.62rem">${status==='done'?'<i class=\"fa-solid fa-check\"></i> Done':status==='current'?'<i class=\"fa-regular fa-clock\"></i> Current':'Pending'}</span></div>`;
+  const steps = [
+    ['1','Document Selected','Rent Agreement · ₹299'],
+    ['2','Details Filled','Landlord: Bhati Ji · Tenant: Sharma Ji'],
+    ['3','Preview & Verify','Review all fields before payment'],
+    ['4','Pay & e-Stamp','UPI, card, or netbanking'],
+    ['5','Aadhaar e-Sign','OTP-based digital signature'],
+    ['6','Download PDF','Stamped & signed document']
+  ];
+  let html = '';
+  for(let i=0;i<6;i++){
+    const status = i+1 < n ? 'done' : (i+1 === n ? 'current' : 'pending');
+    html += active(steps[i][0], steps[i][1], steps[i][2], status);
+  }
+  b.innerHTML = html;
+  if(n===6){ t.textContent = 'Rent Agreement.pdf'; s.textContent = 'Ready to Download'; s.style.background = '#ECFDF5'; s.style.color = '#10B981'; }
+  else if(n===5){ t.textContent = 'Aadhaar e-Sign.pdf'; s.textContent = 'Signing...'; s.style.background = '#EEF2FF'; s.style.color = '#2952CC'; }
+  else if(n===4){ t.textContent = 'e-Stamp Certificate.pdf'; s.textContent = 'Payment Complete'; s.style.background = '#ECFDF5'; s.style.color = '#10B981'; }
+  else if(n===3){ t.textContent = 'Rent Agreement.pdf'; s.textContent = 'Reviewing'; s.style.background = '#FEF3C7'; s.style.color = 'var(--amber)'; }
+  else if(n===2){ t.textContent = 'Draft Preview.pdf'; s.textContent = 'Filling...'; s.style.background = '#EEF2FF'; s.style.color = '#2952CC'; }
+  else { t.textContent = 'Rent Agreement.pdf'; s.textContent = 'Choose a Document'; s.style.background = '#EEF2FF'; s.style.color = '#2952CC'; }
 }
-setInterval(cycleMockup, 3800);
+
+/* ═══ FAQ ═══ */
+function toggleFaq(el){
+  const item = el.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
 
 /* ═══ TOAST ═══ */
 function showToast(msg){
   let t = document.getElementById('authToast');
-  if(!t){
-    t = document.createElement('div'); t.id='authToast';
-    t.className='toast'; document.body.appendChild(t);
-  }
-  t.innerHTML = msg;
-  t.style.transform = 'none'; t.style.opacity = '1';
+  if(!t){ t = document.createElement('div'); t.className='toast'; document.body.appendChild(t); }
+  t.innerHTML = msg; t.style.transform = 'none'; t.style.opacity = '1';
   setTimeout(()=>{ t.style.transform = 'translateY(100px)'; t.style.opacity = '0'; }, 3000);
 }
 
-/* ═══ SCROLL REVEAL ═══ */
+/* ═══ INIT ═══ */
 document.addEventListener('DOMContentLoaded', () => {
   initGoogle();
   const saved = localStorage.getItem('instadeed_user_session');
   if(saved){ try{ applyLoggedInState(JSON.parse(saved)); }catch(e){} }
-  document.querySelectorAll('section, .stats-bar, .popular-strip, footer').forEach(el => el.classList.add('reveal'));
-  const ro = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('active'); ro.unobserve(e.target); } });
-  }, { threshold: 0.1 });
+  document.querySelectorAll('section, .stats-section, .trust-bar, footer').forEach(el => el.classList.add('reveal'));
+  const ro = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('active'); ro.unobserve(e.target); } }); }, { threshold:0.1 });
   document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 });
 
-/* ═══ STORAGE SYNC ═══ */
 window.addEventListener('storage', e => {
   if(e.key === 'instadeed_user_session'){
     if(e.newValue){ try{ applyLoggedInState(JSON.parse(e.newValue)); }catch(err){} }
-    else {
-      document.body.classList.remove('nav-auth-signed-in');
-      const chip = document.getElementById('userChip');
-      if(chip) chip.style.display = 'none';
-    }
+    else { document.body.classList.remove('nav-auth-signed-in'); const c=document.getElementById('userChip'); if(c) c.style.display='none'; }
   }
 });
 
-/* ═══ ESC KEY ═══ */
 document.addEventListener('keydown', e => {
   if(e.key === 'Escape'){
     if(document.getElementById('esignOverlay').classList.contains('open')) closeEsign();
     else if(document.getElementById('authModal').classList.contains('open')) closeAuth();
-    else if(document.getElementById('editorOverlay') && document.getElementById('editorOverlay').classList.contains('open')) closeEditor();
+    else if(document.getElementById('editorOverlay').classList.contains('open')) closeEditor();
   }
 });
 </script>
-
-<!-- EDITOR OVERLAY -->
-<div class="modal-overlay" id="editorOverlay">
-  <div class="modal-box" style="max-width:90vw;height:90vh;padding:0;display:flex;flex-direction:column;overflow:hidden">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border-bottom:1px solid var(--gray-200);flex-shrink:0">
-      <div>
-        <strong id="edtDocName" style="font-size:0.95rem;color:var(--gray-800)"></strong>
-        <span style="font-size:0.75rem;color:var(--gray-400);margin-left:0.5rem" id="edtDocSub">Smart Form Editor</span>
-      </div>
-      <div style="display:flex;gap:0.5rem">
-        <button onclick="dlDoc()" class="btn-nav-primary" style="font-size:0.8rem;padding:0.45rem 0.85rem"><i class="fa-solid fa-download"></i> Download</button>
-        <button onclick="openEsign()" class="btn-nav-primary" style="background:var(--emerald);font-size:0.8rem;padding:0.45rem 0.85rem"><i class="fa-solid fa-fingerprint"></i> e-Sign</button>
-        <button onclick="closeEditor()" class="modal-close" style="position:static"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-    </div>
-    <iframe id="editorFrame" style="flex:1;border:none;width:100%"></iframe>
-  </div>
-</div>
 </body>
 </html>

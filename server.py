@@ -380,10 +380,24 @@ def init_db():
         doc_type TEXT,
         form_data TEXT,
         phone TEXT,
+        email TEXT DEFAULT '',
         created_at TEXT,
         updated_at TEXT
     )
     """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS shared_drafts (
+        id TEXT PRIMARY KEY,
+        doc_type TEXT,
+        form_data TEXT,
+        created_at TEXT,
+        expires_at TEXT
+    )
+    """)
+    try:
+        cursor.execute("ALTER TABLE saved_drafts ADD COLUMN email TEXT DEFAULT ''")
+    except Exception as e:
+        pass
     # Indexes for performance
     for idx_sql in [
         "CREATE INDEX IF NOT EXISTS idx_orders_user ON orders(customer_phone)",
@@ -401,6 +415,7 @@ def init_db():
         "CREATE INDEX IF NOT EXISTS idx_refunds_order ON refunds(order_id)",
         "CREATE INDEX IF NOT EXISTS idx_notifications_created ON notifications(created_at)",
         "CREATE INDEX IF NOT EXISTS idx_saved_drafts_phone ON saved_drafts(phone)",
+        "CREATE INDEX IF NOT EXISTS idx_saved_drafts_email ON saved_drafts(email)",
     ]:
         try:
             cursor.execute(idx_sql)
@@ -1356,25 +1371,50 @@ async def customer_documents(phone: str = "", email: str = ""):
         conn = sqlite3.connect(DATABASE_FILE)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
+        
+        orders = []
+        drafts = []
+        
         if phone:
             phone = sanitize_phone(phone)
-            cursor.execute("SELECT id, agreement_type, status, amount, created_at, updated_at, cloud_url, leegality_sign_url, form_data FROM orders WHERE customer_phone = ? ORDER BY created_at DESC", (phone,))
+            # Fetch orders
+            cursor.execute("SELECT id, agreement_type, status, amount, created_at, updated_at, cloud_url, leegality_sign_url, leegality_doc_id, form_data FROM orders WHERE customer_phone = ? ORDER BY created_at DESC", (phone,))
+            orders = [dict(r) for r in cursor.fetchall()]
+            
+            # Fetch drafts
+            cursor.execute("SELECT id, doc_type as agreement_type, 'DRAFT' as status, 0 as amount, created_at, updated_at, NULL as cloud_url, NULL as leegality_sign_url, NULL as leegality_doc_id, form_data FROM saved_drafts WHERE phone = ? ORDER BY updated_at DESC", (phone,))
+            drafts = [dict(r) for r in cursor.fetchall()]
         elif email:
-            cursor.execute("SELECT id, agreement_type, status, amount, created_at, updated_at, cloud_url, leegality_sign_url, form_data FROM orders WHERE customer_email = ? ORDER BY created_at DESC", (email,))
+            # Fetch orders
+            cursor.execute("SELECT id, agreement_type, status, amount, created_at, updated_at, cloud_url, leegality_sign_url, leegality_doc_id, form_data FROM orders WHERE customer_email = ? ORDER BY created_at DESC", (email,))
+            orders = [dict(r) for r in cursor.fetchall()]
+            
+            # Fetch drafts by email
+            cursor.execute("SELECT id, doc_type as agreement_type, 'DRAFT' as status, 0 as amount, created_at, updated_at, NULL as cloud_url, NULL as leegality_sign_url, NULL as leegality_doc_id, form_data FROM saved_drafts WHERE email = ? ORDER BY updated_at DESC", (email,))
+            drafts = [dict(r) for r in cursor.fetchall()]
         else:
             conn.close()
             return []
-        rows = cursor.fetchall()
+            
         conn.close()
+        
+        all_docs = orders + drafts
         docs = []
-        for r in rows:
-            d = dict(r)
+        for d in all_docs:
             try:
                 d["form_data"] = json.loads(d["form_data"]) if isinstance(d["form_data"], str) else d["form_data"]
             except:
                 d["form_data"] = {}
-            d.pop("form_data", None)
+            # Keep form_data for drafts so frontend can reload/resume them.
+            # Pop for others to keep payload small.
+            if d.get("status") != "DRAFT":
+                d.pop("form_data", None)
+            
+            # Make sure doc_type is set for compatibility with both web/mobile frontends
+            d["doc_type"] = d.get("agreement_type")
             docs.append(d)
+            
+        docs.sort(key=lambda x: x.get("updated_at") or x.get("created_at") or "", reverse=True)
         return docs
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -2817,27 +2857,118 @@ async def save_draft(body: dict = Body(...)):
     form_data = body.get("form_data", {})
     phone = body.get("phone", "")
     phone = sanitize_phone(phone)
+    email = body.get("email", "")
     if not doc_type:
         return {"success": False, "error": "doc_type required"}
     now = datetime.datetime.now().isoformat()
     try:
         conn = sqlite3.connect(DATABASE_FILE)
         cursor = conn.cursor()
-        if phone:
+        existing = None
+        if email:
+            cursor.execute("SELECT id FROM saved_drafts WHERE doc_type = ? AND email = ?", (doc_type, email))
+            existing = cursor.fetchone()
+        elif phone:
             cursor.execute("SELECT id FROM saved_drafts WHERE doc_type = ? AND phone = ?", (doc_type, phone))
             existing = cursor.fetchone()
-            if existing:
-                cursor.execute("UPDATE saved_drafts SET form_data = ?, updated_at = ? WHERE id = ?", (json.dumps(form_data), now, existing[0]))
-            else:
-                cursor.execute("INSERT INTO saved_drafts (doc_type, form_data, phone, created_at, updated_at) VALUES (?, ?, ?, ?, ?)", (doc_type, json.dumps(form_data), phone, now, now))
+            
+        if existing:
+            cursor.execute("UPDATE saved_drafts SET form_data = ?, updated_at = ?, phone = ?, email = ? WHERE id = ?", (json.dumps(form_data), now, phone, email, existing[0]))
         else:
-            cursor.execute("INSERT INTO saved_drafts (doc_type, form_data, phone, created_at, updated_at) VALUES (?, ?, ?, ?, ?)", (doc_type, json.dumps(form_data), phone, now, now))
+            cursor.execute("INSERT INTO saved_drafts (doc_type, form_data, phone, email, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)", (doc_type, json.dumps(form_data), phone, email, now, now))
         conn.commit()
         conn.close()
         return {"success": True}
     except Exception as e:
         logger.error(f"Draft save error: {e}")
         return {"success": False, "error": str(e)}
+
+import uuid
+
+@app.post("/api/drafts/share")
+async def create_share_link(body: dict = Body(...)):
+    doc_type = body.get("doc_type", "")
+    form_data = body.get("form_data", {})
+    if not doc_type:
+        return {"success": False, "error": "doc_type required"}
+    token = str(uuid.uuid4())
+    now = datetime.datetime.now()
+    expires = now + datetime.timedelta(days=7)
+    
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO shared_drafts (id, doc_type, form_data, created_at, expires_at) VALUES (?, ?, ?, ?, ?)",
+            (token, doc_type, json.dumps(form_data), now.isoformat(), expires.isoformat())
+        )
+        conn.commit()
+        conn.close()
+        return {"success": True, "token": token}
+    except Exception as e:
+        logger.error(f"Share link creation failed: {e}")
+        return {"success": False, "error": str(e)}
+
+@app.get("/api/drafts/share/{token}")
+async def get_shared_draft(token: str):
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT doc_type, form_data, expires_at FROM shared_drafts WHERE id = ?", (token,))
+        row = cursor.fetchone()
+        conn.close()
+        
+        if not row:
+            raise HTTPException(status_code=404, detail="Shared draft not found")
+            
+        doc_type, form_data_str, expires_at_str = row
+        expires_at = datetime.datetime.fromisoformat(expires_at_str)
+        if datetime.datetime.now() > expires_at:
+            raise HTTPException(status_code=410, detail="Shared review link has expired")
+            
+        return {
+            "success": True,
+            "doc_type": doc_type,
+            "form_data": json.loads(form_data_str) if form_data_str else {}
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching shared draft: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/analytics/templates")
+async def get_analytics_templates(request: Request, user: dict = Depends(get_current_user)):
+    if user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+        
+        cursor.execute("SELECT agreement_type, COUNT(*) FROM orders GROUP BY agreement_type")
+        orders_data = dict(cursor.fetchall())
+        
+        cursor.execute("SELECT doc_type, COUNT(*) FROM saved_drafts GROUP BY doc_type")
+        drafts_data = dict(cursor.fetchall())
+        
+        all_keys = set(list(orders_data.keys()) + list(drafts_data.keys()))
+        combined = []
+        for k in all_keys:
+            if not k:
+                continue
+            combined.append({
+                "template": k,
+                "orders": orders_data.get(k, 0),
+                "drafts": drafts_data.get(k, 0),
+                "total": orders_data.get(k, 0) + drafts_data.get(k, 0)
+            })
+        
+        combined.sort(key=lambda x: x["total"], reverse=True)
+        conn.close()
+        return {"templates": combined}
+    except Exception as e:
+        logger.error(f"Failed to fetch template analytics: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/{full_path:path}", response_class=HTMLResponse)
 async def serve_spa(full_path: str):
