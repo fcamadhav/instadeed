@@ -151,32 +151,13 @@ img { display:block; max-width:100%; }
 
 /* Country selector */
 .country-selector {
-  position:relative; display:flex; align-items:center; height:100%;
-  cursor:pointer; padding:0 0.6rem;
+  display:flex; align-items:center; height:100%;
+  padding:0 0.6rem;
 }
 .country-selector > span {
   display:flex; align-items:center; gap:0.35rem;
   color:var(--gray-600); font-size:0.8rem; font-weight:600;
-  transition:color 0.15s;
 }
-.country-selector:hover > span { color:var(--blue); }
-.country-selector i.chevron { font-size:0.55rem; }
-.country-dropdown {
-  position:absolute; top:100%; right:0;
-  background:#fff; border:1px solid var(--gray-200);
-  border-radius:var(--radius-lg); min-width:200px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.12);
-  padding:0.5rem; display:none; z-index:100;
-}
-.country-selector:hover .country-dropdown { display:block; }
-.country-item {
-  display:flex; align-items:center; gap:0.6rem;
-  padding:0.45rem 0.7rem; border-radius:var(--radius-sm);
-  font-size:0.8rem; font-weight:500; color:var(--gray-600);
-  transition:all 0.12s; cursor:pointer;
-}
-.country-item:hover { background:var(--gray-50); color:var(--gray-800); }
-.country-item .flag { font-size:1.1rem; }
 
 .nav-right { display:flex; align-items:center; gap:0.5rem; flex-shrink:0; }
 .btn-nav-ghost {
@@ -1020,13 +1001,7 @@ body.nav-auth-signed-in .btn-nav-ghost {
 
     <div class="nav-right">
       <div class="country-selector">
-        <span><i class="fa-solid fa-globe" style="font-size:0.8rem"></i> IN <i class="fa-solid fa-chevron-down chevron"></i></span>
-        <div class="country-dropdown">
-          <div class="country-item"><span class="flag">🇮🇳</span> India</div>
-          <div class="country-item"><span class="flag">🇺🇸</span> USA</div>
-          <div class="country-item"><span class="flag">🇦🇪</span> UAE</div>
-          <div class="country-item"><span class="flag">🇸🇬</span> Singapore</div>
-        </div>
+        <span><i class="fa-solid fa-globe" style="font-size:0.8rem"></i> IN</span>
       </div>
       <button class="btn-nav-ghost" onclick="openAuth('login')">Sign In</button>
       <a href="Madhav_Drafting_Hub.html" class="btn-nav-cta">
