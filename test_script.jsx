@@ -6036,10 +6036,12 @@
 
                         <style>{`
                             :root {
-                                --primary: #2563EB;
-                                --primary-dark: #1D4ED8;
-                                --primary-light: #EFF6FF;
-                                --primary-glow: rgba(37,99,235,0.15);
+                                --navy: #0B1124;
+                                --navy-light: #1A2340;
+                                --primary: #2952CC;
+                                --primary-dark: #1D3F9E;
+                                --primary-light: #EEF2FF;
+                                --primary-glow: rgba(41,82,204,0.15);
                                 --accent-cyan: #06B6D4;
                                 --accent-emerald: #10B981;
                                 --accent-amber: #F59E0B;
@@ -6063,22 +6065,22 @@
                                 --shadow-card: 0 1px 3px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.04);
                                 --shadow-card-hover: 0 10px 25px -5px rgba(15,23,42,0.08), 0 4px 10px -6px rgba(15,23,42,0.04);
                                 --shadow-dropdown: 0 15px 35px -8px rgba(15,23,42,0.12), 0 5px 12px -4px rgba(15,23,42,0.06);
-                                --shadow-btn: 0 4px 14px 0 rgba(37,99,235,0.2);
+                                --shadow-btn: 0 4px 14px 0 rgba(41,82,204,0.2);
                                 --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
                                 --font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
                                 --font-body: 'Inter', 'Plus Jakarta Sans', sans-serif;
                             }
                             .insta-grid-bg {
                                 background-image:
-                                    linear-gradient(rgba(37,99,235,0.03) 1px, transparent 1px),
-                                    linear-gradient(90deg, rgba(37,99,235,0.03) 1px, transparent 1px);
-                                background-size: 60px 60px;
+                                    linear-gradient(rgba(41,82,204,0.03) 1px, transparent 1px),
+                                    linear-gradient(90deg, rgba(41,82,204,0.03) 1px, transparent 1px);
+                                background-size: 48px 48px;
                             }
                             .insta-grid-bg-dark {
                                 background-image:
                                     linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
                                     linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-                                background-size: 60px 60px;
+                                background-size: 48px 48px;
                             }
                             .insta-gradient-text {
                                 background: linear-gradient(135deg, var(--primary), var(--accent-cyan), var(--accent-emerald));
@@ -6106,7 +6108,7 @@
                             .insta-btn-primary:hover {
                                 background: var(--primary-dark);
                                 transform: translateY(-1px);
-                                box-shadow: 0 8px 25px 0 rgba(37,99,235,0.35);
+                                box-shadow: 0 8px 25px 0 rgba(41,82,204,0.35);
                             }
                             .insta-btn-secondary {
                                 display: inline-flex;
