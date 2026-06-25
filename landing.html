@@ -12,6 +12,28 @@
 <!-- Google Identity Services -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
+@media print {
+  .toast-container,
+  .toast,
+  [class*="toast"],
+  #authToast,
+  .print-hidden,
+  .print\:hidden,
+  [id*="Toast"],
+  .auth-toast,
+  .fixed,
+  .no-print,
+  #editorOverlay,
+  #authModal,
+  #esignOverlay,
+  .btn,
+  button,
+  header,
+  footer,
+  nav {
+    display: none !important;
+  }
+}
 :root {
   --blue: #2563EB;
   --blue-l: #3B82F6;

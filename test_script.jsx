@@ -2445,6 +2445,131 @@
             const securityInWords = numToWords(rentData.securityDeposit);
 
             useEffect(() => {
+                // Inject custom print-hiding style rule to guarantee that no toasts or floating overlays print
+                try {
+                    const styleId = 'instadeed-print-hiding-styles';
+                    if (!document.getElementById(styleId)) {
+                        const styleEl = document.createElement('style');
+                        styleEl.id = styleId;
+                        styleEl.innerHTML = `
+                            @media print {
+                                .toast-container,
+                                .toast,
+                                [class*="toast"],
+                                #authToast,
+                                .print-hidden,
+                                .print\\:hidden,
+                                [id*="Toast"],
+                                .auth-toast,
+                                .fixed,
+                                .no-print,
+                                #editorOverlay,
+                                #authModal,
+                                #esignOverlay,
+                                .checkout-modal,
+                                .btn,
+                                button,
+                                header,
+                                footer,
+                                nav {
+                                    display: none !important;
+                                }
+                            }
+                        `;
+                        document.head.appendChild(styleEl);
+                    }
+                } catch(e) {
+                    console.error("Error injecting print styles:", e);
+                }
+
+                const handleBeforePrint = () => {
+                    const selectors = [
+                        '.toast-container',
+                        '.toast',
+                        '[class*="toast"]',
+                        '#authToast',
+                        '[id*="Toast"]',
+                        '.auth-toast',
+                        '.no-print',
+                        '.print-hidden',
+                        '.print\\:hidden',
+                        '.app-sidebar',
+                        '.crm-sidebar',
+                        'button',
+                        '.btn',
+                        '.fixed',
+                        '#authModal',
+                        '#editorOverlay',
+                        '#esignOverlay',
+                        '.checkout-modal'
+                    ];
+                    const elements = document.querySelectorAll(selectors.join(', '));
+                    elements.forEach(el => {
+                        try {
+                            el.style.setProperty('display', 'none', 'important');
+                        } catch(e) {}
+                    });
+                    
+                    const paperContainers = document.querySelectorAll('.paper-page-container');
+                    paperContainers.forEach(el => {
+                        try {
+                            el.style.setProperty('display', 'block', 'important');
+                            el.style.setProperty('overflow', 'visible', 'important');
+                            el.style.setProperty('height', 'auto', 'important');
+                            el.style.setProperty('padding', '0', 'important');
+                        } catch(e) {}
+                    });
+                };
+
+                const handleAfterPrint = () => {
+                    const selectors = [
+                        '.toast-container',
+                        '.toast',
+                        '[class*="toast"]',
+                        '#authToast',
+                        '[id*="Toast"]',
+                        '.auth-toast',
+                        '.no-print',
+                        '.print-hidden',
+                        '.print\\:hidden',
+                        '.app-sidebar',
+                        '.crm-sidebar',
+                        'button',
+                        '.btn',
+                        '.fixed',
+                        '#authModal',
+                        '#editorOverlay',
+                        '#esignOverlay',
+                        '.checkout-modal'
+                    ];
+                    const elements = document.querySelectorAll(selectors.join(', '));
+                    elements.forEach(el => {
+                        try {
+                            el.style.removeProperty('display');
+                        } catch(e) {}
+                    });
+                    
+                    const paperContainers = document.querySelectorAll('.paper-page-container');
+                    paperContainers.forEach(el => {
+                        try {
+                            el.style.removeProperty('display');
+                            el.style.removeProperty('overflow');
+                            el.style.removeProperty('height');
+                            el.style.removeProperty('padding');
+                        } catch(e) {}
+                    });
+                };
+
+                window.addEventListener('beforeprint', handleBeforePrint);
+                window.addEventListener('afterprint', handleAfterPrint);
+
+                return () => {
+                    window.removeEventListener('beforeprint', handleBeforePrint);
+                    window.removeEventListener('afterprint', handleAfterPrint);
+                };
+            }, []);
+
+            useEffect(() => {
                 // Read user session
                 let sessionStr = null; try { sessionStr = localStorage.getItem('instadeed_user_session'); } catch(e) {}
                 if (sessionStr) {
