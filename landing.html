@@ -431,62 +431,108 @@ img { display:block; max-width:100%; }
 
 /* ═══════ HOW IT WORKS ═══════ */
 .how-section { background:var(--white); border-bottom:1px solid var(--gray-200); }
-.how-grid {
-  display:grid; grid-template-columns:1.2fr 0.8fr;
-  gap:3rem; align-items:center;
+.visual-how-flow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-top: 2rem;
 }
-.how-steps { display:flex; flex-direction:column; gap:1rem; }
-.how-step {
-  background:#fff; border:1px solid var(--gray-200);
-  border-radius:var(--radius-lg); padding:1.15rem 1.35rem;
-  display:flex; align-items:flex-start; gap:1rem;
-  cursor:pointer; transition:all 0.2s; text-align:left;
+.visual-step-card {
+  flex: 1;
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  padding: 2.25rem 2rem;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.02), 0 8px 10px -6px rgba(0,0,0,0.02);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.how-step:hover { border-color:var(--blue); transform:translateX(4px); }
-.how-step.active { border-color:var(--blue); background:var(--blue-light); }
-.how-num {
-  width:28px; height:28px; border-radius:50%;
-  background:var(--blue-light); color:var(--blue);
-  display:flex; align-items:center; justify-content:center;
-  font-weight:700; font-size:0.8rem; flex-shrink:0;
+.visual-step-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--blue);
+  box-shadow: 0 20px 25px -5px rgba(59,130,246,0.05), 0 10px 10px -5px rgba(59,130,246,0.02);
 }
-.how-step.active .how-num { background:var(--blue); color:#fff; }
-.how-info h4 { font-weight:700; font-size:0.9rem; color:var(--gray-800); margin-bottom:0.15rem; }
-.how-info p { font-size:0.8rem; color:var(--gray-400); line-height:1.4; }
-
-.how-preview {
-  background:#fff; border:1px solid var(--gray-200);
-  border-radius:var(--radius-xl); padding:1.5rem;
-  box-shadow:0 12px 30px rgba(0,0,0,0.03);
+.visual-step-icon-wrap {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1.5rem;
 }
-.how-preview-header {
-  display:flex; justify-content:space-between; align-items:center;
-  border-bottom:1px solid var(--gray-100); padding-bottom:0.75rem; margin-bottom:1rem;
+.visual-step-num {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
 }
-.how-preview-header h4 { font-size:0.85rem; font-weight:700; color:var(--gray-800); display:flex; align-items:center; gap:0.5rem; }
-.how-preview-header h4 i { color:var(--blue); }
-.how-status-badge {
-  font-size:0.68rem; font-weight:700; padding:0.2rem 0.55rem;
-  border-radius:var(--radius-full);
+.visual-step-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
 }
-.preview-tracker {
-  background:var(--gray-50); border:1px solid var(--gray-200);
-  border-radius:var(--radius-md); padding:0.7rem 1rem;
-  display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;
+.visual-step-icon.bg-blue {
+  background: #eff6ff;
+  color: #2563eb;
 }
-.preview-tracker-left { display:flex; align-items:center; gap:0.6rem; }
-.preview-avatar {
-  width:28px; height:28px; border-radius:50%;
-  background:var(--blue-light); color:var(--blue);
-  display:flex; align-items:center; justify-content:center;
-  font-weight:700; font-size:0.7rem;
+.visual-step-icon.bg-indigo {
+  background: #eef2ff;
+  color: #4f46e5;
 }
-.preview-name { font-size:0.78rem; font-weight:600; color:var(--gray-800); }
-.preview-role { font-size:0.65rem; color:var(--gray-400); }
-
-@media (max-width:850px) {
-  .how-grid { grid-template-columns:1fr; gap:2rem; }
-  .how-preview { order:-1; }
+.visual-step-icon.bg-emerald {
+  background: #ecfdf5;
+  color: #059669;
+}
+.visual-step-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--gray-800);
+  margin-bottom: 0.75rem;
+}
+.visual-step-desc {
+  font-size: 0.82rem;
+  color: var(--gray-400);
+  line-height: 1.5;
+}
+.visual-step-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
+  color: var(--gray-300);
+  font-size: 1rem;
+  align-self: flex-start;
+  margin-top: 1.5rem;
+}
+@media (max-width: 850px) {
+  .visual-how-flow {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+  .visual-step-card {
+    width: 100%;
+    max-w: 400px;
+  }
+  .visual-step-connector {
+    transform: rotate(90deg);
+    height: auto;
+    margin: -0.5rem 0;
+  }
 }
 
 /* ═══════ TESTIMONIALS ═══════ */
@@ -1155,104 +1201,57 @@ img { display:block; max-width:100%; }
 <!-- ═══ HOW IT WORKS ═══ -->
 <section class="how-section sp">
   <div class="wrapper">
-    <div class="sec-head">
-      <span class="sec-label"><i class="fa-solid fa-arrow-trend-up"></i> How It Works</span>
-      <h2 class="sec-title">Six simple steps to your <em>legal document</em></h2>
+    <div class="sec-head" style="text-align: center; margin-bottom: 3.5rem;">
+      <span class="sec-label" style="justify-content: center;"><i class="fa-solid fa-arrow-trend-up"></i> Simple Process</span>
+      <h2 class="sec-title">Create your legal document in <em>3 easy steps</em></h2>
+      <p class="sec-sub">Fast, secure, and legally binding document creation in under 5 minutes.</p>
     </div>
-    <div class="how-grid">
-      <div class="how-steps">
-        <div class="how-step active" onclick="setStep(1,this)">
-          <div class="how-num">1</div>
-          <div class="how-info">
-            <h4>Choose Document</h4>
-            <p>Pick from 12+ legally vetted templates — rent, property, GNIDA, NOIDA, and more.</p>
+    
+    <div class="visual-how-flow">
+      <!-- Step 1 -->
+      <div class="visual-step-card">
+        <div class="visual-step-icon-wrap">
+          <div class="visual-step-num">1</div>
+          <div class="visual-step-icon bg-blue">
+            <i class="fa-solid fa-file-signature"></i>
           </div>
         </div>
-        <div class="how-step" onclick="setStep(2,this)">
-          <div class="how-num">2</div>
-          <div class="how-info">
-            <h4>Fill Details</h4>
-            <p>Answer simple questions in our smart form — auto-calculations &amp; validation handle the complexity.</p>
-          </div>
-        </div>
-        <div class="how-step" onclick="setStep(3,this)">
-          <div class="how-num">3</div>
-          <div class="how-info">
-            <h4>Preview</h4>
-            <p>Review your completed draft in real-time with all fields populated and formatted.</p>
-          </div>
-        </div>
-        <div class="how-step" onclick="setStep(4,this)">
-          <div class="how-num">4</div>
-          <div class="how-info">
-            <h4>Pay</h4>
-            <p>Secure payment via UPI, card, or netbanking. E-stamp fee included in checkout.</p>
-          </div>
-        </div>
-        <div class="how-step" onclick="setStep(5,this)">
-          <div class="how-num">5</div>
-          <div class="how-info">
-            <h4>e-Sign</h4>
-            <p>Sign digitally using Aadhaar OTP — legally valid under the IT Act, 2000.</p>
-          </div>
-        </div>
-        <div class="how-step" onclick="setStep(6,this)">
-          <div class="how-num">6</div>
-          <div class="how-info">
-            <h4>Download</h4>
-            <p>Get your stamped &amp; signed PDF instantly. Download, print, or share a secure link.</p>
-          </div>
-        </div>
+        <h3 class="visual-step-title">Choose &amp; Draft</h3>
+        <p class="visual-step-desc">Pick from 12+ legally vetted templates and complete the guided form with auto-validations.</p>
       </div>
-      <div class="how-preview" id="howPreview">
-        <div class="how-preview-header">
-          <h4><i class="fa-solid fa-file-contract"></i> <span id="previewTitle">Rent Agreement.pdf</span></h4>
-          <span class="how-status-badge" id="previewStatus" style="background:#ECFDF5;color:var(--emerald)">Ready</span>
-        </div>
-        <div id="previewBody">
-          <div class="preview-tracker">
-            <div class="preview-tracker-left">
-              <div style="width:28px;height:28px;border-radius:50%;background:#ECFDF5;color:var(--emerald);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0"><i class="fa-solid fa-check"></i></div>
-              <div><div class="preview-name">Document Selected</div><div class="preview-role">Rent Agreement · ₹299</div></div>
-            </div>
-            <span class="how-status-badge" style="background:#ECFDF5;color:var(--emerald);font-size:0.62rem"><i class="fa-solid fa-check"></i> Done</span>
-          </div>
-          <div class="preview-tracker">
-            <div class="preview-tracker-left">
-              <div style="width:28px;height:28px;border-radius:50%;background:#ECFDF5;color:var(--emerald);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0"><i class="fa-solid fa-check"></i></div>
-              <div><div class="preview-name">Details Filled</div><div class="preview-role">Landlord: Bhati Ji · Tenant: Sharma Ji</div></div>
-            </div>
-            <span class="how-status-badge" style="background:#ECFDF5;color:var(--emerald);font-size:0.62rem"><i class="fa-solid fa-check"></i> Done</span>
-          </div>
-          <div class="preview-tracker">
-            <div class="preview-tracker-left">
-              <div style="width:28px;height:28px;border-radius:50%;background:#FEF3C7;color:var(--amber);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0">3</div>
-              <div><div class="preview-name">Preview &amp; Verify</div><div class="preview-role">Review all fields before payment</div></div>
-            </div>
-            <span class="how-status-badge" style="background:#FEF3C7;color:var(--amber);font-size:0.62rem"><i class="fa-regular fa-clock"></i> Current</span>
-          </div>
-          <div class="preview-tracker">
-            <div class="preview-tracker-left">
-              <div style="width:28px;height:28px;border-radius:50%;background:var(--gray-100);color:var(--gray-300);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0">4</div>
-              <div><div class="preview-name" style="color:var(--gray-400)">Pay &amp; e-Stamp</div><div class="preview-role">UPI, card, or netbanking</div></div>
-            </div>
-            <span class="how-status-badge" style="background:var(--gray-100);color:var(--gray-300);font-size:0.62rem">Pending</span>
-          </div>
-          <div class="preview-tracker">
-            <div class="preview-tracker-left">
-              <div style="width:28px;height:28px;border-radius:50%;background:var(--gray-100);color:var(--gray-300);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0">5</div>
-              <div><div class="preview-name" style="color:var(--gray-400)">Aadhaar e-Sign</div><div class="preview-role">OTP-based digital signature</div></div>
-            </div>
-            <span class="how-status-badge" style="background:var(--gray-100);color:var(--gray-300);font-size:0.62rem">Pending</span>
-          </div>
-          <div class="preview-tracker">
-            <div class="preview-tracker-left">
-              <div style="width:28px;height:28px;border-radius:50%;background:var(--gray-100);color:var(--gray-300);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0">6</div>
-              <div><div class="preview-name" style="color:var(--gray-400)">Download PDF</div><div class="preview-role">Stamped &amp; signed document</div></div>
-            </div>
-            <span class="how-status-badge" style="background:var(--gray-100);color:var(--gray-300);font-size:0.62rem">Pending</span>
+
+      <!-- Connector 1 -->
+      <div class="visual-step-connector">
+        <i class="fa-solid fa-chevron-right"></i>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="visual-step-card">
+        <div class="visual-step-icon-wrap">
+          <div class="visual-step-num">2</div>
+          <div class="visual-step-icon bg-indigo">
+            <i class="fa-solid fa-credit-card"></i>
           </div>
         </div>
+        <h3 class="visual-step-title">Review &amp; Pay</h3>
+        <p class="visual-step-desc">Instantly preview your formatted draft. Pay securely via UPI or Card (E-stamp certificate included).</p>
+      </div>
+
+      <!-- Connector 2 -->
+      <div class="visual-step-connector">
+        <i class="fa-solid fa-chevron-right"></i>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="visual-step-card">
+        <div class="visual-step-icon-wrap">
+          <div class="visual-step-num">3</div>
+          <div class="visual-step-icon bg-emerald">
+            <i class="fa-solid fa-circle-down"></i>
+          </div>
+        </div>
+        <h3 class="visual-step-title">Sign &amp; Download</h3>
+        <p class="visual-step-desc">Complete digital Aadhaar OTP signature (legally binding under IT Act) and download print-ready PDF.</p>
       </div>
     </div>
   </div>
@@ -1816,35 +1815,7 @@ function startOtpTimer(s){
 function oFwd(el,nid){ if(el.value.length===1&&nid) document.getElementById(nid).focus(); }
 function oBk(e,el,pid){ if(e.key==='Backspace'&&el.value===''&&pid) document.getElementById(pid).focus(); }
 
-/* ═══ HOW IT WORKS ═══ */
-function setStep(n, el){
-  document.querySelectorAll('.how-step').forEach(s => s.classList.remove('active'));
-  if(el) el.classList.add('active');
-  const t = document.getElementById('previewTitle');
-  const s = document.getElementById('previewStatus');
-  const b = document.getElementById('previewBody');
-  const active = (num, label, role, status) => `<div class="preview-tracker"><div class="preview-tracker-left"><div style="width:28px;height:28px;border-radius:50%;${status==='done'?'background:#ECFDF5;color:var(--emerald)':status==='current'?'background:#EEF2FF;color:var(--blue)':'background:var(--gray-100);color:var(--gray-300)'};display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0">${status==='done'?'<i class=\"fa-solid fa-check\"></i>':num}</div><div><div class="preview-name"${status==='pending'?' style=\"color:var(--gray-400)\"':''}>${label}</div><div class="preview-role">${role}</div></div></div><span class="how-status-badge" style="background:${status==='done'?'#ECFDF5':status==='current'?'#EEF2FF':'var(--gray-100)'};color:${status==='done'?'var(--emerald)':status==='current'?'var(--blue)':'var(--gray-300)'};font-size:0.62rem">${status==='done'?'<i class=\"fa-solid fa-check\"></i> Done':status==='current'?'<i class=\"fa-regular fa-clock\"></i> Current':'Pending'}</span></div>`;
-  const steps = [
-    ['1','Document Selected','Rent Agreement · ₹299'],
-    ['2','Details Filled','Landlord: Bhati Ji · Tenant: Sharma Ji'],
-    ['3','Preview & Verify','Review all fields before payment'],
-    ['4','Pay & e-Stamp','UPI, card, or netbanking'],
-    ['5','Aadhaar e-Sign','OTP-based digital signature'],
-    ['6','Download PDF','Stamped & signed document']
-  ];
-  let html = '';
-  for(let i=0;i<6;i++){
-    const status = i+1 < n ? 'done' : (i+1 === n ? 'current' : 'pending');
-    html += active(steps[i][0], steps[i][1], steps[i][2], status);
-  }
-  b.innerHTML = html;
-  if(n===6){ t.textContent = 'Rent Agreement.pdf'; s.textContent = 'Ready to Download'; s.style.background = '#ECFDF5'; s.style.color = '#10B981'; }
-  else if(n===5){ t.textContent = 'Aadhaar e-Sign.pdf'; s.textContent = 'Signing...'; s.style.background = '#EEF2FF'; s.style.color = '#2952CC'; }
-  else if(n===4){ t.textContent = 'e-Stamp Certificate.pdf'; s.textContent = 'Payment Complete'; s.style.background = '#ECFDF5'; s.style.color = '#10B981'; }
-  else if(n===3){ t.textContent = 'Rent Agreement.pdf'; s.textContent = 'Reviewing'; s.style.background = '#FEF3C7'; s.style.color = 'var(--amber)'; }
-  else if(n===2){ t.textContent = 'Draft Preview.pdf'; s.textContent = 'Filling...'; s.style.background = '#EEF2FF'; s.style.color = '#2952CC'; }
-  else { t.textContent = 'Rent Agreement.pdf'; s.textContent = 'Choose a Document'; s.style.background = '#EEF2FF'; s.style.color = '#2952CC'; }
-}
+
 
 /* ═══ FAQ ═══ */
 function toggleFaq(el){
