@@ -2836,39 +2836,48 @@
                     } else if (docLower.includes('custom affidavit') || docLower.includes('coming_soon')) {
                         routedTab = 'COMING_SOON';
                         routedAuth = routedAuth || 'ALL';
+                    } else if (docLower === 'gnida') {
+                        routedTab = 'GNIDA';
+                        routedAuth = 'GNIDA';
                     }
                 }
 
-                let saved = null; try { saved = localStorage.getItem('madhav_legal_suite_v4_clean'); } catch(e) {}
+                let saved = null;
+                try {
+                    saved = localStorage.getItem('madhav_legal_suite_v4_clean');
+                } catch (e) {
+                    console.error("Error reading localStorage:", e);
+                }
+
+                let parsed = null;
                 if (saved) {
                     try {
-                        const parsed = JSON.parse(saved);
-                        if (parsed.rent) setRentData({ ...defaultRentData, ...parsed.rent });
-                        if (parsed.ats) setAtsData({ ...defaultATSData, ...parsed.ats });
-                        if (parsed.reg) setRegData({ ...defaultRegData, ...parsed.reg });
-                        if (parsed.tm48) setTm48Data({ ...defaultTM48Data, ...parsed.tm48 });
-                        if (parsed.gnida) setGnidaData({ ...defaultGNIDAData, ...parsed.gnida });
-                        if (parsed.mutation) setMutationData({ ...defaultMutationData, ...parsed.mutation });
-                        if (parsed.tmApp) setTmAppData({ ...defaultTMAppData, ...parsed.tmApp });
-                        if (parsed.gnidaRegistry) setGnidaRegistryData(prev => ({ ...prev, ...parsed.gnidaRegistry }));
-                        if (parsed.gnidaPtm) setGnidaPtmData(prev => ({ ...prev, ...parsed.gnidaPtm }));
-                        if (parsed.noidaTransfer) setNoidaTransferData(prev => ({ ...prev, ...parsed.noidaTransfer }));
-                        if (parsed.gnidaPackage) setGnidaPackageData(prev => ({ ...prev, ...parsed.gnidaPackage }));
-                        if (parsed.gnidaPackageDocs) setGnidaPackageDocs(prev => ({ ...prev, ...parsed.gnidaPackageDocs }));
-
-                        if (docParam) {
-                            if (routedTab) setActiveTab(routedTab);
-                            if (routedAuth) setActiveAuthority(routedAuth);
-                        } else {
-                            if (parsed.tab) setActiveTab(parsed.tab);
-                            if (parsed.authority) setActiveAuthority(parsed.authority);
+                        parsed = JSON.parse(saved);
+                        if (parsed && typeof parsed === 'object') {
+                            if (parsed.rent) setRentData(prev => ({ ...defaultRentData, ...prev, ...parsed.rent }));
+                            if (parsed.ats) setAtsData(prev => ({ ...defaultATSData, ...prev, ...parsed.ats }));
+                            if (parsed.reg) setRegData(prev => ({ ...defaultRegData, ...prev, ...parsed.reg }));
+                            if (parsed.tm48) setTm48Data(prev => ({ ...defaultTM48Data, ...prev, ...parsed.tm48 }));
+                            if (parsed.gnida) setGnidaData(prev => ({ ...defaultGNIDAData, ...prev, ...parsed.gnida }));
+                            if (parsed.mutation) setMutationData(prev => ({ ...prev, ...parsed.mutation }));
+                            if (parsed.tmApp) setTmAppData(prev => ({ ...prev, ...parsed.tmApp }));
+                            if (parsed.gnidaRegistry) setGnidaRegistryData(prev => ({ ...prev, ...parsed.gnidaRegistry }));
+                            if (parsed.gnidaPtm) setGnidaPtmData(prev => ({ ...prev, ...parsed.gnidaPtm }));
+                            if (parsed.noidaTransfer) setNoidaTransferData(prev => ({ ...prev, ...parsed.noidaTransfer }));
+                            if (parsed.gnidaPackage) setGnidaPackageData(prev => ({ ...prev, ...parsed.gnidaPackage }));
+                            if (parsed.gnidaPackageDocs) setGnidaPackageDocs(prev => ({ ...prev, ...parsed.gnidaPackageDocs }));
                         }
-                    } catch (e) { console.error(e); }
-                } else {
-                    if (docParam) {
-                        if (routedTab) setActiveTab(routedTab);
-                        if (routedAuth) setActiveAuthority(routedAuth);
+                    } catch (e) {
+                        console.error("Failed to parse saved state:", e);
                     }
+                }
+
+                if (docParam) {
+                    if (routedTab) setActiveTab(routedTab);
+                    if (routedAuth) setActiveAuthority(routedAuth);
+                } else if (parsed && typeof parsed === 'object') {
+                    if (parsed.tab) setActiveTab(parsed.tab);
+                    if (parsed.authority) setActiveAuthority(parsed.authority);
                 }
 
                 return () => {
