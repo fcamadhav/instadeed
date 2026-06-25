@@ -211,7 +211,10 @@
             .toast-container,
             .toast,
             [class*="toast"],
-            #authToast {
+            #authToast,
+            .print-hidden,
+            .print\:hidden,
+            .lg\:hidden {
                 display: none !important;
             }
 
@@ -274,7 +277,10 @@
             .toast-container,
             .toast,
             [class*="toast"],
-            #authToast {
+            #authToast,
+            .print-hidden,
+            .print\:hidden,
+            .lg\:hidden {
                 display: none !important;
             }
 
@@ -286,12 +292,18 @@
                 overflow: visible !important;
             }
 
-            .paper-page-container {
+            body .paper-page-container,
+            #root .paper-page-container {
                 display: block !important;
                 background: none !important;
                 padding: 0 !important;
                 height: auto !important;
                 overflow: visible !important;
+            }
+
+            body .paper-page-container > .paper-page:first-of-type {
+                page-break-before: avoid !important;
+                page-break-before: auto !important;
             }
 
             .paper-page {
@@ -532,7 +544,7 @@
         </div>
     </div>
 
-    <script src="out.js?v=1782375949"></script>
+    <script src="out.js?v=1782377234"></script>
 </body>
 
 </html>

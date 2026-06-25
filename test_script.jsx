@@ -6650,7 +6650,7 @@
                     <div className="flex flex-col lg:flex-row h-screen font-ui overflow-hidden app-layout-container">
                         {/* Mobile Tab Toggle */}
                         {activeTab !== 'HOME' && activeTab !== 'CRM' && activeTab !== 'DASHBOARD' && (
-                            <div className="flex lg:hidden bg-white border-b border-slate-100 shrink-0 z-30 w-full shadow-sm">
+                            <div className="flex lg:hidden bg-white border-b border-slate-100 shrink-0 z-30 w-full shadow-sm print:hidden">
                                 <button 
                                     onClick={() => setMobileViewTab('form')}
                                     className={`flex-1 py-3.5 text-center text-xs font-extrabold transition-all border-b-2 ${mobileViewTab === 'form' ? 'text-blue-600 border-blue-600 bg-blue-50/10' : 'text-slate-400 border-transparent'}`}
