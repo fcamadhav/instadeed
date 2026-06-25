@@ -3896,17 +3896,19 @@
                         if (verifyRes.ok) {
                             setShowCheckoutModal(false);
                             addToast("Payment successful! Opening document...", 'success');
-                            triggerPrint();
-                            try {
-                                const link = document.createElement('a');
-                                link.href = `${API_BASE}/api/customer/documents/${orderData.order_id}/download`;
-                                link.setAttribute('download', '');
-                                document.body.appendChild(link);
-                                link.click();
-                                document.body.removeChild(link);
-                            } catch (dlErr) {
-                                console.error("PDF auto-download failed:", dlErr);
-                            }
+                            setTimeout(() => {
+                                triggerPrint();
+                                try {
+                                    const link = document.createElement('a');
+                                    link.href = `${API_BASE}/api/customer/documents/${orderData.order_id}/download`;
+                                    link.setAttribute('download', '');
+                                    document.body.appendChild(link);
+                                    link.click();
+                                    document.body.removeChild(link);
+                                } catch (dlErr) {
+                                    console.error("PDF auto-download failed:", dlErr);
+                                }
+                            }, 500);
                         }
                     } else {
                         // Load Razorpay Script dynamically and process payment
@@ -3948,17 +3950,19 @@
                                                     if (verifyRes.ok) {
                                                         setShowCheckoutModal(false);
                                                         addToast("Payment verified! Downloading document...", 'success');
-                                                        triggerPrint();
-                                                        try {
-                                                            const link = document.createElement('a');
-                                                            link.href = `${API_BASE}/api/customer/documents/${orderData.order_id}/download`;
-                                                            link.setAttribute('download', '');
-                                                            document.body.appendChild(link);
-                                                            link.click();
-                                                            document.body.removeChild(link);
-                                                        } catch (dlErr) {
-                                                            console.error("PDF auto-download failed:", dlErr);
-                                                        }
+                                                        setTimeout(() => {
+                                                            triggerPrint();
+                                                            try {
+                                                                const link = document.createElement('a');
+                                                                link.href = `${API_BASE}/api/customer/documents/${orderData.order_id}/download`;
+                                                                link.setAttribute('download', '');
+                                                                document.body.appendChild(link);
+                                                                link.click();
+                                                                document.body.removeChild(link);
+                                                            } catch (dlErr) {
+                                                                console.error("PDF auto-download failed:", dlErr);
+                                                            }
+                                                        }, 500);
                                                     } else {
                                                         addToast("Payment verification failed. Contact support.", 'error');
                                                     }
