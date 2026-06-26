@@ -87,8 +87,9 @@ logger = logging.getLogger("instadeed")
 # --- Configuration ---
 JWT_SECRET = os.environ.get("JWT_SECRET")
 if not JWT_SECRET:
-    JWT_SECRET = "dev-secret-change-in-production"
-    logger.warning("JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.")
+    import secrets
+    JWT_SECRET = secrets.token_hex(32)
+    logger.warning("JWT_SECRET not set — generated random fallback. Set JWT_SECRET env var in production for stability across restarts.")
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRY_HOURS = 24
 DATABASE_FILE = os.environ.get("DATABASE_FILE", "madhav_crm.db")
@@ -485,7 +486,8 @@ async def global_exception_handler(request: Request, exc: Exception):
     if isinstance(exc, HTTPException):
         raise exc
     logger.error(f"Unhandled exception on {request.method} {request.url.path}: {exc}")
-    raise HTTPException(status_code=500, detail="Internal server error")
+    from fastapi.responses import JSONResponse
+    return JSONResponse(status_code=500, content={"detail": "Internal server error"})
 
 # --- Request Logging Middleware ---
 @app.middleware("http")
@@ -693,12 +695,13 @@ async def send_otp(request: Request, body: SendOTPRequest):
             logger.info(f"OTP sent to {body.email}")
     except Exception:
         logger.info(f"OTP sent to {body.email}")
-    return {"status": "success", "message": "OTP sent to your email (Demo OTP: 123456)"}
+    return {"status": "success", "message": "OTP sent to your email"}
 
 @app.post("/api/auth/verify-otp")
 @limiter.limit("10/minute")
 async def verify_otp(request: Request, body: VerifyOTPRequest):
-    is_master = (body.otp == "123456")
+    ENABLE_MASTER_OTP = os.environ.get("ENABLE_MASTER_OTP", "0") == "1"
+    is_master = ENABLE_MASTER_OTP and (body.otp == "123456")
     if not is_master:
         if body.email not in otp_store:
             raise HTTPException(status_code=400, detail="No OTP requested for this email")
@@ -2874,14 +2877,15 @@ async def drafts_send_otp(body: dict = Body(...)):
     otp = str(random.randint(100000, 999999))
     DRAFT_OTP_STORE[phone] = otp
     logger.info(f"Draft OTP sent to {phone} -> {otp}")
-    return {"success": True, "message": "OTP sent successfully (Demo OTP: 123456)"}
+    return {"success": True, "message": "OTP sent successfully"}
 
 @app.post("/api/drafts/verify-otp")
 async def drafts_verify_otp(body: dict = Body(...)):
     phone = body.get("phone", "")
     phone = sanitize_phone(phone)
     otp = body.get("otp", "")
-    if otp == "123456" or DRAFT_OTP_STORE.get(phone) == otp:
+    ENABLE_MASTER_OTP = os.environ.get("ENABLE_MASTER_OTP", "0") == "1"
+    if (ENABLE_MASTER_OTP and otp == "123456") or DRAFT_OTP_STORE.get(phone) == otp:
         DRAFT_OTP_STORE.pop(phone, None)
         conn = sqlite3.connect(DATABASE_FILE)
         cursor = conn.cursor()
@@ -2934,7 +2938,7 @@ async def create_share_link(body: dict = Body(...)):
     form_data = body.get("form_data", {})
     if not doc_type:
         return {"success": False, "error": "doc_type required"}
-    token = str(uuid.uuid4())
+    token = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
     now = datetime.datetime.now()
     expires = now + datetime.timedelta(days=7)
     

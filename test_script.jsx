@@ -1663,21 +1663,21 @@
             transferorCount: '2',
             transferor1Name: 'MR. D. SAM SUNDAR',
             transferor1Parent: 'MR. PRAKASA RAO',
-            transferor1Pan: 'AMWPD7168G',
-            transferor1Aadhar: '2290 4493 9878',
+            transferor1Pan: 'ABCDE1234F',
+            transferor1Aadhar: '1234 5678 9012',
             transferor1Phone: '9876543210',
             transferor1Email: 'transferor1@example.com',
             transferor1Address: 'A-50/2, A - BLOCK, DDA SFS FLATS, PVR ANUPAM, SAKET, DELHI-110017',
             transferor1Age: '45',
-            transferor1Gst: '07AMWPD7168G1Z5',
+            transferor1Gst: '07ABCDE1234F1Z5',
             transferor1BankName: 'HDFC Bank',
-            transferor1BankAccount: '50100412345678',
-            transferor1BankIfsc: 'HDFC0000003',
+            transferor1BankAccount: '99999000001111',
+            transferor1BankIfsc: 'SBIN0000001',
             
             transferor2Name: 'MRS. MRIDULA KAKARLA',
             transferor2Parent: 'MR. D. SAM SUNDAR (Husb)',
-            transferor2Pan: 'CDQPK7887N',
-            transferor2Aadhar: '5059 3158 0682',
+            transferor2Pan: 'FGHIJ5678K',
+            transferor2Aadhar: '2345 6789 0123',
             transferor2Phone: '',
             transferor2Email: '',
             transferor2Address: '',
@@ -1691,21 +1691,21 @@
             transfereeCount: '2',
             transferee1Name: 'MRS. ISHA ARORA',
             transferee1Parent: 'MR. ROHAN SHARMA (Husb)',
-            transferee1Pan: 'BHZPA7056D',
-            transferee1Aadhar: '9499 8191 6571',
+            transferee1Pan: 'KLMNO9012P',
+            transferee1Aadhar: '3456 7890 1234',
             transferee1Phone: '9999988888',
             transferee1Email: 'transferee1@example.com',
             transferee1Address: 'FLAT NO. J-23077, 14TH AVENUE GAUR CITY-2, GREATER NOIDA WEST, SECTOR-16C, UTTAR PRADESH 201009',
             transferee1Age: '32',
-            transferee1Gst: '09BHZPA7056D1Z2',
+            transferee1Gst: '09KLMNO9012P1Z2',
             transferee1BankName: 'ICICI Bank',
-            transferee1BankAccount: '000401567890',
-            transferee1BankIfsc: 'ICIC0000004',
+            transferee1BankAccount: '99999222223333',
+            transferee1BankIfsc: 'ICIC0001234',
             
             transferee2Name: 'MR. ROHAN SHARMA',
             transferee2Parent: 'MR. AJAY SHARMA',
-            transferee2Pan: 'DTEPM4364K',
-            transferee2Aadhar: '8823 7664 3135',
+            transferee2Pan: 'QRSTU3456V',
+            transferee2Aadhar: '4567 8901 2345',
             transferee2Phone: '9999977777',
             transferee2Email: 'transferee2@example.com',
             transferee2Address: '',
@@ -2390,23 +2390,23 @@
                 transferorCount: '2',
                 transferor1Name: 'MR. D. SAM SUNDAR',
                 transferor1Parent: 'MR. PRAKASA RAO',
-                transferor1Pan: 'AMWPD7168G',
-                transferor1Aadhar: '2290 4493 9878',
-                transferor1Address: 'A-50/2, A - BLOCK, DDA SFS FLATS, PVR ANUPAM, SAKET, SAKET, SOUTH DELHI, DELHI-110017',
+                transferor1Pan: 'ABCDE1234F',
+                transferor1Aadhar: '1234 5678 9012',
+                transferor1Address: 'A-50/2, A-BLOCK, DDA SFS FLATS, SAKET, DELHI-110017',
                 transferor2Name: 'MRS. MRIDULA KAKARLA',
                 transferor2Parent: 'MR. D. SAM SUNDAR (Husb)',
-                transferor2Pan: 'CDQPK7887N',
-                transferor2Aadhar: '5059 3158 0682',
+                transferor2Pan: 'FGHIJ5678K',
+                transferor2Aadhar: '2345 6789 0123',
                 transfereeCount: '2',
                 transferee1Name: 'MRS. ISHA ARORA',
                 transferee1Parent: 'MR. ROHAN SHARMA (Husb)',
-                transferee1Pan: 'BHZPA7056D',
-                transferee1Aadhar: '9499 8191 6571',
+                transferee1Pan: 'KLMNO9012P',
+                transferee1Aadhar: '3456 7890 1234',
                 transferee1Address: 'FLAT NO. J-23077, 14TH AVENUE GAUR CITY-2, GREATER NOIDA WEST, SECTOR-16C, UTTAR PRADESH 201009',
                 transferee2Name: 'MR. ROHAN SHARMA',
                 transferee2Parent: 'MR. AJAY SHARMA',
-                transferee2Pan: 'DTEPM4364K',
-                transferee2Aadhar: '8823 7664 3135',
+                transferee2Pan: 'QRSTU3456V',
+                transferee2Aadhar: '4567 8901 2345',
                 transferDate: '2024-10-28',
                 leaseDate: '2011-05-10',
                 subLeaseDate: '2017-09-16',
@@ -2715,7 +2715,12 @@
                 // Check URL parameter routing
                 const params = new URLSearchParams(window.location.search);
                 
-                const shareParam = params.get('share');
+                // Support both /s/{token} path and ?share= query param
+                let shareParam = params.get('share');
+                if (!shareParam) {
+                    const pathMatch = window.location.pathname.match(/^\/s\/([a-z0-9]+)$/i);
+                    if (pathMatch) shareParam = pathMatch[1];
+                }
                 if (shareParam) {
                     setViewOnlyMode(true);
                     setActiveTab(null);
@@ -4070,8 +4075,8 @@
                     if (res.ok) {
                         const data = await res.json();
                         if (data.success && data.token) {
-                            const baseUrl = window.location.href.split('?')[0].split('#')[0];
-                            const shareUrl = `${baseUrl}?share=${data.token}`;
+                            const origin = window.location.origin;
+                            const shareUrl = `${origin}/s/${data.token}`;
                             setShareDraftToken(shareUrl);
                             setShowShareDraftModal(true);
                         } else {
