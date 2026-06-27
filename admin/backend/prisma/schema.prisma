@@ -1,0 +1,550 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Users ───
+model User {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  passwordHash   String?
+  name           String
+  phone          String?
+  role           String @default("CUSTOMER")
+  avatarUrl      String?
+  isActive       Boolean  @default(true)
+  googleId       String?
+  lastLoginAt    DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  orders         Order[]
+  loginHistory   LoginHistory[]
+  auditLogs      AuditLog[]
+  notifications  Notification[]
+  orderNotes     OrderNote[]
+  assignments    OrderAssignment[]
+  documentVersions DocumentVersion[]
+  documents       Document[]
+  documentAuditLogs DocumentAuditLog[]
+  rentAgreements  RentAgreement[]
+}
+
+// ─── Login History ───
+model LoginHistory {
+  id        String   @id @default(uuid())
+  userId    String
+  ipAddress String?
+  userAgent String?
+  deviceInfo String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// ─── Categories ───
+model Category {
+  id               String   @id @default(uuid())
+  name             String   @unique
+  slug             String   @unique
+  description      String?
+  icon             String?
+  displayOrder     Int      @default(0)
+  showOnHomepage   Boolean  @default(true)
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  services         Service[]
+}
+
+// ─── Services ───
+model Service {
+  id               String        @id @default(uuid())
+  name             String
+  slug             String        @unique
+  categoryId       String
+  shortDescription String?
+  longDescription  String?
+  icon             String?
+  banner           String?
+  deliveryTime     String?
+  processingTime   String?
+  sortOrder        Int           @default(0)
+  isFeatured       Boolean       @default(false)
+  showOnHomepage   Boolean       @default(true)
+  seoTitle         String?
+  seoDescription   String?
+  urlSlug          String?
+  status           String @default("ACTIVE")
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  category         Category      @relation(fields: [categoryId], references: [id])
+  pricing          Pricing?
+  orders           Order[]
+  coupons         CouponService[]
+  documents       Document[]
+}
+
+// ─── Pricing ───
+model Pricing {
+  id              String   @id @default(uuid())
+  serviceId       String   @unique
+  currentPrice    Float
+  oldPrice        Float?
+  discountPercent Float?
+  discountAmount  Float?
+  gstPercent      Float    @default(18)
+  convenienceFee  Float    @default(0)
+  processingFee   Float    @default(0)
+  deliveryCharge  Float    @default(0)
+  minimumPrice    Float?
+  offerBadge      String?
+  isLimitedOffer  Boolean  @default(false)
+  subscriptionPrice Float?
+  emiAvailable    Boolean  @default(false)
+  currency        String   @default("INR")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  service         Service  @relation(fields: [serviceId], references: [id])
+  history         PricingHistory[]
+}
+
+model PricingHistory {
+  id              String   @id @default(uuid())
+  pricingId       String
+  currentPrice    Float
+  oldPrice        Float?
+  discountPercent Float?
+  gstPercent      Float
+  effectiveFrom   DateTime @default(now())
+  effectiveTo     DateTime?
+  createdAt       DateTime @default(now())
+
+  pricing         Pricing  @relation(fields: [pricingId], references: [id])
+}
+
+// ─── Orders ───
+model Order {
+  id              String        @id @default(uuid())
+  orderNumber     String        @unique
+  customerId      String?
+  customerName    String?
+  customerPhone   String?
+  customerEmail   String?
+  serviceId       String
+  amount          Float
+  discount        Float         @default(0)
+  tax             Float         @default(0)
+  total           Float
+  status          String   @default("PENDING")
+  paymentStatus   String @default("PENDING")
+  paymentGateway  String?
+  paymentId       String?
+  invoiceNumber   String?
+  formData        String?
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  customer        User?         @relation(fields: [customerId], references: [id])
+  service         Service       @relation(fields: [serviceId], references: [id])
+  invoices        Invoice[]
+  refunds         Refund[]
+  orderNotes      OrderNote[]
+  assignments     OrderAssignment[]
+  documentVersions DocumentVersion[]
+  orderTimeline   OrderTimeline[]
+  documents       Document[]
+}
+
+model OrderTimeline {
+  id        String   @id @default(uuid())
+  orderId   String
+  status    String
+  note      String?
+  createdAt DateTime @default(now())
+
+  order     Order    @relation(fields: [orderId], references: [id])
+}
+
+// ─── Invoices ───
+model Invoice {
+  id          String        @id @default(uuid())
+  orderId     String
+  invoiceNumber String      @unique
+  amount      Float
+  gstAmount   Float         @default(0)
+  total       Float
+  status      String        @default("PENDING")
+  pdfUrl      String?
+  paidAt      DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  order       Order         @relation(fields: [orderId], references: [id])
+}
+
+// ─── Refunds ───
+model Refund {
+  id          String        @id @default(uuid())
+  orderId     String
+  amount      Float
+  reason      String?
+  status      String        @default("PENDING")
+  processedAt DateTime?
+  processedBy String?
+  createdAt   DateTime      @default(now())
+
+  order       Order         @relation(fields: [orderId], references: [id])
+}
+
+// ─── Order Notes ───
+model OrderNote {
+  id        String   @id @default(uuid())
+  orderId   String
+  note      String
+  authorId  String
+  createdAt DateTime @default(now())
+
+  order     Order    @relation(fields: [orderId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id])
+}
+
+// ─── Order Assignment ───
+model OrderAssignment {
+  id        String   @id @default(uuid())
+  orderId   String
+  staffId   String
+  role      String   @default("attorney")
+  assignedAt DateTime @default(now())
+
+  order     Order    @relation(fields: [orderId], references: [id])
+  staff     User     @relation(fields: [staffId], references: [id])
+}
+
+// ─── Document Versions ───
+model DocumentVersion {
+  id              String   @id @default(uuid())
+  orderId         String
+  version         Int      @default(1)
+  formDataSnapshot String?
+  fileUrl         String?
+  changeSummary   String?
+  authorId        String
+  createdAt       DateTime @default(now())
+
+  order           Order    @relation(fields: [orderId], references: [id])
+  author          User     @relation(fields: [authorId], references: [id])
+}
+
+// ─── Payment Gateways ───
+model PaymentGatewayConfig {
+  id            String          @id @default(uuid())
+  gateway       String  @unique
+  isEnabled     Boolean         @default(false)
+  isTestMode    Boolean         @default(true)
+  isDefault     Boolean         @default(false)
+  apiKey        String?
+  apiSecret     String?
+  webhookSecret String?
+  successUrl    String?
+  failureUrl    String?
+  paymentTimeout Int            @default(300)
+  sortOrder     Int             @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+// ─── Coupons ───
+model Coupon {
+  id                String          @id @default(uuid())
+  code              String          @unique
+  type              String
+  value             Float
+  minOrderAmount    Float           @default(0)
+  maxDiscount       Float?
+  maxUses           Int             @default(0)
+  currentUses       Int             @default(0)
+  perUserLimit      Int             @default(1)
+  expiresAt         DateTime?
+  isActive          Boolean         @default(true)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  services          CouponService[]
+}
+
+model CouponService {
+  couponId   String
+  serviceId  String
+
+  coupon     Coupon   @relation(fields: [couponId], references: [id])
+  service    Service  @relation(fields: [serviceId], references: [id])
+
+  @@id([couponId, serviceId])
+}
+
+// ─── GST Config ───
+model GstConfig {
+  id            String @id @default(uuid())
+  gstNumber     String?
+  gstRate       Float  @default(18)
+  sacCode       String?
+  invoicePrefix String?
+  invoiceFooter String?
+  invoiceLogo   String?
+  bankName      String?
+  bankAccount   String?
+  bankIfsc      String?
+  bankBranch    String?
+  qrCode        String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ─── Notifications ───
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String?
+  type      String
+  title     String
+  message   String
+  referenceType String?
+  referenceId   String?
+  status    String           @default("PENDING")
+  sentAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  user      User?            @relation(fields: [userId], references: [id])
+}
+
+// ─── Email Templates ───
+model EmailTemplate {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  subject   String
+  body      String
+  variables String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── WhatsApp Templates ───
+model WhatsAppTemplate {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  templateId String?
+  body      String
+  variables String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── AI Settings ───
+model AiSetting {
+  id            String  @id @default(uuid())
+  provider      String  @default("openai")
+  model         String  @default("gpt-4")
+  apiKey        String?
+  temperature   Float   @default(0.7)
+  maxTokens     Int     @default(2048)
+  systemPrompt  String?
+  retryCount    Int     @default(3)
+  fallbackModel String?
+  isEnabled     Boolean @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ─── OCR Settings ───
+model OcrSetting {
+  id        String  @id @default(uuid())
+  provider  String  @default("tesseract")
+  apiKey    String?
+  isEnabled Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OcrSupportedDocument {
+  id        String  @id @default(uuid())
+  name      String
+  fields    String?
+  isActive  Boolean @default(true)
+  createdAt DateTime @default(now())
+}
+
+// ─── Workflow ───
+model Workflow {
+  id        String   @id @default(uuid())
+  name      String
+  steps     String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Website Content ───
+model WebsiteContent {
+  id        String  @id @default(uuid())
+  section   String  @unique
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── API Settings ───
+model ApiSetting {
+  id        String  @id @default(uuid())
+  provider  String  @unique
+  apiKey    String?
+  apiSecret String?
+  extra     String?
+  isActive  Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Audit Log ───
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  module    String
+  recordId  String?
+  oldValue  String?
+  newValue  String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+// ─── System Settings ───
+model SystemSetting {
+  id    String @id @default(uuid())
+  key   String @unique
+  value String
+}
+
+// ─── Activity Log ───
+model ActivityLog {
+  id        String   @id @default(uuid())
+  action    String
+  entity    String
+  entityId  String?
+  metadata  String?
+  ipAddress String?
+  userAgent String?
+  userId    String?
+  createdAt DateTime @default(now())
+}
+
+// ─── Generated Documents ───
+model Document {
+  id              String   @id @default(uuid())
+  documentNumber  String   @unique
+  orderId         String?
+  customerId      String
+  serviceId       String
+  documentType    String
+  formData        String?
+  htmlContent     String?
+  pdfFilePath     String?
+  docxFilePath    String?
+  version         Int      @default(1)
+  status          String   @default("COMPLETED")
+  fileSize        Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  customer        User            @relation(fields: [customerId], references: [id])
+  service         Service         @relation(fields: [serviceId], references: [id])
+  order           Order?          @relation(fields: [orderId], references: [id])
+  auditLogs       DocumentAuditLog[]
+}
+
+model DocumentAuditLog {
+  id          String   @id @default(uuid())
+  documentId  String
+  action      String
+  userId      String?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  document    Document @relation(fields: [documentId], references: [id])
+  user        User?    @relation(fields: [userId], references: [id])
+}
+
+model RentAgreement {
+  id              String   @id @default(uuid())
+  agreementId     String   @unique
+  customerId      String?
+  customerName    String
+  mobile          String
+  email           String?
+  landlordName    String
+  tenantName      String
+  propertyAddress String
+  startDate       DateTime
+  endDate         DateTime
+  duration        Int
+  securityDeposit Float
+  monthlyRent     Float
+  registrationNumber String?
+  pdfFilePath     String?
+  docxFilePath    String?
+  paymentStatus   String   @default("PENDING")
+  renewalStatus   String   @default("ACTIVE")
+  previousAgreementId String?
+  renewedAgreementId  String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  customer        User?              @relation(fields: [customerId], references: [id])
+  reminders       RentAgreementReminder[]
+  timeline        RentAgreementTimeline[]
+
+  @@index([renewalStatus])
+  @@index([endDate])
+  @@index([customerName])
+  @@index([mobile])
+}
+
+model RentAgreementReminder {
+  id            String   @id @default(uuid())
+  agreementId   String
+  remindAt      DateTime
+  channel       String
+  status        String   @default("PENDING")
+  sentAt        DateTime?
+  createdAt     DateTime @default(now())
+
+  agreement     RentAgreement @relation(fields: [agreementId], references: [id])
+
+  @@index([agreementId])
+  @@index([status])
+}
+
+model RentAgreementTimeline {
+  id          String   @id @default(uuid())
+  agreementId String
+  event       String
+  description String?
+  metadata    String?
+  createdAt   DateTime @default(now())
+
+  agreement   RentAgreement @relation(fields: [agreementId], references: [id])
+
+  @@index([agreementId])
+}
