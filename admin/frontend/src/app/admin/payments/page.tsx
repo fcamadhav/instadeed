@@ -152,15 +152,15 @@ export default function PaymentsPage() {
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={`Configure ${editing ? gatewayMeta[editing.gateway] || editing.gateway : ''}`} size="lg" footer={<><button onClick={() => setModalOpen(false)} className="btn-secondary">Cancel</button><button onClick={handleSave} disabled={saving} className="btn-primary"><Save className="w-4 h-4" /> {saving ? 'Saving...' : 'Save'}</button></>}>
         <form onSubmit={handleSave} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormField label="API Key" value={form.apiKey} onChange={v => setForm({ ...form, apiKey: v })} />
-            <FormField label="API Secret" value={form.apiSecret} onChange={v => setForm({ ...form, apiSecret: v })} />
+            <FormField label="API Key" value={form.apiKey} onChange={e => setForm({ ...form, apiKey: (e as any).target?.value || '' })} />
+            <FormField label="API Secret" value={form.apiSecret} onChange={e => setForm({ ...form, apiSecret: (e as any).target?.value || '' })} />
           </div>
-          <FormField label="Webhook Secret" value={form.webhookSecret} onChange={v => setForm({ ...form, webhookSecret: v })} />
+          <FormField label="Webhook Secret" value={form.webhookSecret} onChange={e => setForm({ ...form, webhookSecret: (e as any).target?.value || '' })} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormField label="Success URL" value={form.successUrl} onChange={v => setForm({ ...form, successUrl: v })} />
-            <FormField label="Failure URL" value={form.failureUrl} onChange={v => setForm({ ...form, failureUrl: v })} />
+            <FormField label="Success URL" value={form.successUrl} onChange={e => setForm({ ...form, successUrl: (e as any).target?.value || '' })} />
+            <FormField label="Failure URL" value={form.failureUrl} onChange={e => setForm({ ...form, failureUrl: (e as any).target?.value || '' })} />
           </div>
-          <FormField label="Timeout (seconds)" type="number" value={String(form.paymentTimeout)} onChange={v => setForm({ ...form, paymentTimeout: parseInt(v) || 300 })} />
+          <FormField label="Timeout (seconds)" type="number" value={String(form.paymentTimeout)} onChange={e => setForm({ ...form, paymentTimeout: parseInt((e as any).target?.value) || 300 })} />
         </form>
       </Modal>
     </AdminLayout>
