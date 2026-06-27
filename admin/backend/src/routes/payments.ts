@@ -130,10 +130,9 @@ const createOrderHandler = async (req: Request, res: Response) => {
           },
         });
       }
-      const orderNumber = `ORD-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(2).toString("hex").toUpperCase()}`;
       await prisma.order.create({
         data: {
-          orderNumber,
+          orderNumber: mockOrderId,
           customerName: data.customer_name || "B2C Client",
           customerPhone: data.customer_phone || "0000000000",
           customerEmail: data.customer_email || "b2c@client.com",
