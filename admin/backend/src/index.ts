@@ -68,7 +68,16 @@ app.get("/api/health", (_req: Request, res: Response) => {
 });
 
 // Serve the old Madhav_Drafting_Hub.html SPA internally (no ?doc= exposure in browser URL)
-const DRAFT_SPA_PATH = path.resolve(__dirname, "..", "..", "..", "..", "Madhav_Drafting_Hub.html");
+// Try multiple possible locations for the SPA file
+const DRAFT_SPA_CANDIDATES = [
+  path.resolve(__dirname, "..", "..", "..", "..", "Madhav_Drafting_Hub.html"),  // host project root
+  path.resolve("/app", "Madhav_Drafting_Hub.html"),                              // Docker volume mount
+  path.resolve(__dirname, "..", "..", "Madhav_Drafting_Hub.html"),              // alt nesting
+];
+let DRAFT_SPA_PATH = "";
+for (const p of DRAFT_SPA_CANDIDATES) {
+  if (fs.existsSync(p)) { DRAFT_SPA_PATH = p; break; }
+}
 app.get("/api/draft-serve", (req: Request, res: Response) => {
   const doc = (req.query.doc as string) || "rent-agreement";
   if (!fs.existsSync(DRAFT_SPA_PATH)) {
