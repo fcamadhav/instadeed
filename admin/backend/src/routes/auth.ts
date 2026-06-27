@@ -39,7 +39,7 @@ const updateProfileSchema = z.object({
   avatarUrl: z.string().optional(),
 });
 
-router.post("/api/auth/login", authLimiter, async (req: Request, res: Response) => {
+router.post("/api/admin/auth/login", authLimiter, async (req: Request, res: Response) => {
   try {
     const data = loginSchema.parse(req.body);
 
@@ -90,7 +90,7 @@ router.post("/api/auth/login", authLimiter, async (req: Request, res: Response) 
   }
 });
 
-router.post("/api/auth/google", authLimiter, async (req: Request, res: Response) => {
+router.post("/api/admin/auth/google", authLimiter, async (req: Request, res: Response) => {
   try {
     const data = googleSchema.parse(req.body);
     let user = await prisma.user.findFirst({ where: { OR: [{ email: data.email }, { googleId: data.googleId }] } });
@@ -138,7 +138,7 @@ router.post("/api/auth/google", authLimiter, async (req: Request, res: Response)
   }
 });
 
-router.post("/api/auth/register", authLimiter, async (req: Request, res: Response) => {
+router.post("/api/admin/auth/register", authLimiter, async (req: Request, res: Response) => {
   try {
     const data = registerSchema.parse(req.body);
 
@@ -179,7 +179,7 @@ router.post("/api/auth/register", authLimiter, async (req: Request, res: Respons
   }
 });
 
-router.get("/api/auth/me", requireAuth, async (req: Request, res: Response) => {
+router.get("/api/admin/auth/me", requireAuth, async (req: Request, res: Response) => {
   try {
     const user = await prisma.user.findUnique({
       where: { id: req.user!.userId },
@@ -196,7 +196,7 @@ router.get("/api/auth/me", requireAuth, async (req: Request, res: Response) => {
   }
 });
 
-router.put("/api/auth/me", requireAuth, async (req: Request, res: Response) => {
+router.put("/api/admin/auth/me", requireAuth, async (req: Request, res: Response) => {
   try {
     const data = updateProfileSchema.parse(req.body);
     const user = await prisma.user.update({
