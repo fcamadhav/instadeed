@@ -52,7 +52,7 @@ export default function Hero() {
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <motion.div
             variants={container}
-            initial="hidden"
+            initial={false}
             animate="visible"
             className="lg:col-span-6"
           >
@@ -89,14 +89,14 @@ export default function Hero() {
               className="mt-8 flex flex-col gap-4 sm:flex-row"
             >
               <a
-                href="#"
+                href="/app/?doc=rent-agreement"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-primary/25 transition-all duration-200 hover:bg-primary-dark hover:shadow-xl active:scale-95"
               >
                 Draft Document
                 <FileText className="h-5 w-5" />
               </a>
               <a
-                href="#"
+                href="#services"
                 className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-border bg-white px-8 py-3.5 text-base font-semibold text-dark transition-all duration-200 hover:border-primary/30 hover:bg-primary/5 active:scale-95"
               >
                 View Pricing
@@ -124,7 +124,7 @@ export default function Hero() {
 
           <motion.div
             variants={itemRight}
-            initial="hidden"
+            initial={false}
             animate="visible"
             className="relative lg:col-span-6"
           >

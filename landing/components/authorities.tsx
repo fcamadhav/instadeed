@@ -52,7 +52,7 @@ const cardVariants = {
 
 export default function Authorities() {
   return (
-    <section className="w-full bg-background py-16 sm:py-20 lg:py-24">
+    <section id="coverage" className="w-full bg-background py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -75,7 +75,7 @@ export default function Authorities() {
 
         <motion.div
           variants={containerVariants}
-          initial="hidden"
+          initial={false}
           whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8"

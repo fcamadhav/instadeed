@@ -6,6 +6,8 @@ const quickLinks = [
   { href: '#pricing', label: 'Pricing' },
   { href: '#how-it-works', label: 'How It Works' },
   { href: '#coverage', label: 'Coverage' },
+  { href: '#footer', label: 'About' },
+  { href: '#footer', label: 'Contact' },
 ]
 
 const services = [
@@ -18,7 +20,7 @@ const services = [
 
 export default function Footer() {
   return (
-    <footer className="bg-dark">
+    <footer id="footer" className="bg-dark">
       <div className="mx-auto max-w-7xl px-4 pb-8 pt-16 sm:px-6 lg:px-8">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Column 1: Brand */}

@@ -31,7 +31,7 @@ export default function FinalCta() {
           </p>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <a
-              href="#draft-now"
+              href="/app/?doc=rent-agreement"
               className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-base font-semibold text-primary shadow-lg transition-all duration-200 hover:bg-blue-50 hover:shadow-xl active:scale-95"
             >
               Start Now

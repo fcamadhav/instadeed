@@ -58,7 +58,7 @@ function StepCard({
     <div ref={ref} className="group relative flex items-start gap-5 sm:gap-8">
       <div className="flex flex-col items-center">
         <motion.div
-          initial={{ scale: 0 }}
+          initial={false}
           animate={isInView ? { scale: 1 } : {}}
           transition={{
             type: "spring" as const,
@@ -72,7 +72,7 @@ function StepCard({
         </motion.div>
         {index < steps.length - 1 && (
           <motion.div
-            initial={{ scaleY: 0 }}
+            initial={false}
             animate={isInView ? { scaleY: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.25 }}
             className="w-0.5 flex-1 origin-top bg-gradient-to-b from-primary to-blue-200"
@@ -82,7 +82,7 @@ function StepCard({
       </div>
 
       <motion.div
-        initial={{ opacity: 0, x: -20 }}
+        initial={false}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{
           type: "spring" as const,
@@ -116,11 +116,11 @@ function StepCard({
 
 export default function HowItWorks() {
   return (
-    <section className="bg-card py-20 sm:py-24">
+    <section id="how-it-works" className="bg-card py-20 sm:py-24">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center">
           <motion.span
-            initial={{ opacity: 0, y: 10 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary"
@@ -128,7 +128,7 @@ export default function HowItWorks() {
             Process
           </motion.span>
           <motion.h2
-            initial={{ opacity: 0, y: 10 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
@@ -137,7 +137,7 @@ export default function HowItWorks() {
             How It <span className="text-primary">Works</span>
           </motion.h2>
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}

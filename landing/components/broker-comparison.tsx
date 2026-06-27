@@ -39,7 +39,7 @@ const floatVariants = {
 
 export default function BrokerComparison() {
   return (
-    <section className="bg-card py-20 sm:py-24">
+    <section id="pricing" className="bg-card py-20 sm:py-24">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center">
           <motion.span

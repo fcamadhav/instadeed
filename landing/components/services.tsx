@@ -105,7 +105,7 @@ const cardVariants = {
 
 export default function Services() {
   return (
-    <section className="w-full bg-slate-50 py-16 sm:py-20 lg:py-24">
+    <section id="services" className="w-full bg-slate-50 py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -128,7 +128,7 @@ export default function Services() {
 
         <motion.div
           variants={containerVariants}
-          initial="hidden"
+          initial={false}
           whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
