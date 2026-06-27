@@ -63,8 +63,19 @@ app.use(dashboardRoutes);
 app.use(documentRoutes);
 app.use(rentAgreementRoutes);
 
-app.get("/api/health", (_req: Request, res: Response) => {
-  res.json({ success: true, data: { status: "ok", timestamp: new Date().toISOString() } });
+app.get("/api/health", async (_req: Request, res: Response) => {
+  let dbOk = false;
+  try { await prisma.$queryRaw`SELECT 1`; dbOk = true; } catch {}
+  res.json({
+    success: true,
+    data: {
+      status: "ok",
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      memory: process.memoryUsage(),
+      database: dbOk ? "connected" : "error",
+    },
+  });
 });
 
 // Serve the old Madhav_Drafting_Hub.html SPA internally (no ?doc= exposure in browser URL)

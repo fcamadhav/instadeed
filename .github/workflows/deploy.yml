@@ -1,0 +1,30 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            set -e
+            cd /app
+            git pull
+            cd /app/admin
+            docker-compose up -d --build backend 2>&1
+            docker-compose up -d --build frontend 2>&1
+            cd /app/landing
+            docker build -t landing_frontend .
+            docker rm -f landing_frontend_1 || true
+            docker run -d --name landing_frontend_1 -p 5000:5000 landing_frontend
+            echo "Deployed $(git log -1 --oneline)"
