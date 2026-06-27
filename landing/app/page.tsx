@@ -11,6 +11,8 @@ import Faq from "@/components/faq";
 import FinalCta from "@/components/final-cta";
 import Footer from "@/components/footer";
 
+export const dynamic = 'force-dynamic'
+
 export default function Home() {
   return (
     <main>
