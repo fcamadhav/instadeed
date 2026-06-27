@@ -13,7 +13,7 @@ import {
   Smartphone,
   Star,
 } from "lucide-react";
-import { useDocument } from "@/lib/DocumentContext";
+import { setActiveDoc } from "@/lib/documentState";
 
 const trusts = [
   "Physical Delivery",
@@ -47,7 +47,6 @@ const floatAnimation = {
 };
 
 export default function Hero() {
-  const { setActiveDoc } = useDocument()
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-gradient-to-b from-background to-white pt-24 sm:pt-28 lg:pt-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

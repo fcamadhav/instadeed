@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useDocument } from "@/lib/DocumentContext";
+import { setActiveDoc } from "@/lib/documentState";
 
 const navLinks = [
   { href: "#home", label: "Home" },
@@ -19,7 +19,6 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { setActiveDoc } = useDocument();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);

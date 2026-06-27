@@ -1,14 +1,18 @@
 'use client'
 
-import { DocumentProvider } from '@/lib/DocumentContext'
+import { useEffect, ReactNode } from 'react'
+import { initializeFromStorage } from '@/lib/documentState'
 import DocumentDraftOverlay from '@/components/DocumentDraftOverlay'
-import { ReactNode } from 'react'
 
 export default function ClientLayout({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    initializeFromStorage()
+  }, [])
+
   return (
-    <DocumentProvider>
+    <>
       {children}
       <DocumentDraftOverlay />
-    </DocumentProvider>
+    </>
   )
 }

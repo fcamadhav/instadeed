@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useDocument } from '@/lib/DocumentContext'
+import { setActiveDoc } from '@/lib/documentState'
 import {
   FileText,
   Stamp,
@@ -105,7 +105,6 @@ const cardVariants = {
 }
 
 export default function Services() {
-  const { setActiveDoc } = useDocument()
   return (
     <section id="services" className="w-full bg-slate-50 py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

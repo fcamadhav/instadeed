@@ -1,8 +1,7 @@
 import { ArrowRight } from 'lucide-react'
-import { useDocument } from '@/lib/DocumentContext'
+import { setActiveDoc } from '@/lib/documentState'
 
 export default function FinalCta() {
-  const { setActiveDoc } = useDocument()
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-primary to-primary-dark py-20 sm:py-28">
       {/* Decorative circles */}
