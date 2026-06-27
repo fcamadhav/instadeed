@@ -308,3 +308,149 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2026-06-24 23:16:42,696 | INFO     | Database initialized with indexes
 2026-06-24 23:16:42,696 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
 2026-06-25 01:39:19,942 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-25 03:07:59,408 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-25 03:07:59,611 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-25 03:07:59,684 | INFO     | Database initialized with indexes
+2026-06-25 03:07:59,684 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-25 03:08:06,455 | INFO     | GET /landing.html -> 200 (34ms)
+2026-06-25 15:39:41,550 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-25 15:39:41,753 | INFO     | Database initialized with indexes
+2026-06-25 15:39:41,753 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-25 15:39:57,020 | INFO     | GET /out.js -> 200 (67ms)
+2026-06-25 15:40:54,912 | INFO     | GET / -> 200 (2ms)
+2026-06-25 17:06:28,201 | INFO     | GET / -> 200 (6ms)
+2026-06-25 20:11:08,838 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-25 20:11:09,038 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-25 20:11:09,130 | INFO     | Database initialized with indexes
+2026-06-25 20:11:09,131 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-25 20:11:15,139 | INFO     | GET / -> 200 (13ms)
+2026-06-25 20:49:06,416 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-25 20:49:06,554 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-25 20:49:06,618 | INFO     | Database initialized with indexes
+2026-06-25 20:49:06,618 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-25 20:49:27,797 | INFO     | GET / -> 200 (8ms)
+2026-06-25 20:49:28,465 | INFO     | GET /favicon.ico -> 200 (155ms)
+2026-06-25 20:50:27,786 | INFO     | GET / -> 200 (9ms)
+2026-06-25 20:50:28,526 | INFO     | GET /favicon.ico -> 200 (24ms)
+2026-06-25 20:51:43,403 | INFO     | GET / -> 200 (9ms)
+2026-06-25 20:51:43,900 | INFO     | GET /favicon.ico -> 200 (33ms)
+2026-06-25 20:52:30,862 | INFO     | GET /Madhav_Drafting_Hub.html -> 200 (38ms)
+2026-06-25 20:52:31,808 | INFO     | POST /api/track -> 200 (53ms)
+2026-06-25 20:52:31,837 | INFO     | POST /api/track -> 200 (13ms)
+2026-06-25 20:52:31,857 | INFO     | GET /analytics -> 401 (8ms)
+2026-06-25 20:52:31,868 | INFO     | GET /orders -> 401 (12ms)
+2026-06-25 20:52:31,892 | INFO     | GET /api/customers -> 401 (9ms)
+2026-06-25 20:52:31,906 | INFO     | GET /api/rentals/expiring -> 401 (23ms)
+2026-06-25 20:52:31,968 | INFO     | GET /favicon.ico -> 200 (48ms)
+2026-06-25 20:52:33,365 | INFO     | GET /orders -> 401 (5ms)
+2026-06-25 20:52:33,380 | INFO     | GET /analytics -> 401 (16ms)
+2026-06-25 20:52:33,392 | INFO     | GET /api/customers -> 401 (31ms)
+2026-06-25 20:52:34,121 | INFO     | GET /orders -> 401 (1ms)
+2026-06-25 20:52:34,540 | INFO     | GET /api/customers -> 401 (0ms)
+2026-06-25 20:52:34,896 | INFO     | GET /api/admin/users -> 401 (2ms)
+2026-06-25 20:52:35,500 | INFO     | GET /orders -> 401 (1ms)
+2026-06-25 20:52:36,139 | INFO     | GET /api/admin/coupons -> 401 (2ms)
+2026-06-25 20:52:37,018 | INFO     | GET /api/admin/invoices -> 401 (2ms)
+2026-06-25 20:52:37,039 | INFO     | GET /api/admin/invoices/gst-report -> 401 (1ms)
+2026-06-25 20:52:37,565 | INFO     | GET /api/admin/notifications -> 401 (5ms)
+2026-06-25 20:52:37,577 | INFO     | GET /api/rentals/expiring -> 401 (14ms)
+2026-06-25 20:52:39,042 | INFO     | GET /api/track -> 401 (6ms)
+2026-06-25 20:52:39,058 | INFO     | GET /api/admin/audit -> 401 (16ms)
+2026-06-25 20:52:39,077 | INFO     | GET /api/track/stats -> 401 (2ms)
+2026-06-25 20:52:39,773 | INFO     | GET /api/analytics/funnel -> 401 (11ms)
+2026-06-25 20:52:39,787 | INFO     | GET /api/analytics/abandoned-drafts -> 401 (23ms)
+2026-06-25 20:52:39,800 | INFO     | GET /api/analytics/heatmap -> 401 (35ms)
+2026-06-25 20:52:39,815 | INFO     | GET /api/analytics/dropoff -> 401 (47ms)
+2026-06-25 20:52:39,828 | INFO     | GET /api/analytics/templates -> 401 (60ms)
+2026-06-25 20:52:42,039 | INFO     | GET / -> 200 (7ms)
+2026-06-25 20:52:42,402 | INFO     | GET /favicon.ico -> 200 (55ms)
+2026-06-25 20:55:11,996 | INFO     | POST /api/track -> 200 (15ms)
+2026-06-25 20:55:12,046 | INFO     | POST /api/track -> 200 (17ms)
+2026-06-25 20:55:12,061 | INFO     | GET /orders -> 401 (2ms)
+2026-06-25 20:55:12,086 | INFO     | GET /analytics -> 401 (8ms)
+2026-06-25 20:55:12,104 | INFO     | GET /api/customers -> 401 (17ms)
+2026-06-25 20:55:12,123 | INFO     | GET /api/rentals/expiring -> 401 (2ms)
+2026-06-25 20:55:12,225 | INFO     | GET /favicon.ico -> 200 (31ms)
+2026-06-25 20:55:13,828 | INFO     | GET /analytics -> 401 (4ms)
+2026-06-25 20:55:13,843 | INFO     | GET /orders -> 401 (23ms)
+2026-06-25 20:55:13,858 | INFO     | GET /api/customers -> 401 (36ms)
+2026-06-25 20:55:20,749 | INFO     | GET /favicon.ico -> 200 (38ms)
+2026-06-25 20:56:21,937 | INFO     | GET / -> 200 (5ms)
+2026-06-25 20:56:22,406 | INFO     | GET /favicon.ico -> 200 (32ms)
+2026-06-25 20:59:18,699 | INFO     | GET / -> 200 (6ms)
+2026-06-25 20:59:19,174 | INFO     | GET /favicon.ico -> 200 (27ms)
+2026-06-25 21:00:31,651 | INFO     | GET /Madhav_Drafting_Hub.html -> 200 (33ms)
+2026-06-25 21:00:32,189 | INFO     | POST /api/track -> 200 (87ms)
+2026-06-25 21:00:32,213 | INFO     | POST /api/track -> 200 (14ms)
+2026-06-25 21:00:32,229 | INFO     | GET /orders -> 401 (24ms)
+2026-06-25 21:00:32,243 | INFO     | GET /analytics -> 401 (39ms)
+2026-06-25 21:00:32,301 | INFO     | GET /favicon.ico -> 200 (42ms)
+2026-06-25 21:00:32,314 | INFO     | GET /api/customers -> 401 (58ms)
+2026-06-25 21:00:32,327 | INFO     | GET /api/rentals/expiring -> 401 (67ms)
+2026-06-25 21:00:34,657 | INFO     | GET /analytics -> 401 (3ms)
+2026-06-25 21:00:34,670 | INFO     | GET /orders -> 401 (17ms)
+2026-06-25 21:00:34,683 | INFO     | GET /api/customers -> 401 (28ms)
+2026-06-25 21:00:36,670 | INFO     | GET /api/customers -> 401 (2ms)
+2026-06-25 21:00:36,681 | INFO     | GET /orders -> 401 (17ms)
+2026-06-25 21:00:36,698 | INFO     | GET /analytics -> 401 (28ms)
+2026-06-25 21:01:08,907 | INFO     | GET /Madhav_Drafting_Hub.html -> 200 (45ms)
+2026-06-25 21:01:09,313 | INFO     | POST /api/track -> 200 (17ms)
+2026-06-25 21:01:09,362 | INFO     | POST /api/track -> 200 (18ms)
+2026-06-25 21:01:09,376 | INFO     | GET /orders -> 401 (32ms)
+2026-06-25 21:01:09,392 | INFO     | GET /analytics -> 401 (44ms)
+2026-06-25 21:01:09,411 | INFO     | GET /api/customers -> 401 (21ms)
+2026-06-25 21:01:09,430 | INFO     | GET /api/rentals/expiring -> 401 (19ms)
+2026-06-25 21:01:09,589 | INFO     | GET /favicon.ico -> 200 (62ms)
+2026-06-25 21:09:57,838 | INFO     | GET / -> 200 (9ms)
+2026-06-25 21:09:58,494 | INFO     | GET /favicon.ico -> 200 (203ms)
+2026-06-25 21:17:14,932 | INFO     | GET / -> 200 (10ms)
+2026-06-25 21:17:15,497 | INFO     | GET /favicon.ico -> 200 (125ms)
+2026-06-25 21:17:18,848 | INFO     | GET /Madhav_Drafting_Hub.html -> 200 (31ms)
+2026-06-25 21:17:19,254 | INFO     | POST /api/track -> 200 (12ms)
+2026-06-25 21:17:19,297 | INFO     | POST /api/track -> 200 (20ms)
+2026-06-25 21:17:19,314 | INFO     | GET /orders -> 401 (33ms)
+2026-06-25 21:17:19,337 | INFO     | GET /analytics -> 401 (32ms)
+2026-06-25 21:17:19,355 | INFO     | GET /api/customers -> 401 (40ms)
+2026-06-25 21:17:19,401 | INFO     | GET /favicon.ico -> 200 (49ms)
+2026-06-25 21:17:19,415 | INFO     | GET /api/rentals/expiring -> 401 (61ms)
+2026-06-25 21:17:20,942 | INFO     | GET /api/customers -> 401 (1ms)
+2026-06-25 21:17:22,743 | INFO     | GET /api/track -> 401 (3ms)
+2026-06-25 21:17:22,754 | INFO     | GET /api/admin/audit -> 401 (16ms)
+2026-06-25 21:17:22,768 | INFO     | GET /api/track/stats -> 401 (1ms)
+2026-06-25 21:17:23,495 | INFO     | GET /api/track -> 401 (6ms)
+2026-06-25 21:17:23,509 | INFO     | GET /api/admin/audit -> 401 (14ms)
+2026-06-25 21:17:23,523 | INFO     | GET /api/track/stats -> 401 (1ms)
+2026-06-25 21:17:24,696 | INFO     | GET /api/analytics/funnel -> 401 (7ms)
+2026-06-25 21:17:24,711 | INFO     | GET /api/analytics/abandoned-drafts -> 401 (27ms)
+2026-06-25 21:17:24,723 | INFO     | GET /api/analytics/templates -> 401 (41ms)
+2026-06-25 21:17:24,742 | INFO     | GET /api/analytics/heatmap -> 401 (55ms)
+2026-06-25 21:17:24,758 | INFO     | GET /api/analytics/dropoff -> 401 (73ms)
+2026-06-25 21:17:26,248 | INFO     | GET /api/admin/staff -> 401 (2ms)
+2026-06-25 21:17:28,705 | INFO     | GET /api/customers -> 401 (2ms)
+2026-06-25 21:17:28,713 | INFO     | GET /orders -> 401 (17ms)
+2026-06-25 21:17:28,724 | INFO     | GET /analytics -> 401 (25ms)
+2026-06-26 01:44:06,960 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-26 01:44:07,163 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-26 01:44:07,237 | INFO     | Database initialized with indexes
+2026-06-26 01:44:07,238 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-27 02:34:59,001 | WARNING  | JWT_SECRET not set — using insecure fallback. Set JWT_SECRET env var in production.
+2026-06-27 02:38:54,452 | WARNING  | JWT_SECRET not set — generated random fallback. Set JWT_SECRET env var in production for stability across restarts.
+2026-06-27 02:42:47,475 | WARNING  | JWT_SECRET not set — generated random fallback. Set JWT_SECRET env var in production for stability across restarts.
+2026-06-27 02:42:47,667 | INFO     | Starting Instadeed Backend v2.0.0 on http://localhost:8000
+2026-06-27 02:42:47,736 | INFO     | Database initialized with indexes
+2026-06-27 02:42:47,736 | WARNING  | ADMIN_PASSWORD not set; using a random password. Set ADMIN_PASSWORD env var.
+2026-06-27 02:43:12,127 | INFO     | GET /api/health -> 200 (4ms)
+2026-06-27 02:43:18,999 | INFO     | POST /create-order -> 422 (3ms)
+2026-06-27 02:43:20,329 | INFO     | POST /verify-payment -> 200 (41ms)
+2026-06-27 02:43:21,320 | INFO     | GET /api/config -> 503 (0ms)
+2026-06-27 02:43:22,308 | INFO     | GET /api/health -> 200 (0ms)
+2026-06-27 02:43:23,379 | INFO     | GET /orders/MOCK_ORD_test123 -> 404 (7ms)
+2026-06-27 02:43:30,637 | INFO     | POST /create-order -> 422 (2ms)
+2026-06-27 02:43:31,459 | INFO     | GET /api/config -> 503 (0ms)
+2026-06-27 02:43:32,564 | INFO     | POST /create-order -> 200 (58ms)
+2026-06-27 02:43:39,461 | INFO     | POST /create-order -> 422 (2ms)
+2026-06-27 02:43:40,053 | INFO     | GET /api/config -> 503 (0ms)
+2026-06-27 02:43:41,017 | INFO     | POST /verify-payment -> 200 (16ms)
+2026-06-27 02:43:41,742 | INFO     | GET /orders/MOCK_ORD_1EF66AD6 -> 200 (7ms)
+2026-06-27 02:47:26,552 | WARNING  | JWT_SECRET not set — generated random fallback. Set JWT_SECRET env var in production for stability across restarts.
+2026-06-27 02:47:40,426 | WARNING  | JWT_SECRET not set — generated random fallback. Set JWT_SECRET env var in production for stability across restarts.

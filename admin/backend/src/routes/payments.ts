@@ -142,4 +142,39 @@ router.post("/api/verify-payment", async (req: Request, res: Response) => {
   }
 });
 
+router.post("/api/admin/payments/webhook", async (req: Request, res: Response) => {
+  try {
+    const signature = req.headers["x-razorpay-signature"] as string;
+    if (!signature) {
+      res.status(400).json({ success: false, error: "Missing webhook signature" });
+      return;
+    }
+    const gateway = await prisma.paymentGatewayConfig.findFirst({ where: { gateway: "RAZORPAY", isEnabled: true } });
+    if (!gateway || !gateway.webhookSecret) {
+      res.status(503).json({ success: false, error: "Payment gateway webhook not configured" });
+      return;
+    }
+    const crypto = require("crypto");
+    const expectedSig = crypto.createHmac("sha256", gateway.webhookSecret).update(JSON.stringify(req.body)).digest("hex");
+    if (signature !== expectedSig) {
+      res.status(400).json({ success: false, error: "Invalid webhook signature" });
+      return;
+    }
+    const event = req.body.event;
+    if (event === "payment.captured" || event === "order.paid") {
+      const orderId = req.body.payload?.order?.entity?.id || req.body.payload?.payment?.entity?.order_id;
+      if (orderId) {
+        await prisma.order.update({
+          where: { orderNumber: orderId },
+          data: { paymentStatus: "PAID", status: "COMPLETED", paymentId: req.body.payload?.payment?.entity?.id },
+        });
+      }
+    }
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Webhook error:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
 export default router;

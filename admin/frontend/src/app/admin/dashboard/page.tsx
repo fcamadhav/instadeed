@@ -76,15 +76,33 @@ export default function DashboardPage() {
     setLoading(true);
     setError(null);
     try {
-      const [statsRes, ordersRes, activityRes, rentRes] = await Promise.all([
-        apiGet<{ data: DashboardStats }>('/admin/dashboard/stats').catch(() => null),
+      const [dashRes, ordersRes, rentRes] = await Promise.all([
+        apiGet<{ data: any }>('/admin/dashboard').catch(() => null),
         apiGet<{ data: { orders: Order[] } }>('/admin/orders?limit=10').catch(() => null),
-        apiGet<{ data: { activities: Activity[] } }>('/admin/activity/recent').catch(() => null),
         apiGet<{ data: any }>('/admin/rent-agreements/stats').catch(() => null),
       ]);
-      if (statsRes?.data) setStats(statsRes.data);
+      if (dashRes?.data) {
+        const d = dashRes.data;
+        setStats({
+          todayRevenue: d.today?.revenue || 0,
+          monthlyRevenue: d.monthly?.revenue || 0,
+          totalOrders: d.totalOrders || 0,
+          activeCustomers: d.customers?.active || 0,
+          revenueTrend: 0,
+          ordersTrend: 0,
+          customersTrend: 0,
+        });
+        if (d.latestActivity) {
+          setActivities(d.latestActivity.map((a: any) => ({
+            _id: a.id,
+            action: a.action,
+            user: a.user?.name || '',
+            module: a.module,
+            timestamp: a.createdAt,
+          })));
+        }
+      }
       if (ordersRes?.data?.orders) setRecentOrders(ordersRes.data.orders);
-      if (activityRes?.data?.activities) setActivities(activityRes.data.activities);
       if (rentRes?.data) setRentStats(rentRes.data);
     } catch (err: any) {
       setError(err.message);

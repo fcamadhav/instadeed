@@ -42,54 +42,11 @@ logging.basicConfig(
 logger = logging.getLogger("instadeed")
 
 # --- Configuration ---
-import sqlite3
-import json
-import uuid
-import datetime
-import time
-import logging
-from logging.handlers import RotatingFileHandler
-import os
-import hashlib
-import io
-import base64
-import random
-import threading
-from contextlib import asynccontextmanager
-from typing import Optional
-
-import requests as http_requests
-
-from fastapi import FastAPI, Request, HTTPException, Depends, Body
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse, Response
-from pydantic import BaseModel
-import razorpay
-import jwt
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
-from fpdf import FPDF
-import re
-from dateutil.relativedelta import relativedelta
-
-# --- Logging Setup ---
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)-8s | %(message)s",
-    handlers=[
-        RotatingFileHandler("server.log", maxBytes=10*1024*1024, backupCount=5),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger("instadeed")
-
-# --- Configuration ---
 JWT_SECRET = os.environ.get("JWT_SECRET")
 if not JWT_SECRET:
-    import secrets
-    JWT_SECRET = secrets.token_hex(32)
-    logger.warning("JWT_SECRET not set — generated random fallback. Set JWT_SECRET env var in production for stability across restarts.")
+    import sys
+    print("FATAL: JWT_SECRET environment variable is required", file=sys.stderr)
+    sys.exit(1)
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRY_HOURS = 24
 DATABASE_FILE = os.environ.get("DATABASE_FILE", "madhav_crm.db")
@@ -570,19 +527,11 @@ def verify_token(token: str) -> dict:
 def get_optional_user(request: Request) -> Optional[dict]:
     auth_header = request.headers.get("Authorization", "")
     token = None
-    allow_bypass = os.environ.get("ALLOW_ADMIN_BYPASS", "0") == "1"
-    bypass_token = os.environ.get("ADMIN_BYPASS_TOKEN", "admin_bypass_token")
-    if allow_bypass and bypass_token and auth_header == f"Bearer {bypass_token}":
-        return {"sub": "admin-id-bypass", "email": "admin@instadeed.local", "role": "admin"}
-    elif auth_header.startswith("Bearer "):
+    if auth_header.startswith("Bearer "):
         token = auth_header[7:]
-    else:
-        # Fallback to query parameter for token (e.g. for browser file downloads)
-        q_token = request.query_params.get("token")
-        if q_token:
-            if allow_bypass and bypass_token and q_token == bypass_token:
-                return {"sub": "admin-id-bypass", "email": "admin@instadeed.local", "role": "admin"}
-            token = q_token
+
+    if not token:
+        token = request.query_params.get("token")
 
     if token:
         try:
@@ -700,10 +649,8 @@ async def send_otp(request: Request, body: SendOTPRequest):
 @app.post("/api/auth/verify-otp")
 @limiter.limit("10/minute")
 async def verify_otp(request: Request, body: VerifyOTPRequest):
-    ENABLE_MASTER_OTP = os.environ.get("ENABLE_MASTER_OTP", "0") == "1"
-    is_master = ENABLE_MASTER_OTP and (body.otp == "123456")
-    if not is_master:
-        if body.email not in otp_store:
+    is_master = False
+    if body.email not in otp_store:
             raise HTTPException(status_code=400, detail="No OTP requested for this email")
         record = otp_store[body.email]
         if datetime.datetime.now() > record["expires"]:
@@ -941,9 +888,16 @@ async def verify_payment(request: Request, body: VerifyRequest):
     if body.razorpay_order_id.startswith("MOCK_ORD_"):
         try:
             conn = sqlite3.connect(DATABASE_FILE)
-            cursor = conn.cursor()
-            cursor.execute("UPDATE orders SET status = 'PAID', updated_at = ? WHERE id = ?", (now, body.razorpay_order_id))
-            conn.commit()
+            conn.execute("BEGIN TRANSACTION")
+            try:
+                cursor = conn.cursor()
+                cursor.execute("UPDATE orders SET status = 'PAID', updated_at = ? WHERE id = ?", (now, body.razorpay_order_id))
+                conn.commit()
+            except Exception as e:
+                conn.rollback()
+                conn.close()
+                raise e
+            conn.close()
             conn.close()
             return {"status": "success", "message": "Mock payment verified successfully!"}
         except Exception as e:
@@ -956,9 +910,15 @@ async def verify_payment(request: Request, body: VerifyRequest):
                 'razorpay_signature': body.razorpay_signature
             })
             conn = sqlite3.connect(DATABASE_FILE)
-            cursor = conn.cursor()
-            cursor.execute("UPDATE orders SET status = 'PAID', updated_at = ? WHERE id = ?", (now, body.razorpay_order_id))
-            conn.commit()
+            conn.execute("BEGIN TRANSACTION")
+            try:
+                cursor = conn.cursor()
+                cursor.execute("UPDATE orders SET status = 'PAID', updated_at = ? WHERE id = ?", (now, body.razorpay_order_id))
+                conn.commit()
+            except Exception as e:
+                conn.rollback()
+                conn.close()
+                raise e
             conn.close()
             return {"status": "success", "message": "Payment verified successfully!"}
         except razorpay.errors.SignatureVerificationError:
@@ -968,9 +928,15 @@ async def verify_payment(request: Request, body: VerifyRequest):
     else:
         try:
             conn = sqlite3.connect(DATABASE_FILE)
-            cursor = conn.cursor()
-            cursor.execute("UPDATE orders SET status = 'PAID', updated_at = ? WHERE id = ?", (now, body.razorpay_order_id))
-            conn.commit()
+            conn.execute("BEGIN TRANSACTION")
+            try:
+                cursor = conn.cursor()
+                cursor.execute("UPDATE orders SET status = 'PAID', updated_at = ? WHERE id = ?", (now, body.razorpay_order_id))
+                conn.commit()
+            except Exception as e:
+                conn.rollback()
+                conn.close()
+                raise e
             conn.close()
             return {"status": "success", "message": "Blind payment verification (testing mode)!"}
         except Exception as e:
@@ -1381,7 +1347,8 @@ async def health():
 # === Customer Document Portal ===
 
 @app.get("/api/customer/documents")
-async def customer_documents(phone: str = "", email: str = ""):
+@limiter.limit("30/minute")
+async def customer_documents(phone: str = "", email: str = "", user: dict = Depends(get_current_user)):
     try:
         conn = sqlite3.connect(DATABASE_FILE)
         conn.row_factory = sqlite3.Row
@@ -1435,7 +1402,8 @@ async def customer_documents(phone: str = "", email: str = ""):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/customer/documents/{order_id}/download")
-async def customer_download(order_id: str):
+@limiter.limit("30/minute")
+async def customer_download(order_id: str, user: dict = Depends(get_current_user)):
     try:
         conn = sqlite3.connect(DATABASE_FILE)
         conn.row_factory = sqlite3.Row

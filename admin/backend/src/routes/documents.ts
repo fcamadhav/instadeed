@@ -7,7 +7,13 @@ import path from "path";
 import fs from "fs";
 
 const router = Router();
-const STORAGE_ROOT = path.join(__dirname, "..", "..", "..", "storage", "documents");
+const STORAGE_ROOT = path.resolve(path.join(__dirname, "..", "..", "..", "storage", "documents"));
+
+function isPathSafe(targetPath: string): boolean {
+  if (!targetPath) return false;
+  const resolved = path.resolve(targetPath);
+  return resolved.startsWith(STORAGE_ROOT + path.sep) || resolved === STORAGE_ROOT;
+}
 
 const PREFIXES: Record<string, string> = {
   "rent-agreement": "RA",
@@ -226,8 +232,8 @@ router.post(
       const ids = z.array(z.string().uuid()).parse(req.body.ids);
       const docs = await prisma.document.findMany({ where: { id: { in: ids } } });
       for (const doc of docs) {
-        if (doc.pdfFilePath) try { fs.unlinkSync(doc.pdfFilePath); } catch {}
-        if (doc.docxFilePath) try { fs.unlinkSync(doc.docxFilePath); } catch {}
+        if (doc.pdfFilePath && isPathSafe(doc.pdfFilePath)) try { fs.unlinkSync(doc.pdfFilePath); } catch {}
+        if (doc.docxFilePath && isPathSafe(doc.docxFilePath)) try { fs.unlinkSync(doc.docxFilePath); } catch {}
       }
       await prisma.documentAuditLog.deleteMany({ where: { documentId: { in: ids } } });
       await prisma.document.deleteMany({ where: { id: { in: ids } } });
@@ -355,10 +361,10 @@ router.delete(
         res.status(404).json({ success: false, error: "Document not found" });
         return;
       }
-      if (old.pdfFilePath) {
+      if (old.pdfFilePath && isPathSafe(old.pdfFilePath)) {
         try { fs.unlinkSync(old.pdfFilePath); } catch {}
       }
-      if (old.docxFilePath) {
+      if (old.docxFilePath && isPathSafe(old.docxFilePath)) {
         try { fs.unlinkSync(old.docxFilePath); } catch {}
       }
       await prisma.documentAuditLog.deleteMany({ where: { documentId: req.params.id } });
@@ -378,7 +384,7 @@ router.get(
   async (req: Request, res: Response) => {
     try {
       const doc = await prisma.document.findUnique({ where: { id: req.params.id } });
-      if (!doc || !doc.pdfFilePath) {
+      if (!doc || !doc.pdfFilePath || !isPathSafe(doc.pdfFilePath)) {
         res.status(404).json({ success: false, error: "PDF not found" });
         return;
       }
@@ -404,7 +410,7 @@ router.get(
   async (req: Request, res: Response) => {
     try {
       const doc = await prisma.document.findUnique({ where: { id: req.params.id } });
-      if (!doc || !doc.docxFilePath) {
+      if (!doc || !doc.docxFilePath || !isPathSafe(doc.docxFilePath)) {
         res.status(404).json({ success: false, error: "DOCX not found" });
         return;
       }
@@ -434,6 +440,7 @@ router.get(
         res.status(404).json({ success: false, error: "Preview not available" });
         return;
       }
+      res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:;");
       res.send(doc.htmlContent);
     } catch (error) {
       console.error("Preview error:", error);
