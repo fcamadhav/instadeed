@@ -60,7 +60,7 @@ export default function DocumentDraftOverlay() {
           src={`/api/draft-serve?doc=${encodeURIComponent(activeDoc)}`}
           className="h-full w-full border-0"
           title={label}
-          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
         />
       </div>
     </div>
