@@ -1,3 +1,5 @@
+'use client'
+
 type DocType = string | null
 
 type Listener = (doc: DocType) => void
