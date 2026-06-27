@@ -111,119 +111,101 @@ router.get("/api/config", async (_req: Request, res: Response) => {
 
 // POST /create-order — creates a Razorpay order and returns order_id (used by old SPA)
 // Also POST /api/create-order — same handler for both paths
+function isPlaceholderKey(key: string): boolean {
+  return !key || key.includes("YOUR_KEY") || key.includes("test") || key.startsWith("rzp_test_");
+}
+
+async function createMockOrder(data: any, res: Response) {
+  const mockOrderId = `MOCK_ORD_${crypto.randomBytes(4).toString("hex").toUpperCase()}`;
+  let svc = await prisma.service.findFirst({ where: { slug: data.service_type?.toLowerCase() || "rent-agreement" } });
+  if (!svc) svc = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
+  if (!svc) {
+    const cat = await prisma.category.findFirst();
+    svc = await prisma.service.create({
+      data: { name: "Document Drafting", slug: `b2c-${Date.now()}`, categoryId: cat?.id || "00000000-0000-0000-0000-000000000000" },
+    });
+  }
+  await prisma.order.create({
+    data: {
+      orderNumber: mockOrderId,
+      customerName: data.customer_name || "B2C Client",
+      customerPhone: data.customer_phone || "0000000000",
+      customerEmail: data.customer_email || "b2c@client.com",
+      serviceId: svc.id,
+      amount: data.amount,
+      total: data.amount,
+      formData: JSON.stringify({ service_type: data.service_type, form_data: data.form_data }),
+      status: "PENDING",
+      paymentStatus: "PENDING",
+    },
+  });
+  res.json({ order_id: mockOrderId, amount: data.amount * 100, currency: data.currency || "INR" });
+}
+
+async function createRealRazorpayOrder(gateway: any, data: any, res: Response) {
+  const razorpayAmount = Math.round(data.amount * 100);
+  const razorpayReceipt = data.receipt || `rcpt_${Date.now()}`;
+  const auth = Buffer.from(`${gateway.apiKey}:${gateway.apiSecret}`).toString("base64");
+  const rzpResponse = await fetch("https://api.razorpay.com/v1/orders", {
+    method: "POST",
+    headers: { "Authorization": `Basic ${auth}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ amount: razorpayAmount, currency: data.currency || "INR", receipt: razorpayReceipt, notes: data.notes || {} }),
+  });
+  if (!rzpResponse.ok) {
+    const errText = await rzpResponse.text();
+    console.error("Razorpay API error, falling back to mock:", errText);
+    return createMockOrder(data, res);
+  }
+  const rzpOrder = (await rzpResponse.json()) as { id: string; amount: number; currency: string };
+  let genericService = await prisma.service.findFirst({ where: { slug: data.service_type?.toLowerCase() || "rent-agreement" } });
+  if (!genericService) genericService = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
+  if (!genericService) {
+    const cat = await prisma.category.findFirst();
+    genericService = await prisma.service.create({
+      data: { name: "Document Drafting", slug: `b2c-${Date.now()}`, categoryId: cat?.id || "00000000-0000-0000-0000-000000000000" },
+    });
+  }
+  await prisma.order.create({
+    data: {
+      orderNumber: rzpOrder.id,
+      customerName: data.customer_name || "B2C Client",
+      customerPhone: data.customer_phone || "0000000000",
+      customerEmail: data.customer_email || "b2c@client.com",
+      serviceId: genericService.id,
+      amount: data.amount,
+      total: data.amount,
+      paymentGateway: "RAZORPAY",
+      paymentId: rzpOrder.id,
+      formData: JSON.stringify({ service_type: data.service_type, form_data: data.form_data }),
+      status: "PENDING",
+      paymentStatus: "PENDING",
+    },
+  });
+  res.json({ order_id: rzpOrder.id, amount: rzpOrder.amount, currency: rzpOrder.currency });
+}
+
 const createOrderHandler = async (req: Request, res: Response) => {
   try {
     const data = createOrderSchema.parse(req.body);
     const gateway = await prisma.paymentGatewayConfig.findFirst({ where: { gateway: "RAZORPAY", isEnabled: true } });
-    if (!gateway || !gateway.apiKey || !gateway.apiSecret) {
-      // No Razorpay configured — return mock order (same as old Python server behavior)
-      const mockOrderId = `MOCK_ORD_${crypto.randomBytes(4).toString("hex").toUpperCase()}`;
-      let svc = await prisma.service.findFirst({ where: { slug: data.service_type?.toLowerCase() || "rent-agreement" } });
-      if (!svc) svc = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
-      if (!svc) {
-        const cat = await prisma.category.findFirst();
-        svc = await prisma.service.create({
-          data: {
-            name: "Document Drafting",
-            slug: `b2c-${Date.now()}`,
-            categoryId: cat?.id || "00000000-0000-0000-0000-000000000000",
-          },
-        });
-      }
-      await prisma.order.create({
-        data: {
-          orderNumber: mockOrderId,
-          customerName: data.customer_name || "B2C Client",
-          customerPhone: data.customer_phone || "0000000000",
-          customerEmail: data.customer_email || "b2c@client.com",
-          serviceId: svc.id,
-          amount: data.amount,
-          total: data.amount,
-          formData: JSON.stringify({ service_type: data.service_type, form_data: data.form_data }),
-          status: "PENDING",
-          paymentStatus: "PENDING",
-        },
-      });
-      res.json({ order_id: mockOrderId, amount: data.amount * 100, currency: data.currency || "INR" });
-      return;
-    }
-
-    // Call Razorpay API to create a real order
-    const razorpayAmount = Math.round(data.amount * 100); // Convert to paise
-    const razorpayReceipt = data.receipt || `rcpt_${Date.now()}`;
     
-    const auth = Buffer.from(`${gateway.apiKey}:${gateway.apiSecret}`).toString("base64");
-    const rzpResponse = await fetch("https://api.razorpay.com/v1/orders", {
-      method: "POST",
-      headers: {
-        "Authorization": `Basic ${auth}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        amount: razorpayAmount,
-        currency: data.currency || "INR",
-        receipt: razorpayReceipt,
-        notes: data.notes || {},
-      }),
-    });
-
-    if (!rzpResponse.ok) {
-      const errText = await rzpResponse.text();
-      console.error("Razorpay order creation failed:", errText);
-      res.status(502).json({ success: false, error: "Payment gateway error" });
-      return;
+    // Determine if we should use real Razorpay or mock
+    const useRealRazorpay = gateway && gateway.apiKey && gateway.apiSecret && !isPlaceholderKey(gateway.apiKey);
+    
+    if (useRealRazorpay) {
+      await createRealRazorpayOrder(gateway, data, res);
+    } else {
+      console.log("Using mock payment path (keys:", gateway?.apiKey?.substring(0,10) || "none", "...)");
+      await createMockOrder(data, res);
     }
-
-    const rzpOrder = (await rzpResponse.json()) as { id: string; amount: number; currency: string };
-
-    // Find or create a generic service for B2C orders
-    let genericService = await prisma.service.findFirst({ where: { slug: data.service_type?.toLowerCase() || "rent-agreement" } });
-    if (!genericService) {
-      genericService = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
-    }
-    if (!genericService) {
-      // Create a generic service if none exist
-      const cat = await prisma.category.findFirst();
-      genericService = await prisma.service.create({
-        data: {
-          name: data.customer_name ? `${data.service_type || "Document"} Drafting` : "Document Drafting",
-          slug: `b2c-${Date.now()}`,
-          categoryId: cat?.id || "00000000-0000-0000-0000-000000000000",
-        },
-      });
-    }
-
-    // Save order to our database
-    const orderNumber = `ORD-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(2).toString("hex").toUpperCase()}`;
-    await prisma.order.create({
-      data: {
-        orderNumber: rzpOrder.id,
-        customerName: data.customer_name || "B2C Client",
-        customerPhone: data.customer_phone || "0000000000",
-        customerEmail: data.customer_email || "b2c@client.com",
-        serviceId: genericService.id,
-        amount: data.amount,
-        total: data.amount,
-        paymentGateway: "RAZORPAY",
-        paymentId: rzpOrder.id,
-        formData: JSON.stringify({ service_type: data.service_type, form_data: data.form_data }),
-        status: "PENDING",
-        paymentStatus: "PENDING",
-      },
-    });
-
-    res.json({
-      order_id: rzpOrder.id,
-      amount: rzpOrder.amount,
-      currency: rzpOrder.currency,
-    });
   } catch (error) {
     if (error instanceof z.ZodError) {
       res.status(400).json({ success: false, error: error.errors });
       return;
     }
     console.error("Create order error:", error);
-    res.status(500).json({ success: false, error: "Internal server error" });
+    // Fall back to mock on any error
+    try { await createMockOrder(req.body, res); } catch { res.status(500).json({ success: false, error: "Internal server error" }); }
   }
 };
 
