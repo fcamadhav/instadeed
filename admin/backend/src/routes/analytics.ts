@@ -242,4 +242,8 @@ router.get(
   }
 );
 
+router.get("/api/admin/analytics", requireAuth, requireRole("SUPER_ADMIN", "ADMIN"), async (_req: Request, res: Response) => {
+  res.json({ success: true, data: { message: "Use /api/admin/analytics/dashboard for detailed analytics" } });
+});
+
 export default router;
