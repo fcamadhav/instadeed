@@ -1,6 +1,8 @@
 import { ArrowRight } from 'lucide-react'
+import { useDocument } from '@/lib/DocumentContext'
 
 export default function FinalCta() {
+  const { setActiveDoc } = useDocument()
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-primary to-primary-dark py-20 sm:py-28">
       {/* Decorative circles */}
@@ -30,13 +32,13 @@ export default function FinalCta() {
             No broker, no middleman.
           </p>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <a
-              href="/app/?doc=rent-agreement"
+            <button
+              onClick={() => setActiveDoc('rent-agreement')}
               className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-base font-semibold text-primary shadow-lg transition-all duration-200 hover:bg-blue-50 hover:shadow-xl active:scale-95"
             >
               Start Now
               <ArrowRight className="h-5 w-5" />
-            </a>
+            </button>
             <a
               href="#how-it-works"
               className="inline-flex items-center gap-2 rounded-full border border-white/30 px-8 py-3.5 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 active:scale-95"

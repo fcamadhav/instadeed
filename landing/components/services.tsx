@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useDocument } from '@/lib/DocumentContext'
 import {
   FileText,
   Stamp,
@@ -104,6 +105,7 @@ const cardVariants = {
 }
 
 export default function Services() {
+  const { setActiveDoc } = useDocument()
   return (
     <section id="services" className="w-full bg-slate-50 py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -182,13 +184,13 @@ export default function Services() {
                   {service.description}
                 </p>
 
-                <a
-                  href={service.href}
-                  className="relative mt-5 flex items-center gap-1 text-sm font-medium text-primary transition-all duration-200 hover:gap-2"
+                <button
+                  onClick={(e) => { e.stopPropagation(); setActiveDoc(service.href.replace('/app/?doc=', '')); }}
+                  className="relative mt-5 flex items-center gap-1 text-sm font-medium text-primary transition-all duration-200 hover:gap-2 cursor-pointer"
                 >
                   <span>Get Drafted</span>
                   <svg
-                    className="h-4 w-4 transition-transform duration-200 hover:translate-x-0.5"
+                    className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -200,7 +202,7 @@ export default function Services() {
                       d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
                     />
                   </svg>
-                </a>
+                </button>
               </motion.div>
             )
           })}

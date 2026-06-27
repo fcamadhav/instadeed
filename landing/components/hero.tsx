@@ -13,6 +13,7 @@ import {
   Smartphone,
   Star,
 } from "lucide-react";
+import { useDocument } from "@/lib/DocumentContext";
 
 const trusts = [
   "Physical Delivery",
@@ -46,6 +47,7 @@ const floatAnimation = {
 };
 
 export default function Hero() {
+  const { setActiveDoc } = useDocument()
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-gradient-to-b from-background to-white pt-24 sm:pt-28 lg:pt-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -88,13 +90,13 @@ export default function Hero() {
               variants={itemLeft}
               className="mt-8 flex flex-col gap-4 sm:flex-row"
             >
-              <a
-                href="/app/?doc=rent-agreement"
+              <button
+                onClick={() => setActiveDoc('rent-agreement')}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-primary/25 transition-all duration-200 hover:bg-primary-dark hover:shadow-xl active:scale-95"
               >
                 Draft Document
                 <FileText className="h-5 w-5" />
-              </a>
+              </button>
               <a
                 href="#services"
                 className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-border bg-white px-8 py-3.5 text-base font-semibold text-dark transition-all duration-200 hover:border-primary/30 hover:bg-primary/5 active:scale-95"

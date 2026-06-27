@@ -1,0 +1,61 @@
+'use client'
+
+import { useState } from 'react'
+import { X, Maximize2, Minimize2 } from 'lucide-react'
+import { useDocument } from '@/lib/DocumentContext'
+
+const DOC_LABELS: Record<string, string> = {
+  'rent-agreement': 'Rent Agreement',
+  'registered-rent': 'Registered Rent Agreement',
+  'ats': 'Agreement to Sell / ATS',
+  'tm48': 'Transfer Memorandum / TM',
+  'gnida_registry': 'Registry',
+  'gnida_ptm': 'Permission to Mortgage / PTM',
+  'mutation': 'Mutation',
+  'gnida_package': 'GNIDA 5-in-1 Package',
+}
+
+export default function DocumentDraftOverlay() {
+  const { activeDoc, clearActiveDoc } = useDocument()
+  const [fullscreen, setFullscreen] = useState(false)
+
+  if (!activeDoc) return null
+
+  const label = DOC_LABELS[activeDoc] || activeDoc
+
+  return (
+    <div className="fixed inset-0 z-[9999] flex flex-col bg-white">
+      {/* Header bar */}
+      <div className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-2.5 shadow-sm">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={clearActiveDoc}
+            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold text-gray-600 hover:bg-gray-100 transition-colors"
+          >
+            <X className="h-4 w-4" />
+            Back
+          </button>
+          <div className="h-5 w-px bg-gray-200" />
+          <span className="text-sm font-bold text-gray-900">{label}</span>
+        </div>
+        <button
+          onClick={() => setFullscreen(!fullscreen)}
+          className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+          title={fullscreen ? 'Exit fullscreen' : 'Fullscreen'}
+        >
+          {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+        </button>
+      </div>
+
+      {/* Iframe loading old SPA via internal API route — no URL exposure */}
+      <div className="flex-1">
+        <iframe
+          src={`/api/draft-serve?doc=${encodeURIComponent(activeDoc)}`}
+          className="h-full w-full border-0"
+          title={label}
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+        />
+      </div>
+    </div>
+  )
+}

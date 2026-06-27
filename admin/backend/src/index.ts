@@ -3,6 +3,8 @@ import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
+import path from "path";
+import fs from "fs";
 
 import authRoutes from "./routes/auth";
 import userRoutes from "./routes/users";
@@ -63,6 +65,23 @@ app.use(rentAgreementRoutes);
 
 app.get("/api/health", (_req: Request, res: Response) => {
   res.json({ success: true, data: { status: "ok", timestamp: new Date().toISOString() } });
+});
+
+// Serve the old Madhav_Drafting_Hub.html SPA internally (no ?doc= exposure in browser URL)
+const DRAFT_SPA_PATH = path.resolve(__dirname, "..", "..", "..", "..", "Madhav_Drafting_Hub.html");
+app.get("/api/draft-serve", (req: Request, res: Response) => {
+  const doc = (req.query.doc as string) || "rent-agreement";
+  if (!fs.existsSync(DRAFT_SPA_PATH)) {
+    res.status(404).json({ success: false, error: "Draft SPA not found" });
+    return;
+  }
+  let html = fs.readFileSync(DRAFT_SPA_PATH, "utf-8");
+  // Inject a script that selects the document without URL params
+  const injectedScript = `<script>window.DOC_TYPE=${JSON.stringify(doc)};document.addEventListener('DOMContentLoaded',function(){const p=new URLSearchParams(window.location.search);if(!p.get('doc')){const u=new URL(window.location.href);u.searchParams.set('doc',window.DOC_TYPE);window.history.replaceState({},'',u.toString());}});</script>`;
+  html = html.replace("</head>", `${injectedScript}</head>`);
+  res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  res.send(html);
 });
 
 app.use((_req: Request, res: Response) => {
