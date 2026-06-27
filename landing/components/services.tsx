@@ -55,7 +55,7 @@ const services = [
       'Full property sale deed registration with the sub-registrar office.',
     icon: Building,
     featured: false,
-    href: '/app/?doc=registry',
+    href: '/app/?doc=gnida_registry',
   },
   {
     name: 'Permission to Mortgage / PTM',
@@ -64,7 +64,7 @@ const services = [
       'Authority permission document for mortgaging a property against a loan.',
     icon: ScrollText,
     featured: false,
-    href: '/app/?doc=ptm',
+    href: '/app/?doc=gnida_ptm',
   },
   {
     name: 'Mutation',
@@ -74,6 +74,15 @@ const services = [
     icon: Map,
     featured: false,
     href: '/app/?doc=mutation',
+  },
+  {
+    name: 'GNIDA 5-in-1 Package',
+    price: 12000,
+    description:
+      'Complete GNIDA document package: Registry, PTM, Mutation, ATS & Transfer Deed.',
+    icon: FileText,
+    featured: false,
+    href: '/app/?doc=gnida_package',
   },
 ]
 
