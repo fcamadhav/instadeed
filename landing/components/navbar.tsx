@@ -115,7 +115,7 @@ export default function Navbar() {
                 >
                   Draft Now
                   <ArrowRight className="h-4 w-4" />
-                </a>
+                </button>
               </div>
             </div>
           </motion.div>
