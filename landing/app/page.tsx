@@ -1,3 +1,5 @@
+'use client'
+
 import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
 import TrustStrip from "@/components/trust-strip";
@@ -10,8 +12,6 @@ import Reviews from "@/components/reviews";
 import Faq from "@/components/faq";
 import FinalCta from "@/components/final-cta";
 import Footer from "@/components/footer";
-
-export const dynamic = 'force-dynamic'
 
 export default function Home() {
   return (
