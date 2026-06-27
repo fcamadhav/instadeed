@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { X, Maximize2, Minimize2 } from 'lucide-react'
 import { getActiveDoc, subscribe, setActiveDoc } from '@/lib/documentState'
+import { useState, useEffect } from 'react'
 
 const DOC_LABELS: Record<string, string> = {
   'rent-agreement': 'Rent Agreement',
@@ -17,7 +17,6 @@ const DOC_LABELS: Record<string, string> = {
 
 export default function DocumentDraftOverlay() {
   const [activeDoc, setActiveDocState] = useState<string | null>(null)
-  const [fullscreen, setFullscreen] = useState(false)
 
   useEffect(() => {
     setActiveDocState(getActiveDoc())
@@ -47,17 +46,10 @@ export default function DocumentDraftOverlay() {
           <div className="h-5 w-px bg-gray-200" />
           <span className="text-sm font-bold text-gray-900">{label}</span>
         </div>
-        <button
-          onClick={() => setFullscreen(!fullscreen)}
-          className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
-        >
-          {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-        </button>
       </div>
-
       <div className="flex-1">
         <iframe
-          src={`/api/draft-serve?doc=${encodeURIComponent(activeDoc)}`}
+          src={`/app/?doc=${encodeURIComponent(activeDoc)}`}
           className="h-full w-full border-0"
           title={label}
           sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
