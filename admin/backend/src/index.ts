@@ -7,6 +7,7 @@ import path from "path";
 import fs from "fs";
 
 import authRoutes from "./routes/auth";
+import { prisma } from "./lib/prisma";
 import userRoutes from "./routes/users";
 import serviceRoutes from "./routes/services";
 import categoryRoutes from "./routes/categories";
