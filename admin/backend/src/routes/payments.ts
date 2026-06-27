@@ -95,12 +95,14 @@ router.put(
 // GET /api/config — returns Razorpay public key for frontend
 router.get("/api/config", async (_req: Request, res: Response) => {
   try {
-    const gateway = await prisma.paymentGatewayConfig.findFirst({ where: { gateway: "RAZORPAY", isEnabled: true } });
-    if (!gateway || !gateway.apiKey) {
-      res.status(503).json({ success: false, error: "Payment gateway not configured" });
+    const gateway = await prisma.paymentGatewayConfig.findFirst({ where: { gateway: "RAZORPAY" } });
+    const razorpayKey = gateway?.apiKey || "";
+    if (!razorpayKey) {
+      // No Razorpay configured — return a placeholder so frontend shows mock payment path
+      res.json({ razorpay_key: "", version: "2.0.0", app_name: "INSTADEED" });
       return;
     }
-    res.json({ razorpay_key: gateway.apiKey, version: "2.0.0", app_name: "INSTADEED" });
+    res.json({ razorpay_key: razorpayKey, version: "2.0.0", app_name: "INSTADEED" });
   } catch (error) {
     console.error("Config error:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
@@ -116,7 +118,18 @@ const createOrderHandler = async (req: Request, res: Response) => {
     if (!gateway || !gateway.apiKey || !gateway.apiSecret) {
       // No Razorpay configured — return mock order (same as old Python server behavior)
       const mockOrderId = `MOCK_ORD_${crypto.randomBytes(4).toString("hex").toUpperCase()}`;
-      // Also save to our orders table
+      let svc = await prisma.service.findFirst({ where: { slug: data.service_type?.toLowerCase() || "rent-agreement" } });
+      if (!svc) svc = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
+      if (!svc) {
+        const cat = await prisma.category.findFirst();
+        svc = await prisma.service.create({
+          data: {
+            name: "Document Drafting",
+            slug: `b2c-${Date.now()}`,
+            categoryId: cat?.id || "00000000-0000-0000-0000-000000000000",
+          },
+        });
+      }
       const orderNumber = `ORD-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(2).toString("hex").toUpperCase()}`;
       await prisma.order.create({
         data: {
@@ -124,7 +137,7 @@ const createOrderHandler = async (req: Request, res: Response) => {
           customerName: data.customer_name || "B2C Client",
           customerPhone: data.customer_phone || "0000000000",
           customerEmail: data.customer_email || "b2c@client.com",
-          serviceId: "00000000-0000-0000-0000-000000000001", // generic
+          serviceId: svc.id,
           amount: data.amount,
           total: data.amount,
           formData: JSON.stringify({ service_type: data.service_type, form_data: data.form_data }),
@@ -164,6 +177,23 @@ const createOrderHandler = async (req: Request, res: Response) => {
 
     const rzpOrder = (await rzpResponse.json()) as { id: string; amount: number; currency: string };
 
+    // Find or create a generic service for B2C orders
+    let genericService = await prisma.service.findFirst({ where: { slug: data.service_type?.toLowerCase() || "rent-agreement" } });
+    if (!genericService) {
+      genericService = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
+    }
+    if (!genericService) {
+      // Create a generic service if none exist
+      const cat = await prisma.category.findFirst();
+      genericService = await prisma.service.create({
+        data: {
+          name: data.customer_name ? `${data.service_type || "Document"} Drafting` : "Document Drafting",
+          slug: `b2c-${Date.now()}`,
+          categoryId: cat?.id || "00000000-0000-0000-0000-000000000000",
+        },
+      });
+    }
+
     // Save order to our database
     const orderNumber = `ORD-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(2).toString("hex").toUpperCase()}`;
     await prisma.order.create({
@@ -172,7 +202,7 @@ const createOrderHandler = async (req: Request, res: Response) => {
         customerName: data.customer_name || "B2C Client",
         customerPhone: data.customer_phone || "0000000000",
         customerEmail: data.customer_email || "b2c@client.com",
-        serviceId: "00000000-0000-0000-0000-000000000001",
+        serviceId: genericService.id,
         amount: data.amount,
         total: data.amount,
         paymentGateway: "RAZORPAY",
