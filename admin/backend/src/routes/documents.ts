@@ -531,4 +531,41 @@ router.get(
   }
 );
 
+// Customer-facing document download (used by old SPA after payment)
+router.get(
+  "/api/customer/documents/:orderId/download",
+  async (req: Request, res: Response) => {
+    try {
+      const order = await prisma.order.findUnique({
+        where: { orderNumber: req.params.orderId },
+        include: { documents: true },
+      });
+      if (!order) {
+        res.status(404).json({ success: false, error: "Order not found" });
+        return;
+      }
+      // If there's a generated PDF, serve it
+      if (order.documents && order.documents.length > 0) {
+        const doc = order.documents[order.documents.length - 1];
+        if (doc.pdfFilePath) {
+          if (!fs.existsSync(doc.pdfFilePath)) {
+            res.status(404).json({ success: false, error: "PDF file not found" });
+            return;
+          }
+          await prisma.documentAuditLog.create({
+            data: { documentId: doc.id, action: "DOWNLOADED", ipAddress: req.ip, userAgent: req.headers["user-agent"] || null },
+          });
+          res.download(doc.pdfFilePath, `${doc.documentNumber}.pdf`);
+          return;
+        }
+      }
+      // No PDF generated yet — return a placeholder
+      res.status(404).json({ success: false, error: "Document not yet generated" });
+    } catch (error) {
+      console.error("Customer download error:", error);
+      res.status(500).json({ success: false, error: "Internal server error" });
+    }
+  }
+);
+
 export default router;
