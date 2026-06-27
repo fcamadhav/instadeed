@@ -19,6 +19,7 @@ const services = [
       'Unregistered rental agreement for residential or commercial use. Fast & affordable.',
     icon: FileText,
     featured: true,
+    href: '/app/?doc=rent-agreement',
   },
   {
     name: 'Registered Rent Agreement',
@@ -27,6 +28,7 @@ const services = [
       'Notarized and registered rental agreement with full legal validity.',
     icon: Stamp,
     featured: false,
+    href: '/app/?doc=registered-rent',
   },
   {
     name: 'Agreement to Sell / ATS',
@@ -35,6 +37,7 @@ const services = [
       'Legally enforceable promise to sell a property between buyer and seller.',
     icon: FileSignature,
     featured: false,
+    href: '/app/?doc=ats',
   },
   {
     name: 'Transfer Memorandum / TM',
@@ -43,6 +46,7 @@ const services = [
       'Official document recording the transfer of property ownership rights.',
     icon: Landmark,
     featured: false,
+    href: '/app/?doc=tm48',
   },
   {
     name: 'Registry',
@@ -51,6 +55,7 @@ const services = [
       'Full property sale deed registration with the sub-registrar office.',
     icon: Building,
     featured: false,
+    href: '/app/?doc=registry',
   },
   {
     name: 'Permission to Mortgage / PTM',
@@ -59,6 +64,7 @@ const services = [
       'Authority permission document for mortgaging a property against a loan.',
     icon: ScrollText,
     featured: false,
+    href: '/app/?doc=ptm',
   },
   {
     name: 'Mutation',
@@ -67,6 +73,7 @@ const services = [
       'Updating property title records with the local municipal authority.',
     icon: Map,
     featured: false,
+    href: '/app/?doc=mutation',
   },
 ]
 
@@ -166,10 +173,13 @@ export default function Services() {
                   {service.description}
                 </p>
 
-                <div className="relative mt-5 flex items-center gap-1 text-sm font-medium text-primary transition-all duration-200 group-hover:gap-2">
+                <a
+                  href={service.href}
+                  className="relative mt-5 flex items-center gap-1 text-sm font-medium text-primary transition-all duration-200 hover:gap-2"
+                >
                   <span>Get Drafted</span>
                   <svg
-                    className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                    className="h-4 w-4 transition-transform duration-200 hover:translate-x-0.5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -181,7 +191,7 @@ export default function Services() {
                       d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
                     />
                   </svg>
-                </div>
+                </a>
               </motion.div>
             )
           })}
