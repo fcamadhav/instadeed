@@ -162,7 +162,7 @@ const createOrderHandler = async (req: Request, res: Response) => {
       return;
     }
 
-    const rzpOrder = await rzpResponse.json();
+    const rzpOrder = (await rzpResponse.json()) as { id: string; amount: number; currency: string };
 
     // Save order to our database
     const orderNumber = `ORD-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(2).toString("hex").toUpperCase()}`;
