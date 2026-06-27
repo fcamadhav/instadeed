@@ -29,6 +29,21 @@ router.get("/api/categories", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/api/admin/categories", requireAuth, requireRole("SUPER_ADMIN", "ADMIN"), async (req: Request, res: Response) => {
+  try {
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit as string) || 20));
+    const [categories, total] = await Promise.all([
+      prisma.category.findMany({ skip: (page-1)*limit, take: limit, orderBy: { displayOrder: "asc" }, include: { _count: { select: { services: true } } } }),
+      prisma.category.count(),
+    ]);
+    res.json({ success: true, data: { categories, pagination: { page, limit, total, totalPages: Math.ceil(total/limit) } } });
+  } catch (error) {
+    console.error("List admin categories error:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
 router.post(
   "/api/admin/categories",
   requireAuth,

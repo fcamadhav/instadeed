@@ -25,6 +25,21 @@ router.get("/api/website-content/:section", async (req: Request, res: Response) 
   }
 });
 
+// Alias for frontend
+router.get("/api/admin/website/content", requireAuth, requireRole("SUPER_ADMIN", "ADMIN"), async (_req: Request, res: Response) => {
+  try {
+    const sections = await prisma.websiteContent.findMany({ orderBy: { section: "asc" } });
+    const content: Record<string, unknown> = {};
+    for (const s of sections) {
+      try { content[s.section] = JSON.parse(s.content); } catch { content[s.section] = s.content; }
+    }
+    res.json({ success: true, data: { content } });
+  } catch (error) {
+    console.error("Get website content error:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
 router.put(
   "/api/admin/website-content/:section",
   requireAuth,

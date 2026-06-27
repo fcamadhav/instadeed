@@ -20,11 +20,7 @@ const gstConfigSchema = z.object({
   qrCode: z.string().optional(),
 });
 
-router.get(
-  "/api/admin/gst-config",
-  requireAuth,
-  requireRole("SUPER_ADMIN", "ADMIN", "ACCOUNTS"),
-  async (req: Request, res: Response) => {
+router.get("/api/admin/gst-config", requireAuth, requireRole("SUPER_ADMIN", "ADMIN", "ACCOUNTS"), async (req: Request, res: Response) => {
     try {
       let config = await prisma.gstConfig.findFirst();
       if (!config) {
@@ -38,11 +34,22 @@ router.get(
   }
 );
 
-router.put(
-  "/api/admin/gst-config",
-  requireAuth,
-  requireRole("SUPER_ADMIN", "ADMIN", "ACCOUNTS"),
-  async (req: Request, res: Response) => {
+// Alias for frontend
+router.get("/api/admin/gst", requireAuth, requireRole("SUPER_ADMIN", "ADMIN", "ACCOUNTS"), async (req: Request, res: Response) => {
+    try {
+      let config = await prisma.gstConfig.findFirst();
+      if (!config) {
+        config = await prisma.gstConfig.create({ data: {} });
+      }
+      res.json({ success: true, data: { settings: config } });
+    } catch (error) {
+      console.error("Get GST error:", error);
+      res.status(500).json({ success: false, error: "Internal server error" });
+    }
+  }
+);
+
+router.put("/api/admin/gst-config", requireAuth, requireRole("SUPER_ADMIN", "ADMIN", "ACCOUNTS"), async (req: Request, res: Response) => {
     try {
       const data = gstConfigSchema.parse(req.body);
       let config = await prisma.gstConfig.findFirst();
@@ -59,6 +66,24 @@ router.put(
         return;
       }
       console.error("Update GST config error:", error);
+      res.status(500).json({ success: false, error: "Internal server error" });
+    }
+  }
+);
+
+// Alias for frontend
+router.put("/api/admin/gst", requireAuth, requireRole("SUPER_ADMIN", "ADMIN", "ACCOUNTS"), async (req: Request, res: Response) => {
+    try {
+      const data = req.body;
+      let config = await prisma.gstConfig.findFirst();
+      if (config) {
+        config = await prisma.gstConfig.update({ where: { id: config.id }, data });
+      } else {
+        config = await prisma.gstConfig.create({ data });
+      }
+      res.json({ success: true, data: config });
+    } catch (error) {
+      console.error("Update GST error:", error);
       res.status(500).json({ success: false, error: "Internal server error" });
     }
   }
