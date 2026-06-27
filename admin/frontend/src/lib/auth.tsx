@@ -59,7 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (email: string, password: string) => {
     const res = await apiPost<{ success: boolean; data: { user: User; token: string } }>(
-      '/auth/login',
+      '/admin/auth/login',
       { email, password }
     );
     const { user: userData, token: tokenData } = res.data;
@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loginWithGoogle = useCallback(async () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL || '/api'}/auth/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL || '/api'}/admin/auth/google`;
   }, []);
 
   const logout = useCallback(() => {
