@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
 import {
-  Scale, LayoutDashboard, Package, IndianRupee, ShoppingCart, Users, CreditCard,
+  LayoutDashboard, Package, IndianRupee, ShoppingCart, Users, CreditCard,
   Tag, Receipt, Bell, Brain, Scan, GitBranch, Globe, Settings, ScrollText,
-  BarChart3, LogOut, X, ChevronDown, ChevronRight, FileText, Calendar,
+  BarChart3, LogOut, X, ChevronRight, FileText, Calendar,
   ClipboardList, FolderTree, MoreHorizontal
 } from 'lucide-react';
 import { useState } from 'react';
@@ -127,10 +127,9 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between px-4 h-14 border-b border-slate-200 dark:border-slate-800">
             <Link href="/admin/dashboard" className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-slate-900 dark:bg-white flex items-center justify-center">
-                <Scale className="w-4 h-4 text-white dark:text-slate-900" />
-              </div>
-              <span className="font-bold text-slate-900 dark:text-white text-sm tracking-tight">INSTADEED</span>
+              <span className="text-base font-bold tracking-tight text-slate-900 dark:text-white">
+                INSTA<span className="text-admin-600 dark:text-admin-400">DEED</span>
+              </span>
             </Link>
             <button onClick={onClose} className="lg:hidden text-slate-400 hover:text-slate-600 p-1">
               <X className="w-4 h-4" />
