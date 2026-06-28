@@ -5,7 +5,7 @@ import AdminLayout from '@/components/AdminLayout';
 import FormField from '@/components/FormField';
 import { apiGet, apiPut } from '@/lib/api';
 import toast from 'react-hot-toast';
-import { Save, Settings as SettingsIcon, Palette, Key, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Save, Settings as SettingsIcon, Palette, Key, Eye, EyeOff, Loader2, Shield } from 'lucide-react';
 
 interface GeneralSettings {
   siteName: string;
@@ -74,6 +74,7 @@ export default function SettingsPage() {
           { key: 'general' as const, label: 'General', icon: SettingsIcon },
           { key: 'theme' as const, label: 'Theme', icon: Palette },
           { key: 'api' as const, label: 'API Keys', icon: Key },
+          { key: 'backup' as const, label: 'Backup', icon: Shield },
         ]).map(t => (
           <button key={t.key} onClick={() => setTab(t.key)} className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md transition-colors ${tab === t.key ? 'bg-white dark:bg-slate-800 shadow-sm text-admin-600 dark:text-admin-400 font-medium' : 'text-slate-500'}`}>
             <t.icon className="w-3.5 h-3.5" /> {t.label}
@@ -139,6 +140,14 @@ export default function SettingsPage() {
             ))}
             {apiKeys.length === 0 && <p className="text-sm text-slate-400 text-center py-4">No API keys configured.</p>}
           </div>
+        </div>
+      )}
+
+      {tab === 'backup' && (
+        <div className="card p-6 max-w-2xl">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Database Backup</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">Create a manual backup of the database and uploaded documents. Backups run automatically daily at 3:00 AM.</p>
+          <BackupSection />
         </div>
       )}
     </AdminLayout>

@@ -119,4 +119,33 @@ router.put(
   }
 );
 
+router.post(
+  "/api/admin/backup/run",
+  requireAuth,
+  requireRole("SUPER_ADMIN", "ADMIN"),
+  async (_req: Request, res: Response) => {
+    try {
+      const { exec } = require("child_process");
+      exec("/usr/local/bin/instadeed-backup", { timeout: 120000 }, (error: any, stdout: string, stderr: string) => {
+        if (error) {
+          console.error("Backup error:", stderr);
+          res.status(500).json({ success: false, error: "Backup failed: " + (stderr || error.message) });
+          return;
+        }
+        const lines = stdout.split("\n").filter(l => l.includes(".gz") || l.includes("Complete"));
+        res.json({
+          success: true,
+          data: {
+            message: "Backup completed successfully",
+            files: lines.map(l => l.trim()).filter(Boolean),
+          },
+        });
+      });
+    } catch (error) {
+      console.error("Backup trigger error:", error);
+      res.status(500).json({ success: false, error: "Internal server error" });
+    }
+  }
+);
+
 export default router;
