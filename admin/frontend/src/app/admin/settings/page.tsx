@@ -30,7 +30,7 @@ interface APIKeyEntry {
 }
 
 export default function SettingsPage() {
-  const [tab, setTab] = useState<'general' | 'theme' | 'api'>('general');
+  const [tab, setTab] = useState<'general' | 'theme' | 'api' | 'backup'>('general');
   const [general, setGeneral] = useState<GeneralSettings>({ siteName: 'INSTADEED', logo: '', favicon: '', timezone: 'Asia/Kolkata', currency: 'INR' });
   const [theme, setTheme] = useState<ThemeSettings>({ theme: 'light', customCss: '', customJs: '', maintenanceMode: false });
   const [apiKeys, setApiKeys] = useState<APIKeyEntry[]>([]);
