@@ -477,6 +477,7 @@ model Document {
   service         Service         @relation(fields: [serviceId], references: [id])
   order           Order?          @relation(fields: [orderId], references: [id])
   auditLogs       DocumentAuditLog[]
+  lifecycle       DocumentLifecycle?
 }
 
 model DocumentAuditLog {
@@ -507,7 +508,7 @@ model DocumentLifecycle {
   updatedAt       DateTime @updatedAt
 
   document        Document @relation(fields: [documentId], references: [id])
-  assignedTo      User?    @relation(fields: [assignedToId], references: [id])
+  assignedTo      User?    @relation("DocumentAssignments", fields: [assignedToId], references: [id])
   versions        DocLifecycleVersion[]
   notes           DocLifecycleNote[]
   timeline        DocumentTimeline[]
@@ -529,7 +530,7 @@ model DocLifecycleVersion {
   createdAt       DateTime @default(now())
 
   lifecycle       DocumentLifecycle @relation(fields: [lifecycleId], references: [id])
-  createdBy       User?             @relation(fields: [createdById], references: [id])
+  createdBy       User?             @relation("VersionAuthors", fields: [createdById], references: [id])
 
   @@index([lifecycleId])
   @@index([lifecycleId, version])
