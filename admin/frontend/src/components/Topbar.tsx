@@ -40,7 +40,7 @@ export default function Topbar({ title, onMenuClick }: TopbarProps) {
   };
 
   return (
-    <header className="h-16 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30">
+    <header className="h-14 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30">
       <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}
