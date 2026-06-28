@@ -44,6 +44,7 @@ async function main() {
     { name: "Corporate", description: "Business registration and corporate compliance services", icon: "building", displayOrder: 4 },
     { name: "Documentation", description: "Legal document drafting and notary services", icon: "file-text", displayOrder: 5 },
     { name: "Compliance", description: "Regulatory compliance and verification services", icon: "check-circle", displayOrder: 6 },
+    { name: "Property Documents", description: "GNIDA-approved property document drafting services", icon: "file-text", displayOrder: 7 },
   ];
 
   const categories: Record<string, string> = {};
@@ -98,6 +99,19 @@ async function main() {
     { name: "Police Verification", category: "Compliance", shortDescription: "Police verification certificate for various purposes", deliveryTime: "7-10 working days", processingTime: "2-3 working days", sortOrder: 1, isFeatured: false, currentPrice: 499, oldPrice: 999, gstPercent: 18, offerBadge: "50% OFF" },
     { name: "FSSAI License", category: "Compliance", shortDescription: "Food Safety and Standards Authority of India license", deliveryTime: "10-15 working days", processingTime: "3-5 working days", sortOrder: 2, isFeatured: false, currentPrice: 2999, oldPrice: 4499, gstPercent: 18 },
     { name: "MSME Registration", category: "Compliance", shortDescription: "Udyam registration for micro, small & medium enterprises", deliveryTime: "2-3 working days", processingTime: "24 hours", sortOrder: 3, isFeatured: false, currentPrice: 499, oldPrice: 999, gstPercent: 18 },
+
+    // ─── Property Document Services (used by the drafting SPA) ───
+    { name: "Registered Rent Agreement", category: "Property Documents", shortDescription: "Notarized and registered rental agreement with full legal validity", deliveryTime: "2-3 working days", processingTime: "24 hours", sortOrder: 5, isFeatured: false, currentPrice: 2000, oldPrice: 3500, gstPercent: 18 },
+    { name: "Agreement to Sell / ATS", category: "Property Documents", shortDescription: "Legally enforceable promise to sell a property between buyer and seller", deliveryTime: "2-3 working days", processingTime: "24 hours", sortOrder: 6, isFeatured: false, currentPrice: 150, oldPrice: 500, gstPercent: 18 },
+    { name: "Transfer Memorandum / TM", category: "Property Documents", shortDescription: "Official document recording the transfer of property ownership rights (TM-48)", deliveryTime: "3-5 working days", processingTime: "24 hours", sortOrder: 7, isFeatured: false, currentPrice: 2000, oldPrice: 3500, gstPercent: 18 },
+    { name: "GNIDA Registry Deed", category: "Property Documents", shortDescription: "Full property sale deed registration with sub-registrar office", deliveryTime: "5-7 working days", processingTime: "2-3 working days", sortOrder: 8, isFeatured: false, currentPrice: 10000, oldPrice: 15000, gstPercent: 18 },
+    { name: "Permission to Mortgage / PTM", category: "Property Documents", shortDescription: "Authority permission document for mortgaging a property against a loan", deliveryTime: "5-7 working days", processingTime: "2-3 working days", sortOrder: 9, isFeatured: false, currentPrice: 7500, oldPrice: 12000, gstPercent: 18 },
+    { name: "Mutation", category: "Property Documents", shortDescription: "Updating property title records with the local municipal authority", deliveryTime: "7-10 working days", processingTime: "3-5 working days", sortOrder: 10, isFeatured: false, currentPrice: 3500, oldPrice: 5000, gstPercent: 18 },
+    { name: "GNIDA 5-in-1 Package", category: "Property Documents", shortDescription: "Complete GNIDA document package: Registry, PTM, Mutation, ATS & Transfer Deed", deliveryTime: "7-10 working days", processingTime: "3-5 working days", sortOrder: 11, isFeatured: true, currentPrice: 40000, oldPrice: 55000, gstPercent: 18, offerBadge: "27% OFF" },
+    { name: "Know Your Allottee (KYA)", category: "Property Documents", shortDescription: "Greater Noida Authority official allottee verification datasheet", deliveryTime: "24 hours", processingTime: "1-2 hours", sortOrder: 12, isFeatured: false, currentPrice: 0, oldPrice: null, gstPercent: 0 },
+    { name: "Transfer Memo Application", category: "Property Documents", shortDescription: "Application for transfer of leasehold rights under GNIDA authority rules", deliveryTime: "3-5 working days", processingTime: "24 hours", sortOrder: 13, isFeatured: false, currentPrice: 2000, oldPrice: 3000, gstPercent: 18 },
+    { name: "Noida Transfer Application", category: "Property Documents", shortDescription: "Transfer of leasehold rights under Noida Authority rules", deliveryTime: "3-5 working days", processingTime: "24 hours", sortOrder: 14, isFeatured: false, currentPrice: 2000, oldPrice: 3000, gstPercent: 18 },
+    { name: "TM-48 Trademark Proxy", category: "Property Documents", shortDescription: "Official authorisation form to represent clients before the Indian Trademark Registry", deliveryTime: "24 hours", processingTime: "1-2 hours", sortOrder: 15, isFeatured: false, currentPrice: 500, oldPrice: 1000, gstPercent: 18 },
   ];
 
   for (const svc of serviceData) {
