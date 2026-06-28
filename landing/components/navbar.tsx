@@ -35,7 +35,7 @@ export default function Navbar() {
           : "bg-transparent"
       )}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
         <a href="#" className="flex items-center gap-1.5">
           <span className="text-xl font-bold tracking-tight text-dark">
             INSTA<span className="text-primary">DEED</span>

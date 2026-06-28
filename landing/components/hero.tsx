@@ -49,7 +49,7 @@ const floatAnimation = {
 export default function Hero() {
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-gradient-to-b from-background to-white pt-24 sm:pt-28 lg:pt-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <motion.div
             variants={container}
