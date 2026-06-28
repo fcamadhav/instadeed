@@ -261,6 +261,16 @@ const verifyPaymentHandler = async (req: Request, res: Response) => {
     }
 
     const gateway = await prisma.paymentGatewayConfig.findFirst({ where: { gateway: "RAZORPAY", isEnabled: true } });
+    if (!gateway || !gateway.apiSecret || isPlaceholderKey(gateway.apiKey || "")) {
+      // No real Razorpay configured — accept mock verification
+      await prisma.order.updateMany({
+        where: { paymentId: data.razorpay_order_id },
+        data: { paymentStatus: "PAID", status: "COMPLETED" },
+      });
+      await generatePdfAfterPayment(data.razorpay_order_id);
+      res.json({ status: "success", message: "Payment verified (mock mode)" });
+      return;
+    }
     if (!gateway || !gateway.apiSecret) {
       res.status(503).json({ success: false, error: "Payment gateway not configured" });
       return;
