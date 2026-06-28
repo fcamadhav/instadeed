@@ -35,9 +35,9 @@ model User {
   documentAuditLogs DocumentAuditLog[]
   rentAgreements  RentAgreement[]
   documentLifecycles DocumentLifecycle[]        @relation("DocumentAssignments")
-  lifecycleNotes     DocumentNote[]
+  lifecycleNotes     DocLifecycleNote[]
   lifecycleTimeline  DocumentTimeline[]
-  lifecycleVersions  DocumentVersion[]          @relation("VersionAuthors")
+  lifecycleVersions  DocLifecycleVersion[] @relation("VersionAuthors")
 }
 
 // ─── Login History ───
@@ -508,15 +508,15 @@ model DocumentLifecycle {
 
   document        Document @relation(fields: [documentId], references: [id])
   assignedTo      User?    @relation(fields: [assignedToId], references: [id])
-  versions        DocumentVersion[]
-  notes           DocumentNote[]
+  versions        DocLifecycleVersion[]
+  notes           DocLifecycleNote[]
   timeline        DocumentTimeline[]
 
   @@index([status])
   @@index([assignedToId])
 }
 
-model DocumentVersion {
+model DocLifecycleVersion {
   id              String   @id @default(uuid())
   lifecycleId     String
   version         Int      @default(1)
@@ -535,7 +535,7 @@ model DocumentVersion {
   @@index([lifecycleId, version])
 }
 
-model DocumentNote {
+model DocLifecycleNote {
   id          String   @id @default(uuid())
   lifecycleId String
   note        String
