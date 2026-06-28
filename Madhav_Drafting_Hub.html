@@ -367,6 +367,15 @@
         body.solo-mode .instadeed-doc-grid { display: none !important; }
         body.solo-mode .instadeed-solo-header { display: none !important; }
 
+        /* Fix toolbar overlapping in document editor */
+        .sticky-header, [class*="toolbar"], [class*="Toolbar"], [class*="completion"], [class*="Completion"] {
+            z-index: 100 !important;
+            position: relative !important;
+        }
+        .paper-page-container {
+            padding-top: 0 !important;
+        }
+
         </style>
 </head>
 
