@@ -211,7 +211,7 @@ router.post(
       const lifecycle = await prisma.documentLifecycle.findUnique({ where: { id: req.params.id } });
       if (!lifecycle) { res.status(404).json({ success: false, error: "Document not found" }); return; }
 
-      const note = await prisma.DocLifecycleNote.create({
+      const note = await prisma.docLifecycleNote.create({
         data: { lifecycleId: req.params.id, note: data.note, isInternal: true, createdById: req.user!.userId },
         include: { createdBy: { select: { name: true } } },
       });
@@ -235,7 +235,7 @@ router.get(
     try {
       const lifecycle = await prisma.documentLifecycle.findUnique({ where: { id: req.params.id } });
       if (!lifecycle) { res.status(404).json({ success: false, error: "Document not found" }); return; }
-      const notes = await prisma.DocLifecycleNote.findMany({
+      const notes = await prisma.docLifecycleNote.findMany({
         where: { lifecycleId: req.params.id },
         orderBy: { createdAt: "desc" },
         include: { createdBy: { select: { name: true } } },
