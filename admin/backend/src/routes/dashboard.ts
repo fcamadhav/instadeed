@@ -50,12 +50,13 @@ router.get(
             orderBy: { _count: { id: "desc" } },
             take: 10,
           });
-          return Promise.all(
-            grouped.map(async (g) => {
-              const service = await prisma.service.findUnique({ where: { id: g.serviceId }, select: { id: true, name: true, slug: true } });
-              return { ...service, orderCount: g._count, revenue: g._sum.total };
-            })
-          );
+          const serviceIds = grouped.map(g => g.serviceId);
+          const services = await prisma.service.findMany({
+            where: { id: { in: serviceIds } },
+            select: { id: true, name: true, slug: true },
+          });
+          const serviceMap = new Map(services.map(s => [s.id, s]));
+          return grouped.map(g => ({ ...serviceMap.get(g.serviceId), orderCount: g._count, revenue: g._sum.total }));
         })(),
         prisma.order.findMany({
           take: 10,

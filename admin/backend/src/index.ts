@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import helmet from "helmet";
+import compression from "compression";
 import cors from "cors";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
@@ -32,6 +33,7 @@ const app = express();
 const PORT = parseInt(process.env.PORT || "4000", 10);
 
 app.use(helmet());
+app.use(compression());
 app.use(cors());
 app.use(morgan("combined"));
 app.use(express.json({ limit: "10mb" }));
