@@ -35,12 +35,16 @@ export default function AuditPage() {
     setError(null);
     try {
       const params = new URLSearchParams({ page: String(page), limit: '10' });
-      Object.entries(filters).forEach(([k, v]) => { if (v) params.set(k, v); });
-      const res = await apiGet<{ data: { logs: AuditLog[]; page: number; totalPages: number; total: number } }>(`/admin/audit-logs?${params}`);
+      if (filters.module) params.set('module', filters.module);
+      if (filters.action) params.set('action', filters.action);
+      if (filters.user) params.set('userId', filters.user);
+      if (filters.startDate) params.set('dateFrom', filters.startDate);
+      if (filters.endDate) params.set('dateTo', filters.endDate);
+      const res = await apiGet<{ data: { logs: AuditLog[]; pagination: { page: number; totalPages: number; total: number } } }>(`/admin/audit-logs?${params}`);
       if (res.data) {
         setLogs(res.data.logs || []);
-        setTotalPages(res.data.totalPages || 1);
-        setTotal(res.data.total || 0);
+        setTotalPages(res.data.pagination?.totalPages || 1);
+        setTotal(res.data.pagination?.total || 0);
       }
     } catch (err: any) { setError(err.message); } finally { setLoading(false); }
   };
