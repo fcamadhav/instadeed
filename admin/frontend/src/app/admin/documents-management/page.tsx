@@ -335,7 +335,7 @@ export default function DocumentsManagementPage() {
                 {staffList.map(s => <option key={s.id} value={s.id}>{s.name} ({s.role})</option>)}
               </select>
             </div>
-            <FormField label="Role" value={selectedRole} onChange={v => setSelectedRole(v)}
+            <FormField label="Role" value={selectedRole} onChange={e => setSelectedRole((e as any).target?.value || 'EMPLOYEE')}
               type="select" options={[
                 { value: 'EMPLOYEE', label: 'Employee' },
                 { value: 'ADVOCATE', label: 'Advocate' },
