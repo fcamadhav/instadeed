@@ -45,6 +45,12 @@ const navSections: { title?: string; items: NavItem[] }[] = [
     ],
   },
   {
+    title: 'Document Management',
+    items: [
+      { label: 'All Documents', icon: FileText, href: '/admin/documents-management' },
+    ],
+  },
+  {
     title: 'Commerce',
     items: [
       { label: 'Orders', icon: ShoppingCart, href: '/admin/orders' },

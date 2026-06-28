@@ -34,6 +34,10 @@ model User {
   documents       Document[]
   documentAuditLogs DocumentAuditLog[]
   rentAgreements  RentAgreement[]
+  documentLifecycles DocumentLifecycle[]        @relation("DocumentAssignments")
+  lifecycleNotes     DocumentNote[]
+  lifecycleTimeline  DocumentTimeline[]
+  lifecycleVersions  DocumentVersion[]          @relation("VersionAuthors")
 }
 
 // ─── Login History ───
@@ -486,6 +490,79 @@ model DocumentAuditLog {
 
   document    Document @relation(fields: [documentId], references: [id])
   user        User?    @relation(fields: [userId], references: [id])
+}
+
+// ─── Document Lifecycle Management ───
+model DocumentLifecycle {
+  id              String   @id @default(uuid())
+  documentId      String   @unique
+  status          String   @default("DRAFT")     // DRAFT|SUBMITTED|PAYMENT_PENDING|PAYMENT_SUCCESS|ASSIGNED|UNDER_REVIEW|READY_FOR_SUBMISSION|SUBMITTED_TO_AUTHORITY|COMPLETED|ARCHIVED
+  assignedToId    String?
+  assignedRole    String?                        // EMPLOYEE|ADVOCATE|CASE_MANAGER|PROPERTY_EXECUTIVE
+  assignedAt      DateTime?
+  authorityRefNo  String?                        // Reference number from government authority
+  authoritySubAt  DateTime?
+  completedAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  document        Document @relation(fields: [documentId], references: [id])
+  assignedTo      User?    @relation(fields: [assignedToId], references: [id])
+  versions        DocumentVersion[]
+  notes           DocumentNote[]
+  timeline        DocumentTimeline[]
+
+  @@index([status])
+  @@index([assignedToId])
+}
+
+model DocumentVersion {
+  id              String   @id @default(uuid())
+  lifecycleId     String
+  version         Int      @default(1)
+  pdfFilePath     String?
+  docxFilePath    String?
+  formData        String?
+  changeSummary   String?
+  fileSize        Int      @default(0)
+  createdById     String?
+  createdAt       DateTime @default(now())
+
+  lifecycle       DocumentLifecycle @relation(fields: [lifecycleId], references: [id])
+  createdBy       User?             @relation(fields: [createdById], references: [id])
+
+  @@index([lifecycleId])
+  @@index([lifecycleId, version])
+}
+
+model DocumentNote {
+  id          String   @id @default(uuid())
+  lifecycleId String
+  note        String
+  isInternal  Boolean  @default(true)           // Internal notes never visible to customers
+  createdById String?
+  createdAt   DateTime @default(now())
+
+  lifecycle   DocumentLifecycle @relation(fields: [lifecycleId], references: [id])
+  createdBy   User?             @relation(fields: [createdById], references: [id])
+
+  @@index([lifecycleId])
+}
+
+model DocumentTimeline {
+  id          String   @id @default(uuid())
+  lifecycleId String
+  event       String                             // DRAFT_CREATED|PAYMENT_RECEIVED|PDF_GENERATED|STATUS_CHANGED|DOWNLOADED|etc.
+  description String?
+  metadata    String?                            // JSON for extra data
+  createdById String?
+  createdAt   DateTime @default(now())
+
+  lifecycle   DocumentLifecycle @relation(fields: [lifecycleId], references: [id])
+  createdBy   User?             @relation(fields: [createdById], references: [id])
+
+  @@index([lifecycleId])
+  @@index([lifecycleId, createdAt])
 }
 
 model RentAgreement {
