@@ -44,22 +44,6 @@ interface Activity {
   timestamp: string;
 }
 
-const revenueData = Array.from({ length: 30 }, (_, i) => ({
-  date: new Date(Date.now() - (29 - i) * 86400000).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }),
-  revenue: Math.floor(Math.random() * 50000 + 10000),
-  orders: Math.floor(Math.random() * 50 + 10),
-}));
-
-const topServices = [
-  { name: 'Legal Notice Drafting', revenue: 285000, orders: 142 },
-  { name: 'Agreement Review', revenue: 192000, orders: 98 },
-  { name: 'Property Documentation', revenue: 156000, orders: 67 },
-  { name: 'Contract Drafting', revenue: 134000, orders: 55 },
-  { name: 'Legal Consultation', revenue: 98000, orders: 120 },
-  { name: 'Trademark Registration', revenue: 72000, orders: 34 },
-  { name: 'Will & Trust Drafting', revenue: 65000, orders: 28 },
-];
-
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
@@ -67,6 +51,7 @@ export default function DashboardPage() {
   const [rentStats, setRentStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [dashData, setDashData] = useState<any>(null);
 
   useEffect(() => {
     fetchDashboardData();
@@ -83,6 +68,7 @@ export default function DashboardPage() {
       ]);
       if (dashRes?.data) {
         const d = dashRes.data;
+        setDashData(d);
         setStats({
           todayRevenue: d.today?.revenue || 0,
           monthlyRevenue: d.monthly?.revenue || 0,
@@ -231,36 +217,44 @@ export default function DashboardPage() {
           <h3 className="section-title mb-4">Revenue Overview (30 days)</h3>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={revenueData}>
-                <defs>
-                  <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="#94a3b8" />
-                <YAxis tick={{ fontSize: 11 }} stroke="#94a3b8" tickFormatter={(v) => `₹${(v/1000).toFixed(0)}k`} />
-                <Tooltip content={<CustomTooltip />} />
-                <Area type="monotone" dataKey="revenue" stroke="#6366f1" fill="url(#revGrad)" strokeWidth={2} name="Revenue" />
-              </AreaChart>
+              {dashData?.today?.revenue > 0 ? (
+                <AreaChart data={[{ date: 'Today', revenue: dashData.today.revenue, orders: dashData.today.orders }]}>
+                  <defs>
+                    <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="#94a3b8" />
+                  <YAxis tick={{ fontSize: 11 }} stroke="#94a3b8" tickFormatter={(v) => `₹${(v/1000).toFixed(0)}k`} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Area type="monotone" dataKey="revenue" stroke="#6366f1" fill="url(#revGrad)" strokeWidth={2} name="Revenue" />
+                </AreaChart>
+              ) : (
+                <div className="h-full flex items-center justify-center text-sm text-slate-400">No revenue data available yet.</div>
+              )}
             </ResponsiveContainer>
           </div>
         </div>
 
         <div className="card p-5">
           <h3 className="section-title mb-4">Top Services</h3>
-          <div className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={topServices} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} />
-                <XAxis type="number" tick={{ fontSize: 11 }} stroke="#94a3b8" tickFormatter={(v) => `₹${(v/1000).toFixed(0)}k`} />
-                <YAxis type="category" dataKey="name" tick={{ fontSize: 10 }} stroke="#94a3b8" width={100} />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="revenue" fill="#6366f1" radius={[0, 4, 4, 0]} name="Revenue" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          {dashData?.topServices?.length > 0 ? (
+            <div className="h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={dashData.topServices} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} />
+                  <XAxis type="number" tick={{ fontSize: 11 }} stroke="#94a3b8" tickFormatter={(v) => `₹${(v/1000).toFixed(0)}k`} />
+                  <YAxis type="category" dataKey="name" tick={{ fontSize: 10 }} stroke="#94a3b8" width={100} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Bar dataKey="revenue" fill="#6366f1" radius={[0, 4, 4, 0]} name="Revenue" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <div className="h-72 flex items-center justify-center text-sm text-slate-400">No data available yet.</div>
+          )}
         </div>
       </div>
 
