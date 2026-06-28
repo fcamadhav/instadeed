@@ -20,7 +20,7 @@ const services = [
       'Unregistered rental agreement for residential or commercial use. Fast & affordable.',
     icon: FileText,
     featured: true,
-    href: '/app/?doc=rent-agreement',
+    docKey: 'rent-agreement',
   },
   {
     name: 'Registered Rent Agreement',
@@ -29,7 +29,7 @@ const services = [
       'Notarized and registered rental agreement with full legal validity.',
     icon: Stamp,
     featured: false,
-    href: '/app/?doc=registered-rent',
+    docKey: 'registered-rent',
   },
   {
     name: 'Agreement to Sell / ATS',
@@ -38,7 +38,7 @@ const services = [
       'Legally enforceable promise to sell a property between buyer and seller.',
     icon: FileSignature,
     featured: false,
-    href: '/app/?doc=ats',
+    docKey: 'ats',
   },
   {
     name: 'Transfer Memorandum / TM',
@@ -47,7 +47,7 @@ const services = [
       'Official document recording the transfer of property ownership rights.',
     icon: Landmark,
     featured: false,
-    href: '/app/?doc=tm48',
+    docKey: 'tm48',
   },
   {
     name: 'Registry',
@@ -56,7 +56,7 @@ const services = [
       'Full property sale deed registration with the sub-registrar office.',
     icon: Building,
     featured: false,
-    href: '/app/?doc=gnida_registry',
+    docKey: 'gnida_registry',
   },
   {
     name: 'Permission to Mortgage / PTM',
@@ -65,7 +65,7 @@ const services = [
       'Authority permission document for mortgaging a property against a loan.',
     icon: ScrollText,
     featured: false,
-    href: '/app/?doc=gnida_ptm',
+    docKey: 'gnida_ptm',
   },
   {
     name: 'Mutation',
@@ -74,7 +74,7 @@ const services = [
       'Updating property title records with the local municipal authority.',
     icon: Map,
     featured: false,
-    href: '/app/?doc=mutation',
+    docKey: 'mutation',
   },
   {
     name: 'GNIDA 5-in-1 Package',
@@ -83,7 +83,7 @@ const services = [
       'Complete GNIDA document package: Registry, PTM, Mutation, ATS & Transfer Deed.',
     icon: FileText,
     featured: false,
-    href: '/app/?doc=gnida_package',
+    docKey: 'gnida_package',
   },
 ]
 
@@ -184,7 +184,7 @@ export default function Services() {
                 </p>
 
                 <button
-                  onClick={(e) => { e.stopPropagation(); setActiveDoc(service.href.replace('/app/?doc=', '')); }}
+                  onClick={(e) => { e.stopPropagation(); setActiveDoc(service.docKey); }}
                   className="relative mt-5 flex items-center gap-1 text-sm font-medium text-primary transition-all duration-200 hover:gap-2 cursor-pointer"
                 >
                   <span>Get Drafted</span>
