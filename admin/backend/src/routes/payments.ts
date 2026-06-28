@@ -113,7 +113,7 @@ router.get("/api/config", async (_req: Request, res: Response) => {
 // POST /create-order — creates a Razorpay order and returns order_id (used by old SPA)
 // Also POST /api/create-order — same handler for both paths
 function isPlaceholderKey(key: string): boolean {
-  return !key || key.includes("YOUR_KEY") || key.includes("test") || key.startsWith("rzp_test_");
+  return !key || key.includes("YOUR_KEY");
 }
 
 async function createMockOrder(data: any, res: Response) {
