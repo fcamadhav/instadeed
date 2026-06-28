@@ -4,11 +4,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
 import {
-  Scale, LayoutDashboard, Package, FolderTree, IndianRupee,
-  ShoppingCart, Users, CreditCard, Tag, Receipt, Bell,
-  Brain, Scan, GitBranch, Globe, Settings, ScrollText,
-  BarChart3, LogOut, X, ChevronDown, FileText, Calendar,
-  ClipboardList
+  Scale, LayoutDashboard, Package, IndianRupee, ShoppingCart, Users, CreditCard,
+  Tag, Receipt, Bell, Brain, Scan, GitBranch, Globe, Settings, ScrollText,
+  BarChart3, LogOut, X, ChevronDown, ChevronRight, FileText, Calendar,
+  ClipboardList, FolderTree, MoreHorizontal
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -22,36 +21,18 @@ interface NavItem {
   icon: any;
   href: string;
   badge?: string;
+  children?: NavItem[];
 }
 
-const navSections: { title?: string; items: NavItem[] }[] = [
+const navSections: { title: string; icon: any; items: NavItem[] }[] = [
   {
-    items: [{ label: 'Dashboard', icon: LayoutDashboard, href: '/admin/dashboard' }],
+    title: 'Dashboard',
+    icon: LayoutDashboard,
+    items: [{ label: 'Overview', icon: LayoutDashboard, href: '/admin/dashboard' }],
   },
   {
-    title: 'Management',
-    items: [
-      { label: 'Services', icon: Package, href: '/admin/services' },
-      { label: 'Categories', icon: FolderTree, href: '/admin/categories' },
-      { label: 'Pricing', icon: IndianRupee, href: '/admin/pricing' },
-    ],
-  },
-  {
-    title: 'Rent Agreements',
-    items: [
-      { label: 'Overview', icon: FileText, href: '/admin/rent-agreements' },
-      { label: 'Calendar', icon: Calendar, href: '/admin/rent-agreements/calendar' },
-      { label: 'Reports', icon: ClipboardList, href: '/admin/rent-agreements/reports' },
-    ],
-  },
-  {
-    title: 'Document Management',
-    items: [
-      { label: 'All Documents', icon: FileText, href: '/admin/documents-management' },
-    ],
-  },
-  {
-    title: 'Commerce',
+    title: 'Orders & Commerce',
+    icon: ShoppingCart,
     items: [
       { label: 'Orders', icon: ShoppingCart, href: '/admin/orders' },
       { label: 'Customers', icon: Users, href: '/admin/customers' },
@@ -61,26 +42,48 @@ const navSections: { title?: string; items: NavItem[] }[] = [
     ],
   },
   {
-    title: 'Communication',
+    title: 'Documents',
+    icon: FileText,
     items: [
-      { label: 'Notifications', icon: Bell, href: '/admin/notifications' },
+      { label: 'Rent Agreements', icon: FileText, href: '/admin/rent-agreements' },
+      { label: 'Calendar', icon: Calendar, href: '/admin/rent-agreements/calendar' },
+      { label: 'All Documents', icon: ClipboardList, href: '/admin/documents-management' },
     ],
   },
   {
-    title: 'Configuration',
+    title: 'Services',
+    icon: Package,
     items: [
-      { label: 'AI Settings', icon: Brain, href: '/admin/ai' },
-      { label: 'OCR Settings', icon: Scan, href: '/admin/ai' },
-      { label: 'Workflow', icon: GitBranch, href: '/admin/workflow' },
-      { label: 'Website', icon: Globe, href: '/admin/website' },
-      { label: 'Settings', icon: Settings, href: '/admin/settings' },
+      { label: 'Services', icon: Package, href: '/admin/services' },
+      { label: 'Categories', icon: FolderTree, href: '/admin/categories' },
+      { label: 'Pricing', icon: IndianRupee, href: '/admin/pricing' },
     ],
   },
   {
     title: 'Analytics',
+    icon: BarChart3,
     items: [
-      { label: 'Audit Logs', icon: ScrollText, href: '/admin/audit' },
       { label: 'Reports', icon: BarChart3, href: '/admin/reports' },
+      { label: 'Rent Reports', icon: ClipboardList, href: '/admin/rent-agreements/reports' },
+      { label: 'Audit Logs', icon: ScrollText, href: '/admin/audit' },
+    ],
+  },
+  {
+    title: 'Settings',
+    icon: Settings,
+    items: [
+      { label: 'General', icon: Settings, href: '/admin/settings' },
+      { label: 'Notifications', icon: Bell, href: '/admin/notifications' },
+      { label: 'Website', icon: Globe, href: '/admin/website' },
+    ],
+  },
+  {
+    title: 'Advanced',
+    icon: MoreHorizontal,
+    items: [
+      { label: 'Workflow', icon: GitBranch, href: '/admin/workflow' },
+      { label: 'AI Settings', icon: Brain, href: '/admin/ai' },
+      { label: 'OCR', icon: Scan, href: '/admin/ai' },
     ],
   },
 ];
@@ -88,11 +91,22 @@ const navSections: { title?: string; items: NavItem[] }[] = [
 export default function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+    'Orders & Commerce': true,
+    'Documents': true,
+    'Services': true,
+    'Analytics': true,
+    'Settings': true,
+    'Advanced': false,
+  });
 
   const isActive = (href: string) => {
     if (href === '/admin/dashboard') return pathname === href;
     return pathname.startsWith(href);
+  };
+
+  const isSectionActive = (items: NavItem[]) => {
+    return items.some(item => isActive(item.href) || item.children?.some(c => isActive(c.href)));
   };
 
   const toggleSection = (title: string) => {
@@ -106,77 +120,93 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
       )}
 
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 transform transition-transform duration-200 lg:translate-x-0 lg:static lg:z-auto ${
+        className={`fixed top-0 left-0 z-50 h-full w-60 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transform transition-transform duration-200 lg:translate-x-0 lg:static lg:z-auto ${
           open ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between px-4 h-16 border-b border-slate-200 dark:border-slate-700">
+          <div className="flex items-center justify-between px-4 h-14 border-b border-slate-200 dark:border-slate-800">
             <Link href="/admin/dashboard" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-admin-600 flex items-center justify-center">
-                <Scale className="w-5 h-5 text-white" />
+              <div className="w-7 h-7 rounded-lg bg-slate-900 dark:bg-white flex items-center justify-center">
+                <Scale className="w-4 h-4 text-white dark:text-slate-900" />
               </div>
-              <span className="font-bold text-slate-900 dark:text-white text-sm">INSTADEED</span>
+              <span className="font-bold text-slate-900 dark:text-white text-sm tracking-tight">INSTADEED</span>
             </Link>
-            <button onClick={onClose} className="lg:hidden text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">
-              <X className="w-5 h-5" />
+            <button onClick={onClose} className="lg:hidden text-slate-400 hover:text-slate-600 p-1">
+              <X className="w-4 h-4" />
             </button>
           </div>
 
-          <nav className="flex-1 overflow-y-auto scrollbar-thin px-3 py-4 space-y-1">
-            {navSections.map((section, idx) => (
-              <div key={idx}>
-                {section.title && (
+          <nav className="flex-1 overflow-y-auto scrollbar-thin px-2 py-3 space-y-1">
+            {navSections.map((section) => {
+              const isExpandable = section.items.length > 1;
+              const active = isSectionActive(section.items);
+              const expanded = expandedSections[section.title] !== false;
+
+              return (
+                <div key={section.title}>
                   <button
-                    onClick={() => toggleSection(section.title!)}
-                    className="flex items-center justify-between w-full px-2 py-2 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500"
+                    onClick={() => isExpandable && toggleSection(section.title)}
+                    className={`flex items-center w-full gap-2 px-2.5 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors ${
+                      active
+                        ? 'text-slate-900 dark:text-white'
+                        : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400'
+                    }`}
                   >
-                    {section.title}
-                    <ChevronDown className={`w-3 h-3 transition-transform ${expandedSections[section.title] ? 'rotate-180' : ''}`} />
+                    <section.icon className="w-3.5 h-3.5 flex-shrink-0" />
+                    <span className="flex-1 text-left">{section.title}</span>
+                    {isExpandable && (
+                      <ChevronRight className={`w-3 h-3 transition-transform ${expanded ? 'rotate-90' : ''}`} />
+                    )}
                   </button>
-                )}
-                <div className={`space-y-0.5 ${section.title && !expandedSections[section.title] ? 'hidden' : ''}`}>
-                  {section.items.map((item) => {
-                    const active = isActive(item.href);
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={onClose}
-                        className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                          active
-                            ? 'bg-admin-50 dark:bg-admin-900/30 text-admin-700 dark:text-admin-300 font-medium'
-                            : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50'
-                        }`}
-                      >
-                        <item.icon className="w-4 h-4 flex-shrink-0" />
-                        <span className="truncate">{item.label}</span>
-                        {item.badge && (
-                          <span className="ml-auto badge badge-blue text-[10px] px-1.5 py-0.5">{item.badge}</span>
-                        )}
-                      </Link>
-                    );
-                  })}
+
+                  {(!isExpandable || expanded) && (
+                    <div className="space-y-0.5 mt-0.5">
+                      {section.items.map((item) => {
+                        const active = isActive(item.href);
+                        return (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            onClick={onClose}
+                            className={`flex items-center gap-2.5 px-3 py-1.5 pl-8 rounded-lg text-sm transition-all ${
+                              active
+                                ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-medium'
+                                : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                            }`}
+                          >
+                            <item.icon className="w-3.5 h-3.5 flex-shrink-0" />
+                            <span className="truncate">{item.label}</span>
+                            {item.badge && (
+                              <span className="ml-auto text-[10px] bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded-full font-medium text-slate-600 dark:text-slate-400">
+                                {item.badge}
+                              </span>
+                            )}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </nav>
 
-          <div className="border-t border-slate-200 dark:border-slate-700 p-4">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-8 rounded-full bg-admin-600 flex items-center justify-center text-white text-sm font-medium">
+          <div className="border-t border-slate-200 dark:border-slate-800 p-3">
+            <div className="flex items-center gap-2.5 mb-2">
+              <div className="w-7 h-7 rounded-full bg-slate-800 dark:bg-white flex items-center justify-center text-white dark:text-slate-800 text-xs font-semibold">
                 {user?.name?.charAt(0)?.toUpperCase() || 'A'}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{user?.name || 'Admin'}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{user?.email || ''}</p>
+                <p className="text-xs font-medium text-slate-900 dark:text-white truncate">{user?.name || 'Admin'}</p>
+                <p className="text-[11px] text-slate-400 truncate">{user?.email || ''}</p>
               </div>
             </div>
             <button
               onClick={logout}
-              className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 transition-colors"
+              className="flex items-center gap-2 w-full px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-3.5 h-3.5" />
               Sign Out
             </button>
           </div>
