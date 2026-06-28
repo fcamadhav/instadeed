@@ -33,13 +33,13 @@ function numToWords(n: number): string {
   return result.trim();
 }
 
-function addHeaderFooter(doc: PDFDocument, title: string) {
+function addHeaderFooter(doc: typeof PDFDocument, title: string) {
   doc.fontSize(8).fillColor("#94a3b8").text("INSTADEED — Generated Document", 40, 20, { align: "center" });
   doc.fontSize(7).text(`Page ${doc.page}`, 40, doc.page.height - 30, { align: "center" });
 }
 
 // ============ RENT AGREEMENT ============
-function generateRentAgreement(doc: PDFDocument, data: Record<string, any>) {
+function generateRentAgreement(doc: typeof PDFDocument, data: Record<string, any>) {
   doc.fontSize(16).font("Helvetica-Bold").text("RENT AGREEMENT", { align: "center" });
   doc.moveDown(0.5);
 
@@ -141,7 +141,7 @@ function generateRentAgreement(doc: PDFDocument, data: Record<string, any>) {
 }
 
 // ============ AGREEMENT TO SELL ============
-function generateAts(doc: PDFDocument, data: Record<string, any>) {
+function generateAts(doc: typeof PDFDocument, data: Record<string, any>) {
   doc.fontSize(16).font("Helvetica-Bold").text("AGREEMENT TO SELL", { align: "center" });
   doc.moveDown();
   doc.fontSize(10).font("Helvetica");
@@ -159,7 +159,7 @@ function generateAts(doc: PDFDocument, data: Record<string, any>) {
 }
 
 // ============ GENERIC DOCUMENT ============
-function generateGeneric(doc: PDFDocument, data: Record<string, any>, docType: string) {
+function generateGeneric(doc: typeof PDFDocument, data: Record<string, any>, docType: string) {
   doc.fontSize(16).font("Helvetica-Bold").text(docType.replace(/_/g, " ").replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase()), { align: "center" });
   doc.moveDown(0.5);
   doc.fontSize(8).font("Helvetica-Oblique").text("Instadeed Legal Suite - Official Document Datasheet", { align: "center" });
@@ -184,7 +184,7 @@ function generateGeneric(doc: PDFDocument, data: Record<string, any>, docType: s
 }
 
 // ============ INVOICE ============
-function generateInvoice(doc: PDFDocument, data: Record<string, any>) {
+function generateInvoice(doc: typeof PDFDocument, data: Record<string, any>) {
   doc.fontSize(18).font("Helvetica-Bold").fillColor("#1E3FA0").text("INSTADEED");
   doc.fontSize(12).fillColor("#0F172A").text("TAX INVOICE", { align: "right" });
   doc.moveDown(0.5);
