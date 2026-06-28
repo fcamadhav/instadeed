@@ -148,18 +148,23 @@ async function createRealRazorpayOrder(gateway: any, data: any, res: Response) {
   const razorpayAmount = Math.round(data.amount * 100);
   const razorpayReceipt = data.receipt || `rcpt_${Date.now()}`;
   const auth = Buffer.from(`${gateway.apiKey}:${gateway.apiSecret}`).toString("base64");
-  const rzpResponse = await fetch("https://api.razorpay.com/v1/orders", {
-    method: "POST",
-    headers: { "Authorization": `Basic ${auth}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ amount: razorpayAmount, currency: data.currency || "INR", receipt: razorpayReceipt, notes: data.notes || {} }),
-  });
-  if (!rzpResponse.ok) {
-    const errText = await rzpResponse.text();
-    console.error("Razorpay API error, falling back to mock:", errText);
-    return createMockOrder(data, res);
-  }
-  const rzpOrder = (await rzpResponse.json()) as { id: string; amount: number; currency: string };
-  let genericService = await prisma.service.findFirst({ where: { slug: data.service_type?.toLowerCase() || "rent-agreement" } });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5000);
+  try {
+    const rzpResponse = await fetch("https://api.razorpay.com/v1/orders", {
+      method: "POST",
+      headers: { "Authorization": `Basic ${auth}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: razorpayAmount, currency: data.currency || "INR", receipt: razorpayReceipt, notes: data.notes || {} }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    if (!rzpResponse.ok) {
+      const errText = await rzpResponse.text();
+      console.error("Razorpay API error, falling back to mock:", errText);
+      return createMockOrder(data, res);
+    }
+    const rzpOrder = (await rzpResponse.json()) as { id: string; amount: number; currency: string };
+    let genericService = await prisma.service.findFirst({ where: { slug: data.service_type?.toLowerCase() || "rent-agreement" } });
   if (!genericService) genericService = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
   if (!genericService) {
     const cat = await prisma.category.findFirst();
@@ -184,6 +189,11 @@ async function createRealRazorpayOrder(gateway: any, data: any, res: Response) {
     },
   });
   res.json({ order_id: rzpOrder.id, amount: rzpOrder.amount, currency: rzpOrder.currency });
+  } catch (err) {
+    clearTimeout(timeout);
+    console.error("Razorpay API call failed:", err);
+    return createMockOrder(data, res);
+  }
 }
 
 const createOrderHandler = async (req: Request, res: Response) => {
