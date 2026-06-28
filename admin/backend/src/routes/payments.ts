@@ -4,6 +4,7 @@ import crypto from "crypto";
 import { prisma } from "../lib/prisma";
 import { requireAuth, requireRole } from "../middleware/auth";
 import { logActionSync } from "../services/audit";
+import { generateDocument } from "../services/pdf-generator";
 
 const router = Router();
 
@@ -128,6 +129,7 @@ async function createMockOrder(data: any, res: Response) {
   await prisma.order.create({
     data: {
       orderNumber: mockOrderId,
+      paymentId: mockOrderId,
       customerName: data.customer_name || "B2C Client",
       customerPhone: data.customer_phone || "0000000000",
       customerEmail: data.customer_email || "b2c@client.com",
@@ -212,6 +214,35 @@ const createOrderHandler = async (req: Request, res: Response) => {
 router.post("/create-order", createOrderHandler);
 router.post("/api/create-order", createOrderHandler);
 
+// Generate PDF after successful payment
+async function generatePdfAfterPayment(orderId: string) {
+  try {
+    const order = await prisma.order.findFirst({ where: { paymentId: orderId } });
+    if (!order || !order.formData) return;
+    const parsed = JSON.parse(order.formData as string);
+    const docType = parsed.service_type || "document";
+    const docNumber = `DOC-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString("hex").toUpperCase()}`;
+    const { pdfPath } = await generateDocument(parsed.form_data || {}, docType, order.id, docNumber);
+    let svc = await prisma.service.findFirst({ where: { slug: docType?.toLowerCase() || "rent-agreement" } });
+    if (!svc) svc = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
+    await prisma.document.create({
+      data: {
+        documentNumber: docNumber,
+        orderId: order.id,
+        customerId: order.customerId || "00000000-0000-0000-0000-000000000000",
+        serviceId: svc?.id || "00000000-0000-0000-0000-000000000000",
+        documentType: docType,
+        pdfFilePath: pdfPath,
+        formData: JSON.stringify(parsed.form_data || {}),
+        status: "COMPLETED",
+      },
+    });
+    console.log(`[PDF] Generated for order ${order.id}: ${pdfPath}`);
+  } catch (err) {
+    console.error("[PDF] Generation failed (non-fatal):", err);
+  }
+}
+
 // POST /verify-payment — verifies Razorpay signature
 // Also POST /api/verify-payment
 const verifyPaymentHandler = async (req: Request, res: Response) => {
@@ -220,11 +251,11 @@ const verifyPaymentHandler = async (req: Request, res: Response) => {
 
     // Mock orders — skip verification
     if (data.razorpay_order_id.startsWith("MOCK_ORD_")) {
-      // Update order status
       await prisma.order.updateMany({
         where: { paymentId: data.razorpay_order_id },
         data: { paymentStatus: "PAID", status: "COMPLETED" },
       });
+      await generatePdfAfterPayment(data.razorpay_order_id);
       res.json({ status: "success", message: "Payment verified" });
       return;
     }
@@ -250,6 +281,8 @@ const verifyPaymentHandler = async (req: Request, res: Response) => {
       where: { paymentId: data.razorpay_order_id },
       data: { paymentStatus: "PAID", status: "COMPLETED" },
     });
+
+    await generatePdfAfterPayment(data.razorpay_order_id);
 
     res.json({ status: "success", message: "Payment verified successfully" });
   } catch (error) {
@@ -302,8 +335,9 @@ router.post("/api/admin/payments/webhook", async (req: Request, res: Response) =
       if (orderId) {
         await prisma.order.updateMany({
           where: { paymentId: orderId },
-          data: { paymentStatus: "PAID", status: "COMPLETED", paymentId: req.body.payload?.payment?.entity?.id },
+          data: { paymentStatus: "PAID", status: "COMPLETED" },
         });
+        await generatePdfAfterPayment(orderId);
       }
     }
     res.json({ success: true });
