@@ -47,11 +47,11 @@ export default function OrdersPage() {
       if (filters.status) params.set('status', filters.status);
       if (filters.paymentStatus) params.set('paymentStatus', filters.paymentStatus);
       if (filters.search) params.set('search', filters.search);
-      const res = await apiGet<{ data: { orders: Order[]; page: number; totalPages: number; total: number } }>(`/admin/orders?${params}`);
+      const res = await apiGet<{ data: { orders: Order[]; pagination: { page: number; totalPages: number; total: number } } }>(`/admin/orders?${params}`);
       if (res.data) {
         setOrders(res.data.orders || []);
-        setTotalPages(res.data.totalPages || 1);
-        setTotal(res.data.total || 0);
+        setTotalPages(res.data.pagination?.totalPages || 1);
+        setTotal(res.data.pagination?.total || 0);
       }
     } catch (err: any) { setError(err.message); } finally { setLoading(false); }
   };

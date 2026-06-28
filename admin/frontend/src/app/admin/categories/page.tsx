@@ -41,11 +41,11 @@ export default function CategoriesPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await apiGet<{ data: { categories: Category[]; page: number; totalPages: number; total: number } }>(`/admin/categories?page=${page}&limit=10`);
+      const res = await apiGet<{ data: { categories: Category[]; pagination: { page: number; totalPages: number; total: number } } }>(`/admin/categories?page=${page}&limit=10`);
       if (res.data) {
         setCategories(res.data.categories || []);
-        setTotalPages(res.data.totalPages || 1);
-        setTotal(res.data.total || 0);
+        setTotalPages(res.data.pagination?.totalPages || 1);
+        setTotal(res.data.pagination?.total || 0);
       }
     } catch (err: any) {
       setError(err.message);

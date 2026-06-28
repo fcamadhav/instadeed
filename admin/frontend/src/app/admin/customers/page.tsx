@@ -36,11 +36,11 @@ export default function CustomersPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await apiGet<{ data: { customers: Customer[]; page: number; totalPages: number; total: number } }>(`/admin/customers?page=${page}&limit=10`);
+      const res = await apiGet<{ data: { customers: Customer[]; pagination: { page: number; totalPages: number; total: number } } }>(`/admin/customers?page=${page}&limit=10`);
       if (res.data) {
         setCustomers(res.data.customers || []);
-        setTotalPages(res.data.totalPages || 1);
-        setTotal(res.data.total || 0);
+        setTotalPages(res.data.pagination?.totalPages || 1);
+        setTotal(res.data.pagination?.total || 0);
       }
     } catch (err: any) { setError(err.message); } finally { setLoading(false); }
   };
