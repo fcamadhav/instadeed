@@ -28,6 +28,7 @@ import dashboardRoutes from "./routes/dashboard";
 import documentRoutes from "./routes/documents";
 import rentAgreementRoutes from "./routes/rent-agreements";
 import documentsManagementRoutes from "./routes/documents-management";
+import applicationDocumentsRoutes from "./routes/application-documents";
 
 const app = express();
 const PORT = parseInt(process.env.PORT || "4000", 10);
@@ -65,6 +66,7 @@ app.use(dashboardRoutes);
 app.use(documentRoutes);
 app.use(rentAgreementRoutes);
 app.use(documentsManagementRoutes);
+app.use(applicationDocumentsRoutes);
 
 app.get("/api/health", async (_req: Request, res: Response) => {
   let dbOk = false;

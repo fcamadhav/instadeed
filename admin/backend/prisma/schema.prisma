@@ -628,3 +628,18 @@ model RentAgreementTimeline {
 
   @@index([agreementId])
 }
+
+model ApplicationDocument {
+  id              String   @id @default(uuid())
+  applicationId   String
+  documentType    String
+  fileName        String
+  fileUrl         String
+  mimeType        String
+  size            Int
+  uploadedAt      DateTime @default(now())
+  createdAt       DateTime @default(now())
+
+  @@index([applicationId])
+  @@index([documentType])
+}
