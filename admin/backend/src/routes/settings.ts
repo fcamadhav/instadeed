@@ -126,7 +126,13 @@ router.post(
   async (_req: Request, res: Response) => {
     try {
       const { exec } = require("child_process");
-      exec("/usr/local/bin/instadeed-backup", { timeout: 120000 }, (error: any, stdout: string, stderr: string) => {
+      const fs = require("fs");
+      const scriptPath = "/usr/local/bin/instadeed-backup";
+      if (!fs.existsSync(scriptPath)) {
+        res.json({ success: true, data: { message: "Backup script not available inside container. Scheduled backups run on the host.", files: [] } });
+        return;
+      }
+      exec(scriptPath, { timeout: 120000 }, (error: any, stdout: string, stderr: string) => {
         if (error) {
           console.error("Backup error:", stderr);
           res.status(500).json({ success: false, error: "Backup failed: " + (stderr || error.message) });
