@@ -48,6 +48,7 @@ const navSections: { title: string; icon: any; items: NavItem[] }[] = [
       { label: 'Rent Agreements', icon: FileText, href: '/admin/rent-agreements' },
       { label: 'Calendar', icon: Calendar, href: '/admin/rent-agreements/calendar' },
       { label: 'All Documents', icon: ClipboardList, href: '/admin/documents-management' },
+      { label: 'Customer Uploads', icon: FileText, href: '/admin/applications' },
     ],
   },
   {

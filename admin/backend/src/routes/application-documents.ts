@@ -137,5 +137,38 @@ router.get("/api/applications/documents/required/:type", (_req: Request, res: Re
   res.json({ success: true, data: required });
 });
 
+// Download/Preview a single application document
+router.get("/api/applications/documents/:id/file", async (req: Request, res: Response) => {
+  try {
+    const doc = await prisma.applicationDocument.findUnique({ where: { id: req.params.id } });
+    if (!doc || !fs.existsSync(doc.fileUrl)) {
+      res.status(404).json({ success: false, error: "File not found" });
+      return;
+    }
+    res.download(doc.fileUrl, doc.fileName);
+  } catch (error) {
+    console.error("Download doc error:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
+// List ALL application documents (for admin panel)
+router.get("/api/admin/applications/documents", async (_req: Request, res: Response) => {
+  try {
+    const docs = await prisma.applicationDocument.findMany({
+      orderBy: { uploadedAt: "desc" },
+    });
+    // Group by applicationId
+    const grouped: Record<string, any[]> = {};
+    docs.forEach(d => {
+      if (!grouped[d.applicationId]) grouped[d.applicationId] = [];
+      grouped[d.applicationId].push(d);
+    });
+    res.json({ success: true, data: { documents: docs, grouped, total: docs.length } });
+  } catch (error) {
+    console.error("List all docs error:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
 export default router;
-export { DOCUMENT_TYPES, ALLOWED_MIMES };
