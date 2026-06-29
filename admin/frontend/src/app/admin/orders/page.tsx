@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import {
   Search, Filter, ChevronDown, ChevronUp, Clock, CheckCircle,
   XCircle, AlertCircle, MessageSquare, RotateCcw, User, FileText,
-  IndianRupee, CreditCard, Loader2
+  IndianRupee, CreditCard, Loader2, Download
 } from 'lucide-react';
 
 interface Order {
@@ -177,6 +177,14 @@ export default function OrdersPage() {
                 <div>
                   <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Notes</h4>
                   <p className="text-sm text-slate-600 dark:text-slate-400">{selectedOrder.notes || 'No notes'}</p>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Documents</h4>
+                  <div className="space-y-2">
+                    <a href={`/api/admin/documents/`} target="_blank" className="btn-secondary btn-sm inline-flex"><Download className="w-3.5 h-3.5" /> Download Generated PDF</a>
+                    <a href={`/admin/applications`} className="btn-secondary btn-sm inline-flex"><FileText className="w-3.5 h-3.5" /> View Uploaded Docs</a>
+                  </div>
                 </div>
 
                 <div>

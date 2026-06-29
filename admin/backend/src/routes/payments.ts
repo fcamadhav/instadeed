@@ -227,14 +227,17 @@ router.post("/api/create-order", createOrderHandler);
 // Generate PDF after successful payment
 async function generatePdfAfterPayment(orderId: string) {
   try {
-    const order = await prisma.order.findFirst({ where: { paymentId: orderId } });
-    if (!order || !order.formData) return;
+    const order = await prisma.order.findFirst({
+      where: { OR: [{ paymentId: orderId }, { orderNumber: orderId }] },
+    });
+    if (!order || !order.formData) { console.log("[PDF] No order or formData found for:", orderId); return; }
     const parsed = JSON.parse(order.formData as string);
     const docType = parsed.service_type || "document";
     const docNumber = `DOC-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString("hex").toUpperCase()}`;
     const { pdfPath } = await generateDocument(parsed.form_data || {}, docType, order.id, docNumber);
     let svc = await prisma.service.findFirst({ where: { slug: docType?.toLowerCase() || "rent-agreement" } });
     if (!svc) svc = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
+    if (!svc) svc = await prisma.service.findFirst({});
     await prisma.document.create({
       data: {
         documentNumber: docNumber,
