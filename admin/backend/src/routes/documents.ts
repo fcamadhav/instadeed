@@ -7,7 +7,7 @@ import path from "path";
 import fs from "fs";
 
 const router = Router();
-const STORAGE_ROOT = path.resolve(path.join(__dirname, "..", "..", "..", "storage", "documents"));
+const STORAGE_ROOT = path.resolve(path.join(__dirname, "..", "..", "storage", "documents"));
 
 function isPathSafe(targetPath: string): boolean {
   if (!targetPath) return false;
