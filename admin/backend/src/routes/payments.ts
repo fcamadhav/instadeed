@@ -241,14 +241,14 @@ async function generatePdfAfterPayment(orderId: string) {
     if (!svc) svc = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
     if (!svc) svc = await prisma.service.findFirst({});
     
-    let customerId = order.customerId;
+    let customerId: string | null = order.customerId;
     if (!customerId) {
       const admin = await prisma.user.findFirst({ where: { role: "SUPER_ADMIN" } });
-      customerId = admin?.id;
+      customerId = admin?.id || null;
     }
     if (!customerId) {
       const anyUser = await prisma.user.findFirst({});
-      customerId = anyUser?.id;
+      customerId = anyUser?.id || null;
     }
     
     await prisma.document.create({
