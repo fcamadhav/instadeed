@@ -707,15 +707,16 @@ body.docupload-page .checkout-modal{display:none!important}
     }catch(e){errEl.style.display='block';errEl.textContent='Error: '+e.message;btn.textContent='Retry →';btn.disabled=false;}
   };
 
+  // Fetch interceptor for doc-upload services
+  var origFetch=window.fetch;
+  var DOC_SERVICES=['MUTATION','GNIDA_PTM','GNIDA_PACKAGE'];
+
   // Mark page for doc-upload services
   DOC_SERVICES.forEach(function(svc){
     var slug=svc.toLowerCase().replace(/_/g,'-');
     if(window.location.search.indexOf('doc='+slug)>-1){document.body.classList.add('docupload-page');}
   });
 
-  // Fetch interceptor for doc-upload services
-  var origFetch=window.fetch;
-  var DOC_SERVICES=['MUTATION','GNIDA_PTM','GNIDA_PACKAGE'];
   window.fetch=function(url,opts){
     if(typeof url==='string' && url.indexOf('/create-order')>-1 && opts && opts.body && !window._docuploadSkip){
       try{var b=JSON.parse(opts.body);if(DOC_SERVICES.indexOf(b.service_type)>-1){currentSvc=b.service_type;appId=b.service_type.toLowerCase()+'-'+Math.random().toString(36).slice(2,10);localStorage.setItem('docupload_form',JSON.stringify(b));document.getElementById('docupload-title').textContent=SVCS[b.service_type]?SVCS[b.service_type].title:'Upload Required Documents';renderDocs();document.getElementById('docupload-overlay').classList.add('show');return Promise.reject('docupload-intercept');}}catch(e){}}
