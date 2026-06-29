@@ -625,6 +625,7 @@ body.docupload-page .checkout-modal{display:none!important}
     }).catch(function(){alert('Upload failed')}).finally(function(){render()});
   }
   function duremove(docType,id){fetch('/api/applications/documents/'+id,{method:'DELETE'}).then(function(){delete uploaded[docType];render()});}
+  window.dup=dup;window.duremove=duremove;
 
   function render(){
     var docs=SVCS[curSvc]?SVCS[curSvc].required:{},keys=Object.keys(docs),done=keys.filter(function(k){return !!uploaded[k]}).length;
