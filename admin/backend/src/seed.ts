@@ -20,7 +20,8 @@ async function main() {
   });
 
   if (!existingAdmin) {
-    const passwordHash = await bcrypt.hash("admin123", 12);
+    const adminPass = process.env.ADMIN_SEED_PASSWORD || process.env.ADMIN_PASSWORD || "admin123";
+    const passwordHash = await bcrypt.hash(adminPass, 12);
     await prisma.user.create({
       data: {
         email: adminEmail,
@@ -31,7 +32,11 @@ async function main() {
         isActive: true,
       },
     });
-    console.log("  ✔ Super admin created (admin@instadeed.local / admin123)");
+    if (!process.env.ADMIN_SEED_PASSWORD && !process.env.ADMIN_PASSWORD) {
+      console.log("  ⚠ Super admin created with default password. Set ADMIN_SEED_PASSWORD env var in production.");
+    } else {
+      console.log("  ✔ Super admin created");
+    }
   } else {
     console.log("  – Super admin already exists, skipping");
   }

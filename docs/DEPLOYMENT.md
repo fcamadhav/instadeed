@@ -1,78 +1,80 @@
 # Deployment Guide
 
-## Prerequisites
+## Current Architecture
 
-- Python 3.11+
-- Node.js 20+ (for frontend builds)
-- A Render account (or any Docker host)
-- A Hostinger account (for custom domain)
+- **VM**: GCP Compute Engine e2-small (us-central1-a, 2GB RAM + 2GB swap)
+- **HTTPS**: Terminated at Cloudflare (not on VM)
+- **Reverse Proxy**: nginx on port 80 → routes to Docker containers
+- **Database**: SQLite (file on Docker volume, no separate DB process)
+
+## Services
+
+| Service | Container | Port | Route |
+|---------|-----------|------|-------|
+| Admin API | `admin_backend_1` | 4000 | `/api/` |
+| Admin Panel | `admin_frontend_1` | 3000 | `/admin/` |
+| Landing Page | `landing_frontend_1` | 5000 | `/` |
+| Customer SPA | nginx static file | — | `/app/` |
 
 ## Environment Variables
 
-Copy `.env.example` to `.env` and set all required values:
+**Required for backend:**
+- `DATABASE_URL` — e.g. `file:./data/instadeed_admin.db`
+- `JWT_SECRET` — 32+ random characters
+- `NODE_ENV` — `production`
+
+**Required for payments (production):**
+- Set real Razorpay keys via admin panel at `/admin/payments`
+- Without real keys, payment endpoints return 503 (fail-closed)
+
+## Deploying to GCP VM
 
 ```bash
-cp .env.example .env
-# Edit .env with your production values
+# SSH into the VM
+gcloud compute ssh instadeed-server --zone us-central1-a
+
+# Pull latest code and rebuild
+cd /app/admin
+git pull origin master
+docker-compose up -d --build
 ```
 
-**REQUIRED:**
-- `JWT_SECRET` - Long random string (min 32 chars)
-- `RAZORPAY_KEY_ID` - Live Razorpay key ID
-- `RAZORPAY_KEY_SECRET` - Live Razorpay key secret
-
-**RECOMMENDED:**
-- `ADMIN_EMAIL` - Admin login email
-- `ADMIN_PASSWORD` - Strong admin password
-- `LEEGALITY_AUTH_TOKEN` - Leegality API token
-- `ALLOWED_ORIGINS` - Comma-separated allowed CORS origins
-
-## Deploying to Render (Current)
-
-1. Connect your GitHub repository to Render
-2. Set the build command: `pip install -r requirements.txt && python build.py`
-3. Set the start command: `uvicorn server:app --host 0.0.0.0 --port 8000 --proxy-headers`
-4. Add all environment variables in Render dashboard
-5. Enable Auto-Deploy from GitHub
-
-## Deploying with Docker
+## First-Time Setup
 
 ```bash
-docker compose build
-docker compose up -d
-docker compose logs -f
+# Clone repo
+git clone https://github.com/fcamadhav/instadeed.git /app
+cd /app/admin
+
+# Build and start
+docker-compose build
+docker-compose up -d
+
+# Admin login
+# Email: admin@instadeed.local
+# Password: admin123  (change immediately in admin panel)
 ```
 
-## Deploying Manually
+## Nginx Configuration
 
-```bash
-# Install dependencies
-npm install
-pip install -r requirements.txt
+The nginx config lives at `/etc/nginx/sites-available/default` and routes:
+- `/` → landing_frontend_1:5000
+- `/admin/` → admin_frontend_1:3000
+- `/app/` → static file: `/var/www/draft/index.html`
+- `/api/` → admin_backend_1:4000
 
-# Build frontend
-python build.py
+## Backups
 
-# Run server
-python server.py
-# Or with uvicorn directly:
-uvicorn server:app --host 0.0.0.0 --port 8000
-```
+Automated via `backup.sh` — daily cron at 3 AM IST:
+- DB + document files compressed
+- 7 daily + 4 weekly rotation
+- Off-site upload to GCS via gsutil
+
+Manual trigger available in Admin Panel → Settings → Backups.
 
 ## Health Check
 
-After deployment, verify:
 ```bash
-curl https://instadeed.io/api/health
-# → {"status":"ok","version":"2.0.0","timestamp":"..."}
+curl https://instadeed.io/api/config
+# → {"razorpay_key":"...","version":"2.0.0","app_name":"INSTADEED"}
 ```
-
-## Database Backups
-
-SQLite database is stored in `madhav_crm.db`. Back up regularly:
-
-```bash
-cp madhav_crm.db backups/madhav_crm_$(date +%Y%m%d).db
-```
-
-For PostgreSQL (future), set `DATABASE_URL` env var.

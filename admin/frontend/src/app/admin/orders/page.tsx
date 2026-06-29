@@ -182,8 +182,8 @@ export default function OrdersPage() {
                 <div>
                   <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Documents</h4>
                   <div className="space-y-2">
-                    <a href={`/api/admin/documents/`} target="_blank" className="btn-secondary btn-sm inline-flex"><Download className="w-3.5 h-3.5" /> Download Generated PDF</a>
-                    <a href={`/admin/applications`} className="btn-secondary btn-sm inline-flex"><FileText className="w-3.5 h-3.5" /> View Uploaded Docs</a>
+                    <a href="/admin/downloads" target="_blank" className="btn-secondary btn-sm inline-flex"><Download className="w-3.5 h-3.5" /> Download Generated PDF</a>
+                    <a href="/admin/applications" className="btn-secondary btn-sm inline-flex"><FileText className="w-3.5 h-3.5" /> View Uploaded Docs</a>
                   </div>
                 </div>
 

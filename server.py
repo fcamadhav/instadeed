@@ -651,16 +651,15 @@ async def send_otp(request: Request, body: SendOTPRequest):
 async def verify_otp(request: Request, body: VerifyOTPRequest):
     is_master = False
     if body.email not in otp_store:
-            raise HTTPException(status_code=400, detail="No OTP requested for this email")
-        record = otp_store[body.email]
-        if datetime.datetime.now() > record["expires"]:
-            del otp_store[body.email]
-            raise HTTPException(status_code=400, detail="OTP expired")
-        if record["otp"] != body.otp:
-            raise HTTPException(status_code=400, detail="Invalid OTP")
+        raise HTTPException(status_code=400, detail="No OTP requested for this email")
+    record = otp_store[body.email]
+    if datetime.datetime.now() > record["expires"]:
         del otp_store[body.email]
-    else:
-        otp_store.pop(body.email, None)
+        raise HTTPException(status_code=400, detail="OTP expired")
+    if record["otp"] != body.otp:
+        del otp_store[body.email]
+        raise HTTPException(status_code=400, detail="Invalid OTP")
+    del otp_store[body.email]
     conn = sqlite3.connect(DATABASE_FILE)
     cursor = conn.cursor()
     cursor.execute("SELECT id, name, email, role FROM users WHERE email = ?", (body.email,))

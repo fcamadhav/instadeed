@@ -3,6 +3,9 @@ import { z } from "zod";
 import { prisma } from "../lib/prisma";
 import { requireAuth, requireRole } from "../middleware/auth";
 import { logActionSync } from "../services/audit";
+import { generateDocument } from "../services/pdf-generator";
+import path from "path";
+import fs from "fs";
 
 const router = Router();
 
@@ -152,14 +155,33 @@ router.get(
         res.status(403).json({ success: false, error: "Access denied" });
         return;
       }
-      res.json({
-        success: true,
-        data: {
-          message: "Invoice PDF generation placeholder",
-          invoice,
-          downloadUrl: invoice.pdfUrl || null,
-        },
-      });
+      // Generate PDF if not yet generated
+      let pdfUrl = invoice.pdfUrl;
+      if (!pdfUrl) {
+        const pdfDir = path.resolve(__dirname, "..", "..", "storage", "invoices");
+        if (!fs.existsSync(pdfDir)) fs.mkdirSync(pdfDir, { recursive: true });
+        const pdfName = `${invoice.invoiceNumber || `INV-${invoice.id}`}.pdf`;
+        const pdfPath = path.join(pdfDir, pdfName);
+        const payload = {
+          invoiceNumber: invoice.invoiceNumber,
+          customerName: invoice.order.customer?.name || invoice.order.customerName || "",
+          customerEmail: invoice.order.customer?.email || "",
+          serviceName: invoice.order.service?.name || "",
+          orderNumber: invoice.order.orderNumber,
+          amount: invoice.order.total,
+          taxAmount: invoice.gstAmount || 0,
+          totalAmount: invoice.total || invoice.order.total,
+          createdAt: invoice.createdAt?.toISOString(),
+        };
+        await generateDocument(payload, "invoice", invoice.order.id, pdfName);
+        pdfUrl = pdfPath;
+        await prisma.invoice.update({ where: { id: invoice.id }, data: { pdfUrl: pdfPath } });
+      }
+      if (pdfUrl && fs.existsSync(pdfUrl)) {
+        res.download(pdfUrl, path.basename(pdfUrl));
+        return;
+      }
+      res.status(404).json({ success: false, error: "Invoice PDF not available" });
     } catch (error) {
       console.error("Download invoice error:", error);
       res.status(500).json({ success: false, error: "Internal server error" });

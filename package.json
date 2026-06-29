@@ -1,16 +1,12 @@
 {
-  "name": "madhav-legal-drafter",
-  "version": "1.0.0",
-  "description": "Madhav Legal Drafting Hub",
-  "main": "server.py",
+  "name": "instadeed",
+  "version": "2.0.0",
+  "description": "Instadeed Legal Drafting Platform",
+  "private": true,
   "scripts": {
-    "build": "python build.py"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "@babel/cli": "^7.23.0",
-    "@babel/core": "^7.23.0",
-    "@babel/preset-react": "^7.22.15",
-    "terser": "^5.24.0"
+    "build:admin-backend": "cd admin/backend && npm ci && npx prisma generate && npm run build",
+    "build:admin-frontend": "cd admin/frontend && npm ci && npm run build",
+    "build:landing": "cd landing && npm ci && npm run build",
+    "build": "npm run build:admin-backend && npm run build:admin-frontend && npm run build:landing"
   }
 }

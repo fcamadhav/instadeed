@@ -3,7 +3,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { prisma } from "../lib/prisma";
-import { requireAuth } from "../middleware/auth";
+import { requireAuth, requireRole } from "../middleware/auth";
 
 const router = Router();
 
@@ -105,7 +105,7 @@ router.get("/api/applications/:id/documents", async (req: Request, res: Response
 });
 
 // Delete a document
-router.delete("/api/applications/documents/:id", async (req: Request, res: Response) => {
+router.delete("/api/applications/documents/:id", requireAuth, async (req: Request, res: Response) => {
   try {
     const doc = await prisma.applicationDocument.findUnique({ where: { id: req.params.id } });
     if (!doc) {
@@ -154,7 +154,7 @@ router.get("/api/applications/documents/:id/file", requireAuth, async (req: Requ
 });
 
 // List ALL application documents (for admin panel)
-router.get("/api/admin/applications/documents", async (_req: Request, res: Response) => {
+router.get("/api/admin/applications/documents", requireAuth, async (_req: Request, res: Response) => {
   try {
     const docs = await prisma.applicationDocument.findMany({
       orderBy: { uploadedAt: "desc" },

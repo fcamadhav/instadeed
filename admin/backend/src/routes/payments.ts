@@ -5,6 +5,7 @@ import { prisma } from "../lib/prisma";
 import { requireAuth, requireRole } from "../middleware/auth";
 import { logActionSync } from "../services/audit";
 import { generateDocument } from "../services/pdf-generator";
+import { encrypt, decrypt } from "../lib/crypto";
 
 const router = Router();
 
@@ -71,11 +72,16 @@ router.put(
       const gateway = req.params.gateway.toUpperCase();
       const old = await prisma.paymentGatewayConfig.findUnique({ where: { gateway: gateway as never } });
 
+      const updateData: any = { ...data };
+      if (data.apiKey) updateData.apiKey = encrypt(data.apiKey);
+      if (data.apiSecret) updateData.apiSecret = encrypt(data.apiSecret);
+      if (data.webhookSecret) updateData.webhookSecret = encrypt(data.webhookSecret);
+
       let config;
       if (old) {
-        config = await prisma.paymentGatewayConfig.update({ where: { gateway: gateway as never }, data });
+        config = await prisma.paymentGatewayConfig.update({ where: { gateway: gateway as never }, data: updateData });
       } else {
-        config = await prisma.paymentGatewayConfig.create({ data: { gateway: gateway as never, ...data } });
+        config = await prisma.paymentGatewayConfig.create({ data: { gateway: gateway as never, ...updateData } });
       }
 
       await logActionSync(req.user!.userId, "UPDATE", "payment_gateways", gateway, old as unknown as Record<string, unknown> || undefined, data as unknown as Record<string, unknown>, req.ip);
@@ -93,13 +99,26 @@ router.put(
 
 // ============ PUBLIC PAYMENT ENDPOINTS (used by the old SPA at /app/) ============
 
+function getDecryptedGateway(gateway: any): { apiKey: string; apiSecret: string; webhookSecret: string } | null {
+  if (!gateway || !gateway.apiKey || !gateway.apiSecret) return null;
+  try {
+    return {
+      apiKey: process.env.NODE_ENV === "production" ? decrypt(gateway.apiKey) : gateway.apiKey,
+      apiSecret: process.env.NODE_ENV === "production" ? decrypt(gateway.apiSecret) : gateway.apiSecret,
+      webhookSecret: gateway.webhookSecret ? (process.env.NODE_ENV === "production" ? decrypt(gateway.webhookSecret) : gateway.webhookSecret) : "",
+    };
+  } catch {
+    return null;
+  }
+}
+
 // GET /api/config — returns Razorpay public key for frontend
 router.get("/api/config", async (_req: Request, res: Response) => {
   try {
-    const gateway = await prisma.paymentGatewayConfig.findFirst({ where: { gateway: "RAZORPAY" } });
-    const razorpayKey = gateway?.apiKey || "";
+    const gateway = await prisma.paymentGatewayConfig.findFirst({ where: { gateway: "RAZORPAY", isEnabled: true } });
+    const keys = getDecryptedGateway(gateway);
+    const razorpayKey = keys?.apiKey || "";
     if (!razorpayKey) {
-      // No Razorpay configured — return a placeholder so frontend shows mock payment path
       res.json({ razorpay_key: "", version: "2.0.0", app_name: "INSTADEED" });
       return;
     }
@@ -117,6 +136,10 @@ function isPlaceholderKey(key: string): boolean {
 }
 
 async function createMockOrder(data: any, res: Response) {
+  if (process.env.NODE_ENV === "production") {
+    res.status(503).json({ success: false, error: "Payment gateway is not available. Please try again later." });
+    return;
+  }
   const mockOrderId = `MOCK_ORD_${crypto.randomBytes(4).toString("hex").toUpperCase()}`;
   let svc = await prisma.service.findFirst({ where: { slug: data.service_type?.toLowerCase() || "rent-agreement" } });
   if (!svc) svc = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
@@ -145,9 +168,14 @@ async function createMockOrder(data: any, res: Response) {
 }
 
 async function createRealRazorpayOrder(gateway: any, data: any, res: Response) {
+  const keys = getDecryptedGateway(gateway);
+  if (!keys) {
+    res.status(503).json({ success: false, error: "Payment gateway keys could not be decrypted" });
+    return;
+  }
   const razorpayAmount = Math.round(data.amount * 100);
   const razorpayReceipt = data.receipt || `rcpt_${Date.now()}`;
-  const auth = Buffer.from(`${gateway.apiKey}:${gateway.apiSecret}`).toString("base64");
+  const auth = Buffer.from(`${keys.apiKey}:${keys.apiSecret}`).toString("base64");
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 5000);
   try {
@@ -160,7 +188,11 @@ async function createRealRazorpayOrder(gateway: any, data: any, res: Response) {
     clearTimeout(timeout);
     if (!rzpResponse.ok) {
       const errText = await rzpResponse.text();
-      console.error("Razorpay API error, falling back to mock:", errText);
+      console.error("Razorpay API error:", errText);
+      if (process.env.NODE_ENV === "production") {
+        res.status(502).json({ success: false, error: "Payment gateway returned an error. Please try again later." });
+        return;
+      }
       return createMockOrder(data, res);
     }
     const rzpOrder = (await rzpResponse.json()) as { id: string; amount: number; currency: string };
@@ -192,6 +224,10 @@ async function createRealRazorpayOrder(gateway: any, data: any, res: Response) {
   } catch (err) {
     clearTimeout(timeout);
     console.error("Razorpay API call failed:", err);
+    if (process.env.NODE_ENV === "production") {
+      res.status(502).json({ success: false, error: "Payment gateway is not responding. Please try again later." });
+      return;
+    }
     return createMockOrder(data, res);
   }
 }
@@ -202,12 +238,13 @@ const createOrderHandler = async (req: Request, res: Response) => {
     const gateway = await prisma.paymentGatewayConfig.findFirst({ where: { gateway: "RAZORPAY", isEnabled: true } });
     
     // Determine if we should use real Razorpay or mock
-    const useRealRazorpay = gateway && gateway.apiKey && gateway.apiSecret && !isPlaceholderKey(gateway.apiKey);
+    const keys = getDecryptedGateway(gateway);
+    const useRealRazorpay = keys && keys.apiKey && keys.apiSecret && !isPlaceholderKey(keys.apiKey);
     
     if (useRealRazorpay) {
       await createRealRazorpayOrder(gateway, data, res);
     } else {
-      console.log("Using mock payment path (keys:", gateway?.apiKey?.substring(0,10) || "none", "...)");
+      console.log("Using mock payment path (keys unavailable or placeholder)");
       await createMockOrder(data, res);
     }
   } catch (error) {
@@ -216,8 +253,11 @@ const createOrderHandler = async (req: Request, res: Response) => {
       return;
     }
     console.error("Create order error:", error);
-    // Fall back to mock on any error
-    try { await createMockOrder(req.body, res); } catch { res.status(500).json({ success: false, error: "Internal server error" }); }
+    if (process.env.NODE_ENV === "production") {
+      res.status(503).json({ success: false, error: "Payment service unavailable. Please try again later." });
+    } else {
+      try { await createMockOrder(req.body, res); } catch { res.status(500).json({ success: false, error: "Internal server error" }); }
+    }
   }
 };
 
@@ -275,35 +315,39 @@ const verifyPaymentHandler = async (req: Request, res: Response) => {
   try {
     const data = verifyPaymentSchema.parse(req.body);
 
-    // Mock orders — skip verification
+    // Mock orders — reject in production, accept in development only
     if (data.razorpay_order_id.startsWith("MOCK_ORD_")) {
+      if (process.env.NODE_ENV === "production") {
+        res.status(400).json({ success: false, error: "Mock orders cannot be verified in production" });
+        return;
+      }
       await prisma.order.updateMany({
         where: { paymentId: data.razorpay_order_id },
         data: { paymentStatus: "PAID", status: "COMPLETED" },
       });
       await generatePdfAfterPayment(data.razorpay_order_id);
-      res.json({ status: "success", message: "Payment verified" });
+      res.json({ status: "success", message: "Payment verified (dev mode)" });
       return;
     }
 
     const gateway = await prisma.paymentGatewayConfig.findFirst({ where: { gateway: "RAZORPAY", isEnabled: true } });
-    if (!gateway || !gateway.apiSecret || isPlaceholderKey(gateway.apiKey || "")) {
-      // No real Razorpay configured — accept mock verification
-      await prisma.order.updateMany({
-        where: { paymentId: data.razorpay_order_id },
-        data: { paymentStatus: "PAID", status: "COMPLETED" },
-      });
-      await generatePdfAfterPayment(data.razorpay_order_id);
-      res.json({ status: "success", message: "Payment verified (mock mode)" });
-      return;
-    }
-    if (!gateway || !gateway.apiSecret) {
-      res.status(503).json({ success: false, error: "Payment gateway not configured" });
+    const keys = getDecryptedGateway(gateway);
+    if (!keys || !keys.apiSecret || isPlaceholderKey(keys.apiKey)) {
+      if (process.env.NODE_ENV === "production") {
+        res.status(503).json({ success: false, error: "Payment gateway is not configured. Cannot verify payment." });
+      } else {
+        await prisma.order.updateMany({
+          where: { paymentId: data.razorpay_order_id },
+          data: { paymentStatus: "PAID", status: "COMPLETED" },
+        });
+        await generatePdfAfterPayment(data.razorpay_order_id);
+        res.json({ status: "success", message: "Payment verified (mock mode)" });
+      }
       return;
     }
 
     const generatedSignature = crypto
-      .createHmac("sha256", gateway.apiSecret)
+      .createHmac("sha256", keys.apiSecret)
       .update(`${data.razorpay_order_id}|${data.razorpay_payment_id}`)
       .digest("hex");
 
@@ -356,11 +400,12 @@ router.post("/api/admin/payments/webhook", async (req: Request, res: Response) =
       return;
     }
     const gateway = await prisma.paymentGatewayConfig.findFirst({ where: { gateway: "RAZORPAY", isEnabled: true } });
-    if (!gateway || !gateway.webhookSecret) {
+    const keys = getDecryptedGateway(gateway);
+    if (!keys || !keys.webhookSecret) {
       res.status(503).json({ success: false, error: "Payment gateway webhook not configured" });
       return;
     }
-    const expectedSig = crypto.createHmac("sha256", gateway.webhookSecret).update(JSON.stringify(req.body)).digest("hex");
+    const expectedSig = crypto.createHmac("sha256", keys.webhookSecret).update(JSON.stringify(req.body)).digest("hex");
     if (signature !== expectedSig) {
       res.status(400).json({ success: false, error: "Invalid webhook signature" });
       return;

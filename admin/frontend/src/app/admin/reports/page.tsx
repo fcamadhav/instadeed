@@ -24,21 +24,6 @@ const reportTypes = [
   { value: 'monthly_growth', label: 'Monthly Growth', icon: BarChart3 },
 ];
 
-const mockRevenueData = Array.from({ length: 12 }, (_, i) => ({
-  month: new Date(2025, i).toLocaleString('en-IN', { month: 'short' }),
-  revenue: Math.floor(Math.random() * 500000 + 100000),
-  orders: Math.floor(Math.random() * 200 + 50),
-  customers: Math.floor(Math.random() * 100 + 20),
-}));
-
-const mockTopServices = [
-  { name: 'Legal Notice Drafting', count: 142, revenue: 285000 },
-  { name: 'Agreement Review', count: 98, revenue: 192000 },
-  { name: 'Property Documentation', count: 67, revenue: 156000 },
-  { name: 'Contract Drafting', count: 55, revenue: 134000 },
-  { name: 'Legal Consultation', count: 120, revenue: 98000 },
-];
-
 const COLORS = ['#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#f97316'];
 
 export default function ReportsPage() {
@@ -54,9 +39,8 @@ export default function ReportsPage() {
     setLoading(true);
     try {
       const res = await apiGet<{ data: { report: any[] } }>(`/admin/reports/${reportType}?startDate=${startDate}&endDate=${endDate}`).catch(() => null);
-      if (res?.data?.report) setData(res.data.report);
-      else setData(reportType === 'top_services' ? mockTopServices : mockRevenueData);
-    } catch { setData(reportType === 'top_services' ? mockTopServices : mockRevenueData); } finally { setLoading(false); }
+      setData(res?.data?.report || []);
+    } catch { setData([]); } finally { setLoading(false); }
   };
 
   const exportCSV = () => {

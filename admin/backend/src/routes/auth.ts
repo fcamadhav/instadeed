@@ -91,10 +91,34 @@ router.post("/api/admin/auth/login", authLimiter, async (req: Request, res: Resp
   }
 });
 
+async function verifyGoogleToken(token: string): Promise<{ email: string; sub: string; name?: string } | null> {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+    const resp = await fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${encodeURIComponent(token)}`, { signal: controller.signal });
+    clearTimeout(timeout);
+    if (!resp.ok) return null;
+    const data = await resp.json() as { email: string; sub: string; name?: string };
+    if (!data.email || !data.sub) return null;
+    return { email: data.email, sub: data.sub, name: data.name };
+  } catch {
+    return null;
+  }
+}
+
 router.post("/api/admin/auth/google", authLimiter, async (req: Request, res: Response) => {
   try {
     const data = googleSchema.parse(req.body);
-    let user = await prisma.user.findFirst({ where: { OR: [{ email: data.email }, { googleId: data.googleId }] } });
+    const verified = await verifyGoogleToken(data.token);
+    if (!verified) {
+      res.status(401).json({ success: false, error: "Invalid Google token" });
+      return;
+    }
+    if (verified.email !== data.email || verified.sub !== data.googleId) {
+      res.status(401).json({ success: false, error: "Token does not match claims" });
+      return;
+    }
+    let user = await prisma.user.findFirst({ where: { OR: [{ email: verified.email }, { googleId: verified.sub }] } });
 
     if (user) {
       if (!user.isActive) {
@@ -142,6 +166,12 @@ router.post("/api/admin/auth/google", authLimiter, async (req: Request, res: Res
 router.post("/api/admin/auth/register", authLimiter, async (req: Request, res: Response) => {
   try {
     const data = registerSchema.parse(req.body);
+
+    const regSetting = await prisma.systemSetting.findUnique({ where: { key: "enable_registration" } });
+    if (regSetting && regSetting.value === "false") {
+      res.status(403).json({ success: false, error: "Public registration is currently disabled" });
+      return;
+    }
 
     const existing = await prisma.user.findUnique({ where: { email: data.email } });
     if (existing) {
@@ -236,8 +266,10 @@ router.post("/api/admin/auth/forgot-password", async (req: Request, res: Respons
       where: { id: user.id },
       data: { passwordResetToken: resetToken, passwordResetExpires: resetExpires },
     });
-    // TODO: Send email with reset link — currently stubbed
-    console.log(`[PASSWORD RESET] Token for ${data.email}: ${resetToken}`);
+    // TODO: Send email with reset link — stub sends nothing in production
+    if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+      console.log(`[PASSWORD RESET] Email notification would be sent to ${data.email} (SMTP configured)`);
+    }
     res.json({ success: true, data: { message: "If the email exists, a reset link will be sent." } });
   } catch (error) {
     if (error instanceof z.ZodError) {
