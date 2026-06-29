@@ -80,6 +80,26 @@ export async function apiDelete<T = any>(endpoint: string): Promise<T> {
   return request<T>(endpoint, { method: 'DELETE' });
 }
 
+export async function apiDownload(endpoint: string, filename: string): Promise<void> {
+  const token = getToken();
+  const url = `${BASE_URL}${endpoint}`;
+  const res = await fetch(url, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  if (!res.ok) {
+    throw new Error(`Download failed: ${res.status}`);
+  }
+  const blob = await res.blob();
+  const blobUrl = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = blobUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(blobUrl);
+}
+
 export async function apiUpload<T = any>(endpoint: string, formData: FormData): Promise<T> {
   const token = getToken();
   const headers: Record<string, string> = {};

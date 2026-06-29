@@ -380,6 +380,7 @@ router.delete(
 
 router.get(
   "/api/admin/documents/:id/download/pdf",
+  requireAuth,
   async (req: Request, res: Response) => {
     try {
       const doc = await prisma.document.findUnique({ where: { id: req.params.id } });
@@ -405,6 +406,7 @@ router.get(
 
 router.get(
   "/api/admin/documents/:id/download/docx",
+  requireAuth,
   async (req: Request, res: Response) => {
     try {
       const doc = await prisma.document.findUnique({ where: { id: req.params.id } });

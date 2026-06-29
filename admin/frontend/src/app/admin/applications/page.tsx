@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/AdminLayout';
-import { apiGet } from '@/lib/api';
-import { FileText, Download, Eye, Printer, Loader2, ChevronDown, ChevronRight } from 'lucide-react';
+import { apiGet, apiDownload } from '@/lib/api';
+import { FileText, Download, Eye, Loader2, ChevronDown, ChevronRight } from 'lucide-react';
 
 interface AppDoc {
   id: string;
@@ -115,8 +115,8 @@ export default function ApplicationDocumentsPage() {
                             <td className="px-4 py-3 text-slate-400">{new Date(doc.uploadedAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</td>
                             <td className="px-4 py-3">
                               <div className="flex gap-1.5">
-                                <a href={`/api/applications/documents/${doc.id}/file`} download className="btn-secondary btn-sm"><Download className="w-3 h-3" /></a>
-                                <a href={`/api/applications/documents/${doc.id}/file`} target="_blank" className="btn-ghost btn-sm"><Eye className="w-3 h-3" /></a>
+                                <button onClick={() => apiDownload(`/applications/documents/${doc.id}/file`, doc.fileName)} className="btn-secondary btn-sm"><Download className="w-3 h-3" /></button>
+                                <button onClick={async () => { const { token } = JSON.parse(localStorage.getItem('instadeed_admin_user') || '{}'); const r = await fetch('/api/applications/documents/'+doc.id+'/file', { headers: token ? { Authorization: 'Bearer '+token } : {} }); const b = await r.blob(); window.open(URL.createObjectURL(b), '_blank'); }} className="btn-ghost btn-sm"><Eye className="w-3 h-3" /></button>
                               </div>
                             </td>
                           </tr>

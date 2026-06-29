@@ -3,6 +3,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { prisma } from "../lib/prisma";
+import { requireAuth } from "../middleware/auth";
 
 const router = Router();
 
@@ -138,7 +139,7 @@ router.get("/api/applications/documents/required/:type", (_req: Request, res: Re
 });
 
 // Download/Preview a single application document
-router.get("/api/applications/documents/:id/file", async (req: Request, res: Response) => {
+router.get("/api/applications/documents/:id/file", requireAuth, async (req: Request, res: Response) => {
   try {
     const doc = await prisma.applicationDocument.findUnique({ where: { id: req.params.id } });
     if (!doc || !fs.existsSync(doc.fileUrl)) {

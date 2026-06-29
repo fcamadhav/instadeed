@@ -5,7 +5,7 @@ import AdminLayout from '@/components/AdminLayout';
 import DataTable, { Column } from '@/components/DataTable';
 import Modal from '@/components/Modal';
 import FormField from '@/components/FormField';
-import { apiGet, apiPut, apiPost } from '@/lib/api';
+import { apiGet, apiPut, apiPost, apiDownload } from '@/lib/api';
 import toast from 'react-hot-toast';
 import {
   Search, Filter, Download, RefreshCw, Loader2, Eye, FileText,
@@ -281,7 +281,7 @@ export default function DocumentsManagementPage() {
                           {statuses.map(s => <option key={s} value={s}>{s.replace(/_/g, ' ')}</option>)}
                         </select>
                         {selected.document?.pdfFilePath && (
-                          <a href={`/api/admin/documents/${selected.document.id}/download/pdf`} target="_blank" className="btn-primary btn-sm"><Download className="w-3 h-3" /> PDF</a>
+                          <button onClick={() => apiDownload(`/admin/documents/${selected.document.id}/download/pdf`, `${selected.document.documentNumber}.pdf`)} className="btn-primary btn-sm"><Download className="w-3 h-3" /> PDF</button>
                         )}
                       </div>
                     </div>
