@@ -235,15 +235,28 @@ async function generatePdfAfterPayment(orderId: string) {
     const docType = parsed.service_type || "document";
     const docNumber = `DOC-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(3).toString("hex").toUpperCase()}`;
     const { pdfPath } = await generateDocument(parsed.form_data || {}, docType, order.id, docNumber);
+    
+    // Find valid service and customer
     let svc = await prisma.service.findFirst({ where: { slug: docType?.toLowerCase() || "rent-agreement" } });
     if (!svc) svc = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
     if (!svc) svc = await prisma.service.findFirst({});
+    
+    let customerId = order.customerId;
+    if (!customerId) {
+      const admin = await prisma.user.findFirst({ where: { role: "SUPER_ADMIN" } });
+      customerId = admin?.id;
+    }
+    if (!customerId) {
+      const anyUser = await prisma.user.findFirst({});
+      customerId = anyUser?.id;
+    }
+    
     await prisma.document.create({
       data: {
         documentNumber: docNumber,
         orderId: order.id,
-        customerId: order.customerId || "00000000-0000-0000-0000-000000000000",
-        serviceId: svc?.id || "00000000-0000-0000-0000-000000000000",
+        customerId: customerId || "",
+        serviceId: svc?.id || "",
         documentType: docType,
         pdfFilePath: pdfPath,
         formData: JSON.stringify(parsed.form_data || {}),
