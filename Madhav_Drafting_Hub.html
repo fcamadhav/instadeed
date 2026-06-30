@@ -771,6 +771,22 @@ body.docupload-page .checkout-modal{display:none!important}
     if(key==='instadeed_token' && value==='admin_bypass_token') return;
     return origSetItem.apply(localStorage, arguments);
   };
+
+  // Block fake default customer data in fetch bodies
+  var origFetch_cleanup = window.fetch;
+  window.fetch = function(url, opts){
+    if(opts && opts.body && typeof opts.body === 'string'){
+      try {
+        var b = JSON.parse(opts.body);
+        var changed = false;
+        if(b.customer_name === 'B2C Client' || b.customer_name === 'Walk-in Client'){ b.customer_name = ''; changed = true; }
+        if(b.customer_email === 'b2c@client.com' || b.customer_email === 'walkin@office.com'){ b.customer_email = ''; changed = true; }
+        if(b.customer_phone === '0000000000'){ b.customer_phone = ''; changed = true; }
+        if(changed){ opts = Object.assign({}, opts, {body: JSON.stringify(b)}); }
+      } catch(e){}
+    }
+    return origFetch_cleanup.apply(this, arguments);
+  };
 })();
 </script>
 </body>
