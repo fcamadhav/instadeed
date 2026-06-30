@@ -712,7 +712,6 @@ body.docupload-page .checkout-modal{display:none!important}
         fd.form_data.quotation=window._quoteData;
       }
       fetch('/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(fd)}).then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.error)});return r.json()}).then(function(order){
-        if((order.order_id||'').startsWith('MOCK_ORD_')){return fetch('/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({razorpay_order_id:order.order_id,razorpay_payment_id:'mp_'+Math.random(),razorpay_signature:'ok'})}).then(function(r2){if(!r2.ok)return r2.json().then(function(d){throw new Error(d.error)});return order})}
         btn.textContent='Opening payment...';
         return new Promise(function(resolve,reject){var s=document.createElement('script');s.src='https://checkout.razorpay.com/v1/checkout.js';s.onload=function(){fetch('/api/config').then(function(r){return r.json()}).then(function(c){var rzp=new window.Razorpay({key:c.razorpay_key||'',amount:order.amount,currency:order.currency||'INR',name:'INSTADEED',description:SVCS[curSvc].title+' Fee',order_id:order.order_id,handler:function(pr){fetch('/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({razorpay_order_id:pr.razorpay_order_id,razorpay_payment_id:pr.razorpay_payment_id,razorpay_signature:pr.razorpay_signature})}).then(function(){resolve(order)}).catch(reject)},prefill:{name:fd.customer_name||'',email:fd.customer_email||'',contact:fd.customer_phone||''},theme:{color:'#2563EB'}});rzp.on('payment.failed',function(){reject(new Error('Payment cancelled'))});rzp.open()}).catch(function(){reject(new Error('Gateway error'))})};s.onerror=function(){reject(new Error('Razorpay load failed'))};document.head.appendChild(s)})
       }).then(function(order){localStorage.removeItem('docupload_form');document.getElementById('du-overlay').classList.remove('show');alert('Payment successful! Order: '+order.order_id);setTimeout(function(){location.reload()},500)}).catch(function(e){var m=(e&&e.message)||String(e);console.error('Payment:',e);err.style.display='block';err.textContent=m;btn.textContent='Retry →';btn.disabled=false}).finally(function(){window._duSkip=false})
@@ -725,6 +724,53 @@ body.docupload-page .checkout-modal{display:none!important}
   window.fetch=function(url,opts){
     if(typeof url==='string'&&url.indexOf('/create-order')>-1&&opts&&opts.body&&!window._duSkip){try{var b=JSON.parse(opts.body);if(DOC_SERVICES.indexOf(b.service_type)>-1){curSvc=b.service_type;appId=b.service_type.toLowerCase()+'-'+Math.random().toString(36).slice(2,10);localStorage.setItem('docupload_form',JSON.stringify(b));var t=SVCS[b.service_type];document.getElementById('du-title').textContent=t?t.title:'Upload Documents';render();document.getElementById('du-overlay').classList.add('show');return Promise.reject('du-intercept')}}catch(e){}}return origFetch.apply(this,arguments)}
   render();
+})();
+</script>
+<script>
+(function(){
+  // Remove mock login UI elements and prevent mock auth
+  var observer = new MutationObserver(function(mutations){
+    mutations.forEach(function(m){
+      m.addedNodes.forEach(function(node){
+        if(node.nodeType!==1) return;
+        // Update "Access via Google (Mock)" label to remove "(Mock)"
+        if(node.innerText && node.innerText.indexOf('Access via Google (Mock)')>-1){
+          var walk = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+          var textNodes = [];
+          while(walk.nextNode()) textNodes.push(walk.currentNode);
+          textNodes.forEach(function(tn){
+            if(tn.textContent.indexOf('Access via Google (Mock)')>-1){
+              tn.textContent = tn.textContent.replace('Access via Google (Mock)', 'Sign in with Google');
+            }
+          });
+        }
+        // Hide demo/bypass buttons
+        var buttons = node.querySelectorAll ? node.querySelectorAll('button') : [];
+        if(node.tagName==='BUTTON') buttons = [node];
+        for(var i=0; i<buttons.length; i++){
+          var txt = buttons[i].innerText||'';
+          if(txt.indexOf('Demo User')>-1 || txt.indexOf('Admin Bypass')>-1){
+            buttons[i].style.display = 'none';
+          }
+        }
+        // Also check if node itself is a button
+        if(node.tagName==='BUTTON'){
+          var t = node.innerText||'';
+          if(t.indexOf('Demo User')>-1 || t.indexOf('Admin Bypass')>-1){
+            node.style.display = 'none';
+          }
+        }
+      });
+    });
+  });
+  observer.observe(document.body, {childList:true, subtree:true});
+
+  // Block admin_bypass_token from being written to localStorage
+  var origSetItem = localStorage.setItem;
+  localStorage.setItem = function(key, value){
+    if(key==='instadeed_token' && value==='admin_bypass_token') return;
+    return origSetItem.apply(localStorage, arguments);
+  };
 })();
 </script>
 </body>
