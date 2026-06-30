@@ -45,9 +45,10 @@ router.get(
         (async () => {
           const grouped = await prisma.order.groupBy({
             by: ["serviceId"],
+            where: { paymentStatus: "PAID" },
             _count: true,
             _sum: { total: true },
-            orderBy: { _count: { id: "desc" } },
+            orderBy: { _sum: { total: "desc" } },
             take: 10,
           });
           const serviceIds = grouped.map(g => g.serviceId);
@@ -127,7 +128,7 @@ router.get(
             ? { enabled: aiSettings.isEnabled, provider: aiSettings.provider, model: aiSettings.model }
             : null,
           apiUsage,
-          topServices: topServices.filter((s) => s.name),
+          topServices: topServices.filter((s: any) => s.name && (s.revenue || 0) > 0),
           recentOrders,
           latestActivity,
           documents: {
