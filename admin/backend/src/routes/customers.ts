@@ -59,6 +59,7 @@ router.get(
         select: {
           id: true, name: true, email: true, phone: true, isActive: true, avatarUrl: true, lastLoginAt: true, createdAt: true, updatedAt: true,
           _count: { select: { orders: true, loginHistory: true } },
+          loginHistory: { orderBy: { createdAt: "desc" }, take: 20, select: { id: true, ipAddress: true, userAgent: true, createdAt: true } },
         },
       });
       if (!customer) {
