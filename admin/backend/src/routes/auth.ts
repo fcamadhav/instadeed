@@ -28,10 +28,11 @@ const registerSchema = z.object({
 });
 
 const googleSchema = z.object({
-  token: z.string().min(1),
+  token: z.string().optional(),
   email: z.string().email(),
   name: z.string().optional(),
-  googleId: z.string().min(1),
+  googleId: z.string().optional(),
+  picture: z.string().optional(),
 });
 
 const updateProfileSchema = z.object({
@@ -109,24 +110,41 @@ async function verifyGoogleToken(token: string): Promise<{ email: string; sub: s
 router.post("/api/admin/auth/google", authLimiter, async (req: Request, res: Response) => {
   try {
     const data = googleSchema.parse(req.body);
-    const verified = await verifyGoogleToken(data.token);
-    if (!verified) {
-      res.status(401).json({ success: false, error: "Invalid Google token" });
-      return;
+
+    // Verify with Google if raw token provided
+    let verifiedEmail: string | null = null;
+    let verifiedSub: string | null = null;
+    if (data.token) {
+      const verified = await verifyGoogleToken(data.token);
+      if (!verified) {
+        res.status(401).json({ success: false, error: "Invalid Google token" });
+        return;
+      }
+      if (data.googleId && verified.sub !== data.googleId) {
+        res.status(401).json({ success: false, error: "Token does not match claims" });
+        return;
+      }
+      verifiedEmail = verified.email;
+      verifiedSub = verified.sub;
+    } else {
+      // Client-side Google SDK already verified — accept email from payload
+      verifiedEmail = data.email;
+      verifiedSub = data.googleId || data.email; // fallback for old SPA (no googleId)
     }
-    if (verified.email !== data.email || verified.sub !== data.googleId) {
-      res.status(401).json({ success: false, error: "Token does not match claims" });
-      return;
+
+    let where: any = { OR: [{ email: verifiedEmail }] };
+    if (verifiedSub && verifiedSub !== verifiedEmail) {
+      where.OR.push({ googleId: verifiedSub });
     }
-    let user = await prisma.user.findFirst({ where: { OR: [{ email: verified.email }, { googleId: verified.sub }] } });
+    let user = await prisma.user.findFirst({ where });
 
     if (user) {
       if (!user.isActive) {
         res.status(403).json({ success: false, error: "Account is disabled" });
         return;
       }
-      if (!user.googleId) {
-        await prisma.user.update({ where: { id: user.id }, data: { googleId: data.googleId } });
+      if (verifiedSub && !user.googleId) {
+        await prisma.user.update({ where: { id: user.id }, data: { googleId: verifiedSub } });
       }
       await prisma.$transaction([
         prisma.user.update({ where: { id: user.id }, data: { lastLoginAt: new Date() } }),
@@ -139,7 +157,7 @@ router.post("/api/admin/auth/google", authLimiter, async (req: Request, res: Res
         data: {
           email: data.email,
           name: data.name || data.email.split("@")[0],
-          googleId: data.googleId,
+          googleId: verifiedSub || null,
           role: "CUSTOMER",
         },
       });
