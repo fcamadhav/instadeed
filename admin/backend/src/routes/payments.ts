@@ -171,9 +171,9 @@ async function createRealRazorpayOrder(gateway: any, data: any, res: Response) {
   await prisma.order.create({
     data: {
       orderNumber: rzpOrder.id,
-      customerName: data.customer_name || "B2C Client",
-      customerPhone: data.customer_phone || "0000000000",
-      customerEmail: data.customer_email || "b2c@client.com",
+      customerName: data.customer_name || "",
+      customerPhone: data.customer_phone || "",
+      customerEmail: data.customer_email || "",
       serviceId: genericService.id,
       amount: data.amount,
       total: data.amount,
