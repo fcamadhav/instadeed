@@ -597,13 +597,37 @@ body.docupload-page .checkout-modal{display:none!important}
 #du-overlay .btn-continue:not(:disabled):hover{background:#1d4ed8}
 #du-overlay .close-btn{position:absolute;top:10px;right:12px;width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,0.2);color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 #du-overlay .error-box{display:none;margin-top:10px;padding:10px 14px;background:#fef2f2;border-radius:10px;color:#dc2626;font-size:13px}
+#du-quote-box{display:none;background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:14px 16px;margin-bottom:14px}
+#du-quote-box.visible{display:block}
+#du-quote-box h4{font-size:13px;font-weight:700;color:#0c4a6e;margin:0 0 10px}
+#du-quote-box .field-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+#du-quote-box .field-group{flex:1;min-width:140px}
+#du-quote-box .field-group label{display:block;font-size:11px;font-weight:600;color:#475569;margin-bottom:3px}
+#du-quote-box .field-group select,#du-quote-box .field-group input{width:100%;padding:7px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px;box-sizing:border-box}
+#du-quote-box .field-group select:focus,#du-quote-box .field-group input:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,0.15)}
+#du-quote-summary{display:none;margin-top:10px;background:white;border-radius:10px;padding:12px 14px;border:1px solid #e2e8f0}
+#du-quote-summary.visible{display:block}
+#du-quote-summary table{width:100%;font-size:12px;border-collapse:collapse}
+#du-quote-summary table td{padding:4px 0;color:#334155}
+#du-quote-summary table td:last-child{text-align:right;font-weight:500}
+#du-quote-summary table tr.total td{border-top:1px solid #e2e8f0;padding-top:8px;font-size:14px;font-weight:700;color:#1e40af}
+#du-quote-summary .rate-note{font-size:10px;color:#94a3b8;margin-top:4px}
 </style>
 <div id="du-overlay"><div class="panel">
  <div class="hdr"><button class="close-btn" onclick="document.getElementById('du-overlay').classList.remove('show')">×</button><h2 id="du-title">Upload Documents</h2><p id="du-sub">Required documents for your application</p></div>
  <div class="body">
   <div class="progress-text"><span id="du-status">0 uploaded</span><span id="du-total"></span></div>
-  <div class="progress-bar"><div id="du-progress" style="width:0%"></div></div>
-  <div id="du-docs"></div>
+   <div class="progress-bar"><div id="du-progress" style="width:0%"></div></div>
+   <div id="du-quote-box">
+    <h4>📐 Property Quotation (GNIDA 5-in-1)</h4>
+    <div class="field-row">
+     <div class="field-group"><label>Select Sector</label><select id="du-sector" onchange="duCalcQuote()"><option value="">-- Select --</option></select></div>
+     <div class="field-group"><label>Property Area</label><input type="number" id="du-area" placeholder="e.g. 120" min="1" oninput="duCalcQuote()"></div>
+     <div class="field-group"><label>Unit</label><select id="du-unit" onchange="duCalcQuote()"><option value="sqm">Square Metres (sq.m.)</option><option value="sqft">Square Feet (sq.ft.)</option></select></div>
+    </div>
+    <div id="du-quote-summary"><table><tr><td>Property Area</td><td id="du-q-area">—</td></tr><tr><td>Sector / Zone</td><td id="du-q-zone">—</td></tr><tr><td>TM Rate</td><td id="du-q-rate">—</td></tr><tr><td>TM Charge</td><td id="du-q-tm">—</td></tr><tr><td>Registry Professional Fee</td><td>₹5,000</td></tr><tr><td>PTM Professional Fee</td><td>₹9,000</td></tr><tr><td>Mutation Professional Fee</td><td>₹3,500</td></tr><tr><td>ATS Professional Fee</td><td>₹150</td></tr><tr class="total"><td>Grand Total</td><td id="du-q-total">—</td></tr></table><p class="rate-note">TM rates as per GNIDA circular. Professional fees are fixed service charges.</p></div>
+   </div>
+   <div id="du-docs"></div>
   <button id="du-continue" class="btn-continue" disabled onclick="duContinue()">Upload Documents to Continue</button>
   <div id="du-error" class="error-box"></div>
  </div>
@@ -616,6 +640,35 @@ body.docupload-page .checkout-modal{display:none!important}
     GNIDA_PACKAGE:{title:'GNIDA 5-in-1 Package',required:{'tm-form':'T.M. Application Form','noc-builder':'Builder NOC','no-dues':'No Dues Certificate','mortgage-noc':'Mortgage NOC','challan':'Fee Challan','affidavit':'Affidavit (Rs.10 Stamp)','id-proof':'ID Proof','occupancy':'Occupancy Certificate (Plots) / Penalty Challan'}},
   };
   var curSvc=null,uploaded={},appId='app-'+Math.random().toString(36).slice(2,10);
+
+  // ─── GNIDA Sector / Zone / TM Rate data ───
+  var GNIDA_ZONES = {A:'Zone A',B:'Zone B',C:'Zone C',D:'Zone D'};
+  var GNIDA_RATES = {A:572.18,B:534.03,C:508.60,D:404.08};
+  var GNIDA_SECTORS = {
+    'Alpha-I':'A','Alpha-II':'A','Beta-I':'A','Beta-II':'A','Gamma-I':'A','Gamma-II':'A','Delta-I':'A','Delta-II':'A','Delta-III':'A',
+    'Omicron-I':'A','Omicron-II':'A','Omicron-III':'A','Phi-I':'A','Phi-II':'A','Phi-III':'A','Phi-IV':'A',
+    'Sigma-I':'B','Sigma-II':'B','Sigma-III':'B','Sigma-IV':'B','PI':'B','PII':'B','PIII':'B','PIV':'B',
+    'Zeta':'B','Chi-I':'B','Chi-II':'B','Chi-III':'B','Chi-IV':'B','Chi-V':'B',
+    'Ecotech-I':'C','Ecotech-II':'C','Ecotech-III':'C','Ecotech-IV':'C','Ecotech-VI':'C','Ecotech-XII':'C',
+    'Swarn-Nagri':'C','Omega-I':'C','Omega-II':'C',
+    'Knowledge-Park-I':'D','Knowledge-Park-II':'D','Knowledge-Park-III':'D','Knowledge-Park-IV':'D','Knowledge-Park-V':'D','Tech-Zone':'D','IT-Park':'D'
+  };
+  (function(){var sel=document.getElementById('du-sector'),sectors=Object.keys(GNIDA_SECTORS).sort();for(var i=0;i<sectors.length;i++){var z=GNIDA_SECTORS[sectors[i]];sel.appendChild(new Option(sectors[i]+' ('+GNIDA_ZONES[z]+' — ₹'+GNIDA_RATES[z]+'/sq.m.)',sectors[i]))}})();
+
+  function duCalcQuote(){
+    var sec=document.getElementById('du-sector').value,area=parseFloat(document.getElementById('du-area').value)||0,unit=document.getElementById('du-unit').value;
+    var zone=sec?GNIDA_SECTORS[sec]:null,rate=zone?GNIDA_RATES[zone]:0;
+    var sqm=unit==='sqft'?area*0.092903:area;
+    var tmCharge=rate*sqm;
+    var grand=tmCharge+5000+9000+3500+150;
+    document.getElementById('du-q-area').textContent=sqm?sqm.toFixed(2)+' sq.m.'+(unit==='sqft'?' (= '+area+' sq.ft.)':''):'—';
+    document.getElementById('du-q-zone').textContent=sec?(sec+' / '+GNIDA_ZONES[zone]):'—';
+    document.getElementById('du-q-rate').textContent=rate?'₹'+rate+'/sq.m.':'—';
+    document.getElementById('du-q-tm').textContent=tmCharge?'₹'+tmCharge.toFixed(2):'—';
+    document.getElementById('du-q-total').textContent=sec&&area>0?'₹'+grand.toFixed(2):'—';
+    if(sec&&area>0){document.getElementById('du-quote-summary').classList.add('visible')}
+    window._quoteData=sec&&area>0?{sector:sec,zone:zone,zoneName:GNIDA_ZONES[zone],rate:rate,areaSqm:sqm,areaInput:area,unit:unit,tmCharge:tmCharge,registryFee:5000,ptmFee:9000,mutationFee:3500,atsFee:150,grandTotal:grand}:null;
+  }
 
   function dup(docType,input){
     var f=input.files[0];if(!f)return;
@@ -639,7 +692,11 @@ body.docupload-page .checkout-modal{display:none!important}
       return '<div class="doc-row"><div class="icon pending">📄</div><div class="label"><div class="name">'+name+'</div></div><span class="status pending">Pending</span><label class="btn-upload">Upload<input type=file accept=".pdf,.jpg,.jpeg,.png" onchange="dup(\''+k+'\',this)" style=display:none></label></div>';
     }).join('');
     var btn=document.getElementById('du-continue');
-    if(done===total){btn.disabled=false;btn.textContent='Continue to Payment →';}
+    var isPackage=curSvc==='GNIDA_PACKAGE';
+    document.getElementById('du-quote-box').classList.toggle('visible',isPackage);
+    var quoteOk=!isPackage||!!window._quoteData;
+    if(done===total&&quoteOk){btn.disabled=false;btn.textContent='Continue to Payment →';}
+    else if(!quoteOk&&isPackage){btn.disabled=true;btn.textContent='Select Sector & Enter Area to Continue';}
     else{btn.disabled=true;btn.textContent='Upload '+total+' Documents to Continue';}
   }
 
@@ -647,6 +704,12 @@ body.docupload-page .checkout-modal{display:none!important}
     var saved=localStorage.getItem('docupload_form');if(!saved||!curSvc)return;
     var btn=document.getElementById('du-continue'),err=document.getElementById('du-error');btn.textContent='Creating order...';btn.disabled=true;err.style.display='none';
     try{var fd=JSON.parse(saved);window._duSkip=true;
+      // Attach GNIDA quotation data to form_data if available
+      if(curSvc==='GNIDA_PACKAGE'&&window._quoteData){
+        fd.amount=window._quoteData.grandTotal;
+        fd.form_data=fd.form_data||{};
+        fd.form_data.quotation=window._quoteData;
+      }
       fetch('/create-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(fd)}).then(function(r){if(!r.ok)return r.json().then(function(d){throw new Error(d.error)});return r.json()}).then(function(order){
         if((order.order_id||'').startsWith('MOCK_ORD_')){return fetch('/verify-payment',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({razorpay_order_id:order.order_id,razorpay_payment_id:'mp_'+Math.random(),razorpay_signature:'ok'})}).then(function(r2){if(!r2.ok)return r2.json().then(function(d){throw new Error(d.error)});return order})}
         btn.textContent='Opening payment...';

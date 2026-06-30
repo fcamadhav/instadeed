@@ -7,6 +7,16 @@ import { logActionSync } from "../services/audit";
 
 const router = Router();
 
+function extractQuotation(formData: string | null): Record<string, unknown> | null {
+  if (!formData) return null;
+  try {
+    const parsed = JSON.parse(formData);
+    if (parsed.quotation) return parsed.quotation;
+    if (parsed.form_data?.quotation) return parsed.form_data.quotation;
+  } catch { /* ignore */ }
+  return null;
+}
+
 const createOrderSchema = z.object({
   customerId: z.string().uuid().optional(),
   customerName: z.string().optional(),
@@ -99,9 +109,11 @@ router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
       prisma.order.count({ where }),
     ]);
 
+    const ordersWithQuotation = orders.map(o => ({ ...o, quotation: extractQuotation(o.formData) }));
+
     res.json({
       success: true,
-      data: { orders, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } },
+      data: { orders: ordersWithQuotation, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } },
     });
   } catch (error) {
     console.error("List orders error:", error);
@@ -132,7 +144,7 @@ router.get("/api/orders/:id", requireAuth, async (req: Request, res: Response) =
       res.status(403).json({ success: false, error: "Access denied" });
       return;
     }
-    res.json({ success: true, data: order });
+    res.json({ success: true, data: { ...order, quotation: extractQuotation(order.formData) } });
   } catch (error) {
     console.error("Get order error:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
