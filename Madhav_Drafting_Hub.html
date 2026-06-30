@@ -656,19 +656,20 @@ body.docupload-page .checkout-modal{display:none!important}
   (function(){var sel=document.getElementById('du-sector'),sectors=Object.keys(GNIDA_SECTORS).sort();for(var i=0;i<sectors.length;i++){var z=GNIDA_SECTORS[sectors[i]];sel.appendChild(new Option(sectors[i]+' ('+GNIDA_ZONES[z]+' — ₹'+GNIDA_RATES[z]+'/sq.m.)',sectors[i]))}})();
 
   function duCalcQuote(){
-    var sec=document.getElementById('du-sector').value,area=parseFloat(document.getElementById('du-area').value)||0,unit=document.getElementById('du-unit').value;
-    var zone=sec?GNIDA_SECTORS[sec]:null,rate=zone?GNIDA_RATES[zone]:0;
-    var sqm=unit==='sqft'?area*0.092903:area;
-    var tmCharge=rate*sqm;
-    var grand=tmCharge+5000+9000+3500+150;
-    document.getElementById('du-q-area').textContent=sqm?sqm.toFixed(2)+' sq.m.'+(unit==='sqft'?' (= '+area+' sq.ft.)':''):'—';
-    document.getElementById('du-q-zone').textContent=sec?(sec+' / '+GNIDA_ZONES[zone]):'—';
-    document.getElementById('du-q-rate').textContent=rate?'₹'+rate+'/sq.m.':'—';
-    document.getElementById('du-q-tm').textContent=tmCharge?'₹'+tmCharge.toFixed(2):'—';
-    document.getElementById('du-q-total').textContent=sec&&area>0?'₹'+grand.toFixed(2):'—';
-    if(sec&&area>0){document.getElementById('du-quote-summary').classList.add('visible')}
-    window._quoteData=sec&&area>0?{sector:sec,zone:zone,zoneName:GNIDA_ZONES[zone],rate:rate,areaSqm:sqm,areaInput:area,unit:unit,tmCharge:tmCharge,registryFee:5000,ptmFee:9000,mutationFee:3500,atsFee:150,grandTotal:grand}:null;
-  }
+     var sec=document.getElementById('du-sector').value,area=parseFloat(document.getElementById('du-area').value)||0,unit=document.getElementById('du-unit').value;
+     var zone=sec?GNIDA_SECTORS[sec]:null,rate=zone?GNIDA_RATES[zone]:0;
+     var sqm=unit==='sqft'?area*0.092903:area;
+     var tmCharge=rate*sqm;
+     var grand=tmCharge+5000+9000+3500+150;
+     document.getElementById('du-q-area').textContent=sqm?sqm.toFixed(2)+' sq.m.'+(unit==='sqft'?' (= '+area+' sq.ft.)':''):'—';
+     document.getElementById('du-q-zone').textContent=sec?(sec+' / '+GNIDA_ZONES[zone]):'—';
+     document.getElementById('du-q-rate').textContent=rate?'₹'+rate+'/sq.m.':'—';
+     document.getElementById('du-q-tm').textContent=tmCharge?'₹'+tmCharge.toFixed(2):'—';
+     document.getElementById('du-q-total').textContent=sec&&area>0?'₹'+grand.toFixed(2):'—';
+     if(sec&&area>0){document.getElementById('du-quote-summary').classList.add('visible')}
+     window._quoteData=sec&&area>0?{sector:sec,zone:zone,zoneName:GNIDA_ZONES[zone],rate:rate,areaSqm:sqm,areaInput:area,unit:unit,tmCharge:tmCharge,registryFee:5000,ptmFee:9000,mutationFee:3500,atsFee:150,grandTotal:grand}:null;
+   }
+   window.duCalcQuote=duCalcQuote;
 
   function dup(docType,input){
     var f=input.files[0];if(!f)return;
