@@ -117,12 +117,11 @@ router.get("/api/config", async (_req: Request, res: Response) => {
   try {
     const gateway = await prisma.paymentGatewayConfig.findFirst({ where: { gateway: "RAZORPAY", isEnabled: true } });
     const keys = getDecryptedGateway(gateway);
-    const razorpayKey = keys?.apiKey || "";
-    if (!razorpayKey) {
-      res.json({ razorpay_key: "", version: "2.0.0", app_name: "INSTADEED" });
+    if (!keys?.apiKey) {
+      res.status(503).json({ success: false, error: "Payment gateway not configured" });
       return;
     }
-    res.json({ razorpay_key: razorpayKey, version: "2.0.0", app_name: "INSTADEED" });
+    res.json({ razorpay_key: keys.apiKey, version: "2.0.0", app_name: "INSTADEED" });
   } catch (error) {
     console.error("Config error:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
@@ -133,37 +132,6 @@ router.get("/api/config", async (_req: Request, res: Response) => {
 // Also POST /api/create-order — same handler for both paths
 function isPlaceholderKey(key: string): boolean {
   return !key || key.includes("YOUR_KEY");
-}
-
-async function createMockOrder(data: any, res: Response) {
-  if (process.env.NODE_ENV === "production") {
-    console.warn("[PAYMENT] Mock order created in production — configure real Razorpay keys in admin panel");
-  }
-  const mockOrderId = `MOCK_ORD_${crypto.randomBytes(4).toString("hex").toUpperCase()}`;
-  let svc = await prisma.service.findFirst({ where: { slug: data.service_type?.toLowerCase() || "rent-agreement" } });
-  if (!svc) svc = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
-  if (!svc) {
-    const cat = await prisma.category.findFirst();
-    svc = await prisma.service.create({
-      data: { name: "Document Drafting", slug: `b2c-${Date.now()}`, categoryId: cat?.id || "00000000-0000-0000-0000-000000000000" },
-    });
-  }
-  await prisma.order.create({
-    data: {
-      orderNumber: mockOrderId,
-      paymentId: mockOrderId,
-      customerName: data.customer_name || "B2C Client",
-      customerPhone: data.customer_phone || "0000000000",
-      customerEmail: data.customer_email || "b2c@client.com",
-      serviceId: svc.id,
-      amount: data.amount,
-      total: data.amount,
-      formData: JSON.stringify({ service_type: data.service_type, form_data: data.form_data }),
-      status: "PENDING",
-      paymentStatus: "PENDING",
-    },
-  });
-  res.json({ order_id: mockOrderId, amount: data.amount * 100, currency: data.currency || "INR" });
 }
 
 async function createRealRazorpayOrder(gateway: any, data: any, res: Response) {
@@ -188,11 +156,8 @@ async function createRealRazorpayOrder(gateway: any, data: any, res: Response) {
     if (!rzpResponse.ok) {
       const errText = await rzpResponse.text();
       console.error("Razorpay API error:", errText);
-      if (process.env.NODE_ENV === "production") {
-        res.status(502).json({ success: false, error: "Payment gateway returned an error. Please try again later." });
-        return;
-      }
-      return createMockOrder(data, res);
+      res.status(502).json({ success: false, error: "Payment gateway error. Please try again." });
+      return;
     }
     const rzpOrder = (await rzpResponse.json()) as { id: string; amount: number; currency: string };
     let genericService = await prisma.service.findFirst({ where: { slug: data.service_type?.toLowerCase() || "rent-agreement" } });
@@ -223,11 +188,8 @@ async function createRealRazorpayOrder(gateway: any, data: any, res: Response) {
   } catch (err) {
     clearTimeout(timeout);
     console.error("Razorpay API call failed:", err);
-    if (process.env.NODE_ENV === "production") {
-      res.status(502).json({ success: false, error: "Payment gateway is not responding. Please try again later." });
-      return;
-    }
-    return createMockOrder(data, res);
+    res.status(502).json({ success: false, error: "Payment gateway is not responding. Please try again later." });
+    return;
   }
 }
 
@@ -243,8 +205,7 @@ const createOrderHandler = async (req: Request, res: Response) => {
     if (useRealRazorpay) {
       await createRealRazorpayOrder(gateway, data, res);
     } else {
-      console.log("Using mock payment path (keys unavailable or placeholder)");
-      await createMockOrder(data, res);
+      res.status(503).json({ success: false, error: "Payment gateway is not configured. Please contact support." });
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -252,11 +213,7 @@ const createOrderHandler = async (req: Request, res: Response) => {
       return;
     }
     console.error("Create order error:", error);
-    if (process.env.NODE_ENV === "production") {
-      res.status(503).json({ success: false, error: "Payment service unavailable. Please try again later." });
-    } else {
-      try { await createMockOrder(req.body, res); } catch { res.status(500).json({ success: false, error: "Internal server error" }); }
-    }
+    res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
@@ -314,27 +271,16 @@ const verifyPaymentHandler = async (req: Request, res: Response) => {
   try {
     const data = verifyPaymentSchema.parse(req.body);
 
-    // Mock orders — accept if no real Razorpay configured
+    // Block mock orders — only real Razorpay orders accepted
     if (data.razorpay_order_id.startsWith("MOCK_ORD_")) {
-      await prisma.order.updateMany({
-        where: { paymentId: data.razorpay_order_id },
-        data: { paymentStatus: "PAID", status: "COMPLETED" },
-      });
-      await generatePdfAfterPayment(data.razorpay_order_id);
-      res.json({ status: "success", message: "Payment verified" });
+      res.status(400).json({ success: false, error: "Invalid payment. Mock orders are disabled." });
       return;
     }
 
     const gateway = await prisma.paymentGatewayConfig.findFirst({ where: { gateway: "RAZORPAY", isEnabled: true } });
     const keys = getDecryptedGateway(gateway);
     if (!keys || !keys.apiSecret || isPlaceholderKey(keys.apiKey)) {
-      // No real Razorpay configured — accept mock verification
-      await prisma.order.updateMany({
-        where: { paymentId: data.razorpay_order_id },
-        data: { paymentStatus: "PAID", status: "COMPLETED" },
-      });
-      await generatePdfAfterPayment(data.razorpay_order_id);
-      res.json({ status: "success", message: "Payment verified" });
+      res.status(503).json({ success: false, error: "Payment gateway not configured" });
       return;
     }
 
