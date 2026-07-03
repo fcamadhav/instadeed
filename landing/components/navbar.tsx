@@ -1,20 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { setActiveDoc } from "@/lib/documentState";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [signedIn, setSignedIn] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
-    try {
-      if (localStorage.getItem("instadeed_user_session")) setSignedIn(true);
-    } catch {}
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -36,22 +31,12 @@ export default function Navbar() {
         </a>
 
         <div className="flex items-center gap-3">
-          {signedIn ? (
-            <span className="text-xs text-green-600 font-semibold bg-green-50 px-3 py-1 rounded-full">Signed In</span>
-          ) : (
-            <button
-              onClick={() => setActiveDoc('rent-agreement')}
-              className="text-sm font-semibold text-dark hover:text-primary transition-colors"
-            >
-              Sign In
-            </button>
-          )}
           <button
             onClick={() => setActiveDoc('rent-agreement')}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-primary-dark active:scale-95"
           >
-            Draft Now
-            <ArrowRight className="h-4 w-4" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Sign In
           </button>
         </div>
       </div>
