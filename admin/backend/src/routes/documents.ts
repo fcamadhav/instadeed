@@ -17,11 +17,19 @@ function isPathSafe(targetPath: string): boolean {
 
 const PREFIXES: Record<string, string> = {
   "rent-agreement": "RA",
+  "registered-rent": "RRA",
+  "registered-rent-agreement": "RRA",
   "sale-deed": "SD",
   "will": "WILL",
   "legal-notice": "LN",
   "trademark": "TM",
   "gst-registration": "GST",
+  "ats": "ATS",
+  "mutation": "MUT",
+  "gnida_registry": "GR",
+  "gnida_ptm": "PTM",
+  "gnida_package": "GNP",
+  "tm48": "TM",
 };
 
 function getDocumentPrefix(documentType: string): string {

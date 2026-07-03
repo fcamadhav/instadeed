@@ -95,6 +95,8 @@ router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
         { customerName: { contains: search } },
         { customerEmail: { contains: search } },
         { customerPhone: { contains: search } },
+        { invoiceNumber: { contains: search } },
+        { paymentId: { contains: search } },
       ];
     }
 
@@ -154,6 +156,47 @@ router.get("/api/orders/:id", requireAuth, async (req: Request, res: Response) =
     res.json({ success: true, data: { ...order, quotation: extractQuotation(order.formData) } });
   } catch (error) {
     console.error("Get order error:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
+// Public order tracking — no auth required
+router.get("/api/track/:orderNumber", async (req: Request, res: Response) => {
+  try {
+    const order = await prisma.order.findFirst({
+      where: { orderNumber: req.params.orderNumber },
+      include: {
+        service: { select: { name: true } },
+        invoices: { select: { invoiceNumber: true, amount: true, status: true } },
+        documents: { select: { documentNumber: true, documentType: true, pdfFilePath: true, status: true } },
+        assignments: { include: { staff: { select: { name: true, phone: true } } }, take: 1 },
+        orderTimeline: { orderBy: { createdAt: "desc" }, take: 1 },
+      },
+    });
+    if (!order) {
+      res.status(404).json({ success: false, error: "Order not found. Please check your Order ID." });
+      return;
+    }
+    res.json({
+      success: true,
+      data: {
+        orderNumber: order.orderNumber,
+        customerName: order.customerName,
+        customerPhone: order.customerPhone,
+        customerEmail: order.customerEmail,
+        service: order.service?.name,
+        status: order.status,
+        paymentStatus: order.paymentStatus,
+        amount: order.total,
+        createdAt: order.createdAt,
+        assignedTo: order.assignments?.[0]?.staff?.name || null,
+        invoice: order.invoices?.[0] || null,
+        documents: order.documents || [],
+        latestUpdate: order.orderTimeline?.[0]?.status || order.status,
+      },
+    });
+  } catch (error) {
+    console.error("Track order error:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 });
