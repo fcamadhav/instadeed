@@ -8,12 +8,12 @@ import { Search, Filter, ChevronDown, ChevronUp, Loader2, ScrollText } from 'luc
 
 interface AuditLog {
   id: string;
-  timestamp: string;
-  user: string;
+  createdAt: string;
+  user: { id: string; name: string; email: string } | null;
   action: string;
   module: string;
   recordId: string;
-  ip: string;
+  ipAddress: string;
   oldValue?: any;
   newValue?: any;
 }
@@ -50,18 +50,18 @@ export default function AuditPage() {
   };
 
   const columns: Column<AuditLog>[] = [
-    { key: 'timestamp', label: 'Timestamp', sortable: true, render: (l) => <span className="text-xs text-slate-500">{new Date(l.timestamp).toLocaleString('en-IN')}</span> },
-    { key: 'user', label: 'User', sortable: true, render: (l) => <span className="font-medium text-slate-900 dark:text-white">{l.user}</span> },
+    { key: 'createdAt', label: 'Timestamp', sortable: true, render: (l) => <span className="text-xs text-slate-500">{new Date(l.createdAt).toLocaleString('en-IN')}</span> },
+    { key: 'user', label: 'User', sortable: true, render: (l) => <span className="font-medium text-slate-900 dark:text-white">{l.user?.name || l.user?.email || 'System'}</span> },
     {
       key: 'action', label: 'Action',
       render: (l) => {
-        const colors: Record<string, string> = { create: 'badge-green', update: 'badge-blue', delete: 'badge-red', login: 'badge-yellow' };
+        const colors: Record<string, string> = { CREATE: 'badge-green', UPDATE: 'badge-blue', DELETE: 'badge-red', TOGGLE_STATUS: 'badge-yellow', DOWNLOADED: 'badge-purple' };
         return <span className={colors[l.action] || 'badge-slate'}>{l.action}</span>;
       },
     },
     { key: 'module', label: 'Module', render: (l) => <span className="badge-slate">{l.module}</span> },
-    { key: 'recordId', label: 'Record ID', render: (l) => <code className="text-xs text-slate-400">{l.recordId?.slice(0, 8) || '—'}...</code> },
-    { key: 'ip', label: 'IP', render: (l) => l.ip || '—' },
+    { key: 'recordId', label: 'Record ID', render: (l) => <code className="text-xs text-slate-400">{l.recordId?.slice(0, 12) || '—'}{l.recordId?.length > 12 ? '...' : ''}</code> },
+    { key: 'ipAddress', label: 'IP', render: (l) => l.ipAddress || '—' },
   ];
 
   return (
