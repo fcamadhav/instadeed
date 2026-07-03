@@ -163,20 +163,39 @@ router.put(
   requireRole("SUPER_ADMIN", "ADMIN"),
   async (req: Request, res: Response) => {
     try {
-      const data = createServiceSchema.partial().parse(req.body);
+      const body = req.body;
       const old = await prisma.service.findUnique({ where: { id: req.params.id } });
       if (!old) {
         res.status(404).json({ success: false, error: "Service not found" });
         return;
       }
-      const service = await prisma.service.update({ where: { id: req.params.id }, data });
-      await logActionSync(req.user!.userId, "UPDATE", "services", req.params.id, old as unknown as Record<string, unknown>, data as unknown as Record<string, unknown>, req.ip);
+      const serviceData: any = {};
+      if (body.name !== undefined) serviceData.name = body.name;
+      if (body.slug !== undefined) serviceData.slug = body.slug;
+      if (body.categoryId !== undefined) serviceData.categoryId = body.categoryId;
+      if (body.shortDescription !== undefined) serviceData.shortDescription = body.shortDescription;
+      if (body.longDescription !== undefined) serviceData.longDescription = body.longDescription;
+      if (body.deliveryTime !== undefined) serviceData.deliveryTime = body.deliveryTime;
+      if (body.processingTime !== undefined) serviceData.processingTime = body.processingTime;
+      if (body.sortOrder !== undefined) serviceData.sortOrder = body.sortOrder;
+      if (body.isFeatured !== undefined) serviceData.isFeatured = body.isFeatured;
+      if (body.showOnHomepage !== undefined) serviceData.showOnHomepage = body.showOnHomepage;
+      if (body.status !== undefined) serviceData.status = body.status;
+
+      const service = await prisma.service.update({ where: { id: req.params.id }, data: serviceData });
+
+      if (body.price !== undefined) {
+        const existing = await prisma.pricing.findUnique({ where: { serviceId: service.id } });
+        if (existing) {
+          await prisma.pricing.update({ where: { serviceId: service.id }, data: { currentPrice: body.price } });
+        } else {
+          await prisma.pricing.create({ data: { serviceId: service.id, currentPrice: body.price, gstPercent: 18, currency: "INR" } });
+        }
+      }
+
+      await logActionSync(req.user!.userId, "UPDATE", "services", req.params.id, old as unknown as Record<string, unknown>, serviceData as unknown as Record<string, unknown>, req.ip);
       res.json({ success: true, data: service });
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        res.status(400).json({ success: false, error: error.errors });
-        return;
-      }
       console.error("Update service error:", error);
       res.status(500).json({ success: false, error: "Internal server error" });
     }

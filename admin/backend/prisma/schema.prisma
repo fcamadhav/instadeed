@@ -83,6 +83,10 @@ model Service {
   sortOrder        Int           @default(0)
   isFeatured       Boolean       @default(false)
   showOnHomepage   Boolean       @default(true)
+  showInSearch     Boolean       @default(true)
+  showInNavigation Boolean       @default(true)
+  allowOrders      Boolean       @default(true)
+  allowDocUpload   Boolean       @default(false)
   seoTitle         String?
   seoDescription   String?
   urlSlug          String?
@@ -95,6 +99,9 @@ model Service {
   orders           Order[]
   coupons         CouponService[]
   documents       Document[]
+  formTemplate     ProductForm?
+  workflowTemplate ProductWorkflow?
+  requiredDocs     ProductDocument[]
 }
 
 // ─── Pricing ───
@@ -134,6 +141,46 @@ model PricingHistory {
   createdAt       DateTime @default(now())
 
   pricing         Pricing  @relation(fields: [pricingId], references: [id])
+}
+
+// ─── Dynamic Product Form Templates ───
+model ProductForm {
+  id        String   @id @default(uuid())
+  serviceId String   @unique
+  fields    String   @default("[]")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  service   Service  @relation(fields: [serviceId], references: [id])
+}
+
+// ─── Product Required Documents ───
+model ProductDocument {
+  id          String   @id @default(uuid())
+  serviceId   String
+  name        String
+  description String?
+  acceptTypes String   @default("application/pdf,image/jpeg,image/png")
+  maxSize     Int      @default(10)
+  isRequired  Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  service     Service  @relation(fields: [serviceId], references: [id])
+
+  @@index([serviceId])
+}
+
+// ─── Product Workflow Templates ───
+model ProductWorkflow {
+  id        String   @id @default(uuid())
+  serviceId String   @unique
+  steps     String   @default("[]")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  service   Service  @relation(fields: [serviceId], references: [id])
 }
 
 // ─── Orders ───
