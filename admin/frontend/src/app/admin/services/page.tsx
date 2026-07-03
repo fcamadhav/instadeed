@@ -33,7 +33,6 @@ interface Category {
 interface FormData {
   name: string;
   slug: string;
-  categoryId: string;
   shortDescription: string;
   longDescription: string;
   deliveryTime: string;
@@ -47,7 +46,7 @@ interface FormData {
 }
 
 const emptyForm: FormData = {
-  name: '', slug: '', categoryId: '', shortDescription: '', longDescription: '',
+  name: '', slug: '', shortDescription: '', longDescription: '',
   deliveryTime: '', processingTime: '', sortOrder: 0, isFeatured: false,
   showOnHomepage: true, price: 0, seoTitle: '', seoDescription: '',
 };
@@ -65,6 +64,7 @@ export default function ServicesPage() {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [statusFilter, setStatusFilter] = useState('');
+  const [propertyCatId, setPropertyCatId] = useState('');
 
   useEffect(() => { fetchData(); }, [page, statusFilter]);
 
@@ -80,7 +80,11 @@ export default function ServicesPage() {
         setServices(sRes.data.services || []);
         setTotalPages(sRes.data.pagination?.totalPages || 1);
       }
-      if (cRes.data) setCategories(Array.isArray(cRes.data) ? cRes.data : cRes.data.categories || []);
+      if (cRes.data) {
+        const cats = Array.isArray(cRes.data) ? cRes.data : cRes.data.categories || [];
+        setCategories(cats);
+        if (cats.length > 0) setPropertyCatId(cats[0].id);
+      }
     } catch {} finally { setLoading(false); }
   };
 
@@ -97,7 +101,6 @@ export default function ServicesPage() {
     setForm({
       name: service.name || '',
       slug: service.slug || '',
-      categoryId: service.category?.id || '',
       shortDescription: service.shortDescription || '',
       longDescription: '',
       deliveryTime: service.deliveryTime || '',
@@ -116,7 +119,6 @@ export default function ServicesPage() {
     const errs: Record<string, string> = {};
     if (!form.name.trim()) errs.name = 'Required';
     if (!form.slug.trim()) errs.slug = 'Required';
-    if (!form.categoryId) errs.categoryId = 'Required';
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -126,11 +128,13 @@ export default function ServicesPage() {
     if (!validate()) return;
     setSaving(true);
     try {
+      const payload: any = { ...form };
+      if (!editing && propertyCatId) payload.categoryId = propertyCatId;
       if (editing) {
-        await apiPut(`/admin/services/${editing}`, form);
+        await apiPut(`/admin/services/${editing}`, payload);
         toast.success('Updated');
       } else {
-        await apiPost('/admin/services', form);
+        await apiPost('/admin/services', payload);
         toast.success('Created');
       }
       setModalOpen(false);
@@ -167,7 +171,6 @@ export default function ServicesPage() {
         </div>
       ),
     },
-    { key: 'category', label: 'Category', render: (s) => s.category?.name || '—' },
     { key: 'pricing', label: 'Price', render: (s) => s.pricing ? `₹${(s.pricing.currentPrice || 0).toLocaleString('en-IN')}` : '—' },
     {
       key: 'status', label: 'Status',
@@ -217,9 +220,6 @@ export default function ServicesPage() {
             <FormField label="Slug" value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} error={errors.slug} />
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <FormField type="select" label="Category" value={form.categoryId} error={errors.categoryId}
-              onChange={e => setForm({...form, categoryId: e.target.value})}
-              options={[{value:'',label:'Select...'}, ...categories.map(c => ({value:c.id, label:c.name}))]} />
             <FormField label="Price (₹)" type="number" value={form.price} onChange={e => setForm({...form, price: parseFloat(e.target.value)||0})} />
           </div>
           <FormField label="Short Description" type="textarea" value={form.shortDescription} onChange={e => setForm({...form, shortDescription: e.target.value})} />
