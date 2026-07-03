@@ -23,8 +23,11 @@ const SVC: Record<string,{name:string;color:string;bg:string;border:string}> = {
   gnida_package:{name:'5-in-1 Package',color:'#e11d48',bg:'bg-rose-50',border:'border-rose-200'},
   gnida_registry:{name:'Registry Deed',color:'#2563eb',bg:'bg-blue-50',border:'border-blue-200'},
 };
-SVC['GNIDA_PTM']=SVC.gnida_ptm; SVC['MUTATION']=SVC.mutation;
-SVC['GNIDA_PACKAGE']=SVC.gnida_package; SVC['GNIDA_REGISTRY']=SVC.gnida_registry;
+// Fallback: any unknown key shows capitalized version of the key
+function getSvc(key: string) {
+  const k = key.toLowerCase();
+  return SVC[k] || {name: key.charAt(0).toUpperCase()+key.slice(1).toLowerCase(), color:'#64748b',bg:'bg-slate-50',border:'border-slate-200'};
+}
 
 const REQUIRED: Record<string,number> = { mutation:2, gnida_ptm:6, gnida_package:8, gnida_registry:4 };
 
@@ -43,8 +46,8 @@ export default function ApplicationDocumentsPage() {
       if (res.data?.grouped) {
         const g = Object.entries(res.data.grouped).map(([appId, docs]) => {
           const d = docs as AppDoc[]; const k = appId.split('-')[0];
-          const svc = SVC[k]||{name:k.toUpperCase(),color:'#64748b',bg:'bg-slate-50',border:'border-slate-200'};
-          return { appId, docs:d, completed:new Set(d.map(x=>x.documentType)).size, total:REQUIRED[k]||8,
+          const svc = getSvc(k);
+          return { appId, docs:d, completed:new Set(d.map(x=>x.documentType)).size, total:REQUIRED[k.toLowerCase()]||8,
             lastUpdated:d.reduce((m,x)=>x.uploadedAt>m?x.uploadedAt:m,d[0]?.uploadedAt||''), svcKey:k, svcName:svc.name };
         });
         g.sort((a,b)=>new Date(b.lastUpdated).getTime()-new Date(a.lastUpdated).getTime());
@@ -84,7 +87,7 @@ export default function ApplicationDocumentsPage() {
       ) : (
         <div className="space-y-3">
           {filtered.map(g => {
-            const svc = SVC[g.svcKey]||{name:g.svcKey.toUpperCase(),color:'#64748b',bg:'bg-slate-50',border:'border-slate-200'};
+            const svc = getSvc(g.svcKey);
             const pct = g.total ? Math.round(g.completed/g.total*100) : 0;
             const isOpen = expanded === g.appId;
             const statusLabel = pct===100?'Complete':pct>=50?'In Progress':'Pending';
