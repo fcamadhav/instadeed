@@ -101,16 +101,20 @@ router.put(
 
 function getDecryptedGateway(gateway: any): { apiKey: string; apiSecret: string; webhookSecret: string } | null {
   if (!gateway || !gateway.apiKey || !gateway.apiSecret) return null;
+  function safeDecrypt(val: string): string {
+    try { return decrypt(val); } catch { return val; }
+  }
   try {
     return {
-      apiKey: process.env.NODE_ENV === "production" ? decrypt(gateway.apiKey) : gateway.apiKey,
-      apiSecret: process.env.NODE_ENV === "production" ? decrypt(gateway.apiSecret) : gateway.apiSecret,
-      webhookSecret: gateway.webhookSecret ? (process.env.NODE_ENV === "production" ? decrypt(gateway.webhookSecret) : gateway.webhookSecret) : "",
+      apiKey: safeDecrypt(gateway.apiKey),
+      apiSecret: safeDecrypt(gateway.apiSecret),
+      webhookSecret: gateway.webhookSecret ? safeDecrypt(gateway.webhookSecret) : "",
     };
   } catch {
     return null;
   }
 }
+
 
 // GET /api/config — returns Razorpay public key for frontend
 router.get("/api/config", async (_req: Request, res: Response) => {
