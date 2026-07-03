@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 import { Mail, MessageSquare, Send, Edit2, FileText, Loader2, Plus } from 'lucide-react';
 
 interface EmailTemplate {
-  _id: string;
+  id: string;
   name: string;
   subject: string;
   body: string;
@@ -18,7 +18,7 @@ interface EmailTemplate {
 }
 
 interface WhatsAppTemplate {
-  _id: string;
+  id: string;
   name: string;
   templateId: string;
   body: string;
@@ -66,7 +66,7 @@ export default function NotificationsPage() {
   };
 
   const openEdit = (t: any) => {
-    setEditing(t._id);
+    setEditing(t.id);
     setForm({
       name: t.name || '',
       subject: t.subject || '',
@@ -127,10 +127,10 @@ export default function NotificationsPage() {
       </div>
 
       {tab === 'email' && (
-        <DataTable columns={emailColumns} data={emailTemplates} loading={loading} page={page} totalPages={totalPages} onPageChange={setPage} keyExtractor={(t) => t._id} emptyMessage="No email templates" emptyDescription="Create email notification templates." />
+        <DataTable columns={emailColumns} data={emailTemplates} loading={loading} page={page} totalPages={totalPages} onPageChange={setPage} keyExtractor={(t) => t.id} emptyMessage="No email templates" emptyDescription="Create email notification templates." />
       )}
       {tab === 'whatsapp' && (
-        <DataTable columns={whatsappColumns} data={whatsappTemplates} loading={loading} page={page} totalPages={totalPages} onPageChange={setPage} keyExtractor={(t) => t._id} emptyMessage="No WhatsApp templates" emptyDescription="Create WhatsApp notification templates." />
+        <DataTable columns={whatsappColumns} data={whatsappTemplates} loading={loading} page={page} totalPages={totalPages} onPageChange={setPage} keyExtractor={(t) => t.id} emptyMessage="No WhatsApp templates" emptyDescription="Create WhatsApp notification templates." />
       )}
       {tab === 'log' && (
         <div className="card p-6 text-center text-sm text-slate-500 dark:text-slate-400">

@@ -26,7 +26,7 @@ interface DashboardStats {
 }
 
 interface Order {
-  _id: string;
+  id: string;
   orderNumber: string;
   customer: { name: string; email: string };
   service: { name: string };
@@ -37,7 +37,7 @@ interface Order {
 }
 
 interface Activity {
-  _id: string;
+  id: string;
   action: string;
   user: string;
   module: string;
@@ -80,7 +80,7 @@ export default function DashboardPage() {
         });
         if (d.latestActivity) {
           setActivities(d.latestActivity.map((a: any) => ({
-            _id: a.id,
+            id: a.id,
             action: a.action,
             user: a.user?.name || '',
             module: a.module,
@@ -265,7 +265,7 @@ export default function DashboardPage() {
             columns={orderColumns}
             data={recentOrders}
             loading={loading}
-            keyExtractor={(o) => o._id}
+            keyExtractor={(o) => o.id}
             emptyMessage="No orders yet"
             emptyDescription="Orders will appear here once customers start placing them."
           />
@@ -291,7 +291,7 @@ export default function DashboardPage() {
               </div>
             ) : (
               activities.map((act) => (
-                <div key={act._id} className="flex items-start gap-3 pb-3 border-b border-slate-100 dark:border-slate-700/50 last:border-0 last:pb-0">
+                <div key={act.id} className="flex items-start gap-3 pb-3 border-b border-slate-100 dark:border-slate-700/50 last:border-0 last:pb-0">
                   <div className="w-8 h-8 rounded-full bg-admin-50 dark:bg-admin-900/30 flex items-center justify-center flex-shrink-0">
                     <Clock className="w-4 h-4 text-admin-600" />
                   </div>

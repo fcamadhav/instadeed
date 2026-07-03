@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 import { Plus, Edit2, Trash2, Copy } from 'lucide-react';
 
 interface Coupon {
-  _id: string;
+  id: string;
   code: string;
   type: 'percentage' | 'fixed';
   value: number;
@@ -23,8 +23,8 @@ interface Coupon {
   applicableCategories: string[];
 }
 
-interface Service { _id: string; name: string }
-interface Category { _id: string; name: string }
+interface Service { id: string; name: string }
+interface Category { id: string; name: string }
 
 const emptyForm: { code: string; type: 'percentage' | 'fixed'; value: number; minOrder: number; maxUses: number; expiryDate: string; status: boolean; applicableServices: string[]; applicableCategories: string[] } = { code: '', type: 'percentage', value: 0, minOrder: 0, maxUses: 0, expiryDate: '', status: true, applicableServices: [], applicableCategories: [] };
 
@@ -62,7 +62,7 @@ export default function CouponsPage() {
   };
 
   const openCreate = () => { setEditing(null); setForm(emptyForm); setErrors({}); setModalOpen(true); };
-  const openEdit = (c: Coupon) => { setEditing(c._id); setForm({ code: c.code, type: c.type, value: c.value, minOrder: c.minOrder, maxUses: c.maxUses, expiryDate: c.expiryDate ? new Date(c.expiryDate).toISOString().split('T')[0] : '', status: c.status, applicableServices: c.applicableServices || [], applicableCategories: c.applicableCategories || [] }); setErrors({}); setModalOpen(true); };
+  const openEdit = (c: Coupon) => { setEditing(c.id); setForm({ code: c.code, type: c.type, value: c.value, minOrder: c.minOrder, maxUses: c.maxUses, expiryDate: c.expiryDate ? new Date(c.expiryDate).toISOString().split('T')[0] : '', status: c.status, applicableServices: c.applicableServices || [], applicableCategories: c.applicableCategories || [] }); setErrors({}); setModalOpen(true); };
 
   const validate = () => {
     const errs: Record<string, string> = {};
@@ -108,7 +108,7 @@ export default function CouponsPage() {
       <div className="flex items-center gap-1">
         <button onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(c.code); toast.success('Copied!'); }} className="btn-ghost btn-sm p-1.5"><Copy className="w-3.5 h-3.5" /></button>
         <button onClick={(e) => { e.stopPropagation(); openEdit(c); }} className="btn-ghost btn-sm p-1.5"><Edit2 className="w-3.5 h-3.5" /></button>
-        <button onClick={(e) => { e.stopPropagation(); setDeleteConfirm(c._id); }} className="btn-ghost btn-sm p-1.5 text-red-500"><Trash2 className="w-3.5 h-3.5" /></button>
+        <button onClick={(e) => { e.stopPropagation(); setDeleteConfirm(c.id); }} className="btn-ghost btn-sm p-1.5 text-red-500"><Trash2 className="w-3.5 h-3.5" /></button>
       </div>
     )},
   ];
@@ -120,7 +120,7 @@ export default function CouponsPage() {
         <button onClick={openCreate} className="btn-primary btn-sm"><Plus className="w-4 h-4" /> Add Coupon</button>
       </div>
 
-      <DataTable columns={columns} data={coupons} loading={loading} error={error} onRetry={fetchData} page={page} totalPages={totalPages} total={total} onPageChange={setPage} keyExtractor={(c) => c._id} emptyMessage="No coupons yet" emptyDescription="Create coupons to offer discounts." />
+      <DataTable columns={columns} data={coupons} loading={loading} error={error} onRetry={fetchData} page={page} totalPages={totalPages} total={total} onPageChange={setPage} keyExtractor={(c) => c.id} emptyMessage="No coupons yet" emptyDescription="Create coupons to offer discounts." />
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? 'Edit Coupon' : 'Add Coupon'} size="lg" footer={<><button onClick={() => setModalOpen(false)} className="btn-secondary">Cancel</button><button onClick={handleSave} disabled={saving} className="btn-primary">{saving ? 'Saving...' : editing ? 'Update' : 'Create'}</button></>}>
         <form onSubmit={handleSave} className="space-y-4">
@@ -145,8 +145,8 @@ export default function CouponsPage() {
               <label className="label">Applicable Services</label>
               <div className="max-h-32 overflow-y-auto border border-slate-200 dark:border-slate-700 rounded-lg p-2 space-y-1">
                 {services.map(s => (
-                  <label key={s._id} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 cursor-pointer">
-                    <input type="checkbox" checked={form.applicableServices.includes(s._id)} onChange={() => setForm({ ...form, applicableServices: form.applicableServices.includes(s._id) ? form.applicableServices.filter(id => id !== s._id) : [...form.applicableServices, s._id] })} className="rounded" />
+                  <label key={s.id} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 cursor-pointer">
+                    <input type="checkbox" checked={form.applicableServices.includes(s.id)} onChange={() => setForm({ ...form, applicableServices: form.applicableServices.includes(s.id) ? form.applicableServices.filter(id => id !== s.id) : [...form.applicableServices, s.id] })} className="rounded" />
                     {s.name}
                   </label>
                 ))}
@@ -157,8 +157,8 @@ export default function CouponsPage() {
               <label className="label">Applicable Categories</label>
               <div className="max-h-32 overflow-y-auto border border-slate-200 dark:border-slate-700 rounded-lg p-2 space-y-1">
                 {categories.map(c => (
-                  <label key={c._id} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 cursor-pointer">
-                    <input type="checkbox" checked={form.applicableCategories.includes(c._id)} onChange={() => setForm({ ...form, applicableCategories: form.applicableCategories.includes(c._id) ? form.applicableCategories.filter(id => id !== c._id) : [...form.applicableCategories, c._id] })} className="rounded" />
+                  <label key={c.id} className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 cursor-pointer">
+                    <input type="checkbox" checked={form.applicableCategories.includes(c.id)} onChange={() => setForm({ ...form, applicableCategories: form.applicableCategories.includes(c.id) ? form.applicableCategories.filter(id => id !== c.id) : [...form.applicableCategories, c.id] })} className="rounded" />
                     {c.name}
                   </label>
                 ))}

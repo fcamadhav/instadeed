@@ -13,10 +13,10 @@ import {
 } from 'lucide-react';
 
 interface Order {
-  _id: string;
+  id: string;
   orderNumber: string;
-  customer: { _id: string; name: string; email: string; phone: string };
-  service: { _id: string; name: string };
+  customer: { id: string; name: string; email: string; phone: string };
+  service: { id: string; name: string };
   amount: number;
   status: string;
   paymentStatus: string;
@@ -60,7 +60,7 @@ export default function OrdersPage() {
     setDetailLoading(true);
     setSelectedOrder(order);
     try {
-      const res = await apiGet<{ data: { order: Order } }>(`/admin/orders/${order._id}`);
+      const res = await apiGet<{ data: { order: Order } }>(`/admin/orders/${order.id}`);
       if (res.data?.order) setSelectedOrder(res.data.order);
     } catch {} finally { setDetailLoading(false); }
   };
@@ -122,7 +122,7 @@ export default function OrdersPage() {
         </div>
       </div>
 
-      <DataTable columns={columns} data={orders} loading={loading} error={error} onRetry={fetchOrders} page={page} totalPages={totalPages} total={total} onPageChange={setPage} keyExtractor={(o) => o._id} onRowClick={openDetail} emptyMessage="No orders found" emptyDescription="Orders will appear here once customers start placing them." />
+      <DataTable columns={columns} data={orders} loading={loading} error={error} onRetry={fetchOrders} page={page} totalPages={totalPages} total={total} onPageChange={setPage} keyExtractor={(o) => o.id} onRowClick={openDetail} emptyMessage="No orders found" emptyDescription="Orders will appear here once customers start placing them." />
 
       {selectedOrder && (
         <div className="fixed inset-0 z-40 flex justify-end">
@@ -191,14 +191,14 @@ export default function OrdersPage() {
                   <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Update Status</h4>
                   <div className="flex flex-wrap gap-2">
                     {statusSteps.map(s => (
-                      <button key={s} onClick={() => updateStatus(selectedOrder._id, s)} disabled={selectedOrder.status === s} className={`btn-sm capitalize ${selectedOrder.status === s ? 'btn-primary' : 'btn-secondary'}`}>{s}</button>
+                      <button key={s} onClick={() => updateStatus(selectedOrder.id, s)} disabled={selectedOrder.status === s} className={`btn-sm capitalize ${selectedOrder.status === s ? 'btn-primary' : 'btn-secondary'}`}>{s}</button>
                     ))}
                   </div>
                 </div>
 
                 {selectedOrder.paymentStatus === 'paid' && (
                   <div>
-                    <button onClick={() => updateStatus(selectedOrder._id, 'refunded')} className="btn-danger btn-sm"><RotateCcw className="w-3.5 h-3.5" /> Refund</button>
+                    <button onClick={() => updateStatus(selectedOrder.id, 'refunded')} className="btn-danger btn-sm"><RotateCcw className="w-3.5 h-3.5" /> Refund</button>
                   </div>
                 )}
               </div>

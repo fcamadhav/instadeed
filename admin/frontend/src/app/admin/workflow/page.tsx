@@ -15,7 +15,7 @@ interface WorkflowStep {
 }
 
 interface Workflow {
-  _id: string;
+  id: string;
   name: string;
   description: string;
   active: boolean;
@@ -54,7 +54,7 @@ export default function WorkflowPage() {
   const openCreate = () => { setEditing(null); setForm({ name: '', description: '', active: true, steps: [] }); setModalOpen(true); };
 
   const openEdit = (w: Workflow) => {
-    setEditing(w._id);
+    setEditing(w.id);
     setForm({ name: w.name, description: w.description || '', active: w.active, steps: w.steps || [] });
     setModalOpen(true);
   };
@@ -120,7 +120,7 @@ export default function WorkflowPage() {
       ) : (
         <div className="space-y-4">
           {workflows.map(w => (
-            <div key={w._id} className="card p-5">
+            <div key={w.id} className="card p-5">
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <div className="flex items-center gap-2">
@@ -131,7 +131,7 @@ export default function WorkflowPage() {
                 </div>
                 <div className="flex items-center gap-1">
                   <button onClick={() => openEdit(w)} className="btn-ghost btn-sm p-1.5"><Edit2 className="w-3.5 h-3.5" /></button>
-                  <button onClick={() => setDeleteConfirm(w._id)} className="btn-ghost btn-sm p-1.5 text-red-500"><Trash2 className="w-3.5 h-3.5" /></button>
+                  <button onClick={() => setDeleteConfirm(w.id)} className="btn-ghost btn-sm p-1.5 text-red-500"><Trash2 className="w-3.5 h-3.5" /></button>
                 </div>
               </div>
 

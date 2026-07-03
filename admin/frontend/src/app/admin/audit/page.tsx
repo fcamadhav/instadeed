@@ -7,7 +7,7 @@ import { apiGet } from '@/lib/api';
 import { Search, Filter, ChevronDown, ChevronUp, Loader2, ScrollText } from 'lucide-react';
 
 interface AuditLog {
-  _id: string;
+  id: string;
   timestamp: string;
   user: string;
   action: string;
@@ -96,7 +96,7 @@ export default function AuditPage() {
         </div>
       </div>
 
-      <DataTable columns={columns} data={logs} loading={loading} error={error} onRetry={fetchLogs} page={page} totalPages={totalPages} total={total} onPageChange={setPage} keyExtractor={(l) => l._id} onRowClick={(l) => setExpanded(expanded === l._id ? null : l._id)} emptyMessage="No audit logs found" emptyDescription="Actions will be logged here." />
+      <DataTable columns={columns} data={logs} loading={loading} error={error} onRetry={fetchLogs} page={page} totalPages={totalPages} total={total} onPageChange={setPage} keyExtractor={(l) => l.id} onRowClick={(l) => setExpanded(expanded === l.id ? null : l.id)} emptyMessage="No audit logs found" emptyDescription="Actions will be logged here." />
 
       {expanded && (
         <div className="card p-5 mt-3">
@@ -105,7 +105,7 @@ export default function AuditPage() {
             <button onClick={() => setExpanded(null)} className="text-slate-400 hover:text-slate-600">&times;</button>
           </div>
           {(() => {
-            const log = logs.find(l => l._id === expanded);
+            const log = logs.find(l => l.id === expanded);
             if (!log) return null;
             return (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
