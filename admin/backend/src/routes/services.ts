@@ -111,6 +111,25 @@ router.get(
   }
 );
 
+router.get(
+  "/api/admin/services/:id",
+  requireAuth,
+  requireRole("SUPER_ADMIN", "ADMIN"),
+  async (req: Request, res: Response) => {
+    try {
+      const service = await prisma.service.findUnique({
+        where: { id: req.params.id },
+        include: { category: true, pricing: true, formTemplate: true, workflowTemplate: true, requiredDocs: true, _count: { select: { orders: true } } },
+      });
+      if (!service) { res.status(404).json({ success: false, error: "Service not found" }); return; }
+      res.json({ success: true, data: service });
+    } catch (error) {
+      console.error("Get service error:", error);
+      res.status(500).json({ success: false, error: "Internal server error" });
+    }
+  }
+);
+
 router.put(
   "/api/admin/services/:id/status",
   requireAuth,
