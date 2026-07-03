@@ -7,10 +7,14 @@ import { setActiveDoc } from "@/lib/documentState";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
+    try {
+      if (localStorage.getItem("instadeed_user_session")) setSignedIn(true);
+    } catch {}
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -31,13 +35,25 @@ export default function Navbar() {
           <span className="text-xl font-bold tracking-tight text-dark">INSTADEED</span>
         </a>
 
-        <button
-          onClick={() => setActiveDoc('rent-agreement')}
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-primary-dark active:scale-95"
-        >
-          Draft Now
-          <ArrowRight className="h-4 w-4" />
-        </button>
+        <div className="flex items-center gap-3">
+          {signedIn ? (
+            <span className="text-xs text-green-600 font-semibold bg-green-50 px-3 py-1 rounded-full">Signed In</span>
+          ) : (
+            <button
+              onClick={() => setActiveDoc('rent-agreement')}
+              className="text-sm font-semibold text-dark hover:text-primary transition-colors"
+            >
+              Sign In
+            </button>
+          )}
+          <button
+            onClick={() => setActiveDoc('rent-agreement')}
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-primary-dark active:scale-95"
+          >
+            Draft Now
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
       </div>
     </header>
   );
