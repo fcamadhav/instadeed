@@ -242,4 +242,75 @@ router.delete(
   }
 );
 
+// ─── Pricing Management ───
+router.get(
+  "/api/admin/pricing/:serviceId",
+  requireAuth,
+  requireRole("SUPER_ADMIN", "ADMIN"),
+  async (req: Request, res: Response) => {
+    try {
+      const pricing = await prisma.pricing.findUnique({ where: { serviceId: req.params.serviceId } });
+      if (!pricing) { res.status(404).json({ success: false, error: "Pricing not found" }); return; }
+      res.json({ success: true, data: pricing });
+    } catch (error) {
+      console.error("Get pricing error:", error);
+      res.status(500).json({ success: false, error: "Internal server error" });
+    }
+  }
+);
+
+router.get(
+  "/api/admin/pricing/:serviceId/history",
+  requireAuth,
+  requireRole("SUPER_ADMIN", "ADMIN"),
+  async (req: Request, res: Response) => {
+    try {
+      const pricing = await prisma.pricing.findUnique({ where: { serviceId: req.params.serviceId } });
+      if (!pricing) { res.json({ success: true, data: [] }); return; }
+      const history = await prisma.pricingHistory.findMany({
+        where: { pricingId: pricing.id },
+        orderBy: { createdAt: "desc" },
+        take: 20,
+      });
+      res.json({ success: true, data: history });
+    } catch (error) {
+      console.error("Get pricing history error:", error);
+      res.status(500).json({ success: false, error: "Internal server error" });
+    }
+  }
+);
+
+router.put(
+  "/api/admin/pricing/:serviceId",
+  requireAuth,
+  requireRole("SUPER_ADMIN", "ADMIN"),
+  async (req: Request, res: Response) => {
+    try {
+      const body = req.body;
+      let pricing = await prisma.pricing.findUnique({ where: { serviceId: req.params.serviceId } });
+      if (!pricing) {
+        pricing = await prisma.pricing.create({ data: { serviceId: req.params.serviceId, currentPrice: body.currentPrice || 0, gstPercent: 18, currency: "INR" } });
+      }
+      const updateData: any = {};
+      if (body.currentPrice !== undefined) updateData.currentPrice = body.currentPrice;
+      if (body.oldPrice !== undefined) updateData.oldPrice = body.oldPrice;
+      if (body.gstPercent !== undefined) updateData.gstPercent = body.gstPercent;
+      if (body.offerBadge !== undefined) updateData.offerBadge = body.offerBadge;
+      if (body.isLimitedOffer !== undefined) updateData.isLimitedOffer = body.isLimitedOffer;
+      if (body.convenienceFee !== undefined) updateData.convenienceFee = body.convenienceFee;
+      if (Object.keys(updateData).length > 0) {
+        pricing = await prisma.pricing.update({ where: { serviceId: req.params.serviceId }, data: updateData });
+        await prisma.pricingHistory.create({
+          data: { pricingId: pricing.id, currentPrice: pricing.currentPrice, oldPrice: pricing.oldPrice, gstPercent: pricing.gstPercent, discountPercent: pricing.discountPercent },
+        });
+      }
+      await logActionSync(req.user!.userId, "UPDATE", "pricing", req.params.serviceId, undefined, updateData as any, req.ip);
+      res.json({ success: true, data: pricing });
+    } catch (error) {
+      console.error("Update pricing error:", error);
+      res.status(500).json({ success: false, error: "Internal server error" });
+    }
+  }
+);
+
 export default router;
