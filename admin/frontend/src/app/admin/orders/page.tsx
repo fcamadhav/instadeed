@@ -47,7 +47,7 @@ export default function OrdersPage() {
       if (filters.status) params.set('status', filters.status);
       if (filters.paymentStatus) params.set('paymentStatus', filters.paymentStatus);
       if (filters.search) params.set('search', filters.search);
-      const res = await apiGet<{ data: { orders: Order[]; pagination: { page: number; totalPages: number; total: number } } }>(`/admin/orders?${params}`);
+      const res = await apiGet<{ data: { orders: Order[]; pagination: { page: number; totalPages: number; total: number } } }>(`/orders?${params}`);
       if (res.data) {
         setOrders(res.data.orders || []);
         setTotalPages(res.data.pagination?.totalPages || 1);
@@ -60,8 +60,8 @@ export default function OrdersPage() {
     setDetailLoading(true);
     setSelectedOrder(order);
     try {
-      const res = await apiGet<{ data: { order: Order } }>(`/admin/orders/${order.id}`);
-      if (res.data?.order) setSelectedOrder(res.data.order);
+      const res = await apiGet<{ data: Order }>(`/orders/${order.id}`);
+      if (res.data) setSelectedOrder(res.data);
     } catch {} finally { setDetailLoading(false); }
   };
 
