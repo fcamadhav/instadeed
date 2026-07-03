@@ -64,14 +64,16 @@ export default function ServicesPage() {
   const [saving, setSaving] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [statusFilter, setStatusFilter] = useState('');
 
-  useEffect(() => { fetchData(); }, [page]);
+  useEffect(() => { fetchData(); }, [page, statusFilter]);
 
   const fetchData = async () => {
     setLoading(true);
     try {
+      const statusQ = statusFilter ? `&status=${statusFilter}` : '';
       const [sRes, cRes] = await Promise.all([
-        apiGet<{ data: { services: Service[]; pagination: { totalPages: number } } }>(`/admin/services?page=${page}&limit=10`),
+        apiGet<{ data: { services: Service[]; pagination: { totalPages: number } } }>(`/admin/services?page=${page}&limit=10${statusQ}`),
         apiGet<{ data: { categories: Category[] } }>('/admin/categories'),
       ]);
       if (sRes.data) {
@@ -191,7 +193,14 @@ export default function ServicesPage() {
   return (
     <AdminLayout title="Services">
       <div className="flex items-center justify-between mb-4">
-        <p className="text-sm text-slate-500 dark:text-slate-400">Manage legal services — changes appear instantly on the website</p>
+        <div className="flex items-center gap-3">
+          <p className="text-sm text-slate-500">Manage legal services</p>
+          <select value={statusFilter} onChange={e => { setStatusFilter(e.target.value); setPage(1); }} className="text-xs border border-slate-300 rounded-lg px-2 py-1.5 text-slate-600">
+            <option value="">All Status</option>
+            <option value="ACTIVE">Active Only</option>
+            <option value="INACTIVE">Inactive Only</option>
+          </select>
+        </div>
         <button onClick={openCreate} className="btn-primary btn-sm"><Plus className="w-4 h-4" /> Add Service</button>
       </div>
       <DataTable columns={columns} data={services} loading={loading} page={page} totalPages={totalPages} onPageChange={setPage}
