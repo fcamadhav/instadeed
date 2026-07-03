@@ -28,9 +28,18 @@ const createSchema = z.object({
 
 const updateSchema = createSchema.partial().omit({ renewalStatus: true });
 
-function generateAgreementId(): string {
-  const seq = Math.floor(Math.random() * 900000) + 100000;
-  return `RA-${new Date().getFullYear()}-${seq}`;
+async function generateAgreementId(): Promise<string> {
+  const year = new Date().getFullYear().toString();
+  const last = await prisma.rentAgreement.findFirst({
+    where: { agreementId: { startsWith: `RA-${year}-` } },
+    orderBy: { createdAt: "desc" },
+  });
+  let seq = 1;
+  if (last) {
+    const parts = last.agreementId.split("-");
+    seq = parseInt(parts[parts.length - 1], 10) + 1;
+  }
+  return `RA-${year}-GN-${String(seq).padStart(6, "0")}`;
 }
 
 function daysBetween(a: Date, b: Date): number {
@@ -270,7 +279,7 @@ router.post(
   async (req: Request, res: Response) => {
     try {
       const data = createSchema.parse(req.body);
-      const agreementId = generateAgreementId();
+      const agreementId = await generateAgreementId();
       const agreement = await prisma.rentAgreement.create({
         data: {
           ...data,
@@ -443,7 +452,7 @@ router.post(
 
       const newAgreement = await prisma.rentAgreement.create({
         data: {
-          agreementId: generateAgreementId(),
+          agreementId: await generateAgreementId(),
           customerId: old.customerId,
           customerName: body.customerName || old.customerName,
           mobile: body.mobile || old.mobile,
