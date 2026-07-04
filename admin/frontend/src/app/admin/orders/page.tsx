@@ -23,6 +23,9 @@ export default function OrdersPage() {
   const [payFilter, setPayFilter] = useState('');
   const [selected, setSelected] = useState<Order | null>(null);
   const [selectedFull, setSelectedFull] = useState<any>(null);
+  const [custProfile, setCustProfile] = useState<any>(null);
+  const [custOrders, setCustOrders] = useState<any[]>([]);
+  const [custLoading, setCustLoading] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [summary, setSummary] = useState({ total: 0, revenue: 0, pending: 0, completed: 0 });
 
@@ -59,6 +62,23 @@ export default function OrdersPage() {
     setSelected(o);
     try { const r = await apiGet<{ data: any }>(`/orders/${o.id}`); if (r.data) setSelectedFull(r.data); }
     catch { toast.error('Failed to load'); }
+  };
+
+  const openCustomerProfile = async (o: Order) => {
+    setCustLoading(true); setCustProfile({ name: custName(o), phone: custSub(o), email: o.customerEmail || o.customer?.email });
+    try {
+      const custs = await apiGet<{ data: { customers: any[] } }>(`/admin/customers?search=${encodeURIComponent(o.customerEmail || o.customerPhone || o.customerName || '')}`);
+      if (custs?.data?.customers?.length > 0) {
+        const cid = custs.data.customers[0].id;
+        const [detail, orders] = await Promise.all([
+          apiGet<{ data: any }>(`/admin/customers/${cid}`),
+          apiGet<{ data: { orders: any[] } }>('/orders?limit=100'),
+        ]);
+        const custOrders = (orders?.data?.orders || []).filter((x:any) => (x.customerEmail && x.customerEmail === o.customerEmail) || (x.customerPhone && x.customerPhone === o.customerPhone));
+        setCustOrders(custOrders);
+        setCustProfile({ ...custProfile, ...detail?.data, totalOrders: custOrders.length, lifetimeValue: custOrders.reduce((s,x)=>s+(x.total||x.amount||0),0) });
+      }
+    } catch {} finally { setCustLoading(false); }
   };
 
   const updateStatus = async (id: string, status: string) => {
@@ -114,9 +134,18 @@ export default function OrdersPage() {
               ) : orders.length === 0 ? (
                 <tr><td colSpan={8} className="py-12 text-center text-sm text-slate-400">No orders found</td></tr>
               ) : orders.map(o => (
-                <tr key={o.id} onClick={()=>openDetail(o)} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors cursor-pointer">
-                  <td className="py-2.5 px-4"><span className="text-xs font-mono font-semibold text-slate-700">#{o.orderNumber.replace('ID-','')}</span></td>
-                  <td className="py-2.5 px-4"><div><span className="text-xs font-medium text-slate-800">{custName(o)}</span>{custSub(o) && <span className="block text-[11px] text-slate-400">{custSub(o)}</span>}</div></td>
+                <tr key={o.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                  <td className="py-2.5 px-4">
+                    <button onClick={(e)=>{e.stopPropagation();openDetail(o)}} className="text-xs font-mono font-semibold text-admin-600 hover:text-admin-800 hover:underline focus:outline-none focus:underline cursor-pointer transition-colors">
+                      #{o.orderNumber.replace('ID-','')}
+                    </button>
+                  </td>
+                  <td className="py-2.5 px-4">
+                    <button onClick={(e)=>{e.stopPropagation();openCustomerProfile(o)}} className="text-left hover:underline focus:outline-none">
+                      <span className="text-xs font-medium text-slate-800">{custName(o)}</span>
+                      {custSub(o) && <span className="block text-[11px] text-slate-400">{custSub(o)}</span>}
+                    </button>
+                  </td>
                   <td className="py-2.5 px-4 hidden md:table-cell"><span className="text-xs text-slate-600">{o.service?.name || 'N/A'}</span></td>
                   <td className="py-2.5 px-4 text-right"><span className="text-xs font-semibold text-slate-800">₹{fmt(o.total||o.amount||0)}</span></td>
                   <td className="py-2.5 px-4"><span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${payColor(o.paymentStatus)}`}>{label(o.paymentStatus)}</span></td>
@@ -159,6 +188,35 @@ export default function OrdersPage() {
                   {['PENDING','PROCESSING','VERIFICATION','DRAFT_READY','SIGN_PENDING','COMPLETED','CANCELLED'].map(s=><button key={s} onClick={()=>updateStatus(selected.id,s)} className={`px-2.5 py-1 text-[10px] font-semibold rounded-full border transition-colors ${selected.status===s?'bg-slate-800 text-white border-slate-800':'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}>{label(s)}</button>)}
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Customer Profile Slide-over */}
+      {custProfile && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="absolute inset-0 bg-black/40" onClick={()=>{setCustProfile(null);setCustOrders([])}}/>
+          <div className="relative w-full max-w-md bg-white shadow-2xl overflow-y-auto animate-in slide-in-from-right duration-200">
+            <div className="sticky top-0 bg-white border-b border-slate-100 px-5 py-3 flex items-center justify-between z-10">
+              <div><h3 className="text-sm font-bold text-slate-900">{custProfile.name||'Customer'}</h3><p className="text-[11px] text-slate-400">{custProfile.phone||custProfile.email||''}</p></div>
+              <button onClick={()=>{setCustProfile(null);setCustOrders([])}} className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 text-lg">&times;</button>
+            </div>
+            <div className="p-5 space-y-4">
+              {custLoading ? <Loader2 className="w-5 h-5 animate-spin mx-auto"/> : <>
+                <div className="grid grid-cols-2 gap-3">
+                  {[{k:'Total Orders',v:custProfile.totalOrders||custOrders.length},{k:'Lifetime Value',v:'₹'+fmt(custProfile.lifetimeValue||0)},{k:'Email',v:custProfile.email||'—'},{k:'Phone',v:custProfile.phone||'—'}].map(f=><div key={f.k}><p className="text-[10px] font-medium text-slate-400 uppercase">{f.k}</p><p className="text-xs font-semibold text-slate-800 mt-0.5">{f.v}</p></div>)}
+                </div>
+                <div><p className="text-[10px] font-medium text-slate-400 uppercase mb-2">Orders</p>
+                  <div className="space-y-1.5">
+                    {custOrders.length===0 ? <p className="text-xs text-slate-400">No orders found</p> :
+                      custOrders.map((co:any)=><div key={co.id} className="flex items-center justify-between p-2 rounded-lg bg-slate-50 text-xs">
+                        <div><span className="font-mono font-semibold text-admin-600">#{co.orderNumber?.replace('ID-','')}</span><span className="text-slate-400 ml-2">{co.service?.name||''}</span></div>
+                        <div className="flex items-center gap-2"><span className="font-semibold">₹{fmt(co.total||co.amount||0)}</span><span className={`px-1.5 py-0.5 rounded-full text-[9px] font-semibold ${payColor(co.paymentStatus)}`}>{label(co.paymentStatus)}</span></div>
+                      </div>)}
+                  </div>
+                </div>
+              </>}
             </div>
           </div>
         </div>

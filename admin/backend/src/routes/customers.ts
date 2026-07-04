@@ -32,14 +32,21 @@ router.get(
           select: {
             id: true, name: true, email: true, phone: true, isActive: true, createdAt: true, lastLoginAt: true,
             _count: { select: { orders: true } },
+            orders: { select: { total: true, paymentStatus: true } },
           },
         }),
         prisma.user.count({ where }),
       ]);
 
+      const enriched = customers.map(c => ({
+        ...c,
+        totalSpent: c.orders.filter(o => o.paymentStatus === "PAID").reduce((s,o) => s + o.total, 0),
+        orders: undefined,
+      }));
+
       res.json({
         success: true,
-        data: { customers, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } },
+        data: { customers: enriched, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } },
       });
     } catch (error) {
       console.error("List customers error:", error);

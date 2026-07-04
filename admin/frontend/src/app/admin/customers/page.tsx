@@ -16,6 +16,7 @@ interface Customer {
   createdAt: string;
   lastLoginAt: string | null;
   _count: { orders: number };
+  totalSpent: number;
 }
 
 interface LoginRecord {
@@ -68,21 +69,24 @@ export default function CustomersPage() {
     } catch { toast.error('Failed to load customer details'); } finally { setDetailLoading(false); }
   };
 
+  const fmt = (n:number) => n?.toLocaleString('en-IN') || '0';
+
   const columns: Column<Customer>[] = [
     {
-      key: 'name', label: 'Name', sortable: true,
+      key: 'name', label: 'Name',
       render: (c) => (
-        <div className="flex items-center gap-2">
+        <button onClick={(e) => { e.stopPropagation(); openDetail(c); }} className="flex items-center gap-2 text-left hover:underline">
           <div className="w-8 h-8 rounded-full bg-admin-100 dark:bg-admin-900/30 flex items-center justify-center text-sm font-medium text-admin-700 dark:text-admin-300">
             {c.name?.charAt(0)?.toUpperCase() || '?'}
           </div>
           <span className="font-medium text-slate-900 dark:text-white">{c.name}</span>
-        </div>
+        </button>
       ),
     },
     { key: 'email', label: 'Email', render: (c) => <span className="text-xs text-slate-500">{c.email}</span> },
     { key: 'phone', label: 'Phone', render: (c) => c.phone || '—' },
     { key: '_count', label: 'Orders', render: (c) => c._count?.orders || 0 },
+    { key: 'totalSpent', label: 'Lifetime Value', render: (c) => <span className="font-semibold text-slate-900">₹{fmt(c.totalSpent || 0)}</span> },
     { key: 'lastLoginAt', label: 'Last Login', render: (c) => c.lastLoginAt ? new Date(c.lastLoginAt).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'Never' },
     { key: 'isActive', label: 'Status', render: (c) => c.isActive ? <span className="badge-green">Active</span> : <span className="badge-slate">Inactive</span> },
   ];
