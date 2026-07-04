@@ -8,6 +8,7 @@ import { Search, Download, IndianRupee, Clock, CheckCircle, XCircle, Loader2, Mo
 
 interface Order {
   id: string; orderNumber: string; customerName: string | null; customerPhone: string | null; customerEmail: string | null;
+  customer: { id: string; name: string; email: string; phone: string } | null;
   service: { id: string; name: string } | null; amount: number; total: number;
   status: string; paymentStatus: string; notes: string | null; createdAt: string; quotation: any;
 }
@@ -29,6 +30,8 @@ export default function OrdersPage() {
   const date = (d: string) => new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
   const statusColor = (s: string) => s === 'COMPLETED' ? 'bg-emerald-50 text-emerald-700' : s === 'PROCESSING' ? 'bg-blue-50 text-blue-700' : s === 'CANCELLED' ? 'bg-red-50 text-red-700' : 'bg-amber-50 text-amber-700';
   const payColor = (s: string) => s === 'PAID' ? 'bg-emerald-50 text-emerald-700' : s === 'FAILED' ? 'bg-red-50 text-red-700' : 'bg-amber-50 text-amber-700';
+  const custName = (o: Order) => o.customerName || o.customer?.name || o.customerEmail || o.customerPhone || 'N/A';
+  const custSub = (o: Order) => o.customerPhone || o.customer?.phone || (o.customerName ? '' : o.customerEmail || '');
   const label = (s: string) => s?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 
   const fetchOrders = useCallback(async () => {
@@ -66,7 +69,7 @@ export default function OrdersPage() {
   const exportCSV = async () => { setExporting(true);
     try { const p = new URLSearchParams({ limit: '10000' }); if (statusFilter) p.set('status', statusFilter); if (payFilter) p.set('paymentStatus', payFilter); if (search) p.set('search', search);
       const r = await apiGet<{ data: { orders: Order[] } }>(`/orders?${p}`);
-      const rows = (r.data?.orders||[]).map(o => [o.orderNumber, (o.customerName||'N/A'), o.customerPhone||'', o.customerEmail||'', o.service?.name||'', o.total||o.amount, o.status, o.paymentStatus, date(o.createdAt)].join(','));
+      const rows = (r.data?.orders||[]).map(o => [o.orderNumber, custName(o), o.customerPhone||o.customer?.phone||'', o.customerEmail||o.customer?.email||'', o.service?.name||'', o.total||o.amount, o.status, o.paymentStatus, date(o.createdAt)].join(','));
       const blob = new Blob(['Order,Customer,Phone,Email,Service,Amount,Status,Payment,Date\n'+rows.join('\n')], {type:'text/csv'});
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `orders-${new Date().toISOString().slice(0,10)}.csv`; a.click(); toast.success('Exported');
     } catch { toast.error('Export failed'); } finally { setExporting(false); }
@@ -113,7 +116,7 @@ export default function OrdersPage() {
               ) : orders.map(o => (
                 <tr key={o.id} onClick={()=>openDetail(o)} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors cursor-pointer">
                   <td className="py-2.5 px-4"><span className="text-xs font-mono font-semibold text-slate-700">#{o.orderNumber.replace('ID-','')}</span></td>
-                  <td className="py-2.5 px-4"><div><span className="text-xs font-medium text-slate-800">{o.customerName || 'N/A'}</span>{o.customerPhone && <span className="block text-[11px] text-slate-400">{o.customerPhone}</span>}</div></td>
+                  <td className="py-2.5 px-4"><div><span className="text-xs font-medium text-slate-800">{custName(o)}</span>{custSub(o) && <span className="block text-[11px] text-slate-400">{custSub(o)}</span>}</div></td>
                   <td className="py-2.5 px-4 hidden md:table-cell"><span className="text-xs text-slate-600">{o.service?.name || 'N/A'}</span></td>
                   <td className="py-2.5 px-4 text-right"><span className="text-xs font-semibold text-slate-800">₹{fmt(o.total||o.amount||0)}</span></td>
                   <td className="py-2.5 px-4"><span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${payColor(o.paymentStatus)}`}>{label(o.paymentStatus)}</span></td>
@@ -149,7 +152,7 @@ export default function OrdersPage() {
             </div>
             <div className="p-5 space-y-4">
               <div className="grid grid-cols-2 gap-3">
-                {[{k:'Customer',v:selected.customerName||selectedFull?.customerName||'N/A'},{k:'Phone',v:selected.customerPhone||selectedFull?.customerPhone||'—'},{k:'Email',v:selected.customerEmail||selectedFull?.customerEmail||'—'},{k:'Amount',v:'₹'+fmt(selected.total||selected.amount||0)},{k:'Status',v:label(selected.status),c:statusColor(selected.status)},{k:'Payment',v:label(selected.paymentStatus),c:payColor(selected.paymentStatus)}].map(f=><div key={f.k}><p className="text-[10px] font-medium text-slate-400 uppercase">{f.k}</p><p className={`text-xs font-semibold mt-0.5 ${f.c||'text-slate-800'}`}>{f.v}</p></div>)}
+                {[{k:'Customer',v:custName(selected)},{k:'Phone',v:selected.customerPhone||selected.customer?.phone||'—'},{k:'Email',v:selected.customerEmail||selected.customer?.email||'—'},{k:'Amount',v:'₹'+fmt(selected.total||selected.amount||0)},{k:'Status',v:label(selected.status),c:statusColor(selected.status)},{k:'Payment',v:label(selected.paymentStatus),c:payColor(selected.paymentStatus)}].map(f=><div key={f.k}><p className="text-[10px] font-medium text-slate-400 uppercase">{f.k}</p><p className={`text-xs font-semibold mt-0.5 ${f.c||'text-slate-800'}`}>{f.v}</p></div>)}
               </div>
               <div><p className="text-[10px] font-medium text-slate-400 uppercase mb-2">Update Status</p>
                 <div className="flex flex-wrap gap-1.5">
