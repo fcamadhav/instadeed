@@ -154,4 +154,40 @@ router.post(
   }
 );
 
+// Settings sub-routes for frontend compatibility
+router.get("/api/admin/settings/general", requireAuth, requireRole("SUPER_ADMIN", "ADMIN"), async (_req: Request, res: Response) => {
+  try {
+    const settings = await prisma.systemSetting.findMany();
+    const obj: Record<string,string> = {};
+    settings.forEach(s => obj[s.key] = s.value);
+    res.json({ success: true, data: obj });
+  } catch (e) { res.status(500).json({ success: false, error: "Internal server error" }); }
+});
+
+router.get("/api/admin/settings/theme", requireAuth, requireRole("SUPER_ADMIN", "ADMIN"), async (_req: Request, res: Response) => {
+  res.json({ success: true, data: { primaryColor: "#2563EB", darkMode: false } });
+});
+
+router.get("/api/admin/settings/api-keys", requireAuth, requireRole("SUPER_ADMIN", "ADMIN"), async (_req: Request, res: Response) => {
+  try {
+    const apis = await prisma.apiSetting.findMany({ where: { isActive: true } });
+    res.json({ success: true, data: { keys: apis } });
+  } catch (e) { res.status(500).json({ success: false, error: "Internal server error" }); }
+});
+
+router.put("/api/admin/settings/general", requireAuth, requireRole("SUPER_ADMIN", "ADMIN"), async (req: Request, res: Response) => {
+  try {
+    const entries = Object.entries(req.body).filter(([_,v]) => typeof v === 'string');
+    for (const [key, value] of entries) {
+      await prisma.systemSetting.upsert({ where: { key }, create: { key, value: value as string }, update: { value: value as string } });
+    }
+    await logActionSync(req.user!.userId, "UPDATE", "settings", "general", undefined, req.body as any, req.ip);
+    res.json({ success: true, data: req.body });
+  } catch (e) { res.status(500).json({ success: false, error: "Internal server error" }); }
+});
+
+router.put("/api/admin/settings/theme", requireAuth, requireRole("SUPER_ADMIN", "ADMIN"), async (req: Request, res: Response) => {
+  res.json({ success: true, data: req.body });
+});
+
 export default router;

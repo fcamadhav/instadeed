@@ -41,8 +41,8 @@ export default function AIPage() {
     setLoading(true);
     try {
       const [aiRes, ocrRes] = await Promise.all([
-        apiGet<{ data: { settings: AISettings } }>('/admin/ai/settings').catch(() => null),
-        apiGet<{ data: { settings: OCRSettings } }>('/admin/ocr/settings').catch(() => null),
+        apiGet<{ data: { settings: AISettings } }>('/admin/ai-settings').catch(() => null),
+        apiGet<{ data: { settings: OCRSettings } }>('/admin/ocr-settings').catch(() => null),
       ]);
       if (aiRes?.data?.settings) { setAiSettings(aiRes.data.settings); setAiForm(aiRes.data.settings); }
       if (ocrRes?.data?.settings) { setOcrSettings(ocrRes.data.settings); setOcrForm(ocrRes.data.settings); }
@@ -52,13 +52,13 @@ export default function AIPage() {
   const saveAI = async (e: FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    try { await apiPut('/admin/ai/settings', aiForm); toast.success('AI settings saved'); } catch (err: any) { toast.error(err.message); } finally { setSaving(false); }
+    try { await apiPut('/admin/ai-settings', aiForm); toast.success('AI settings saved'); } catch (err: any) { toast.error(err.message); } finally { setSaving(false); }
   };
 
   const saveOCR = async (e: FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    try { await apiPut('/admin/ocr/settings', ocrForm); toast.success('OCR settings saved'); } catch (err: any) { toast.error(err.message); } finally { setSaving(false); }
+    try { await apiPut('/admin/ocr-settings', ocrForm); toast.success('OCR settings saved'); } catch (err: any) { toast.error(err.message); } finally { setSaving(false); }
   };
 
   if (loading) return <AdminLayout title="AI Settings"><div className="card p-8 text-center"><Loader2 className="w-6 h-6 animate-spin text-admin-600 mx-auto" /></div></AdminLayout>;

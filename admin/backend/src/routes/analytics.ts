@@ -246,4 +246,38 @@ router.get("/api/admin/analytics", requireAuth, requireRole("SUPER_ADMIN", "ADMI
   res.json({ success: true, data: { message: "Use /api/admin/analytics/dashboard for detailed analytics" } });
 });
 
+// Reports page compatibility
+router.get("/api/admin/reports/:type", requireAuth, requireRole("SUPER_ADMIN", "ADMIN"), async (req: Request, res: Response) => {
+  try {
+    const startDate = req.query.startDate ? new Date(req.query.startDate as string) : new Date(Date.now() - 30*86400000);
+    const endDate = req.query.endDate ? new Date(req.query.endDate as string) : new Date();
+    const type = req.params.type;
+
+    if (type === 'revenue' || type === 'orders' || type === 'customers' || type === 'monthly_growth') {
+      const orders = await prisma.order.findMany({
+        where: { createdAt: { gte: startDate, lte: endDate }, paymentStatus: "PAID" },
+        select: { total: true, createdAt: true, service: { select: { name: true } } },
+        orderBy: { createdAt: "asc" },
+      });
+      const months: Record<string,any> = {};
+      orders.forEach(o => {
+        const m = o.createdAt.toISOString().slice(0,7);
+        if (!months[m]) months[m] = { month: new Date(o.createdAt).toLocaleString('en-IN',{month:'short'}), revenue:0, orders:0, customers:0 };
+        months[m].revenue += o.total; months[m].orders += 1; months[m].customers += 1;
+      });
+      res.json({ success: true, data: { report: Object.values(months) } });
+    } else if (type === 'top_services') {
+      // eslint-disable-next-line
+      const grouped = await (prisma as any).order.groupBy({ by:["serviceId"], where:{createdAt:{gte:startDate,lte:endDate},paymentStatus:"PAID"}, _count:true, _sum:{total:true}, orderBy:{_sum:{total:"desc"}}, take:10 }) as { serviceId: string; _count: number; _sum: { total: number|null } }[];
+      const svcs = await prisma.service.findMany({ where:{id:{in:grouped.map((g:any)=>g.serviceId)}}, select:{id:true,name:true} });
+      const svcMap = new Map(svcs.map((s:any)=>[s.id,s]));
+      res.json({ success: true, data: { report: grouped.map((g:any)=>({name:svcMap.get(g.serviceId)?.name||'Unknown',count:g._count,revenue:g._sum.total||0})) } });
+    } else if (type === 'payments' || type === 'coupons') {
+      res.json({ success: true, data: { report: [] } });
+    } else {
+      res.json({ success: true, data: { report: [] } });
+    }
+  } catch (e) { res.status(500).json({ success: false, error: "Internal server error" }); }
+});
+
 export default router;

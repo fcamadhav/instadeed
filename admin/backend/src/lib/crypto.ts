@@ -3,7 +3,8 @@ import crypto from "crypto";
 const ALGORITHM = "aes-256-gcm";
 
 function getKey(): Buffer {
-  const secret = process.env.JWT_SECRET || "fallback-encryption-key-32chars-min";
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error("JWT_SECRET is required for encryption");
   return crypto.createHash("sha256").update(secret).digest();
 }
 

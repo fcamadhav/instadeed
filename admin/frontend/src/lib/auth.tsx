@@ -5,7 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { apiPost, apiGet } from './api';
 
 interface User {
-  _id: string;
+  id: string;
   name: string;
   email: string;
   role: string;

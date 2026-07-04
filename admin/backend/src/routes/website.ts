@@ -85,4 +85,28 @@ router.get(
   }
 );
 
+// Flat endpoint for frontend compatibility
+router.get("/api/admin/website/content", requireAuth, requireRole("SUPER_ADMIN", "ADMIN"), async (_req: Request, res: Response) => {
+  try {
+    const all = await prisma.websiteContent.findMany();
+    const obj: Record<string,any> = {};
+    for (const c of all) {
+      try { obj[c.section] = JSON.parse(c.content); } catch { obj[c.section] = c.content; }
+    }
+    res.json({ success: true, data: { content: obj } });
+  } catch (e) { res.status(500).json({ success: false, error: "Internal server error" }); }
+});
+
+router.put("/api/admin/website/content", requireAuth, requireRole("SUPER_ADMIN", "ADMIN"), async (req: Request, res: Response) => {
+  try {
+    const body = req.body;
+    for (const [section, value] of Object.entries(body)) {
+      const jsonContent = typeof value === 'string' ? value : JSON.stringify(value);
+      await prisma.websiteContent.upsert({ where: { section }, create: { section, content: jsonContent }, update: { content: jsonContent } });
+    }
+    await logActionSync(req.user!.userId, "UPDATE", "website_content", "bulk", undefined, body as any, req.ip);
+    res.json({ success: true, data: body });
+  } catch (e) { res.status(500).json({ success: false, error: "Internal server error" }); }
+});
+
 export default router;
