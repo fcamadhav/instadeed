@@ -58,17 +58,16 @@ const assignSchema = z.object({
 });
 
 async function generateOrderNumber(): Promise<string> {
-  const year = new Date().getFullYear().toString();
   const last = await prisma.order.findFirst({
-    where: { orderNumber: { startsWith: `ORD-${year}-` } },
+    where: { orderNumber: { startsWith: "ID-" } },
     orderBy: { createdAt: "desc" },
   });
   let seq = 1;
   if (last) {
-    const parts = last.orderNumber.split("-");
-    seq = parseInt(parts[parts.length - 1], 10) + 1;
+    const num = parseInt(last.orderNumber.replace("ID-", ""), 10);
+    if (!isNaN(num)) seq = num + 1;
   }
-  return `ORD-${year}-${String(seq).padStart(6, "0")}`;
+  return `ID-${String(seq).padStart(6, "0")}`;
 }
 
 router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
