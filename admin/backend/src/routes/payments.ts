@@ -304,6 +304,38 @@ const verifyPaymentHandler = async (req: Request, res: Response) => {
       data: { paymentStatus: "PAID", status: "COMPLETED" },
     });
 
+    // Fetch customer details from Razorpay order if missing
+    try {
+      const order = await prisma.order.findFirst({ where: { paymentId: data.razorpay_order_id } });
+      if (order && (!order.customerName || order.customerName === "")) {
+        const auth = Buffer.from(`${keys.apiKey}:${keys.apiSecret}`).toString("base64");
+        const rzpOrderResp = await fetch(`https://api.razorpay.com/v1/orders/${data.razorpay_order_id}`, {
+          headers: { "Authorization": `Basic ${auth}` },
+        });
+        if (rzpOrderResp.ok) {
+          const rzpOrder = await rzpOrderResp.json() as any;
+          const notes = rzpOrder.notes || {};
+          // Try to get customer from Razorpay payment
+          const rzpPaymentResp = await fetch(`https://api.razorpay.com/v1/payments/${data.razorpay_payment_id}`, {
+            headers: { "Authorization": `Basic ${auth}` },
+          });
+          if (rzpPaymentResp.ok) {
+            const rzpPayment = await rzpPaymentResp.json() as any;
+            const name = rzpPayment.email?.split("@")[0] || notes.customer_name || "";
+            await prisma.order.updateMany({
+              where: { paymentId: data.razorpay_order_id },
+              data: {
+                customerName: rzpPayment.email ? rzpPayment.email.split("@")[0] : (notes.customer_name || null),
+                customerEmail: rzpPayment.email || notes.customer_email || null,
+                customerPhone: rzpPayment.contact || notes.customer_phone || null,
+              },
+            });
+            console.log(`[RZP] Updated customer info for ${data.razorpay_order_id}`);
+          }
+        }
+      }
+    } catch (e) { console.error("[RZP] Failed to fetch customer details:", e); }
+
     await generatePdfAfterPayment(data.razorpay_order_id);
 
     res.json({ status: "success", message: "Payment verified successfully" });
