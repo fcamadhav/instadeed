@@ -2,148 +2,160 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import AdminLayout from '@/components/AdminLayout';
-import DataTable, { Column } from '@/components/DataTable';
-import FormField from '@/components/FormField';
 import { apiGet, apiPut } from '@/lib/api';
 import toast from 'react-hot-toast';
-import { Search, Filter, Clock, CheckCircle, XCircle, AlertCircle, MessageSquare, RotateCcw, FileText, IndianRupee, CreditCard, Loader2, Download } from 'lucide-react';
+import { Search, Download, IndianRupee, Clock, CheckCircle, XCircle, Loader2, MoreHorizontal, ExternalLink } from 'lucide-react';
 
 interface Order {
   id: string; orderNumber: string; customerName: string | null; customerPhone: string | null; customerEmail: string | null;
-  service: { id: string; name: string } | null;
-  amount: number; total: number; status: string; paymentStatus: string;
-  notes: string | null; createdAt: string; quotation: any;
-  customer: { id: string; name: string; email: string; phone: string } | null;
-  subStatus: string | null;
+  service: { id: string; name: string } | null; amount: number; total: number;
+  status: string; paymentStatus: string; notes: string | null; createdAt: string; quotation: any;
 }
-
-const SUB_STATUSES: Record<string,Record<string,string>> = {
-  PENDING: { default: 'Awaiting Documents', 'Awaiting Documents':'Missing Co-Applicant Info','Payment Pending':'Payment Awaiting' },
-  PROCESSING: { default: 'Under Review', 'Verification':'Draft Verification','Stamp':'Procuring Stamp Paper','Sign':'Awaiting E-Signatures' },
-  COMPLETED: { default: 'Delivered', 'Downloaded':'Downloaded','Dispatched':'Dispatched','Delivered':'Delivered' },
-  CANCELLED: { default: 'Cancelled' },
-  REFUNDED: { default: 'Refunded' },
-};
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [total, setTotal] = useState(0);
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [detailLoading, setDetailLoading] = useState(false);
-  const [filters, setFilters] = useState({ status: '', paymentStatus: '', search: '' });
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [payFilter, setPayFilter] = useState('');
+  const [selected, setSelected] = useState<Order | null>(null);
+  const [selectedFull, setSelectedFull] = useState<any>(null);
   const [exporting, setExporting] = useState(false);
+  const [summary, setSummary] = useState({ total: 0, revenue: 0, pending: 0, completed: 0 });
 
-  useEffect(() => { fetchOrders(); }, [page, filters]);
+  const fmt = (n: number) => n?.toLocaleString('en-IN') || '0';
+  const date = (d: string) => new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  const statusColor = (s: string) => s === 'COMPLETED' ? 'bg-emerald-50 text-emerald-700' : s === 'PROCESSING' ? 'bg-blue-50 text-blue-700' : s === 'CANCELLED' ? 'bg-red-50 text-red-700' : 'bg-amber-50 text-amber-700';
+  const payColor = (s: string) => s === 'PAID' ? 'bg-emerald-50 text-emerald-700' : s === 'FAILED' ? 'bg-red-50 text-red-700' : 'bg-amber-50 text-amber-700';
+  const label = (s: string) => s?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 
-  const fetchOrders = async () => {
-    setLoading(true); setError(null);
+  const fetchOrders = useCallback(async () => {
+    setLoading(true);
     try {
-      const params = new URLSearchParams({ page: String(page), limit: '10' });
-      if (filters.status) params.set('status', filters.status);
-      if (filters.paymentStatus) params.set('paymentStatus', filters.paymentStatus);
-      if (filters.search) params.set('search', filters.search);
-      const res = await apiGet<{ data: { orders: Order[]; pagination: { page: number; totalPages: number; total: number } } }>(`/orders?${params}`);
-      if (res.data) { setOrders(res.data.orders || []); setTotalPages(res.data.pagination?.totalPages || 1); setTotal(res.data.pagination?.total || 0); }
-    } catch (err: any) { setError(err.message); } finally { setLoading(false); }
-  };
+      const p = new URLSearchParams({ page: String(page), limit: '15' });
+      if (statusFilter) p.set('status', statusFilter);
+      if (payFilter) p.set('paymentStatus', payFilter);
+      if (search) p.set('search', search);
+      const [ord, all] = await Promise.all([
+        apiGet<{ data: { orders: Order[]; pagination: { totalPages: number } } }>(`/orders?${p}`),
+        apiGet<{ data: { orders: Order[] } }>('/orders?limit=10000'),
+      ]);
+      if (ord?.data) { setOrders(ord.data.orders || []); setTotalPages(ord.data.pagination?.totalPages || 1); }
+      if (all?.data?.orders) {
+        const o = all.data.orders;
+        setSummary({ total: o.length, revenue: o.reduce((s,x)=>s+(x.total||x.amount||0),0), pending: o.filter(x=>x.status==='PENDING'||x.status==='PROCESSING').length, completed: o.filter(x=>x.status==='COMPLETED').length });
+      }
+    } catch {} finally { setLoading(false); }
+  }, [page, search, statusFilter, payFilter]);
 
-  const openDetail = async (order: Order) => {
-    setDetailLoading(true); setSelectedOrder(order);
-    try { const res = await apiGet<{ data: Order }>(`/orders/${order.id}`); if (res.data) setSelectedOrder(res.data); }
-    catch { toast.error('Failed to load order details'); } finally { setDetailLoading(false); }
+  useEffect(() => { fetchOrders(); }, [fetchOrders]);
+
+  const openDetail = async (o: Order) => {
+    setSelected(o);
+    try { const r = await apiGet<{ data: any }>(`/orders/${o.id}`); if (r.data) setSelectedFull(r.data); }
+    catch { toast.error('Failed to load'); }
   };
 
   const updateStatus = async (id: string, status: string) => {
-    try { await apiPut(`/admin/orders/${id}/status`, { status }); toast.success(`Order ${status}`); fetchOrders(); setSelectedOrder(null); }
-    catch (err: any) { toast.error(err.message); }
+    try { await apiPut(`/admin/orders/${id}/status`, { status }); toast.success(`Updated to ${label(status)}`); setSelected(null); fetchOrders(); }
+    catch (e: any) { toast.error(e.message || 'Failed'); }
   };
 
-  const exportCSV = async () => {
-    setExporting(true);
-    try {
-      const params = new URLSearchParams({ limit: '10000' });
-      if (filters.status) params.set('status', filters.status);
-      if (filters.paymentStatus) params.set('paymentStatus', filters.paymentStatus);
-      if (filters.search) params.set('search', filters.search);
-      const res = await apiGet<{ data: { orders: Order[] } }>(`/orders?${params}`);
-      const orders = res.data?.orders || [];
-      const header = 'Order ID,Customer,Phone,Email,Service,Amount,Status,Payment,Date\n';
-      const rows = orders.map(o => [
-        o.orderNumber, (o.customerName||o.customer?.name||'N/A').replace(/,/g,' '),
-        (o.customerPhone||o.customer?.phone||''), (o.customerEmail||o.customer?.email||''),
-        (o.service?.name||'N/A'), o.total||o.amount, o.status, o.paymentStatus,
-        new Date(o.createdAt).toLocaleDateString('en-IN')
-      ].join(',')).join('\n');
-      const blob = new Blob([header + rows], {type:'text/csv'});
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-      a.download = `orders-export-${new Date().toISOString().slice(0,10)}.csv`;
-      a.click(); URL.revokeObjectURL(a.href);
-      toast.success(`Exported ${orders.length} orders`);
-    } catch { toast.error('Export failed'); }
-    finally { setExporting(false); }
+  const exportCSV = async () => { setExporting(true);
+    try { const p = new URLSearchParams({ limit: '10000' }); if (statusFilter) p.set('status', statusFilter); if (payFilter) p.set('paymentStatus', payFilter); if (search) p.set('search', search);
+      const r = await apiGet<{ data: { orders: Order[] } }>(`/orders?${p}`);
+      const rows = (r.data?.orders||[]).map(o => [o.orderNumber, (o.customerName||'N/A'), o.customerPhone||'', o.customerEmail||'', o.service?.name||'', o.total||o.amount, o.status, o.paymentStatus, date(o.createdAt)].join(','));
+      const blob = new Blob(['Order,Customer,Phone,Email,Service,Amount,Status,Payment,Date\n'+rows.join('\n')], {type:'text/csv'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `orders-${new Date().toISOString().slice(0,10)}.csv`; a.click(); toast.success('Exported');
+    } catch { toast.error('Export failed'); } finally { setExporting(false); }
   };
-
-  const statusLabel = (s: string) => s?.replace(/_/g,' ').replace(/\b\w/g, c => c.toUpperCase());
-  const subStatusLabel = (o: Order) => {
-    if (o.subStatus) return o.subStatus;
-    const statusGroup = SUB_STATUSES[o.status?.toUpperCase()] || {};
-    return statusGroup.default || statusLabel(o.status||'');
-  };
-
-  const columns: Column<Order>[] = [
-    { key:'orderNumber', label:'Order ID', render:(o)=><span className="font-bold text-admin-600">{o.orderNumber}</span> },
-    { key:'customerName', label:'Customer', render:(o)=><div><span className="font-medium text-slate-900">{o.customerName||o.customer?.name||'N/A'}</span>{o.customerPhone && <span className="block text-xs text-slate-400">{o.customerPhone}</span>}</div> },
-    { key:'service', label:'Service', render:(o)=><span className="text-sm text-slate-600">{o.service?.name||'N/A'}</span> },
-    { key:'total', label:'Amount', render:(o)=><span className="font-semibold">₹{(o.total||o.amount||0).toLocaleString('en-IN')}</span> },
-    {
-      key:'paymentStatus', label:'Payment',
-      render:(o)=><span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${o.paymentStatus==='PAID'?'bg-green-100 text-green-700':o.paymentStatus==='PENDING'?'bg-yellow-100 text-yellow-700':'bg-slate-100 text-slate-600'}`}>{statusLabel(o.paymentStatus)}</span>
-    },
-    {
-      key:'status', label:'Status',
-      render:(o)=><div><span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${o.status==='COMPLETED'?'bg-green-100 text-green-700':o.status==='PENDING'?'bg-yellow-100 text-yellow-700':o.status==='PROCESSING'?'bg-blue-100 text-blue-700':'bg-slate-100 text-slate-600'}`}>{statusLabel(o.status)}</span><span className="block text-[10px] text-slate-400 mt-0.5">{subStatusLabel(o)}</span></div>
-    },
-    { key:'createdAt', label:'Created', render:(o)=><span className="text-xs text-slate-500">{new Date(o.createdAt).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</span> },
-  ];
 
   return (
     <AdminLayout title="Orders">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-        <div className="flex items-center gap-2 flex-wrap">
-          <div className="relative"><Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"/><input type="text" placeholder="Search..." value={filters.search} onChange={e=>setFilters({...filters,search:e.target.value})} className="input pl-9 text-sm w-48"/></div>
-          <select value={filters.status} onChange={e=>setFilters({...filters,status:e.target.value})} className="select text-sm"><option value="">All Status</option><option value="PENDING">Pending</option><option value="PROCESSING">Processing</option><option value="COMPLETED">Completed</option><option value="CANCELLED">Cancelled</option></select>
-          <select value={filters.paymentStatus} onChange={e=>setFilters({...filters,paymentStatus:e.target.value})} className="select text-sm"><option value="">All Payments</option><option value="PAID">Paid</option><option value="PENDING">Pending</option><option value="FAILED">Failed</option></select>
-          <button onClick={fetchOrders} className="btn-primary btn-sm"><Filter className="w-3 h-3"/> Filter</button>
-        </div>
-        <button onClick={exportCSV} disabled={exporting} className="btn-secondary btn-sm"><Download className="w-3 h-3"/> {exporting?'Exporting...':'Export CSV'}</button>
+      {/* Summary Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+        {[{label:'Total Orders',value:summary.total,icon:IndianRupee,color:'text-slate-600',bg:'bg-slate-50'},{label:'Revenue',value:`₹${fmt(summary.revenue)}`,icon:IndianRupee,color:'text-emerald-600',bg:'bg-emerald-50'},{label:'Pending',value:summary.pending,icon:Clock,color:'text-amber-600',bg:'bg-amber-50'},{label:'Completed',value:summary.completed,icon:CheckCircle,color:'text-blue-600',bg:'bg-blue-50'}].map(c=><div key={c.label} className={`${c.bg} rounded-xl p-3`}><div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">{c.label}</span><c.icon className={`w-4 h-4 ${c.color}`}/></div><p className={`text-lg font-bold mt-1 ${c.color}`}>{c.value}</p></div>)}
       </div>
 
-      <DataTable columns={columns} data={orders} loading={loading} error={error} onRetry={fetchOrders} page={page} totalPages={totalPages} total={total} onPageChange={setPage} keyExtractor={o=>o.id} onRowClick={openDetail} emptyMessage="No orders found"/>
+      {/* Toolbar */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mb-3">
+        <div className="relative flex-1 max-w-xs"><Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400"/><input type="text" placeholder="Search orders..." value={search} onChange={e=>{setSearch(e.target.value);setPage(1)}} className="w-full h-8 pl-9 pr-3 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-slate-300 focus:ring-1 focus:ring-slate-200"/></div>
+        <div className="flex gap-2">
+          <select value={statusFilter} onChange={e=>{setStatusFilter(e.target.value);setPage(1)}} className="h-8 px-2 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none"><option value="">All Status</option><option value="PENDING">Pending</option><option value="PROCESSING">Processing</option><option value="COMPLETED">Completed</option><option value="CANCELLED">Cancelled</option></select>
+          <select value={payFilter} onChange={e=>{setPayFilter(e.target.value);setPage(1)}} className="h-8 px-2 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none"><option value="">All Payments</option><option value="PAID">Paid</option><option value="PENDING">Pending</option><option value="FAILED">Failed</option></select>
+          <button onClick={exportCSV} disabled={exporting} className="h-8 px-3 text-xs font-medium bg-white border border-slate-200 rounded-lg hover:bg-slate-50 flex items-center gap-1.5"><Download className="w-3 h-3"/>{exporting?'Exporting...':'Export'}</button>
+        </div>
+      </div>
 
-      {selectedOrder && (
-        <div className="fixed inset-0 z-40 flex justify-end">
-          <div className="absolute inset-0 bg-black/50" onClick={()=>setSelectedOrder(null)}/>
-          <div className="relative w-full max-w-lg bg-white dark:bg-slate-800 shadow-2xl overflow-y-auto">
-            <div className="sticky top-0 bg-white dark:bg-slate-800 border-b px-6 py-4 flex items-center justify-between">
-              <div><h2 className="font-semibold text-slate-900">{selectedOrder.orderNumber}</h2><p className="text-xs text-slate-500">{selectedOrder.service?.name||'Service'}</p></div>
-              <button onClick={()=>setSelectedOrder(null)} className="text-slate-400 hover:text-slate-600 text-xl">&times;</button>
+      {/* Table */}
+      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-slate-100 bg-slate-50/50">
+                <th className="h-11 px-4 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Order</th>
+                <th className="h-11 px-4 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Customer</th>
+                <th className="h-11 px-4 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider hidden md:table-cell">Service</th>
+                <th className="h-11 px-4 text-right text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Amount</th>
+                <th className="h-11 px-4 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Payment</th>
+                <th className="h-11 px-4 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider hidden sm:table-cell">Status</th>
+                <th className="h-11 px-4 text-right text-[11px] font-semibold text-slate-500 uppercase tracking-wider hidden lg:table-cell">Date</th>
+                <th className="h-11 w-10"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr><td colSpan={8} className="py-12 text-center"><Loader2 className="w-5 h-5 animate-spin text-slate-300 mx-auto"/></td></tr>
+              ) : orders.length === 0 ? (
+                <tr><td colSpan={8} className="py-12 text-center text-sm text-slate-400">No orders found</td></tr>
+              ) : orders.map(o => (
+                <tr key={o.id} onClick={()=>openDetail(o)} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors cursor-pointer">
+                  <td className="py-2.5 px-4"><span className="text-xs font-mono font-semibold text-slate-700">#{o.orderNumber.replace('ID-','')}</span></td>
+                  <td className="py-2.5 px-4"><div><span className="text-xs font-medium text-slate-800">{o.customerName || 'N/A'}</span>{o.customerPhone && <span className="block text-[11px] text-slate-400">{o.customerPhone}</span>}</div></td>
+                  <td className="py-2.5 px-4 hidden md:table-cell"><span className="text-xs text-slate-600">{o.service?.name || 'N/A'}</span></td>
+                  <td className="py-2.5 px-4 text-right"><span className="text-xs font-semibold text-slate-800">₹{fmt(o.total||o.amount||0)}</span></td>
+                  <td className="py-2.5 px-4"><span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${payColor(o.paymentStatus)}`}>{label(o.paymentStatus)}</span></td>
+                  <td className="py-2.5 px-4 hidden sm:table-cell"><span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusColor(o.status)}`}>{label(o.status)}</span></td>
+                  <td className="py-2.5 px-4 text-right hidden lg:table-cell"><span className="text-[11px] text-slate-400">{date(o.createdAt)}</span></td>
+                  <td className="py-2.5 px-1">
+                    <button onClick={e=>{e.stopPropagation();openDetail(o)}} className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400"><MoreHorizontal className="w-3.5 h-3.5"/></button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-4 py-2 border-t border-slate-100 bg-slate-50/30">
+            <span className="text-[11px] text-slate-400">Page {page} of {totalPages}</span>
+            <div className="flex gap-1">
+              <button onClick={()=>setPage(p=>Math.max(1,p-1))} disabled={page===1} className="px-2 py-1 text-[11px] font-medium rounded-md bg-white border border-slate-200 hover:bg-slate-50 disabled:opacity-30">Prev</button>
+              <button onClick={()=>setPage(p=>Math.min(totalPages,p+1))} disabled={page===totalPages} className="px-2 py-1 text-[11px] font-medium rounded-md bg-white border border-slate-200 hover:bg-slate-50 disabled:opacity-30">Next</button>
             </div>
-            <div className="p-4 space-y-4">
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div><span className="text-slate-500">Customer</span><p className="font-medium">{selectedOrder.customerName||selectedOrder.customer?.name||'N/A'}</p></div>
-                <div><span className="text-slate-500">Phone</span><p className="font-medium">{selectedOrder.customerPhone||selectedOrder.customer?.phone||'—'}</p></div>
-                <div><span className="text-slate-500">Email</span><p className="font-medium text-xs">{selectedOrder.customerEmail||selectedOrder.customer?.email||'—'}</p></div>
-                <div><span className="text-slate-500">Amount</span><p className="font-bold">₹{(selectedOrder.total||selectedOrder.amount||0).toLocaleString('en-IN')}</p></div>
-                <div><span className="text-slate-500">Status</span><p className={selectedOrder.status==='COMPLETED'?'text-green-600 font-semibold':'text-yellow-600 font-semibold'}>{statusLabel(selectedOrder.status)}</p></div>
-                <div><span className="text-slate-500">Payment</span><p className={selectedOrder.paymentStatus==='PAID'?'text-green-600 font-semibold':'text-yellow-600 font-semibold'}>{statusLabel(selectedOrder.paymentStatus)}</p></div>
+          </div>
+        )}
+      </div>
+
+      {/* Detail Slide-over */}
+      {selected && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="absolute inset-0 bg-black/40" onClick={()=>{setSelected(null);setSelectedFull(null)}}/>
+          <div className="relative w-full max-w-md bg-white shadow-2xl overflow-y-auto animate-in slide-in-from-right duration-200">
+            <div className="sticky top-0 bg-white border-b border-slate-100 px-5 py-3 flex items-center justify-between z-10">
+              <div><h3 className="text-sm font-bold text-slate-900">#{selected.orderNumber.replace('ID-','')}</h3><p className="text-[11px] text-slate-400">{selected.service?.name||'Service'}</p></div>
+              <button onClick={()=>{setSelected(null);setSelectedFull(null)}} className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 text-lg">&times;</button>
+            </div>
+            <div className="p-5 space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                {[{k:'Customer',v:selected.customerName||selectedFull?.customerName||'N/A'},{k:'Phone',v:selected.customerPhone||selectedFull?.customerPhone||'—'},{k:'Email',v:selected.customerEmail||selectedFull?.customerEmail||'—'},{k:'Amount',v:'₹'+fmt(selected.total||selected.amount||0)},{k:'Status',v:label(selected.status),c:statusColor(selected.status)},{k:'Payment',v:label(selected.paymentStatus),c:payColor(selected.paymentStatus)}].map(f=><div key={f.k}><p className="text-[10px] font-medium text-slate-400 uppercase">{f.k}</p><p className={`text-xs font-semibold mt-0.5 ${f.c||'text-slate-800'}`}>{f.v}</p></div>)}
               </div>
-              <div><h4 className="text-sm font-semibold text-slate-700 mb-2">Update Status</h4><div className="flex flex-wrap gap-2">
-                {['DRAFT','PENDING','PROCESSING','VERIFICATION','DOCUMENTS_UPLOADED','DRAFT_READY','SIGN_PENDING','COMPLETED','CANCELLED','REFUNDED'].map(s=><button key={s} onClick={()=>updateStatus(selectedOrder.id,s)} disabled={selectedOrder.status===s} className={`btn-sm capitalize ${selectedOrder.status===s?'btn-primary':'btn-secondary'}`}>{statusLabel(s)}</button>)}
-              </div></div>
+              <div><p className="text-[10px] font-medium text-slate-400 uppercase mb-2">Update Status</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {['PENDING','PROCESSING','VERIFICATION','DRAFT_READY','SIGN_PENDING','COMPLETED','CANCELLED'].map(s=><button key={s} onClick={()=>updateStatus(selected.id,s)} className={`px-2.5 py-1 text-[10px] font-semibold rounded-full border transition-colors ${selected.status===s?'bg-slate-800 text-white border-slate-800':'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}>{label(s)}</button>)}
+                </div>
+              </div>
             </div>
           </div>
         </div>
