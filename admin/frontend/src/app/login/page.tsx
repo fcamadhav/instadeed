@@ -12,8 +12,25 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [forgotMode, setForgotMode] = useState(false);
+  const [forgotSent, setForgotSent] = useState(false);
   const { login, loginWithGoogle } = useAuth();
   const router = useRouter();
+
+  const handleForgotPassword = async () => {
+    if (!email.trim()) { setError('Enter your email first'); return; }
+    setLoading(true); setError('');
+    try {
+      const res = await fetch('/api/admin/auth/forgot-password', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({email: email.trim()}),
+      });
+      const data = await res.json();
+      if (data.success) { setForgotSent(true); toast.success('Reset link sent if email exists'); }
+      else { setError(data.error || 'Failed'); }
+    } catch { setError('Network error'); }
+    finally { setLoading(false); }
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -94,6 +111,13 @@ export default function LoginPage() {
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <button type="button" onClick={handleForgotPassword} disabled={loading}
+                className="text-xs text-admin-600 hover:text-admin-700 font-medium">
+                {forgotSent ? 'Check your email' : 'Forgot password?'}
+              </button>
             </div>
 
             <button type="submit" disabled={loading} className="btn-primary w-full">
