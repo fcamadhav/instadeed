@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import { apiGet, apiDownload } from '@/lib/api';
+import toast from 'react-hot-toast';
 import { Search, Download, Eye, ChevronDown, ChevronRight, FileText, Clock, CheckCircle, AlertCircle, X } from 'lucide-react';
 
 interface AppDoc { id: string; applicationId: string; documentType: string; fileName: string; fileUrl: string; mimeType: string; size: number; uploadedAt: string; }
@@ -53,7 +54,7 @@ export default function ApplicationDocumentsPage() {
         g.sort((a,b)=>new Date(b.lastUpdated).getTime()-new Date(a.lastUpdated).getTime());
         setGroups(g);
       }
-    } catch {} finally { setLoading(false); }
+    } catch { toast.error('Failed to load documents'); } finally { setLoading(false); }
   };
 
   const filtered = search ? groups.filter(g => {
@@ -143,7 +144,7 @@ export default function ApplicationDocumentsPage() {
                               className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-admin-600 text-white rounded-lg hover:bg-admin-700 transition-colors">
                               <Download className="w-3 h-3"/> Download
                             </button>
-                            <button onClick={async () => { try { const t = JSON.parse(localStorage.getItem('instadeed_admin_user')||'{}').token; const r = await fetch('/api/applications/documents/'+d.id+'/file',{headers:t?{Authorization:'Bearer '+t}:{}}); const b = await r.blob(); window.open(URL.createObjectURL(b),'_blank'); } catch {} }}
+                            <button onClick={async () => { try { const t = JSON.parse(localStorage.getItem('instadeed_admin_user')||'{}').token; const r = await fetch('/api/applications/documents/'+d.id+'/file',{headers:t?{Authorization:'Bearer '+t}:{}}); const b = await r.blob(); window.open(URL.createObjectURL(b),'_blank'); } catch { toast.error('Failed to view document'); } }}
                               className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-white border border-slate-200 text-slate-600 rounded-lg hover:bg-slate-50 transition-colors">
                               <Eye className="w-3 h-3"/> View
                             </button>

@@ -24,6 +24,7 @@ interface GSTSettings {
 export default function GSTPage() {
   const [settings, setSettings] = useState<GSTSettings | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<GSTSettings>({
     gstNumber: '', gstRate: 18, sacCode: '', invoicePrefix: 'INV-',
@@ -41,7 +42,7 @@ export default function GSTPage() {
         setSettings(res.data.settings);
         setForm(res.data.settings);
       }
-    } catch {} finally { setLoading(false); }
+    } catch (err: any) { setError(err.message || 'Failed to load GST settings'); } finally { setLoading(false); }
   };
 
   const handleSave = async (e: FormEvent) => {

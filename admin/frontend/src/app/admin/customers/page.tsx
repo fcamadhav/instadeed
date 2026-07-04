@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import DataTable, { Column } from '@/components/DataTable';
 import { apiGet } from '@/lib/api';
+import toast from 'react-hot-toast';
 import { Mail, Phone, ShoppingCart, IndianRupee, Calendar, Loader2, X, Monitor, Clock } from 'lucide-react';
 
 interface Customer {
@@ -64,7 +65,7 @@ export default function CustomersPage() {
       ]);
       if (detailRes?.data) setDetailData(detailRes.data);
       if (ordersRes?.data?.orders) setOrdersData(ordersRes.data.orders);
-    } catch {} finally { setDetailLoading(false); }
+    } catch { toast.error('Failed to load customer details'); } finally { setDetailLoading(false); }
   };
 
   const columns: Column<Customer>[] = [

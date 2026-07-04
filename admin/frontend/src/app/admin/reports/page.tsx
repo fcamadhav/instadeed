@@ -40,7 +40,7 @@ export default function ReportsPage() {
     try {
       const res = await apiGet<{ data: { report: any[] } }>(`/admin/reports/${reportType}?startDate=${startDate}&endDate=${endDate}`).catch(() => null);
       setData(res?.data?.report || []);
-    } catch { setData([]); } finally { setLoading(false); }
+    } catch { toast.error('Failed to load report data'); setData([]); } finally { setLoading(false); }
   };
 
   const exportCSV = () => {

@@ -22,7 +22,7 @@ export default function PricingPage() {
 
   useEffect(() => {
     apiGet<{ data: { services: Service[] } }>('/admin/services?limit=500')
-      .then(res => setServices(res.data?.services || [])).catch(() => {});
+      .then(res => setServices(res.data?.services || [])).catch((err: any) => toast.error(err.message || 'Failed to load services'));
   }, []);
 
   useEffect(() => { if (!selectedService) return; fetchPricing(); fetchHistory(); }, [selectedService]);
@@ -35,14 +35,14 @@ export default function PricingPage() {
         const p = res.data; setPricing(p);
         setForm({ currentPrice: p.currentPrice||0, oldPrice: p.oldPrice||0, gstPercent: p.gstPercent||18, convenienceFee: p.convenienceFee||0, processingFee: p.processingFee||0, deliveryCharge: p.deliveryCharge||0, offerBadge: p.offerBadge||'', isLimitedOffer: p.isLimitedOffer||false, subscriptionPrice: p.subscriptionPrice||0, emiAvailable: p.emiAvailable||false });
       }
-    } catch { setPricing(null); } finally { setLoading(false); }
+    } catch { toast.error('Failed to load pricing'); setPricing(null); } finally { setLoading(false); }
   };
 
   const fetchHistory = async () => {
     try {
       const res = await apiGet<{ data: any[] }>(`/admin/pricing/${selectedService}/history`);
       setHistory(res.data || []);
-    } catch { setHistory([]); }
+    } catch { toast.error('Failed to load pricing history'); setHistory([]); }
   };
 
   const handleSave = async (e: FormEvent) => {

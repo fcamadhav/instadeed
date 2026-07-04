@@ -39,6 +39,7 @@ export default function WorkflowPage() {
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState({ name: '', description: '', active: true, steps: [] as WorkflowStep[] });
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   useEffect(() => { fetchWorkflows(); }, []);
@@ -48,7 +49,7 @@ export default function WorkflowPage() {
     try {
       const res = await apiGet<{ data: { workflows: Workflow[] } }>('/admin/workflows');
       setWorkflows(res.data?.workflows || []);
-    } catch {} finally { setLoading(false); }
+    } catch (err: any) { setError(err.message || 'Failed to load workflows'); } finally { setLoading(false); }
   };
 
   const openCreate = () => { setEditing(null); setForm({ name: '', description: '', active: true, steps: [] }); setModalOpen(true); };

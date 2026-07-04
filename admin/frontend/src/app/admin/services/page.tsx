@@ -63,6 +63,7 @@ export default function ServicesPage() {
   const [saving, setSaving] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState('');
   const [propertyCatId, setPropertyCatId] = useState('');
 
@@ -85,7 +86,7 @@ export default function ServicesPage() {
         setCategories(cats);
         if (cats.length > 0) setPropertyCatId(cats[0].id);
       }
-    } catch {} finally { setLoading(false); }
+    } catch (err: any) { setError(err.message || 'Failed to load services'); } finally { setLoading(false); }
   };
 
   const openCreate = () => {
@@ -206,7 +207,7 @@ export default function ServicesPage() {
         </div>
         <button onClick={openCreate} className="btn-primary btn-sm"><Plus className="w-4 h-4" /> Add Service</button>
       </div>
-      <DataTable columns={columns} data={services} loading={loading} page={page} totalPages={totalPages} onPageChange={setPage}
+      <DataTable columns={columns} data={services} loading={loading} error={error} onRetry={fetchData} page={page} totalPages={totalPages} onPageChange={setPage}
         keyExtractor={(s) => s.id} onRowClick={openEdit}
         emptyMessage="No services yet" emptyDescription="Create your first legal service to get started." />
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? 'Edit Service' : 'Add Service'} size="xl"

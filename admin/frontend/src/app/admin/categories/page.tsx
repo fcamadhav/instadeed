@@ -30,6 +30,7 @@ export default function CategoriesPage() {
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
@@ -43,7 +44,7 @@ export default function CategoriesPage() {
         setCategories(res.data.categories || []);
         setTotalPages(res.data.pagination?.totalPages || 1);
       }
-    } catch {} finally { setLoading(false); }
+    } catch (err: any) { setError(err.message || 'Failed to load categories'); } finally { setLoading(false); }
   };
 
   const openCreate = () => { setEditing(null); setForm(emptyForm); setErrors({}); setModalOpen(true); };
@@ -94,7 +95,7 @@ export default function CategoriesPage() {
         <p className="text-sm text-slate-500">Organize services into categories</p>
         <button onClick={openCreate} className="btn-primary btn-sm"><Plus className="w-4 h-4"/> Add Category</button>
       </div>
-      <DataTable columns={columns} data={categories} loading={loading} page={page} totalPages={totalPages} onPageChange={setPage}
+      <DataTable columns={columns} data={categories} loading={loading} error={error} onRetry={fetchData} page={page} totalPages={totalPages} onPageChange={setPage}
         keyExtractor={c=>c.id} onRowClick={openEdit} emptyMessage="No categories yet" />
       <Modal open={modalOpen} onClose={()=>setModalOpen(false)} title={editing?'Edit':'Add Category'} size="md"
         footer={<><button onClick={()=>setModalOpen(false)} className="btn-secondary">Cancel</button><button onClick={handleSave} disabled={saving} className="btn-primary">{saving?'Saving...':'Save'}</button></>}>

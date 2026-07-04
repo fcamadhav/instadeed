@@ -62,7 +62,7 @@ export default function OrdersPage() {
     try {
       const res = await apiGet<{ data: Order }>(`/orders/${order.id}`);
       if (res.data) setSelectedOrder(res.data);
-    } catch {} finally { setDetailLoading(false); }
+    } catch { toast.error('Failed to load order details'); } finally { setDetailLoading(false); }
   };
 
   const updateStatus = async (id: string, status: string) => {

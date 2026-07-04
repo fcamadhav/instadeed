@@ -51,7 +51,7 @@ export default function SettingsPage() {
       if (gRes?.data) setGeneral(gRes.data);
       if (tRes?.data) setTheme(tRes.data);
       if (aRes?.data?.keys) setApiKeys(aRes.data.keys);
-    } catch {} finally { setLoading(false); }
+    } catch { toast.error('Failed to load settings'); } finally { setLoading(false); }
   };
 
   const saveGeneral = async (e: FormEvent) => {

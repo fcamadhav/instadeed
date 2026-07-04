@@ -35,6 +35,7 @@ export default function NotificationsPage() {
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState({ name: '', subject: '', body: '', variables: '', templateId: '' });
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -56,7 +57,7 @@ export default function NotificationsPage() {
         setLogs(res.data?.logs || []);
         setTotalPages(res.data?.totalPages || 1);
       }
-    } catch {} finally { setLoading(false); }
+    } catch (err: any) { setError(err.message || 'Failed to load notifications'); } finally { setLoading(false); }
   };
 
   const openCreate = () => {
@@ -127,10 +128,10 @@ export default function NotificationsPage() {
       </div>
 
       {tab === 'email' && (
-        <DataTable columns={emailColumns} data={emailTemplates} loading={loading} page={page} totalPages={totalPages} onPageChange={setPage} keyExtractor={(t) => t.id} emptyMessage="No email templates" emptyDescription="Create email notification templates." />
+        <DataTable columns={emailColumns} data={emailTemplates} loading={loading} error={error} onRetry={fetchData} page={page} totalPages={totalPages} onPageChange={setPage} keyExtractor={(t) => t.id} emptyMessage="No email templates" emptyDescription="Create email notification templates." />
       )}
       {tab === 'whatsapp' && (
-        <DataTable columns={whatsappColumns} data={whatsappTemplates} loading={loading} page={page} totalPages={totalPages} onPageChange={setPage} keyExtractor={(t) => t.id} emptyMessage="No WhatsApp templates" emptyDescription="Create WhatsApp notification templates." />
+        <DataTable columns={whatsappColumns} data={whatsappTemplates} loading={loading} error={error} onRetry={fetchData} page={page} totalPages={totalPages} onPageChange={setPage} keyExtractor={(t) => t.id} emptyMessage="No WhatsApp templates" emptyDescription="Create WhatsApp notification templates." />
       )}
       {tab === 'log' && (
         <div className="card p-6 text-center text-sm text-slate-500 dark:text-slate-400">

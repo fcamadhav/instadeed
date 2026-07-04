@@ -46,7 +46,7 @@ export default function AIPage() {
       ]);
       if (aiRes?.data?.settings) { setAiSettings(aiRes.data.settings); setAiForm(aiRes.data.settings); }
       if (ocrRes?.data?.settings) { setOcrSettings(ocrRes.data.settings); setOcrForm(ocrRes.data.settings); }
-    } catch {} finally { setLoading(false); }
+    } catch { toast.error('Failed to load AI settings'); } finally { setLoading(false); }
   };
 
   const saveAI = async (e: FormEvent) => {

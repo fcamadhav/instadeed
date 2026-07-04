@@ -46,7 +46,7 @@ export default function WebsitePage() {
     try {
       const res = await apiGet<{ data: { content: WebsiteContent } }>('/admin/website/content');
       if (res.data?.content) setContent(res.data.content);
-    } catch {} finally { setLoading(false); }
+    } catch { toast.error('Failed to load website content'); } finally { setLoading(false); }
   };
 
   const updateSection = (section: string, data: any) => {
