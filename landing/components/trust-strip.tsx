@@ -10,67 +10,74 @@ const stats = [
     icon: Users,
   },
   {
-    value: '4.9',
-    label: 'Rating',
+    value: '4.9/5',
+    label: 'Customer Rating',
     icon: Star,
   },
   {
     value: '20 Min',
-    label: 'Delivery',
+    label: 'Average Delivery',
     icon: Clock,
   },
   {
     value: '100%',
-    label: 'Legal',
+    label: 'Legal & Secure',
     icon: ShieldCheck,
   },
 ]
 
 const containerVariants = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 },
+    y: 0,
+    transition: { staggerChildren: 0.1, duration: 0.6, ease: 'easeOut' as const },
   },
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, scale: 0.95 },
   visible: {
     opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: 'easeOut' as const },
+    scale: 1,
+    transition: { duration: 0.4, ease: 'easeOut' as const },
   },
 }
 
 export default function TrustStrip() {
   return (
-    <section className="w-full bg-slate-50 py-14 sm:py-16 lg:py-20">
+    <section className="w-full bg-white pb-12 pt-0 sm:pb-16 sm:pt-4">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={containerVariants}
-          initial={false}
+          initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-60px' }}
-          className="grid grid-cols-2 gap-8 sm:gap-12 lg:grid-cols-4 lg:gap-8"
+          viewport={{ once: true, margin: '-40px' }}
+          className="mx-auto flex flex-col sm:flex-row items-center justify-between gap-8 sm:gap-4 rounded-3xl border border-border/60 bg-white px-8 py-6 shadow-xl shadow-primary/5 lg:px-12"
         >
-          {stats.map((stat) => {
+          {stats.map((stat, index) => {
             const Icon = stat.icon
             return (
               <motion.div
                 key={stat.label}
                 variants={itemVariants}
-                className="flex flex-col items-center text-center"
+                className="flex items-center gap-4 sm:w-1/4 sm:justify-center"
               >
-                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary sm:h-14 sm:w-14">
-                  <Icon className="h-6 w-6 sm:h-7 sm:w-7" />
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary border border-primary/20">
+                  <Icon className="h-6 w-6" />
                 </div>
-                <span className="text-2xl font-bold tracking-tight text-dark sm:text-3xl lg:text-4xl">
-                  {stat.value}
-                </span>
-                <span className="mt-1 text-sm font-medium text-muted sm:text-base">
-                  {stat.label}
-                </span>
+                <div className="flex flex-col text-left">
+                  <span className="text-xl font-extrabold text-dark tracking-tight">
+                    {stat.value}
+                  </span>
+                  <span className="text-xs font-semibold text-muted">
+                    {stat.label}
+                  </span>
+                </div>
+                {/* Vertical Divider for all but last item on desktop */}
+                {index !== stats.length - 1 && (
+                  <div className="hidden sm:block h-10 w-px bg-border ml-auto opacity-50" />
+                )}
               </motion.div>
             )
           })}

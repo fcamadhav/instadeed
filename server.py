@@ -879,6 +879,10 @@ async def create_order(request: Request, body: OrderRequest):
         conn.close()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+    
+    # Sync with Admin Backend in the background
+    threading.Thread(target=sync_order_to_admin, args=(order_id, "PENDING", None)).start()
+    
     return {"order_id": order_id, "amount": amount_in_paise, "currency": "INR"}
 
 @app.post("/verify-payment")
@@ -898,6 +902,7 @@ async def verify_payment(request: Request, body: VerifyRequest):
                 raise e
             conn.close()
             conn.close()
+            threading.Thread(target=sync_order_to_admin, args=(body.razorpay_order_id, "PAID", body.razorpay_payment_id)).start()
             return {"status": "success", "message": "Mock payment verified successfully!"}
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
@@ -919,6 +924,7 @@ async def verify_payment(request: Request, body: VerifyRequest):
                 conn.close()
                 raise e
             conn.close()
+            threading.Thread(target=sync_order_to_admin, args=(body.razorpay_order_id, "PAID", body.razorpay_payment_id)).start()
             return {"status": "success", "message": "Payment verified successfully!"}
         except razorpay.errors.SignatureVerificationError:
             raise HTTPException(status_code=400, detail="Invalid Payment Signature. Potential Fraud.")
@@ -937,6 +943,7 @@ async def verify_payment(request: Request, body: VerifyRequest):
                 conn.close()
                 raise e
             conn.close()
+            threading.Thread(target=sync_order_to_admin, args=(body.razorpay_order_id, "PAID", body.razorpay_payment_id)).start()
             return {"status": "success", "message": "Blind payment verification (testing mode)!"}
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))

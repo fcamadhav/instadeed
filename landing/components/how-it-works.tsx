@@ -1,158 +1,131 @@
-"use client";
+'use client'
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from 'framer-motion'
 import {
-  Search,
-  Edit3,
-  FileCheck,
+  Hand,
+  FileEdit,
+  FileCheck2,
   CreditCard,
   Truck,
-  Bell,
-} from "lucide-react";
+  BellRing,
+} from 'lucide-react'
 
 const steps = [
   {
-    icon: Search,
-    title: "Choose Service",
-    desc: "Select the legal document you need — rent agreement, sale deed, mutation, and more.",
+    title: 'Choose Service',
+    description: 'Select the document you need.',
+    icon: Hand,
   },
   {
-    icon: Edit3,
-    title: "Fill Details",
-    desc: "Answer a few simple questions in our easy online form. Takes just 2 minutes.",
+    title: 'Fill Details',
+    description: 'Answer a few simple questions.',
+    icon: FileEdit,
   },
   {
-    icon: FileCheck,
-    title: "Review Draft",
-    desc: "Our expert team drafts your document. You get a preview to verify before finalising.",
+    title: 'Review Draft',
+    description: 'We create your draft. You review & approve.',
+    icon: FileCheck2,
   },
   {
+    title: 'Pay Securely',
+    description: 'Pay online securely. Starting at ₹150.',
     icon: CreditCard,
-    title: "Pay",
-    desc: "Secure online payment with zero hidden charges. Starting at just ₹150.",
   },
   {
+    title: 'Physical Delivery',
+    description: 'Get the final document delivered to your door.',
     icon: Truck,
-    title: "Physical Delivery",
-    desc: "Get the final signed document delivered to your doorstep anywhere in India.",
   },
   {
-    icon: Bell,
-    title: "Renewal Reminder",
-    desc: "We keep track of expiry dates and notify you before renewal is due.",
+    title: 'Renewal Reminder',
+    description: 'We remind you before your document expires.',
+    icon: BellRing,
   },
-];
+]
 
-function StepCard({
-  step,
-  index,
-}: {
-  step: (typeof steps)[number];
-  index: number;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+}
 
-  return (
-    <div ref={ref} className="group relative flex items-start gap-5 sm:gap-8">
-      <div className="flex flex-col items-center">
-        <motion.div
-          initial={false}
-          animate={isInView ? { scale: 1 } : {}}
-          transition={{
-            type: "spring" as const,
-            damping: 18,
-            stiffness: 250,
-            delay: 0.1,
-          }}
-          className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 sm:h-13 sm:w-13 sm:text-base"
-        >
-          {index + 1}
-        </motion.div>
-        {index < steps.length - 1 && (
-          <motion.div
-            initial={false}
-            animate={isInView ? { scaleY: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="w-0.5 flex-1 origin-top bg-gradient-to-b from-primary to-blue-200"
-            style={{ minHeight: 40 }}
-          />
-        )}
-      </div>
-
-      <motion.div
-        initial={false}
-        animate={isInView ? { opacity: 1, x: 0 } : {}}
-        transition={{
-          type: "spring" as const,
-          damping: 22,
-          stiffness: 280,
-          delay: 0.15,
-        }}
-        className="flex-1 pb-10 sm:pb-14"
-        style={{ paddingBottom: index < steps.length - 1 ? undefined : 0 }}
-      >
-        <div className="rounded-xl border border-border bg-card p-5 transition-shadow duration-300 hover:shadow-md sm:p-6">
-          <div className="mb-2 flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
-              <step.icon
-                className="h-4.5 w-4.5 text-primary"
-                strokeWidth={1.75}
-              />
-            </div>
-            <h3 className="text-base font-semibold text-dark sm:text-lg">
-              {step.title}
-            </h3>
-          </div>
-          <p className="ml-0 text-sm leading-relaxed text-muted sm:ml-12">
-            {step.desc}
-          </p>
-        </div>
-      </motion.div>
-    </div>
-  );
+const itemVariants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.5, ease: 'easeOut' as const },
+  },
 }
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="bg-card py-20 sm:py-24">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-16 text-center">
-          <motion.span
-            initial={false}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary"
-          >
-            Process
-          </motion.span>
-          <motion.h2
-            initial={false}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl font-bold tracking-tight text-dark sm:text-4xl"
-          >
-            How It <span className="text-primary">Works</span>
-          </motion.h2>
-          <motion.p
-            initial={false}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="mx-auto mt-4 max-w-xl text-base text-muted sm:text-lg"
-          >
-            From selection to doorstep delivery in six simple steps.
-          </motion.p>
-        </div>
+    <section id="how-it-works" className="w-full bg-white py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-16 text-center"
+        >
+          <span className="mb-2 inline-block text-xs font-bold uppercase tracking-widest text-primary">
+            HOW IT WORKS
+          </span>
+          <div className="flex items-center justify-center gap-4">
+            <h2 className="text-xl font-bold tracking-tight text-dark sm:text-2xl">
+              From selection to doorstep delivery in 6 simple steps
+            </h2>
+            <div className="hidden sm:block h-px w-24 bg-border/50 relative">
+               <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rotate-45 border-t border-r border-border/80"></div>
+            </div>
+          </div>
+        </motion.div>
 
-        <div className="relative">
-          {steps.map((step, i) => (
-            <StepCard key={step.title} step={step} index={i} />
-          ))}
-        </div>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+          className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-6 lg:gap-4 relative"
+        >
+          {steps.map((step, index) => {
+            const Icon = step.icon
+            return (
+              <motion.div
+                key={step.title}
+                variants={itemVariants}
+                className="relative flex flex-col items-center text-center group"
+              >
+                {/* Connecting Line for desktop */}
+                {index < steps.length - 1 && (
+                  <div className="hidden lg:block absolute right-0 top-10 w-full h-px border-t border-dashed border-primary/20 -z-10 translate-x-1/2">
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rotate-45 border-t border-r border-primary/40 bg-white"></div>
+                  </div>
+                )}
+                
+                <div className="relative mb-6">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/5 text-primary shadow-sm border border-primary/10 transition-transform duration-300 group-hover:scale-110 group-hover:bg-primary/10">
+                    <Icon className="h-8 w-8" strokeWidth={1.5} />
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-white shadow-sm ring-2 ring-white">
+                    {index + 1}
+                  </div>
+                </div>
+                
+                <h3 className="mb-2 text-sm font-extrabold text-dark tracking-tight">
+                  {step.title}
+                </h3>
+                <p className="text-[11px] font-medium leading-relaxed text-muted max-w-[140px]">
+                  {step.description}
+                </p>
+              </motion.div>
+            )
+          })}
+        </motion.div>
       </div>
     </section>
-  );
+  )
 }

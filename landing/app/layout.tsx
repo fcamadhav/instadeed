@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-plus-jakarta",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
-  title: "INSTADEED — One Platform. All Property Documents. Delivered Within 20 Minutes.",
+  title: "INSTADEED — One Platform. All Property Documents. Delivered in 20 Minutes.",
   description:
     "Prepare legally valid property documents accepted across GNIDA, Noida Authority & YEIDA. No Broker. No Middleman. Physical Delivery. Lowest Price Guaranteed.",
   keywords: [
@@ -38,8 +38,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={plusJakartaSans.variable}>
-      <body><ClientLayout>{children}</ClientLayout></body>
+    <html lang="en" className={inter.variable}>
+      <body className="bg-white min-h-screen relative font-sans">
+        <div className="fixed inset-0 -z-50 h-full w-full bg-white opacity-25" style={{ backgroundImage: 'radial-gradient(#6D28D9 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
+        <ClientLayout>{children}</ClientLayout>
+      </body>
     </html>
   );
 }

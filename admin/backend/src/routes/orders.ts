@@ -403,4 +403,48 @@ router.post(
   }
 );
 
+router.post("/api/internal/sync-order", async (req: Request, res: Response) => {
+  try {
+    // Basic IP restriction for internal server call
+    if (req.ip !== "127.0.0.1" && req.ip !== "::1" && req.ip !== "::ffff:127.0.0.1") {
+      res.status(403).json({ success: false, error: "Forbidden" });
+      return;
+    }
+    const data = req.body;
+    let svc = await prisma.service.findFirst({ where: { slug: data.agreement_type?.toLowerCase() || "rent-agreement" } });
+    if (!svc) svc = await prisma.service.findFirst({ orderBy: { createdAt: "asc" } });
+    if (!svc) {
+      const cat = await prisma.category.findFirst();
+      svc = await prisma.service.create({
+        data: { name: data.agreement_type || "Document", slug: `sync-${Date.now()}`, categoryId: cat?.id || "00000000-0000-0000-0000-000000000000" }
+      });
+    }
+    const order = await prisma.order.upsert({
+      where: { orderNumber: data.id },
+      update: {
+        status: data.status === "PAID" ? "COMPLETED" : "PENDING",
+        paymentStatus: data.status === "PAID" ? "PAID" : "PENDING",
+      },
+      create: {
+        orderNumber: data.id,
+        customerName: data.customer_name,
+        customerPhone: data.customer_phone,
+        customerEmail: data.customer_email,
+        serviceId: svc.id,
+        amount: data.amount || 0,
+        total: data.amount || 0,
+        status: data.status === "PAID" ? "COMPLETED" : "PENDING",
+        paymentStatus: data.status === "PAID" ? "PAID" : "PENDING",
+        paymentId: data.payment_id,
+        formData: data.form_data,
+        paymentGateway: "RAZORPAY",
+      }
+    });
+    res.status(200).json({ success: true, order });
+  } catch (error) {
+    console.error("Internal sync order error:", error);
+    res.status(500).json({ success: false, error: "Sync failed" });
+  }
+});
+
 export default router;
