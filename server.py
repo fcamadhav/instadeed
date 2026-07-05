@@ -1117,7 +1117,7 @@ async def get_analytics(request: Request, user: dict = Depends(get_current_user)
         agreement_details = {}
         for r in rows:
             agreement_details[r[0]] = {"total": r[1], "today": r[2], "pending": r[3]}
-        cursor.execute("SELECT SUM(amount) FROM orders WHERE status IN ('PAID', 'COMPLETED', 'SIGNED')")
+        cursor.execute("SELECT SUM(amount) FROM orders WHERE status = 'COMPLETED'")
         total_revenue = cursor.fetchone()[0] or 0.0
         cursor.execute("SELECT status, COUNT(*) FROM orders GROUP BY status")
         status_breakdown = dict(cursor.fetchall())

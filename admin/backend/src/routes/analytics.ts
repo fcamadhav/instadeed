@@ -176,7 +176,7 @@ router.get(
       const dateFrom = req.query.dateFrom ? new Date(req.query.dateFrom as string) : undefined;
       const dateTo = req.query.dateTo ? new Date(req.query.dateTo as string) : undefined;
 
-      const where: Record<string, unknown> = {};
+      const where: Record<string, unknown> = { status: "COMPLETED" };
       if (dateFrom || dateTo) {
         where.createdAt = {};
         if (dateFrom) (where.createdAt as Record<string, unknown>).gte = dateFrom;
@@ -255,8 +255,8 @@ router.get("/api/admin/reports/:type", requireAuth, requireRole("SUPER_ADMIN", "
 
     if (type === 'revenue' || type === 'orders' || type === 'customers' || type === 'monthly_growth') {
       const orders = await prisma.order.findMany({
-        where: { createdAt: { gte: startDate, lte: endDate }, paymentStatus: "PAID" },
-        select: { total: true, createdAt: true, service: { select: { name: true } } },
+        where: { createdAt: { gte: startDate, lte: endDate }, status: "COMPLETED" },
+        select: { total: true, createdAt: true, status: true, service: { select: { name: true } } },
         orderBy: { createdAt: "asc" },
       });
       const months: Record<string,any> = {};
@@ -267,8 +267,7 @@ router.get("/api/admin/reports/:type", requireAuth, requireRole("SUPER_ADMIN", "
       });
       res.json({ success: true, data: { report: Object.values(months) } });
     } else if (type === 'top_services') {
-      // eslint-disable-next-line
-      const grouped = await (prisma as any).order.groupBy({ by:["serviceId"], where:{createdAt:{gte:startDate,lte:endDate},paymentStatus:"PAID"}, _count:true, _sum:{total:true}, orderBy:{_sum:{total:"desc"}}, take:10 }) as { serviceId: string; _count: number; _sum: { total: number|null } }[];
+      const grouped = await (prisma as any).order.groupBy({ by:["serviceId"], where:{createdAt:{gte:startDate,lte:endDate},status:"COMPLETED"}, _count:true, _sum:{total:true}, orderBy:{_sum:{total:"desc"}}, take:10 }) as { serviceId: string; _count: number; _sum: { total: number|null } }[];
       const svcs = await prisma.service.findMany({ where:{id:{in:grouped.map((g:any)=>g.serviceId)}}, select:{id:true,name:true} });
       const svcMap = new Map(svcs.map((s:any)=>[s.id,s]));
       res.json({ success: true, data: { report: grouped.map((g:any)=>({name:svcMap.get(g.serviceId)?.name||'Unknown',count:g._count,revenue:g._sum.total||0})) } });
