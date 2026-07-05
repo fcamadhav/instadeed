@@ -927,16 +927,17 @@
                                     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
                                     const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
                                     const payload = JSON.parse(jsonPayload);
-                                    const userSession = {
-                                        name: payload.name,
-                                        email: payload.email,
-                                        picture: payload.picture
-                                    };
-                                    localStorage.setItem('instadeed_user_session', JSON.stringify(userSession));
-                                    fetch('/api/auth/google', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: payload.name, email: payload.email, picture: payload.picture }) }).catch(() => {});
-                                    onLogin(userSession);
-                                    resetModal();
-                                    onClose();
+                                    fetch('/api/auth/google', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: payload.name, email: payload.email, picture: payload.picture }) })
+                                    .then(r => r.json())
+                                    .then(data => {
+                                        if (data.status === 'success') {
+                                            const userSession = { ...data.user, token: data.token, picture: payload.picture };
+                                            localStorage.setItem('instadeed_user_session', JSON.stringify(userSession));
+                                            onLogin(userSession);
+                                            resetModal();
+                                            onClose();
+                                        }
+                                    }).catch(err => console.error("Auth error:", err));
                                 } catch (err) {
                                     console.error("Auth error:", err);
                                 }
@@ -984,42 +985,58 @@
                 onClose();
             };
 
-            const triggerGoogleMock = () => {
-                const mockUser = {
-                    name: "Demo User",
-                    email: "demo@user.com",
-                    picture: "https://ui-avatars.com/api/?name=Demo+User&background=2563EB&color=fff"
-                };
-                localStorage.setItem('instadeed_user', JSON.stringify(mockUser));
-                fetch('/api/auth/google', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(mockUser) }).catch(() => {});
-                onLogin(mockUser);
-            };
-
-            const handleSendOtp = () => {
+            const handleSendOtp = async () => {
                 if (phone.length !== 10) return;
-                setStep(2);
-                setTimer(30);
-                setOtp(['', '', '', '', '', '']);
-                addToast("📱 Demo SMS sent to +91 " + phone, 'success');
+                try {
+                    const res = await fetch('/api/customer/auth/send-otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        setStep(2);
+                        setTimer(30);
+                        setOtp(['', '', '', '', '', '']);
+                        addToast("OTP sent to +91 " + phone, 'success');
+                    } else {
+                        addToast(data.error || "Failed to send OTP", "error");
+                    }
+                } catch (e) {
+                    addToast("Network error", "error");
+                }
             };
 
-            const handleVerifyOtp = () => {
+            const handleVerifyOtp = async () => {
                 const code = otp.join('');
                 if (code.length < 6) return;
                 setIsVerifying(true);
                 
-                setTimeout(() => {
-                    const mockUser = {
-                        name: "User " + phone.slice(-4),
-                        phone: "+91" + phone,
-                        email: phone + "@instadeed.com",
-                        picture: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-                    };
-                    localStorage.setItem('instadeed_user_session', JSON.stringify(mockUser));
-                    onLogin(mockUser);
-                    handleClose();
-                    addToast("Mobile OTP verified successfully!", 'success');
-                }, 1200);
+                try {
+                    const res = await fetch('/api/customer/auth/verify-otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ phone, otp: code })
+                    });
+                    const data = await res.json();
+                    setIsVerifying(false);
+                    if (data.success) {
+                        const userSession = {
+                            ...data.user,
+                            token: data.token,
+                            picture: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+                        };
+                        localStorage.setItem('instadeed_user_session', JSON.stringify(userSession));
+                        onLogin(userSession);
+                        handleClose();
+                        addToast("Mobile OTP verified successfully!", 'success');
+                    } else {
+                        addToast(data.error || "Invalid OTP", "error");
+                    }
+                } catch (e) {
+                    setIsVerifying(false);
+                    addToast("Network error", "error");
+                }
             };
 
             const handleOtpInput = (val, idx) => {
@@ -1077,14 +1094,6 @@
                             {step === 1 ? (
                                 <div className="space-y-4 w-full flex flex-col items-center">
                                     <div id="google-signin-btn-hub" className="w-full flex justify-center py-1 min-h-[40px]"></div>
-                                    
-                                    <button
-                                        onClick={triggerGoogleMock}
-                                        className="w-full py-3 bg-slate-50 border border-slate-200 hover:bg-blue-50 hover:border-blue-100 hover:text-blue-600 text-slate-600 transition-all font-bold text-xs rounded-xl flex items-center justify-center gap-2"
-                                    >
-                                        <i className="fa-brands fa-google text-sm"></i>
-                                        Access via Google (Mock)
-                                    </button>
 
                                     <div className="w-full flex items-center gap-3 text-xs text-slate-300 font-bold">
                                         <div className="flex-1 h-px bg-slate-100"></div>
@@ -3991,7 +4000,8 @@
                 if (!user || !user.email) return;
                 setUserOrdersLoading(true);
                 try {
-                    const res = await fetch(`${API_BASE}/api/customer/documents?email=${encodeURIComponent(user.email)}`);
+                    const headers = user?.token ? { 'Authorization': `Bearer ${user.token}` } : {};
+                    const res = await fetch(`${API_BASE}/api/customer/documents?email=${encodeURIComponent(user.email)}`, { headers });
                     if (res.ok) {
                         const data = await res.json();
                         const docsList = Array.isArray(data) ? data : [];
@@ -4281,7 +4291,7 @@
                                 triggerPrint();
                                 try {
                                     const link = document.createElement('a');
-                                    link.href = `${API_BASE}/api/customer/documents/${orderData.order_id}/download`;
+                                    link.href = `${API_BASE}/api/customer/documents/${orderData.order_id}/download${user?.token ? '?token=' + encodeURIComponent(user.token) : ''}`;
                                     link.setAttribute('download', '');
                                     document.body.appendChild(link);
                                     link.click();
@@ -4335,7 +4345,7 @@
                                                             triggerPrint();
                                                             try {
                                                                 const link = document.createElement('a');
-                                                                link.href = `${API_BASE}/api/customer/documents/${orderData.order_id}/download`;
+                                                                link.href = `${API_BASE}/api/customer/documents/${orderData.order_id}/download${user?.token ? '?token=' + encodeURIComponent(user.token) : ''}`;
                                                                 link.setAttribute('download', '');
                                                                 document.body.appendChild(link);
                                                                 link.click();
@@ -4516,7 +4526,7 @@
                                                             Resume Draft
                                                         </button>
                                                     ) : (
-                                                        <a href={`${API_BASE}/api/customer/documents/${doc.id}/download`} target="_blank" className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 text-slate-600 text-xs font-bold rounded-lg transition cursor-pointer inline-flex items-center gap-1 no-underline">
+                                                        <a href={`${API_BASE}/api/customer/documents/${doc.id}/download${user?.token ? '?token=' + encodeURIComponent(user.token) : ''}`} target="_blank" className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 text-slate-600 text-xs font-bold rounded-lg transition cursor-pointer inline-flex items-center gap-1 no-underline">
                                                             <i className="fa-solid fa-download"></i> PDF
                                                         </a>
                                                     )}
@@ -6603,7 +6613,7 @@
                                             {/* My Docs */}
                                             <button onClick={() => { setActiveTab('DASHBOARD'); setFlowStep(1); }} className="insta-btn-ghost hidden sm:flex">
                                                 <i className="fa-solid fa-layer-group text-[11px]"></i>
-                                                <span>My Docs</span>
+                                                <span>My Account</span>
                                             </button>
 
                                             {/* Profile trigger */}
@@ -6628,7 +6638,7 @@
                                                     <div className="p-1.5">
                                                         <button onClick={() => { setShowProfileDropdown(false); setActiveTab('DASHBOARD'); setFlowStep(1); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer">
                                                             <i className="fa-solid fa-layer-group text-slate-400 w-4 text-center text-[12px]"></i>
-                                                            My Documents
+                                                            My Account
                                                         </button>
                                                         <button onClick={() => { setShowProfileDropdown(false); setActiveTab('DASHBOARD'); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer">
                                                             <i className="fa-solid fa-user text-slate-400 w-4 text-center text-[12px]"></i>
@@ -6971,113 +6981,7 @@
                                     </div>
                                 )}
 
-                                {/* My Documents Portal */}
-                                <div className="mt-6">
-                                    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                                        <div className="px-5 py-3.5 border-b border-slate-50 flex items-center gap-2.5">
-                                            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                                                <i className="fa-solid fa-cloud-arrow-down text-sm"></i>
-                                            </div>
-                                            <div>
-                                                <h3 className="font-bold text-sm text-slate-800">My Documents</h3>
-                                                <p className="text-[10px] text-slate-400 font-medium">Access your signed & completed documents</p>
-                                            </div>
-                                        </div>
-                                        <div className="p-4">
-                                            <div className="flex items-center gap-2 mb-3">
-                                                <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-50 transition-all bg-white flex-1">
-                                                    <input
-                                                        type="tel"
-                                                        value={myDocsPhone}
-                                                        onChange={(e) => setMyDocsPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                                                        placeholder="Enter your mobile number"
-                                                        className="w-full px-3 py-2.5 text-sm font-medium text-slate-800 focus:outline-none"
-                                                    />
-                                                </div>
-                                                <button
-                                                    onClick={async () => {
-                                                        if (myDocsPhone.length !== 10) return;
-                                                        setMyDocsLoading(true);
-                                                        try {
-                                                            const res = await fetch(`${API_BASE}/api/customer/documents?phone=${myDocsPhone}`);
-                                                            if (res.ok) {
-                                                                const data = await res.json();
-                                                                setMyDocs(Array.isArray(data) ? data : []);
-                                                            } else {
-                                                                setMyDocs([]);
-                                                                addToast('Could not fetch documents. Please try again.', 'error');
-                                                            }
-                                                        } catch (e) {
-                                                            setMyDocs([]);
-                                                            addToast('Error fetching your documents.', 'error');
-                                                        }
-                                                        setMyDocsLoading(false);
-                                                    }}
-                                                    disabled={myDocsPhone.length !== 10 || myDocsLoading}
-                                                    className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition shadow-sm disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
-                                                >
-                                                    {myDocsLoading ? <i className="fa-solid fa-circle-notch fa-spin"></i> : <><i className="fa-solid fa-search mr-1"></i> Search</>}
-                                                </button>
-                                            </div>
-                                            {myDocs.length > 0 && (
-                                                <div className="space-y-2 max-h-72 overflow-y-auto">
-                                                    {myDocs.map((doc) => (
-                                                        <div key={doc.id} className="flex items-center justify-between bg-white rounded-xl px-4 py-3 border border-slate-100 hover:shadow-sm hover:border-slate-200 transition-all group">
-                                                            <div className="flex items-center gap-3 min-w-0 flex-1">
-                                                                <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
-                                                                    <i className="fa-solid fa-file-lines text-xs"></i>
-                                                                </div>
-                                                                <div className="min-w-0 flex-1">
-                                                                    <div className="font-bold text-sm text-slate-800 truncate">{doc.agreement_type}</div>
-                                                                    <div className="flex items-center gap-2 mt-0.5">
-                                                                            {(() => {
-                                                                                const currentStep = doc.status === 'DRAFT' ? 1 : 
-                                                                                                    doc.status === 'PAID' ? (doc.leegality_sign_url ? 3 : 2) : 
-                                                                                                    doc.status === 'SIGNED' ? 4 : 
-                                                                                                    doc.status === 'COMPLETED' ? 5 : 1;
-                                                                                const stepLabels = ['Drafting', 'Paid', 'Signing', 'e-Signed', 'Completed'];
-                                                                                const stepColor = doc.status === 'COMPLETED' ? 'bg-emerald-500' : 'bg-blue-500';
-                                                                                return (
-                                                                                    <div className="flex flex-col w-full gap-1.5">
-                                                                                        <div className="flex items-center gap-2">
-                                                                                            <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${
-                                                                                                doc.status === 'SIGNED' || doc.status === 'COMPLETED' ? 'bg-emerald-100 text-emerald-800' :
-                                                                                                doc.status === 'PAID' ? 'bg-purple-100 text-purple-800' :
-                                                                                                doc.status === 'DRAFT' ? 'bg-violet-100 text-violet-800' : 'bg-amber-100 text-amber-800'
-                                                                                            }`}>{stepLabels[currentStep - 1]}</span>
-                                                                                            <span className="text-[10px] text-slate-400">{new Date(doc.created_at).toLocaleDateString('en-IN')}</span>
-                                                                                        </div>
-                                                                                        {doc.status !== 'DRAFT' && (
-                                                                                            <div className="w-full">
-                                                                                                <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
-                                                                                                    <div className={`h-full ${stepColor} transition-all duration-500`} style={{ width: `${(currentStep / 5) * 100}%` }}></div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        )}
-                                                                                    </div>
-                                                                                );
-                                                                            })()}
-                                                                        </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="flex items-center gap-1.5 shrink-0 ml-3">
-                                                                <a href={`${API_BASE}/api/customer/documents/${doc.id}/download`} target="_blank" className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 text-slate-600 text-xs font-bold rounded-lg transition cursor-pointer inline-flex items-center gap-1">
-                                                                    <i className="fa-solid fa-download"></i> PDF
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                            {myDocs.length === 0 && !myDocsLoading && myDocsPhone.length === 10 && (
-                                                <div className="text-center py-6 text-slate-400 text-xs font-medium">
-                                                    <i className="fa-solid fa-folder-open text-lg mb-2 block opacity-40"></i>
-                                                    No documents found for this number.
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         )}
 

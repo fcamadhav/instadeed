@@ -63,6 +63,12 @@ export default function Navbar() {
             <Phone className="h-4 w-4" />
             WhatsApp
           </a>
+          <a
+            href="/app/?login=true"
+            className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold text-muted transition-all duration-200 hover:bg-gray-50 hover:text-dark"
+          >
+            Login
+          </a>
           <button
             onClick={() => setActiveDoc('rent-agreement')}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-primary-dark active:scale-95"
@@ -109,6 +115,12 @@ export default function Navbar() {
                 >
                   <Phone className="h-4 w-4" />
                   WhatsApp
+                </a>
+                <a
+                  href="/app/?login=true"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-semibold text-muted transition-all duration-200 hover:bg-gray-50 hover:text-dark"
+                >
+                  Login
                 </a>
                 <button
                   onClick={() => { setIsOpen(false); setActiveDoc('rent-agreement'); }}

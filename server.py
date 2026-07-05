@@ -1350,55 +1350,80 @@ async def get_config():
 async def health():
     return {"status": "ok", "version": "2.0.0", "timestamp": datetime.datetime.now().isoformat()}
 
+# === Customer Auth ===
+CUSTOMER_OTP_STORE = {}
+
+@app.post("/api/customer/auth/send-otp")
+async def customer_send_otp(body: dict = Body(...)):
+    phone = body.get("phone", "")
+    phone = sanitize_phone(phone)
+    if len(phone) != 10:
+        return {"success": False, "error": "Invalid phone number"}
+    otp = str(random.randint(100000, 999999))
+    CUSTOMER_OTP_STORE[phone] = otp
+    logger.info(f"Customer OTP sent to {phone} -> {otp}")
+    return {"success": True, "message": "OTP sent successfully"}
+
+@app.post("/api/customer/auth/verify-otp")
+async def customer_verify_otp(body: dict = Body(...)):
+    phone = body.get("phone", "")
+    phone = sanitize_phone(phone)
+    otp = body.get("otp", "")
+    ENABLE_MASTER_OTP = os.environ.get("ENABLE_MASTER_OTP", "0") == "1"
+    if (ENABLE_MASTER_OTP and otp == "123456") or CUSTOMER_OTP_STORE.get(phone) == otp:
+        CUSTOMER_OTP_STORE.pop(phone, None)
+        token = create_token(phone, f"{phone}@instadeed.com", "customer")
+        return {"success": True, "token": token, "user": {"id": phone, "name": f"User {phone[-4:]}", "email": f"{phone}@instadeed.com", "phone": phone}}
+    return {"success": False, "error": "Invalid OTP"}
+
 # === Customer Document Portal ===
 
 @app.get("/api/customer/documents")
 @limiter.limit("30/minute")
-async def customer_documents(phone: str = "", email: str = "", user: dict = Depends(get_current_user)):
+async def customer_documents(user: dict = Depends(get_current_user)):
     try:
         conn = sqlite3.connect(DATABASE_FILE)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         
+        email = user.get("email", "")
+        phone = ""
+        
+        if email.endswith("@instadeed.com"):
+            phone = email.replace("@instadeed.com", "")
+            
         orders = []
         drafts = []
         
+        # Fetch orders
+        query = "SELECT id, agreement_type, status, amount, created_at, updated_at, cloud_url, leegality_sign_url, leegality_doc_id, form_data FROM orders WHERE customer_email = ?"
+        params = [email]
         if phone:
-            phone = sanitize_phone(phone)
-            # Fetch orders
-            cursor.execute("SELECT id, agreement_type, status, amount, created_at, updated_at, cloud_url, leegality_sign_url, leegality_doc_id, form_data FROM orders WHERE customer_phone = ? ORDER BY created_at DESC", (phone,))
-            orders = [dict(r) for r in cursor.fetchall()]
-            
-            # Fetch drafts
-            cursor.execute("SELECT id, doc_type as agreement_type, 'DRAFT' as status, 0 as amount, created_at, updated_at, NULL as cloud_url, NULL as leegality_sign_url, NULL as leegality_doc_id, form_data FROM saved_drafts WHERE phone = ? ORDER BY updated_at DESC", (phone,))
-            drafts = [dict(r) for r in cursor.fetchall()]
-        elif email:
-            # Fetch orders
-            cursor.execute("SELECT id, agreement_type, status, amount, created_at, updated_at, cloud_url, leegality_sign_url, leegality_doc_id, form_data FROM orders WHERE customer_email = ? ORDER BY created_at DESC", (email,))
-            orders = [dict(r) for r in cursor.fetchall()]
-            
-            # Fetch drafts by email
-            cursor.execute("SELECT id, doc_type as agreement_type, 'DRAFT' as status, 0 as amount, created_at, updated_at, NULL as cloud_url, NULL as leegality_sign_url, NULL as leegality_doc_id, form_data FROM saved_drafts WHERE email = ? ORDER BY updated_at DESC", (email,))
-            drafts = [dict(r) for r in cursor.fetchall()]
-        else:
-            conn.close()
-            return []
-            
+            query += " OR customer_phone = ?"
+            params.append(phone)
+        query += " ORDER BY created_at DESC"
+        
+        cursor.execute(query, tuple(params))
+        orders = [dict(r) for r in cursor.fetchall()]
+        
+        # Fetch drafts
+        draft_query = "SELECT id, doc_type as agreement_type, 'DRAFT' as status, 0 as amount, created_at, updated_at, NULL as cloud_url, NULL as leegality_sign_url, NULL as leegality_doc_id, form_data FROM saved_drafts WHERE email = ?"
+        draft_params = [email]
+        if phone:
+            draft_query += " OR phone = ?"
+            draft_params.append(phone)
+        draft_query += " ORDER BY updated_at DESC"
+        
+        cursor.execute(draft_query, tuple(draft_params))
+        drafts = [dict(r) for r in cursor.fetchall()]
+        
         conn.close()
         
-        all_docs = orders + drafts
-        docs = []
-        for d in all_docs:
+        for d in drafts:
             try:
                 d["form_data"] = json.loads(d["form_data"]) if isinstance(d["form_data"], str) else d["form_data"]
             except:
                 d["form_data"] = {}
-            # Keep form_data for drafts so frontend can reload/resume them.
-            # Pop for others to keep payload small.
-            if d.get("status") != "DRAFT":
-                d.pop("form_data", None)
-            
-            # Make sure doc_type is set for compatibility with both web/mobile frontends
             d["doc_type"] = d.get("agreement_type")
             docs.append(d)
             
