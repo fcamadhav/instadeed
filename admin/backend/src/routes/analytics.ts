@@ -30,9 +30,9 @@ router.get(
         prisma.order.count(),
         prisma.order.count({ where: { createdAt: { gte: todayStart } } }),
         prisma.order.count({ where: { createdAt: { gte: monthStart } } }),
-        prisma.order.aggregate({ _sum: { total: true } }),
-        prisma.order.aggregate({ where: { createdAt: { gte: todayStart } }, _sum: { total: true } }),
-        prisma.order.aggregate({ where: { createdAt: { gte: monthStart } }, _sum: { total: true } }),
+        prisma.order.aggregate({ where: { status: "COMPLETED" }, _sum: { total: true } }),
+        prisma.order.aggregate({ where: { createdAt: { gte: todayStart }, status: "COMPLETED" }, _sum: { total: true } }),
+        prisma.order.aggregate({ where: { createdAt: { gte: monthStart }, status: "COMPLETED" }, _sum: { total: true } }),
         prisma.user.count({ where: { role: "CUSTOMER" } }),
         prisma.user.count({ where: { role: "CUSTOMER", createdAt: { gte: monthStart } } }),
         prisma.order.groupBy({ by: ["status"], _count: true }),
@@ -84,8 +84,8 @@ router.get(
         select: { id: true, orderNumber: true, total: true, tax: true, discount: true, status: true, paymentStatus: true, createdAt: true },
       });
 
-      const totalRevenue = orders.reduce((s, o) => s + (o.paymentStatus === "PAID" ? o.total : 0), 0);
-      const totalTax = orders.reduce((s, o) => s + (o.paymentStatus === "PAID" ? o.tax : 0), 0);
+      const totalRevenue = orders.reduce((s, o) => s + (o.status === "COMPLETED" ? o.total : 0), 0);
+      const totalTax = orders.reduce((s, o) => s + (o.status === "COMPLETED" ? o.tax : 0), 0);
       const totalDiscount = orders.reduce((s, o) => s + o.discount, 0);
       const paidOrders = orders.filter((o) => o.paymentStatus === "PAID").length;
 
@@ -227,7 +227,7 @@ router.get(
         const key = `${o.createdAt.getFullYear()}-${String(o.createdAt.getMonth() + 1).padStart(2, "0")}`;
         if (!monthlyMap[key]) monthlyMap[key] = { revenue: 0, orders: 0 };
         monthlyMap[key].orders++;
-        if (o.paymentStatus === "PAID") monthlyMap[key].revenue += o.total;
+        if (o.status === "COMPLETED") monthlyMap[key].revenue += o.total;
       });
 
       const monthlyGrowth = Object.entries(monthlyMap)
@@ -263,7 +263,7 @@ router.get("/api/admin/reports/:type", requireAuth, requireRole("SUPER_ADMIN", "
       orders.forEach(o => {
         const m = o.createdAt.toISOString().slice(0,7);
         if (!months[m]) months[m] = { month: new Date(o.createdAt).toLocaleString('en-IN',{month:'short'}), revenue:0, orders:0, customers:0 };
-        months[m].revenue += o.total; months[m].orders += 1; months[m].customers += 1;
+        if (o.status === "COMPLETED") { months[m].revenue += o.total; } months[m].orders += 1; months[m].customers += 1;
       });
       res.json({ success: true, data: { report: Object.values(months) } });
     } else if (type === 'top_services') {

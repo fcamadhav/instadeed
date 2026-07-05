@@ -33,8 +33,8 @@ router.get(
         rentAgreementStats,
       ] = await Promise.all([
         prisma.order.count({ where: { createdAt: { gte: todayStart } } }),
-        prisma.order.aggregate({ where: { createdAt: { gte: todayStart }, paymentStatus: "PAID" }, _sum: { total: true } }),
-        prisma.order.aggregate({ where: { createdAt: { gte: monthStart }, paymentStatus: "PAID" }, _sum: { total: true } }),
+        prisma.order.aggregate({ where: { createdAt: { gte: todayStart }, status: "COMPLETED" }, _sum: { total: true } }),
+        prisma.order.aggregate({ where: { createdAt: { gte: monthStart }, status: "COMPLETED" }, _sum: { total: true } }),
         prisma.order.count(),
         prisma.order.count({ where: { status: "PENDING" } }),
         prisma.order.count({ where: { status: "COMPLETED" } }),
@@ -45,7 +45,7 @@ router.get(
         (async () => {
           const grouped = await prisma.order.groupBy({
             by: ["serviceId"],
-            where: { paymentStatus: "PAID" },
+            where: { status: "COMPLETED" },
             _count: true,
             _sum: { total: true },
             orderBy: { _sum: { total: "desc" } },

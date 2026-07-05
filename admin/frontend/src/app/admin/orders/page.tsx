@@ -51,7 +51,7 @@ export default function OrdersPage() {
       if (ord?.data) { setOrders(ord.data.orders || []); setTotalPages(ord.data.pagination?.totalPages || 1); }
       if (all?.data?.orders) {
         const o = all.data.orders;
-        setSummary({ total: o.length, revenue: o.reduce((s,x)=>s+(x.total||x.amount||0),0), pending: o.filter(x=>x.status==='PENDING'||x.status==='PROCESSING').length, completed: o.filter(x=>x.status==='COMPLETED').length });
+        setSummary({ total: o.length, revenue: o.reduce((s:any,x:any)=>x.status==='COMPLETED'?s+(x.total||x.amount||0):s,0), pending: o.filter((x:any)=>x.status==='PENDING'||x.status==='PROCESSING').length, completed: o.filter((x:any)=>x.status==='COMPLETED').length });
       }
     } catch {} finally { setLoading(false); }
   }, [page, search, statusFilter, payFilter]);
