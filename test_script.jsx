@@ -1821,6 +1821,8 @@
             const [myDocsLoading, setMyDocsLoading] = useState(false);
             const [userOrders, setUserOrders] = useState([]);
             const [userOrdersLoading, setUserOrdersLoading] = useState(false);
+            const [showDraftReminder, setShowDraftReminder] = useState(false);
+            const [incompleteDrafts, setIncompleteDrafts] = useState([]);
             const [showLeegalityModal, setShowLeegalityModal] = useState(false);
             const [leegalityOrderId, setLeegalityOrderId] = useState('');
             const [leegalitySignee, setLeegalitySignee] = useState({ name: '', email: '', phone: '' });
@@ -4007,6 +4009,16 @@
                         const docsList = Array.isArray(data) ? data : [];
                         setUserOrders(docsList);
                         checkSyncConflicts(docsList);
+                        
+                        const drafts = docsList.filter(d => d.status === 'DRAFT');
+                        if (drafts.length > 0) {
+                            setIncompleteDrafts(drafts);
+                            const reminderKey = 'draft_reminder_shown_' + user.email;
+                            if (!sessionStorage.getItem(reminderKey)) {
+                                setShowDraftReminder(true);
+                                sessionStorage.setItem(reminderKey, 'true');
+                            }
+                        }
                     } else {
                         setUserOrders([]);
                     }
@@ -4102,7 +4114,7 @@
             };
 
             useEffect(() => {
-                if (activeTab === 'DASHBOARD' && user && user.email) fetchUserOrders();
+                if (user && user.email) fetchUserOrders();
             }, [activeTab, user]);
 
             useEffect(() => {
@@ -12336,6 +12348,34 @@
                             amount={(() => { const p = { RENT: 300, ATS: 300, REG_RENT: 5000, MUTATION: 4000, KYA: 0, GNIDA: 0, GNIDA_REGISTRY: 10000, GNIDA_PTM: 7500, GNIDA_PACKAGE: 40000, TM_APP: 2000, TM48: 500, NOIDA_TRANSFER: 2000 }; return p[activeTab] || 499; })()}
                             docLabel={(() => { const l = { RENT: 'Rent Agreement', ATS: 'Agreement to Sell', REG_RENT: 'Registered Rent Agreement', MUTATION: 'Mutation Form', GNIDA: 'Know Your Allottee', GNIDA_REGISTRY: 'GNIDA Registry', GNIDA_PTM: 'Permission to Mortgage', GNIDA_PACKAGE: 'GNIDA 5-in-1 Package', TM48: 'TM-48 Trademark', TM_APP: 'Transfer Memo Application', NOIDA_TRANSFER: 'NOIDA Transfer', KYA: 'KYA Verification' }; return l[activeTab] || ''; })()}
                         />
+
+                        {/* Incomplete Drafts Reminder Modal */}
+                        {showDraftReminder && (
+                            <div className="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setShowDraftReminder(false)}>
+                                <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden relative" onClick={e => e.stopPropagation()}>
+                                    <button onClick={() => setShowDraftReminder(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition">
+                                        <i className="fa-solid fa-xmark text-xl"></i>
+                                    </button>
+                                    <div className="p-8 text-center">
+                                        <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center mx-auto mb-4 shadow-sm">
+                                            <i className="fa-solid fa-file-pen text-2xl"></i>
+                                        </div>
+                                        <h2 className="text-xl font-extrabold text-slate-800 mb-2">Resume Your Work</h2>
+                                        <p className="text-sm text-slate-500 mb-6 leading-relaxed">
+                                            You have {incompleteDrafts.length} incomplete document draft{incompleteDrafts.length !== 1 ? 's' : ''}. Would you like to jump right back in where you left off?
+                                        </p>
+                                        <div className="flex gap-3">
+                                            <button onClick={() => setShowDraftReminder(false)} className="flex-1 py-3 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-xl font-bold text-sm transition cursor-pointer">
+                                                Maybe Later
+                                            </button>
+                                            <button onClick={() => { setShowDraftReminder(false); setActiveTab('DASHBOARD'); setFlowStep(1); }} className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm transition shadow-lg shadow-blue-200 cursor-pointer flex items-center justify-center gap-2">
+                                                Go to Dashboard <i className="fa-solid fa-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
                         {/* Login Modal */}
                         <LoginModal
