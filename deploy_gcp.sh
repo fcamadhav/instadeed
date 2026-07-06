@@ -44,7 +44,8 @@ apt-get install -y docker.io git
 
 # 2. Setup persistent directory for the SQLite database on the VM host
 mkdir -p /var/lib/instadeed
-chmod 777 /var/lib/instadeed
+# Secure permissions: only root can read/write/execute the DB dir to prevent arbitrary script execution
+chmod 700 /var/lib/instadeed
 
 # 3. Clone the public codebase directly on the VM
 rm -rf /app
@@ -58,16 +59,18 @@ docker build -t instadeed-app .
 docker stop instadeed-container || true
 docker rm instadeed-container || true
 
-# 6. Launch the container
+# 6. Launch the container with resource limits and security options
 docker run -d \\
   --name instadeed-container \\
   --restart always \\
+  --memory="512m" \\
+  --cpus="0.5" \\
+  --cap-drop=ALL \\
+  --security-opt=no-new-privileges:true \\
   -p 80:8000 \\
   -v /var/lib/instadeed:/app/db_dir \\
   -e DATABASE_FILE=/app/db_dir/madhav_crm.db \\
   -e JWT_SECRET="instadeed-production-jwt-key-change-me" \\
-  -e ALLOW_ADMIN_BYPASS=1 \\
-  -e ADMIN_BYPASS_TOKEN="admin_bypass_token" \\
   instadeed-app
 EOF
 

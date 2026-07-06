@@ -950,15 +950,34 @@
                     }
                 };
 
-                initGoogle();
-                const interval = setInterval(() => {
-                    if (window.google && window.google.accounts && window.google.accounts.id) {
-                        initGoogle();
-                        clearInterval(interval);
+                let iv;
+                const safeInitGoogle = () => {
+                    try {
+                        const btn = document.getElementById("google-signin-btn-hub");
+                        if (btn) {
+                            initGoogle();
+                            return true;
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        return true;
                     }
-                }, 500);
+                    return false;
+                };
+                
+                if (!safeInitGoogle()) {
+                    let attempts = 0;
+                    iv = setInterval(() => {
+                        attempts++;
+                        if (window.google && window.google.accounts && window.google.accounts.id) {
+                            if (safeInitGoogle() || attempts > 20) {
+                                clearInterval(iv);
+                            }
+                        }
+                    }, 500);
+                }
 
-                return () => clearInterval(interval);
+                return () => { if (iv) clearInterval(iv); };
             }, [isOpen, step]);
 
             // Resend countdown timer
@@ -2688,7 +2707,7 @@
                     try {
                         const u = JSON.parse(sessionStr);
                         setUser(u);
-                        if (u.role === 'admin' || u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); }
+                        if (u.role === 'admin') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); }
                     } catch (e) { console.error("Error loading session:", e); }
                 }
 
@@ -2699,7 +2718,7 @@
                             try {
                                 const u = JSON.parse(e.newValue);
                                 setUser(u);
-                                if (u.role === 'admin' || u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); }
+                                if (u.role === 'admin') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); }
                             } catch (err) { console.error("Error syncing session:", err); }
                         } else {
                             setUser(null);
@@ -4756,29 +4775,11 @@
                                 <button onClick={() => setShowLogin(true)} className="w-full py-3 text-white rounded-xl font-bold text-sm transition shadow-lg cursor-pointer crm-btn-primary mb-4" style={{ backgroundColor: C.accent }}>
                                     <i className="fa-solid fa-right-to-bracket mr-1.5"></i> Sign In
                                 </button>
-                                <div className="pt-4 border-t border-slate-100">
-                                    <button onClick={() => {
-                                        const mockAdmin = {
-                                            name: "Admin User (Bypass)",
-                                            email: "admin@instadeed.local",
-                                            role: "admin",
-                                            picture: "https://ui-avatars.com/api/?name=Admin+User&background=6366F1&color=fff"
-                                        };
-                                        setUser(mockAdmin);
-                                        setIsAdminLoggedIn(true);
-                                        localStorage.setItem('instadeed_admin', 'true');
-                                        localStorage.setItem('instadeed_token', 'admin_bypass_token');
-                                        localStorage.setItem('instadeed_user_session', JSON.stringify(mockAdmin));
-                                        addToast('Admin mode bypassed successfully!', 'success');
-                                    }} className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs transition cursor-pointer border border-slate-200 flex items-center justify-center gap-1.5">
-                                        <i className="fa-solid fa-user-secret"></i> Quick Admin Bypass (Test/Demo)
-                                    </button>
-                                </div>
                             </div>
                             <LoginModal
                                 isOpen={showLogin}
                                 onClose={() => setShowLogin(false)}
-                                onLogin={(u) => { setUser(u); setShowLogin(false); if (u.role === 'admin' || u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
+                                onLogin={(u) => { setUser(u); setShowLogin(false); if (u.role === 'admin') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
                             />
                         </div>
                     );
@@ -7099,7 +7100,7 @@
                         <LoginModal
                             isOpen={showLogin}
                             onClose={() => setShowLogin(false)}
-                            onLogin={(u) => { setUser(u); setShowLogin(false); if (u.role === 'admin' || u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
+                            onLogin={(u) => { setUser(u); setShowLogin(false); if (u.role === 'admin') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
                         />
                     </div>
                 ) : activeTab === 'SHARE' ? (
@@ -12381,7 +12382,7 @@
                         <LoginModal
                             isOpen={showLogin}
                             onClose={() => setShowLogin(false)}
-                            onLogin={(u) => { setUser(u); if (u.role === 'admin' || u.email === 'fcamadhav@gmail.com') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
+                            onLogin={(u) => { setUser(u); if (u.role === 'admin') { setIsAdminLoggedIn(true); localStorage.setItem('instadeed_admin', 'true'); } }}
                         />
 
                         {/* Share Draft Modal */}
