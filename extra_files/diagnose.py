@@ -45,12 +45,12 @@ else:
 # 4. Check for the exact script tag structure
 print()
 print("=== Script tags in the file ===")
-for m in re.finditer(r'<script[^>]*>', content):
+for m in re.finditer(r'<script[^>]*>', content, flags=re.IGNORECASE):
     line_num = content[:m.start()].count('\n') + 1
     print(f"  Line {line_num}: {m.group()}")
 
 print()
 print("=== </script> tags ===")
-for m in re.finditer(r'</script>', content):
+for m in re.finditer(r'</script>', content, flags=re.IGNORECASE):
     line_num = content[:m.start()].count('\n') + 1
     print(f"  Line {line_num}: </script>")
