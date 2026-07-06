@@ -7,6 +7,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 import hashlib
+import bcrypt
 import io
 import base64
 import random
@@ -554,22 +555,29 @@ def get_current_user(request: Request) -> dict:
     return user
 
 def verify_api_key(api_key: str) -> dict:
-    key_hash = hashlib.sha256(api_key.encode()).hexdigest()
     conn = sqlite3.connect(DATABASE_FILE)
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT user_id FROM api_keys WHERE key_hash = ? AND is_active = 1",
-        (key_hash,)
+        "SELECT id, user_id, key_hash FROM api_keys WHERE is_active = 1"
     )
-    row = cursor.fetchone()
-    if row:
-        cursor.execute(
-            "UPDATE api_keys SET last_used = ? WHERE key_hash = ?",
-            (datetime.datetime.now().isoformat(), key_hash)
-        )
-        conn.commit()
-        conn.close()
-        return {"sub": row[0], "role": "api"}
+    rows = cursor.fetchall()
+
+    api_key_bytes = api_key.encode("utf-8")
+    for row in rows:
+        key_id, user_id, stored_hash = row
+        try:
+            if stored_hash and bcrypt.checkpw(api_key_bytes, stored_hash.encode("utf-8")):
+                cursor.execute(
+                    "UPDATE api_keys SET last_used = ? WHERE id = ?",
+                    (datetime.datetime.now().isoformat(), key_id)
+                )
+                conn.commit()
+                conn.close()
+                return {"sub": user_id, "role": "api"}
+        except ValueError:
+            # Skip malformed/non-bcrypt hashes
+            continue
+
     conn.close()
     raise HTTPException(status_code=401, detail="Invalid API key")
 
