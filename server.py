@@ -2180,8 +2180,8 @@ async def leegality_webhook(request: Request):
             conn.close()
         return {"status": "ok"}
     except Exception as e:
-        logger.error(f"Leegality webhook error: {e}")
-        return {"status": "error", "message": str(e)}
+        logger.exception("Leegality webhook error")
+        return {"status": "error", "message": "Internal server error"}
 
 
 # === ADMIN USER MANAGEMENT ===
