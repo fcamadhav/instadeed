@@ -97,7 +97,15 @@ for (const p of DRAFT_SPA_CANDIDATES) {
   if (fs.existsSync(p)) { DRAFT_SPA_PATH = p; break; }
 }
 app.get("/api/draft-serve", (req: Request, res: Response) => {
-  const doc = (req.query.doc as string) || "rent-agreement";
+  const rawDoc = typeof req.query.doc === "string" ? req.query.doc : "";
+  const allowedDocs = new Set([
+    "rent-agreement",
+    "leave-and-license",
+    "affidavit",
+    "notarized-affidavit",
+    "power-of-attorney",
+  ]);
+  const doc = allowedDocs.has(rawDoc) ? rawDoc : "rent-agreement";
   if (!fs.existsSync(DRAFT_SPA_PATH)) {
     res.status(404).json({ success: false, error: "Draft SPA not found" });
     return;
