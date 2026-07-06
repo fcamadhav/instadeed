@@ -2935,7 +2935,7 @@ async def save_draft(body: dict = Body(...)):
         return {"success": True}
     except Exception as e:
         logger.error(f"Draft save error: {e}")
-        return {"success": False, "error": str(e)}
+        return {"success": False, "error": "Failed to save draft"}
 
 import uuid
 
