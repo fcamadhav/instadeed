@@ -2959,9 +2959,9 @@ async def create_share_link(body: dict = Body(...)):
         conn.commit()
         conn.close()
         return {"success": True, "token": token}
-    except Exception as e:
-        logger.error(f"Share link creation failed: {e}")
-        return {"success": False, "error": str(e)}
+    except Exception:
+        logger.exception("Share link creation failed")
+        return {"success": False, "error": "Unable to create share link"}
 
 @app.get("/api/drafts/share/{token}")
 async def get_shared_draft(token: str):
