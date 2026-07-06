@@ -1388,7 +1388,7 @@ async def customer_verify_otp(body: dict = Body(...)):
 
 @app.get("/api/customer/documents")
 @limiter.limit("30/minute")
-async def customer_documents(user: dict = Depends(get_current_user)):
+async def customer_documents(request: Request, user: dict = Depends(get_current_user)):
     try:
         conn = sqlite3.connect(DATABASE_FILE)
         conn.row_factory = sqlite3.Row
@@ -1442,7 +1442,7 @@ async def customer_documents(user: dict = Depends(get_current_user)):
 
 @app.get("/api/customer/documents/{order_id}/download")
 @limiter.limit("30/minute")
-async def customer_download(order_id: str, user: dict = Depends(get_current_user)):
+async def customer_download(request: Request, order_id: str, user: dict = Depends(get_current_user)):
     try:
         conn = sqlite3.connect(DATABASE_FILE)
         conn.row_factory = sqlite3.Row
