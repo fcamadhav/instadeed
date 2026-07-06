@@ -1,6 +1,6 @@
 import jwt
-import uuid
 import hashlib
+import hmac
 import datetime
 import logging
 import os
@@ -19,15 +19,27 @@ try:
     def verify_password(password: str, stored: str) -> bool:
         return _bcrypt.checkpw(password.encode(), stored.encode())
 except ImportError:
-    logger.warning("bcrypt not installed; using SHA-256 fallback")
+    logger.warning("bcrypt not installed; using PBKDF2 fallback")
+    _PBKDF2_ITERATIONS = 310000
     def hash_password(password: str) -> str:
-        salt = uuid.uuid4().hex[:16]
-        return salt + ":" + hashlib.sha256((salt + password).encode()).hexdigest()
+        salt = os.urandom(16)
+        derived = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, _PBKDF2_ITERATIONS)
+        return f"pbkdf2_sha256${_PBKDF2_ITERATIONS}${salt.hex()}${derived.hex()}"
     def verify_password(password: str, stored: str) -> bool:
-        if ":" not in stored:
+        parts = stored.split("$", 3)
+        if len(parts) != 4:
             return False
-        salt, expected = stored.split(":", 1)
-        return hashlib.sha256((salt + password).encode()).hexdigest() == expected
+        scheme, iterations_str, salt_hex, expected_hex = parts
+        if scheme != "pbkdf2_sha256":
+            return False
+        try:
+            iterations = int(iterations_str)
+            salt = bytes.fromhex(salt_hex)
+            expected = bytes.fromhex(expected_hex)
+        except (ValueError, TypeError):
+            return False
+        actual = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, iterations)
+        return hmac.compare_digest(actual, expected)
 
 def create_token(user_id: str, email: str, role: str) -> str:
     payload = {
