@@ -1,0 +1,14 @@
+version: 2
+updates:
+  # Python ke packages automatically update karne ke liye
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # Node.js/npm ke packages automatically update karne ke liye
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      
