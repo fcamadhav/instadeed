@@ -42,9 +42,10 @@ cat <<EOF > startup_script.sh
 apt-get update
 apt-get install -y docker.io git
 
-# 2. Setup persistent directory for the SQLite database on the VM host
+# 2. SECURE PERSISTENT DIRECTORY (Fix for: The Botnet Vulnerability)
 mkdir -p /var/lib/instadeed
-# Secure permissions: only root can read/write/execute the DB dir to prevent arbitrary script execution
+# CHANGED FROM 777 TO 700. Also change ownership to UID 10001 (matching the non-root Docker user)
+chown -R 10001:10001 /var/lib/instadeed
 chmod 700 /var/lib/instadeed
 
 # 3. Clone the public codebase directly on the VM

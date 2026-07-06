@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 
-# Create a non-root user
-RUN groupadd -r app && useradd -r -g app app
+# Create a non-root user with an explicit UID
+RUN groupadd -r app -g 10001 && useradd -r -g app -u 10001 app
 
 WORKDIR /app
 
