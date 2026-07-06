@@ -10,6 +10,6 @@
     "build": "npm run build:admin-backend && npm run build:admin-frontend && npm run build:landing"
   },
   "dependencies": {
-    "@babel/core": "7.26.9"
+    "@babel/core": "8.0.1"
   }
 }
