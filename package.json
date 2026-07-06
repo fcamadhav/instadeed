@@ -8,5 +8,8 @@
     "build:admin-frontend": "cd admin/frontend && npm ci && npm run build",
     "build:landing": "cd landing && npm ci && npm run build",
     "build": "npm run build:admin-backend && npm run build:admin-frontend && npm run build:landing"
+  },
+  "dependencies": {
+    "@babel/core": "7.26.9"
   }
 }
