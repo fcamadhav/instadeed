@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+requests
+pydantic
+razorpay
+PyJWT
+slowapi
+fpdf
+python-dateutil
+bcrypt
