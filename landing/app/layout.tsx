@@ -40,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="bg-white min-h-screen relative font-sans">
-        <div className="fixed inset-0 -z-50 h-full w-full bg-white opacity-25" style={{ backgroundImage: 'radial-gradient(#6D28D9 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
+        <div className="fixed inset-0 -z-50 h-full w-full bg-white opacity-25" style={{ backgroundImage: 'radial-gradient(#2563EB 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

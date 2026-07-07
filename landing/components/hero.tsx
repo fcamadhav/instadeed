@@ -46,8 +46,8 @@ const floatAnimation = {
 
 export default function Hero() {
   return (
-    <section id="home" className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#F5F3FF] to-white pt-24 sm:pt-28 lg:pt-32">
-      <div className="absolute top-0 right-0 -z-10 h-full w-full opacity-30" style={{ backgroundImage: 'radial-gradient(#C4B5FD 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
+    <section id="home" className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#EFF6FF] to-white pt-24 sm:pt-28 lg:pt-32">
+      <div className="absolute top-0 right-0 -z-10 h-full w-full opacity-30" style={{ backgroundImage: 'radial-gradient(#93C5FD 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
       
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
