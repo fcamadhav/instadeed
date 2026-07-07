@@ -21,6 +21,7 @@ from fastapi import FastAPI, Request, HTTPException, Depends, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse, HTMLResponse, Response
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import razorpay
 import jwt
@@ -425,6 +426,7 @@ def create_default_admin():
 
 # --- FastAPI App ---
 app = FastAPI(title="Instadeed Backend", version="2.0.0", lifespan=lifespan)
+app.mount("/_landing", StaticFiles(directory=os.path.join(STATIC_DIR, "landing", "out")), name="landing_assets")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
@@ -488,7 +490,7 @@ async def log_requests(request: Request, call_next):
 # --- Static File Serving ---
 @app.get("/", response_class=HTMLResponse)
 async def serve_frontend():
-    html_path = os.path.join(STATIC_DIR, "Madhav_Drafting_Hub.html")
+    html_path = os.path.join(STATIC_DIR, "landing", "out", "index.html")
     if not os.path.exists(html_path):
         raise HTTPException(status_code=404, detail="Landing page not found.")
     with open(html_path, "r", encoding="utf-8") as f:

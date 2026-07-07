@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  output: "standalone",
+  output: "export",
   assetPrefix: "/_landing",
   compress: true,
   poweredByHeader: false,
