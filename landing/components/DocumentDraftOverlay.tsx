@@ -7,12 +7,16 @@ import { useState, useEffect } from 'react'
 const DOC_LABELS: Record<string, string> = {
   'rent-agreement': 'Rent Agreement',
   'registered-rent': 'Registered Rent Agreement',
+  'reg_rent': 'Registered Rent Agreement',
   'ats': 'Agreement to Sell / ATS',
   'tm48': 'Transfer Memorandum / TM',
-  'gnida_registry': 'Registry',
+  'gnida_registry': 'GNIDA Flat Registry Deed',
   'gnida_ptm': 'Permission to Mortgage / PTM',
-  'mutation': 'Mutation',
+  'mutation': 'Mutation Form',
   'gnida_package': 'GNIDA 5-in-1 Package',
+  'kya': 'Know Your Allottee / KYA',
+  'tm_app': 'Transfer Memo Application',
+  'noida_transfer': 'Noida Transfer Application',
 }
 
 export default function DocumentDraftOverlay() {
