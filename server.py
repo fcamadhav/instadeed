@@ -488,7 +488,7 @@ async def log_requests(request: Request, call_next):
 # --- Static File Serving ---
 @app.get("/", response_class=HTMLResponse)
 async def serve_frontend():
-    html_path = os.path.join(STATIC_DIR, "landing.html")
+    html_path = os.path.join(STATIC_DIR, "Madhav_Drafting_Hub.html")
     if not os.path.exists(html_path):
         raise HTTPException(status_code=404, detail="Landing page not found.")
     with open(html_path, "r", encoding="utf-8") as f:
