@@ -227,7 +227,7 @@ router.get(
         const key = `${o.createdAt.getFullYear()}-${String(o.createdAt.getMonth() + 1).padStart(2, "0")}`;
         if (!monthlyMap[key]) monthlyMap[key] = { revenue: 0, orders: 0 };
         monthlyMap[key].orders++;
-        if (o.status === "COMPLETED") monthlyMap[key].revenue += o.total;
+        monthlyMap[key].revenue += o.total;
       });
 
       const monthlyGrowth = Object.entries(monthlyMap)
