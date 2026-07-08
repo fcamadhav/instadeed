@@ -943,10 +943,14 @@
                                 }
                             }
                         });
-                        window.google.accounts.id.renderButton(
-                            document.getElementById("google-signin-btn-hub"),
-                            { theme: "outline", size: "large", width: 280 }
-                        );
+                        const btnContainer = document.getElementById("google-signin-btn-hub");
+                        if (btnContainer) {
+                            btnContainer.innerHTML = '';
+                            window.google.accounts.id.renderButton(
+                                btnContainer,
+                                { theme: "outline", size: "large", width: 280 }
+                            );
+                        }
                     }
                 };
 
