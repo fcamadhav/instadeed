@@ -67,8 +67,8 @@ export default function Hero() {
               variants={itemLeft}
               className="text-5xl font-extrabold leading-tight tracking-tight text-dark sm:text-6xl lg:text-7xl"
             >
-              GNIDA, YEIDA &<br />
-              Noida Authority<br />
+              <span className="text-emerald-600">GNIDA</span>, <span className="text-purple-600">YEIDA</span> &<br />
+              <span className="text-blue-600">Noida Authority</span><br />
               Documentation in <span className="text-primary">20 Mins</span>.
             </motion.h1>
 

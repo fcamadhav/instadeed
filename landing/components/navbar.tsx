@@ -7,11 +7,11 @@ import { cn } from "@/lib/utils";
 import { setActiveDoc } from "@/lib/documentState";
 
 const navLinks = [
-  { href: "#home", label: "Home" },
+  { href: "#authorities", label: "GNIDA" },
+  { href: "#authorities", label: "YEIDA" },
+  { href: "#authorities", label: "Noida Authority" },
   { href: "#services", label: "Services" },
   { href: "#pricing", label: "Pricing" },
-  { href: "#how-it-works", label: "How It Works" },
-  { href: "#coverage", label: "Coverage" },
 ];
 
 export default function Navbar() {
