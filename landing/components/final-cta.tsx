@@ -23,7 +23,7 @@ export default function FinalCta() {
               viewport={{ once: true }}
               className="flex-1 w-full flex items-center lg:items-start"
             >
-              <img src="/landing/cta_3d.png" alt="Document Ready" className="h-64 w-auto object-contain hidden lg:block mr-8" />
+              <img src="/landing/cta_3d.webp" alt="Document Ready" loading="lazy" className="h-64 w-auto object-contain hidden lg:block mr-8" />
               
               <div className="flex flex-col flex-1">
                 <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">

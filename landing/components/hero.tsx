@@ -125,7 +125,7 @@ export default function Hero() {
             className="relative lg:col-span-6 flex justify-center lg:justify-end mt-12 lg:mt-0"
           >
             <div className="relative w-full max-w-[600px]">
-              <img src="/landing/hero_3d.png" alt="3D Hero Graphic" className="w-full h-auto object-contain z-0 relative" />
+              <img src="/landing/hero_3d.webp" alt="3D Hero Graphic" fetchPriority="high" loading="eager" className="w-full h-auto object-contain z-0 relative" />
               
               {/* Floating Badges */}
               <motion.div
