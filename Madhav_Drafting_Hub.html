@@ -1,38 +1,23 @@
-< !doctype html >
-    <
-    html lang = "en" >
-    <
-    head >
-    <
-    meta charset = "UTF-8" / >
-    <
-    meta name = "viewport"
-content = "width=device-width, initial-scale=1.0" / >
-    <
-    meta name = "google"
-content = "notranslate" / >
+<!doctype html>
+    <html lang = "en">
+    <head>
+    <meta charset = "UTF-8" />
+    <meta name = "viewport"
+content = "width=device-width, initial-scale=1.0" />
+    <meta name = "google"
+content = "notranslate" />
 
-    <
-    !--Fonts-- >
-    <
-    !--Icons: Font Awesome Free(https: //fontawesome.com) - CC BY 4.0 License -->
-        <
-        link href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        rel = "stylesheet" /
-        >
-        <
-        link href = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Merriweather:wght@300;400;700&family=Libre+Baskerville:wght@700&display=swap"
-        rel = "stylesheet" /
-        >
-        <
-        !--Google Identity Services SDK-- >
-        <
-        script src = "https://accounts.google.com/gsi/client"
-        async defer > < /script>
+    <!--Fonts-->
+    <!--Icons: Font Awesome Free(https: //fontawesome.com) - CC BY 4.0 License -->
+        <link href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        rel = "stylesheet" />
+        <link href = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Merriweather:wght@300;400;700&family=Libre+Baskerville:wght@700&display=swap"
+        rel = "stylesheet" />
+        <!--Google Identity Services SDK-->
+        <script src = "https://accounts.google.com/gsi/client"
+        async defer> </script>
 
-            <
-            title > INSTADEED– Legal Drafting Suite | Draft, eSign & Deliver < /title> <
-            script >
+            <title> INSTADEED– Legal Drafting Suite | Draft, eSign & Deliver </title> <script>
             window.onerror = function(msg, url, line, col, error) {
                 if (msg === "Script error." || !url || (line === 0 && col === 0))
                     return true;
@@ -48,12 +33,8 @@ content = "notranslate" / >
                 );
                 console.error("[INSTADEED]", msg, "at", url, line + ":" + col, error);
                 return false;
-            }; <
-        /script> <
-        !--Tailwind CSS-- >
-        <
-        script src = "https://cdn.tailwindcss.com" > < /script> <
-        script >
+            }; </script> <!--Tailwind CSS-->
+        <script src = "https://cdn.tailwindcss.com"> </script> <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -63,26 +44,19 @@ content = "notranslate" / >
                     },
                 },
             },
-        }; <
-        /script>
+        }; </script>
 
-        <
-        !--React & ReactDOM-- >
-        <
-        script src = "https://unpkg.com/react@18/umd/react.production.min.js"
-        crossorigin >
-        < /script> <
-        script src = "https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
-        crossorigin >
-        < /script>
+        <!--React & ReactDOM-->
+        <script src = "https://unpkg.com/react@18/umd/react.production.min.js"
+        crossorigin>
+        </script> <script src = "https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+        crossorigin>
+        </script>
 
-        <
-        !--Babel-- >
-        <
-        !--Babel compiler library removed in production-- >
+        <!--Babel-->
+        <!--Babel compiler library removed in production-->
 
-        <
-        style >
+        <style>
         : root {
             --blue: #1e3fa0;
 
@@ -465,7 +439,7 @@ body.paper - page - container,
         overflow: visible!important;
     }
 
-body.paper - page - container > .paper - page: first - of - type {
+body.paper - page - container> .paper - page: first - of - type {
         page -
             break -before: avoid!important;
         page -
@@ -542,23 +516,16 @@ body.solo - mode.instadeed - solo - header {
     }
     .paper - page - container {
         padding - top: 0!important;
-    } <
-    /style> <
-    /head>
+    } </style> </head>
 
-    <
-    body >
-    <
-    div id = "root" >
-    <
-    !--Premium Instadeed Loader-- >
-    <
-    div
+    <body>
+    <div id = "root">
+    <!--Premium Instadeed Loader-->
+    <div
 class = "fixed inset-0 flex flex-col items-center justify-center bg-slate-50 z-[1000]"
 id = "page-loader-screen"
-style = "font-family: &quot;Plus Jakarta Sans&quot;, sans-serif" >
-    <
-    style >
+style = "font-family: &quot;Plus Jakarta Sans&quot;, sans-serif">
+    <style>
     .doc - skeleton - container {
         display: flex;
         justify - content: center;
@@ -687,58 +654,34 @@ style = "font-family: &quot;Plus Jakarta Sans&quot;, sans-serif" >
 
 
 
-        <div class= "flex flex-col items-center" >
-            <
-            !--Document Animation-- >
-            <
-            div class = "doc-skeleton-container" >
-            <
-            div class = "doc-skeleton" >
-            <
-            div class = "scanner-laser" > < /div> <
-            div class = "doc-line doc-line-1" > < /div> <
-            div class = "doc-line doc-line-2" > < /div> <
-            div class = "doc-line doc-line-3" > < /div> <
-            div class = "doc-line doc-line-4" > < /div> <
-            /div> <
-            /div>
+        <div class= "flex flex-col items-center">
+            <!--Document Animation-->
+            <div class = "doc-skeleton-container">
+            <div class = "doc-skeleton">
+            <div class = "scanner-laser"> </div> <div class = "doc-line doc-line-1"> </div> <div class = "doc-line doc-line-2"> </div> <div class = "doc-line doc-line-3"> </div> <div class = "doc-line doc-line-4"> </div> </div> </div>
 
-            <
-            !--Loading Status Text-- >
-            <
-            div
+            <!--Loading Status Text-->
+            <div
         class = "text-slate-700 text-sm font-extrabold tracking-wide mb-1 text-center"
-        id = "loader-title" >
+        id = "loader-title">
             Loading Document...
-            <
-            /div>
+            </div>
 
-            <
-            !--Animated Status Subtext / Checklist-- >
-            <
-            div
+            <!--Animated Status Subtext / Checklist-->
+            <div
         class = "text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-4 h-4 flex items-center justify-center gap-1.5"
-        id = "loader-status" >
-            Preparing template <
-            /div>
+        id = "loader-status">
+            Preparing template </div>
 
-            <
-            !--Status Dots-- >
-            <
-            div class = "flex gap-2 justify-center mb-6" >
-            <
-            div class = "step-dot active"
-        id = "dot-1" > < /div> <
-            div class = "step-dot"
-        id = "dot-2" > < /div> <
-            div class = "step-dot"
-        id = "dot-3" > < /div> <
-            /div>
+            <!--Status Dots-->
+            <div class = "flex gap-2 justify-center mb-6">
+            <div class = "step-dot active"
+        id = "dot-1"> </div> <div class = "step-dot"
+        id = "dot-2"> </div> <div class = "step-dot"
+        id = "dot-3"> </div> </div>
 
-            <
-            !--Two - tone Wordmark-- >
-            <
-            div
+            <!--Two - tone Wordmark-->
+            <div
         style = "
         font - family: & quot;
         Plus Jakarta Sans & quot;, sans - serif;
@@ -750,11 +693,9 @@ style = "font-family: &quot;Plus Jakarta Sans&quot;, sans-serif" >
         align - items: baseline;
         gap: 0;
         opacity: 0.8;
-        " >
-        <
-        span style = "color: #0f172a" > insta < /span >
-            < span style = "color: #2563eb" > deed < /span> <
-            span
+        ">
+        <span style = "color: #0f172a"> insta </span>
+            <span style = "color: #2563eb"> deed </span> <span
         style = "
         font - family: & quot;
         Plus Jakarta Sans & quot;, sans - serif;
@@ -781,11 +722,7 @@ style = "font-family: &quot;Plus Jakarta Sans&quot;, sans-serif" >
 
                 line-height: 1;
 
-              "
-
-              >in</span
-
-            >
+              ">in</span>
 
           </div>
 
@@ -834,7 +771,7 @@ style = "font-family: &quot;Plus Jakarta Sans&quot;, sans-serif" >
         let currentStage = 0;
 
         function advanceStage() {
-            if (currentStage >= stages.length) return;
+            if (currentStage>= stages.length) return;
 
             const stage = stages[currentStage];
             if (statusEl) {
@@ -856,13 +793,9 @@ style = "font-family: &quot;Plus Jakarta Sans&quot;, sans-serif" >
 
         // Start status animation
         advanceStage();
-    })(); <
-/script> <
-/div> <
-/div>
+    })(); </script> </div> </div>
 
-<
-script >
+<script>
     const {
         useState: useState,
         useEffect: useEffect,
@@ -983,19 +916,19 @@ function numToWords(e) {
         ];
 
     function l(e) {
-        if (e < 20) return a[e];
+        if (e <20) return a[e];
         const t = Math.floor(e / 10);
         return (r[t] + " " + a[e % 10]).trim();
     }
     let n = "",
         c = t;
     return (
-        c >= 1e7 && ((n += l(Math.floor(c / 1e7)) + " Crore "), (c %= 1e7)),
-        c >= 1e5 && ((n += l(Math.floor(c / 1e5)) + " Lakh "), (c %= 1e5)),
-        c >= 1e3 &&
+        c>= 1e7 && ((n += l(Math.floor(c / 1e7)) + " Crore "), (c %= 1e7)),
+        c>= 1e5 && ((n += l(Math.floor(c / 1e5)) + " Lakh "), (c %= 1e5)),
+        c>= 1e3 &&
         ((n += l(Math.floor(c / 1e3)) + " Thousand "), (c %= 1e3)),
-        c >= 100 && ((n += l(Math.floor(c / 100)) + " Hundred "), (c %= 100)),
-        c > 0 && (n += l(c)),
+        c>= 100 && ((n += l(Math.floor(c / 100)) + " Hundred "), (c %= 100)),
+        c> 0 && (n += l(c)),
         n.trim()
     );
 }
@@ -2412,7 +2345,7 @@ const Section = ({
                     value: e.transferee1Phone || e.transfereePhone,
                     onChange: (e) => a(e, "transfereePhone"),
                 }),
-                parseInt(e.transfereeCount) >= 2 &&
+                parseInt(e.transfereeCount)>= 2 &&
                 React.createElement(
                     "div", {
                         className: "mt-6 pt-6 border-t border-dashed border-gray-200 space-y-4 animate-in slide-in-from-top-2 duration-300",
@@ -2494,7 +2427,7 @@ const Section = ({
                         onChange: t,
                     }),
                 ),
-                parseInt(e.transfereeCount) >= 3 &&
+                parseInt(e.transfereeCount)>= 3 &&
                 React.createElement(
                     "div", {
                         className: "mt-6 pt-6 border-t border-dashed border-gray-200 space-y-4 animate-in slide-in-from-top-2 duration-300",
@@ -3408,7 +3341,7 @@ const Section = ({
                                         ((e, t) => {
                                             const a = e.replace(/\D/g, "").slice(-1),
                                                 r = [...s];
-                                            if (((r[t] = a), o(r), a && t < 5)) {
+                                            if (((r[t] = a), o(r), a && t <5)) {
                                                 const e = document.getElementById(
                                                     `ob-hub-${t + 1}`,
                                                 );
@@ -3417,7 +3350,7 @@ const Section = ({
                                         })(e.target.value, t),
                                     onKeyDown: (e) =>
                                         ((e, t) => {
-                                            if ("Backspace" === e.key && !s[t] && t > 0) {
+                                            if ("Backspace" === e.key && !s[t] && t> 0) {
                                                 const e = document.getElementById(
                                                     "ob-hub-" + (t - 1),
                                                 );
@@ -3436,7 +3369,7 @@ const Section = ({
                             "div", {
                                 className: "text-xs text-slate-400 font-medium"
                             },
-                            m > 0 ?
+                            m> 0 ?
                             React.createElement(
                                 "span",
                                 null,
@@ -3455,7 +3388,7 @@ const Section = ({
                         React.createElement(
                             "button", {
                                 onClick: () => {
-                                    s.join("").length < 6 ||
+                                    s.join("").length <6 ||
                                         (p(!0),
                                             setTimeout(() => {
                                                 const e = {
@@ -3951,7 +3884,7 @@ const Section = ({
                     console.error(e);
                 }
         }, [e, n, a]);
-        const b = m.length > 2e3;
+        const b = m.length> 2e3;
         return e ?
             React.createElement(
                 "div", {
@@ -4720,7 +4653,7 @@ function Home() {
         [ae, re] = useState(0),
         [le, ne] = useState(() => {
             const e = {};
-            for (let t = 0; t < localStorage.length; t++) {
+            for (let t = 0; t <localStorage.length; t++) {
                 const a = localStorage.key(t);
                 if (a && a.startsWith("instadeed_signed_"))
                     try {
@@ -6019,21 +5952,21 @@ function Home() {
                             "Ninety",
                         ],
                         r = parseInt(e);
-                    if (!r || r < 0) return "";
+                    if (!r || r <0) return "";
                     const l = (e) => {
-                        if (e < 20) return t[e];
+                        if (e <20) return t[e];
                         const r = e % 10;
-                        return e < 100 ?
+                        return e <100 ?
                             a[Math.floor(e / 10)] + (r ? "-" + t[r] : " ") :
-                            e < 1e3 ?
+                            e <1e3 ?
                             t[Math.floor(e / 100)] +
                             "Hundred " +
                             (e % 100 == 0 ? "" : "and " + l(e % 100)) :
-                            e < 1e5 ?
+                            e <1e5 ?
                             l(Math.floor(e / 1e3)) +
                             "Thousand " +
                             (e % 1e3 == 0 ? "" : l(e % 1e3)) :
-                            e < 1e7 ?
+                            e <1e7 ?
                             l(Math.floor(e / 1e5)) +
                             "Lakh " +
                             (e % 1e5 == 0 ? "" : l(e % 1e5)) :
@@ -6069,7 +6002,7 @@ function Home() {
             s !== Oe.earnestMoneyWords && (n.earnestMoneyWords = s);
             const o = l ? e(l) + " Only" : "";
             (o !== Oe.balanceAmountWords && (n.balanceAmountWords = o),
-                Object.keys(n).length > 0 && Me((e) => ({
+                Object.keys(n).length> 0 && Me((e) => ({
                     ...e,
                     ...n
                 })));
@@ -6081,7 +6014,7 @@ function Home() {
             e && e.trim() && l.push(e.trim()),
             t && t.trim() && l.push(t.trim()),
             l.push(r),
-            l.length > 1 ? l.join(" - ") : `${a} - ${r}`
+            l.length> 1 ? l.join(" - ") : `${a} - ${r}`
         );
     };
     useEffect(() => {
@@ -6275,7 +6208,7 @@ function Home() {
             (nr(
                     "page_view",
                     "HOME" === r ? "landing" : r || "unknown",
-                    $a > 1 ? `step${$a}` : "browse",
+                    $a> 1 ? `step${$a}` : "browse",
                 ),
                 "HOME" !== r &&
                 "SHARE" !== r &&
@@ -6454,7 +6387,7 @@ function Home() {
             ) {
                 const e = a.replace(/\D/g, "").slice(0, 12),
                     t = [];
-                for (let a = 0; a < e.length; a += 4) t.push(e.slice(a, a + 4));
+                for (let a = 0; a <e.length; a += 4) t.push(e.slice(a, a + 4));
                 a = t.join(" ");
             } else
                 t.toLowerCase().includes("pan") ?
@@ -6532,7 +6465,7 @@ function Home() {
                                                         if (
                                                             ((r.securityAmount =
                                                                     e.toLocaleString("en-IN")),
-                                                                s > 0 && m > 0)
+                                                                s> 0 && m> 0)
                                                         ) {
                                                             const t = s * m + e,
                                                                 a = Math.round(0.02 * t);
@@ -6541,7 +6474,7 @@ function Home() {
                                                                 (r.stampDuty =
                                                                     a.toLocaleString("en-IN")));
                                                         }
-                                                        if (r.startDate && m > 0) {
+                                                        if (r.startDate && m> 0) {
                                                             const e = r.startDate.split("-");
                                                             if (3 === e.length) {
                                                                 const t = parseInt(e[0], 10),
@@ -7289,7 +7222,7 @@ function Home() {
                                                     if (JSON.stringify(l) !== JSON.stringify(n)) {
                                                         const a = ka[t] || new Date(0).toISOString(),
                                                             c = e.updated_at || new Date(0).toISOString();
-                                                        if (Math.abs(new Date(a) - new Date(c)) > 1e4) {
+                                                        if (Math.abs(new Date(a) - new Date(c))> 1e4) {
                                                             Fa({
                                                                 type: t,
                                                                 typeKey: r,
@@ -8432,7 +8365,7 @@ function Home() {
                                 ),
                             ),
                             Jt &&
-                            (Jt.expiring.length > 0 || Jt.expired.length > 0) &&
+                            (Jt.expiring.length> 0 || Jt.expired.length> 0) &&
                             React.createElement(
                                 "div", {
                                     className: "crm-card",
@@ -10296,12 +10229,12 @@ function Home() {
                                                     "td",
                                                     null,
                                                     e.current_uses,
-                                                    e.max_uses > 0 ? ` / ${e.max_uses}` : " / ∞",
+                                                    e.max_uses> 0 ? ` / ${e.max_uses}` : " / ∞",
                                                 ),
                                                 React.createElement(
                                                     "td",
                                                     null,
-                                                    e.min_amount > 0 ? `₹${e.min_amount}` : "-",
+                                                    e.min_amount> 0 ? `₹${e.min_amount}` : "-",
                                                 ),
                                                 React.createElement(
                                                     "td", {
@@ -10510,7 +10443,7 @@ function Home() {
                             ),
                         ),
                         Ra?.daily_gst &&
-                        Ra.daily_gst.length > 0 &&
+                        Ra.daily_gst.length> 0 &&
                         React.createElement(
                             "div", {
                                 className: "crm-card space-y-3"
@@ -11956,14 +11889,14 @@ function Home() {
                                                         "span", {
                                                             className: "crm-badge",
                                                             style: {
-                                                                backgroundColor: e.loss_percentage > 30 ?
+                                                                backgroundColor: e.loss_percentage> 30 ?
                                                                     "#FEE2E2" :
-                                                                    e.loss_percentage > 10 ?
+                                                                    e.loss_percentage> 10 ?
                                                                     "#FFFBEB" :
                                                                     "#E8F5E9",
-                                                                color: e.loss_percentage > 30 ?
+                                                                color: e.loss_percentage> 30 ?
                                                                     "#DC2626" :
-                                                                    e.loss_percentage > 10 ?
+                                                                    e.loss_percentage> 10 ?
                                                                     "#D97706" :
                                                                     "#2E7D32",
                                                             },
@@ -11980,7 +11913,7 @@ function Home() {
                         ),
                         va &&
                         va.locations &&
-                        va.locations.length > 0 &&
+                        va.locations.length> 0 &&
                         React.createElement(
                             "div", {
                                 className: "crm-card space-y-3"
@@ -12202,7 +12135,7 @@ function Home() {
                                                         "span", {
                                                             style: {
                                                                 fontWeight: 700,
-                                                                color: e.status_code < 300 ?
+                                                                color: e.status_code <300 ?
                                                                     "#2E7D32" :
                                                                     "#DC2626",
                                                             },
@@ -13463,7 +13396,7 @@ function Home() {
                                 ),
                             ),
                             La.login_history &&
-                            La.login_history.length > 0 &&
+                            La.login_history.length> 0 &&
                             React.createElement(
                                 "div", {
                                     className: "border-t border-slate-100 pt-4 mb-4"
@@ -13512,7 +13445,7 @@ function Home() {
                                 ),
                             ),
                             La.drafts &&
-                            La.drafts.length > 0 &&
+                            La.drafts.length> 0 &&
                             React.createElement(
                                 "div", {
                                     className: "border-t border-slate-100 pt-4"
@@ -13959,7 +13892,7 @@ function Home() {
                                     KYA: "Know Your Allottee",
                                 } [r] || r,
                             ),
-                            $a > 1 &&
+                            $a> 1 &&
                             React.createElement(
                                 React.Fragment,
                                 null,
@@ -13998,7 +13931,7 @@ function Home() {
                 React.createElement("div", {
                     className: "template-grid-section",
                 }),
-                $a > 1 &&
+                $a> 1 &&
                 React.createElement(
                     "div", {
                         className: "max-w-3xl mx-auto px-6 pb-8 pt-6"
@@ -14031,11 +13964,11 @@ function Home() {
                                             className: "w-10 h-10 rounded-xl flex items-center justify-center text-sm font-extrabold transition-all duration-300 shadow-sm " +
                                                 ($a === e.n ?
                                                     "bg-blue-600 text-white shadow-[0_4px_12px_rgba(37,99,235,0.3)] scale-110 ring-2 ring-blue-100" :
-                                                    $a > e.n ?
+                                                    $a> e.n ?
                                                     "bg-emerald-500 text-white" :
                                                     "bg-slate-100 text-slate-400"),
                                         },
-                                        $a > e.n ?
+                                        $a> e.n ?
                                         React.createElement("i", {
                                             className: "fa-solid fa-check text-xs",
                                         }) :
@@ -14051,10 +13984,10 @@ function Home() {
                                         e.l,
                                     ),
                                 ),
-                                t < 2 &&
+                                t <2 &&
                                 React.createElement("div", {
                                     className: "w-16 sm:w-24 h-0.5 mx-2.5 rounded-full " +
-                                        ($a > e.n ?
+                                        ($a> e.n ?
                                             "bg-emerald-300" :
                                             "bg-slate-200"),
                                 }),
@@ -14578,7 +14511,7 @@ function Home() {
                             ),
                         ),
                     ),
-                    Je.length > 0 &&
+                    Je.length> 0 &&
                     React.createElement(
                         "div", {
                             className: "mt-6"
@@ -14694,11 +14627,11 @@ function Home() {
                                                     React.createElement(
                                                         "span", {
                                                             className: "shrink-0 text-[10px] font-extrabold " +
-                                                                (t.days < 0 ?
+                                                                (t.days <0 ?
                                                                     "text-red-600" :
                                                                     "text-amber-600"),
                                                         },
-                                                        t.days < 0 ?
+                                                        t.days <0 ?
                                                         "Expired" :
                                                         `${t.days}d`,
                                                     ),
@@ -14868,7 +14801,7 @@ function Home() {
                                         ),
                                     ),
                                 ),
-                                M.length > 0 &&
+                                M.length> 0 &&
                                 React.createElement(
                                     "div", {
                                         className: "space-y-2 max-h-72 overflow-y-auto",
@@ -16194,7 +16127,7 @@ function Home() {
                                         KYA: "Know Your Allottee",
                                     } [r] || r,
                                 ),
-                                $a > 1 &&
+                                $a> 1 &&
                                 React.createElement(
                                     React.Fragment,
                                     null,
@@ -16383,13 +16316,13 @@ function Home() {
                                     (e) =>
                                     null != e && "" !== e.toString().trim(),
                                 ).length,
-                                n = a > 0 ? Math.round((l / a) * 100) : 0,
+                                n = a> 0 ? Math.round((l / a) * 100) : 0,
                                 c =
                                 100 === n ?
                                 "bg-emerald-500" :
-                                n > 50 ?
+                                n> 50 ?
                                 "bg-blue-500" :
-                                n > 25 ?
+                                n> 25 ?
                                 "bg-amber-500" :
                                 "bg-slate-400";
                             return React.createElement("div", {
@@ -20389,7 +20322,7 @@ function Home() {
                                                     },
                                                 }),
                                             ),
-                                            t > 0 &&
+                                            t> 0 &&
                                             React.createElement(
                                                 "button", {
                                                     onClick: () => {
@@ -21640,7 +21573,7 @@ function Home() {
                                                         label: "Done",
                                                         icon: "fa-circle-check",
                                                     }, ].map((e, t) => {
-                                                        const r = t < a,
+                                                        const r = t <a,
                                                             l = t === a;
                                                         return React.createElement(
                                                             "div", {
@@ -23777,7 +23710,7 @@ function Home() {
                                                 ),
                                                 "]",
                                             ),
-                                            parseInt(e.transfereeCount) >=
+                                            parseInt(e.transfereeCount)>=
                                             2 &&
                                             e.transferee2Name &&
                                             React.createElement(
@@ -23859,7 +23792,7 @@ function Home() {
                                                     "]",
                                                 ),
                                             ),
-                                            parseInt(e.transfereeCount) >=
+                                            parseInt(e.transfereeCount)>=
                                             3 &&
                                             e.transferee3Name &&
                                             React.createElement(
@@ -25748,7 +25681,7 @@ function Home() {
                                                     ),
                                                     "]",
                                                 ),
-                                                parseInt(e.transfereeCount) >=
+                                                parseInt(e.transfereeCount)>=
                                                 2 &&
                                                 e.transferee2Name &&
                                                 React.createElement(
@@ -25830,7 +25763,7 @@ function Home() {
                                                         "]",
                                                     ),
                                                 ),
-                                                parseInt(e.transfereeCount) >=
+                                                parseInt(e.transfereeCount)>=
                                                 3 &&
                                                 e.transferee3Name &&
                                                 React.createElement(
@@ -37031,7 +36964,7 @@ function Home() {
                                                 r.setHours(0, 0, 0, 0);
                                                 const l = r - e,
                                                     n = Math.ceil(l / 864e5);
-                                                n < 0 ?
+                                                n <0 ?
                                                     (t =
                                                         React.createElement(
                                                             "span", {
@@ -37806,9 +37739,7 @@ function Home() {
     );
 }
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(React.createElement(Home, null)); <
-/script> <
-style id = "docupload-style" >
+root.render(React.createElement(Home, null)); </script> <style id = "docupload-style">
     body.docupload - page.checkout - modal {
         display: none!important;
     }
@@ -38152,145 +38083,61 @@ style id = "docupload-style" >
 
     </style>
 
-    <div id= "du-overlay" >
-                                                                                                                        <
-                                                                                                                        div class = "panel" >
-                                                                                                                        <
-                                                                                                                        div class = "hdr" >
-                                                                                                                        <
-                                                                                                                        button
+    <div id= "du-overlay">
+                                                                                                                        <div class = "panel">
+                                                                                                                        <div class = "hdr">
+                                                                                                                        <button
                                                                                                                     aria - label = "Action button"
                                                                                                                     class = "close-btn"
                                                                                                                     onclick = "
                                                                                                                     document.getElementById('du-overlay').classList.remove('show')
-                                                                                                                    " >
+                                                                                                                    ">
                                                                                                                     ×
-                                                                                                                    <
-                                                                                                                    /button> <
-                                                                                                                    h2 id = "du-title" > Upload Documents < /h2> <
-                                                                                                                        p id = "du-sub" > Required documents
-                                                                                                                    for your application < /p> <
-                                                                                                                        /div> <
-                                                                                                                        div class = "body" >
-                                                                                                                        <
-                                                                                                                        div class = "progress-text" >
-                                                                                                                        <
-                                                                                                                        span id = "du-status" > 0 uploaded < /span><span id="du-total"></span >
-                                                                                                                        <
-                                                                                                                        /div> <
-                                                                                                                        div class = "progress-bar" >
-                                                                                                                        <
-                                                                                                                        div id = "du-progress"
-                                                                                                                    style = "width: 0%" > < /div> <
-                                                                                                                        /div> <
-                                                                                                                        div id = "du-quote-box" >
-                                                                                                                        <
-                                                                                                                        h4 > 📐Property Quotation(GNIDA 5 - in - 1) < /h4> <
-                                                                                                                        div class = "field-row" >
-                                                                                                                        <
-                                                                                                                        div class = "field-group" >
-                                                                                                                        <
-                                                                                                                        label > Select Sector < /label >
-                                                                                                                        < select id = "du-sector"
-                                                                                                                    onchange = "duCalcQuote()" >
-                                                                                                                        <
-                                                                                                                        option value = "" > --Select-- < /option> <
-                                                                                                                        /select> <
-                                                                                                                        /div> <
-                                                                                                                        div class = "field-group" >
-                                                                                                                        <
-                                                                                                                        label > Property Area < /label >
-                                                                                                                        < input
+                                                                                                                    </button> <h2 id = "du-title"> Upload Documents </h2> <p id = "du-sub"> Required documents
+                                                                                                                    for your application </p> </div> <div class = "body">
+                                                                                                                        <div class = "progress-text">
+                                                                                                                        <span id = "du-status"> 0 uploaded </span><span id="du-total"></span>
+                                                                                                                        </div> <div class = "progress-bar">
+                                                                                                                        <div id = "du-progress"
+                                                                                                                    style = "width: 0%"> </div> </div> <div id = "du-quote-box">
+                                                                                                                        <h4> 📐Property Quotation(GNIDA 5 - in - 1) </h4> <div class = "field-row">
+                                                                                                                        <div class = "field-group">
+                                                                                                                        <label> Select Sector </label>
+                                                                                                                        <select id = "du-sector"
+                                                                                                                    onchange = "duCalcQuote()">
+                                                                                                                        <option value = ""> --Select-- </option> </select> </div> <div class = "field-group">
+                                                                                                                        <label> Property Area </label>
+                                                                                                                        <input
                                                                                                                     type = "number"
                                                                                                                     id = "du-area"
                                                                                                                     placeholder = "e.g. 120"
                                                                                                                     min = "1"
-                                                                                                                    oninput = "duCalcQuote()" /
-                                                                                                                        >
-                                                                                                                        <
-                                                                                                                        /div> <
-                                                                                                                        div class = "field-group" >
-                                                                                                                        <
-                                                                                                                        label > Unit < /label >
-                                                                                                                        < select id = "du-unit"
-                                                                                                                    onchange = "duCalcQuote()" >
-                                                                                                                        <
-                                                                                                                        option value = "sqm" > Square Metres(sq.m.) < /option> <
-                                                                                                                        option value = "sqft" > Square Feet(sq.ft.) < /option> <
-                                                                                                                        /select> <
-                                                                                                                        /div> <
-                                                                                                                        /div> <
-                                                                                                                        div id = "du-quote-summary" >
-                                                                                                                        <
-                                                                                                                        table >
-                                                                                                                        <
-                                                                                                                        tr >
-                                                                                                                        <
-                                                                                                                        td > Property Area < /td> <
-                                                                                                                        td id = "du-q-area" > — < /td> <
-                                                                                                                        /tr> <
-                                                                                                                        tr >
-                                                                                                                        <
-                                                                                                                        td > Sector / Zone < /td> <
-                                                                                                                        td id = "du-q-zone" > — < /td> <
-                                                                                                                        /tr> <
-                                                                                                                        tr >
-                                                                                                                        <
-                                                                                                                        td > TM Rate < /td> <
-                                                                                                                        td id = "du-q-rate" > — < /td> <
-                                                                                                                        /tr> <
-                                                                                                                        tr >
-                                                                                                                        <
-                                                                                                                        td > TM Charge < /td> <
-                                                                                                                        td id = "du-q-tm" > — < /td> <
-                                                                                                                        /tr> <
-                                                                                                                        tr >
-                                                                                                                        <
-                                                                                                                        td > Registry Professional Fee < /td> <
-                                                                                                                        td > ₹5, 000 < /td> <
-                                                                                                                        /tr> <
-                                                                                                                        tr >
-                                                                                                                        <
-                                                                                                                        td > PTM Professional Fee < /td> <
-                                                                                                                        td > ₹9, 000 < /td> <
-                                                                                                                        /tr> <
-                                                                                                                        tr >
-                                                                                                                        <
-                                                                                                                        td > Mutation Professional Fee < /td> <
-                                                                                                                        td > ₹3, 500 < /td> <
-                                                                                                                        /tr> <
-                                                                                                                        tr >
-                                                                                                                        <
-                                                                                                                        td > ATS Professional Fee < /td> <
-                                                                                                                        td > ₹150 < /td> <
-                                                                                                                        /tr> <
-                                                                                                                        tr class = "total" >
-                                                                                                                        <
-                                                                                                                        td > Grand Total < /td> <
-                                                                                                                        td id = "du-q-total" > — < /td> <
-                                                                                                                        /tr> <
-                                                                                                                        /table> <
-                                                                                                                        p class = "rate-note" >
+                                                                                                                    oninput = "duCalcQuote()" />
+                                                                                                                        </div> <div class = "field-group">
+                                                                                                                        <label> Unit </label>
+                                                                                                                        <select id = "du-unit"
+                                                                                                                    onchange = "duCalcQuote()">
+                                                                                                                        <option value = "sqm"> Square Metres(sq.m.) </option> <option value = "sqft"> Square Feet(sq.ft.) </option> </select> </div> </div> <div id = "du-quote-summary">
+                                                                                                                        <table>
+                                                                                                                        <tr>
+                                                                                                                        <td> Property Area </td> <td id = "du-q-area"> — </td> </tr> <tr>
+                                                                                                                        <td> Sector / Zone </td> <td id = "du-q-zone"> — </td> </tr> <tr>
+                                                                                                                        <td> TM Rate </td> <td id = "du-q-rate"> — </td> </tr> <tr>
+                                                                                                                        <td> TM Charge </td> <td id = "du-q-tm"> — </td> </tr> <tr>
+                                                                                                                        <td> Registry Professional Fee </td> <td> ₹5, 000 </td> </tr> <tr>
+                                                                                                                        <td> PTM Professional Fee </td> <td> ₹9, 000 </td> </tr> <tr>
+                                                                                                                        <td> Mutation Professional Fee </td> <td> ₹3, 500 </td> </tr> <tr>
+                                                                                                                        <td> ATS Professional Fee </td> <td> ₹150 </td> </tr> <tr class = "total">
+                                                                                                                        <td> Grand Total </td> <td id = "du-q-total"> — </td> </tr> </table> <p class = "rate-note">
                                                                                                                         TM rates as per GNIDA circular.Professional fees are fixed
-                                                                                                                    service charges. <
-                                                                                                                        /p> <
-                                                                                                                        /div> <
-                                                                                                                        /div> <
-                                                                                                                        div id = "du-docs" > < /div> <
-                                                                                                                        button
+                                                                                                                    service charges. </p> </div> </div> <div id = "du-docs"> </div> <button
                                                                                                                     aria - label = "Action button"
                                                                                                                     id = "du-continue"
                                                                                                                     class = "btn-continue"
                                                                                                                     disabled
-                                                                                                                    onclick = "duContinue()" >
-                                                                                                                        Upload Documents to Continue <
-                                                                                                                        /button> <
-                                                                                                                        div id = "du-error"
-                                                                                                                    class = "error-box" > < /div> <
-                                                                                                                    /div> <
-                                                                                                                    /div> <
-                                                                                                                    /div> <
-                                                                                                                    script >
+                                                                                                                    onclick = "duContinue()">
+                                                                                                                        Upload Documents to Continue </button> <div id = "du-error"
+                                                                                                                    class = "error-box"> </div> </div> </div> </div> <script>
                                                                                                                         (function() {
                                                                                                                             var SVCS = {
                                                                                                                                 MUTATION: {
@@ -38393,7 +38240,7 @@ style id = "docupload-style" >
                                                                                                                             (function() {
                                                                                                                                 var sel = document.getElementById("du-sector"),
                                                                                                                                     sectors = Object.keys(GNIDA_SECTORS).sort();
-                                                                                                                                for (var i = 0; i < sectors.length; i++) {
+                                                                                                                                for (var i = 0; i <sectors.length; i++) {
                                                                                                                                     var z = GNIDA_SECTORS[sectors[i]];
                                                                                                                                     sel.appendChild(
                                                                                                                                         new Option(
@@ -38433,14 +38280,14 @@ style id = "docupload-style" >
                                                                                                                                     "₹" + tmCharge.toFixed(2) :
                                                                                                                                     "—";
                                                                                                                                 document.getElementById("du-q-total").textContent =
-                                                                                                                                    sec && area > 0 ? "₹" + grand.toFixed(2) : "—";
-                                                                                                                                if (sec && area > 0) {
+                                                                                                                                    sec && area> 0 ? "₹" + grand.toFixed(2) : "—";
+                                                                                                                                if (sec && area> 0) {
                                                                                                                                     document
                                                                                                                                         .getElementById("du-quote-summary")
                                                                                                                                         .classList.add("visible");
                                                                                                                                 }
                                                                                                                                 window._quoteData =
-                                                                                                                                    sec && area > 0 ?
+                                                                                                                                    sec && area> 0 ?
                                                                                                                                     {
                                                                                                                                         sector: sec,
                                                                                                                                         zone: zone,
@@ -38684,21 +38531,21 @@ style id = "docupload-style" >
                                                                                                                                 origFetch = window.fetch;
                                                                                                                             DOC_SERVICES.forEach(function(svc) {
                                                                                                                                 var s = svc.toLowerCase().replace(/_/g, "-");
-                                                                                                                                if (window.location.search.indexOf("doc=" + s) > -1)
+                                                                                                                                if (window.location.search.indexOf("doc=" + s)> -1)
                                                                                                                                     document.body.classList.add("docupload-page");
                                                                                                                             });
 
                                                                                                                             window.fetch = function(url, opts) {
                                                                                                                                 if (
                                                                                                                                     typeof url === "string" &&
-                                                                                                                                    url.indexOf("/create-order") > -1 &&
+                                                                                                                                    url.indexOf("/create-order")> -1 &&
                                                                                                                                     opts &&
                                                                                                                                     opts.body &&
                                                                                                                                     !window._duSkip
                                                                                                                                 ) {
                                                                                                                                     try {
                                                                                                                                         var b = JSON.parse(opts.body);
-                                                                                                                                        if (DOC_SERVICES.indexOf(b.service_type) > -1) {
+                                                                                                                                        if (DOC_SERVICES.indexOf(b.service_type)> -1) {
                                                                                                                                             curSvc = b.service_type;
                                                                                                                                             appId =
                                                                                                                                                 b.service_type.toLowerCase() +
@@ -38718,9 +38565,7 @@ style id = "docupload-style" >
                                                                                                                                 return origFetch.apply(this, arguments);
                                                                                                                             };
                                                                                                                             render();
-                                                                                                                        })(); <
-                                                                                                                    /script> <
-                                                                                                                    script >
+                                                                                                                        })(); </script> <script>
                                                                                                                         (function() {
                                                                                                                             // Remove mock login UI elements and prevent mock auth
                                                                                                                             var observer = new MutationObserver(function(mutations) {
@@ -38730,7 +38575,7 @@ style id = "docupload-style" >
                                                                                                                                         // Update "Access via Google (Mock)" label to remove "(Mock)"
                                                                                                                                         if (
                                                                                                                                             node.innerText &&
-                                                                                                                                            node.innerText.indexOf("Access via Google (Mock)") > -1
+                                                                                                                                            node.innerText.indexOf("Access via Google (Mock)")> -1
                                                                                                                                         ) {
                                                                                                                                             var walk = document.createTreeWalker(
                                                                                                                                                 node,
@@ -38739,7 +38584,7 @@ style id = "docupload-style" >
                                                                                                                                             var textNodes = [];
                                                                                                                                             while (walk.nextNode()) textNodes.push(walk.currentNode);
                                                                                                                                             textNodes.forEach(function(tn) {
-                                                                                                                                                if (tn.textContent.indexOf("Access via Google (Mock)") > -1) {
+                                                                                                                                                if (tn.textContent.indexOf("Access via Google (Mock)")> -1) {
                                                                                                                                                     tn.textContent = tn.textContent.replace(
                                                                                                                                                         "Access via Google (Mock)",
                                                                                                                                                         "Sign in with Google",
@@ -38752,11 +38597,11 @@ style id = "docupload-style" >
                                                                                                                                             node.querySelectorAll("button") :
                                                                                                                                             [];
                                                                                                                                         if (node.tagName === "BUTTON") buttons = [node];
-                                                                                                                                        for (var i = 0; i < buttons.length; i++) {
+                                                                                                                                        for (var i = 0; i <buttons.length; i++) {
                                                                                                                                             var txt = buttons[i].innerText || "";
                                                                                                                                             if (
-                                                                                                                                                txt.indexOf("Demo User") > -1 ||
-                                                                                                                                                txt.indexOf("Admin Bypass") > -1
+                                                                                                                                                txt.indexOf("Demo User")> -1 ||
+                                                                                                                                                txt.indexOf("Admin Bypass")> -1
                                                                                                                                             ) {
                                                                                                                                                 buttons[i].style.display = "none";
                                                                                                                                             }
@@ -38765,8 +38610,8 @@ style id = "docupload-style" >
                                                                                                                                         if (node.tagName === "BUTTON") {
                                                                                                                                             var t = node.innerText || "";
                                                                                                                                             if (
-                                                                                                                                                t.indexOf("Demo User") > -1 ||
-                                                                                                                                                t.indexOf("Admin Bypass") > -1
+                                                                                                                                                t.indexOf("Demo User")> -1 ||
+                                                                                                                                                t.indexOf("Admin Bypass")> -1
                                                                                                                                             ) {
                                                                                                                                                 node.style.display = "none";
                                                                                                                                             }
@@ -38786,7 +38631,4 @@ style id = "docupload-style" >
                                                                                                                                     return;
                                                                                                                                 return origSetItem.apply(localStorage, arguments);
                                                                                                                             };
-                                                                                                                        })(); <
-                                                                                                                    /script> <
-                                                                                                                    /body> <
-                                                                                                                    /html>
+                                                                                                                        })(); </script> </body> </html>

@@ -23,9 +23,9 @@ fi
 echo "--> Active GCP Project: $PROJECT_ID"
 
 # 2. Settings (Free Tier Compatible)
-REGION="us-central1"
-ZONE="us-central1-a"
-MACHINE_TYPE="e2-micro" # GCE Free-Tier VM
+REGION="us-east1"
+ZONE="us-east1-b"
+MACHINE_TYPE="e2-medium" # GCE VM with 4GB RAM
 VM_NAME="instadeed-server"
 
 # 3. Enable Compute Engine API
@@ -64,7 +64,7 @@ docker rm instadeed-container || true
 docker run -d \\
   --name instadeed-container \\
   --restart always \\
-  --memory="512m" \\
+  --memory="2g" \\
   --cpus="0.5" \\
   --cap-drop=ALL \\
   --security-opt=no-new-privileges:true \\
