@@ -426,7 +426,7 @@ def create_default_admin():
 
 # --- FastAPI App ---
 app = FastAPI(title="Instadeed Backend", version="2.0.0", lifespan=lifespan)
-app.mount("/_landing", StaticFiles(directory=os.path.join(STATIC_DIR, "landing", "out")), name="landing_assets")
+app.mount("/_next", StaticFiles(directory=os.path.join(STATIC_DIR, "landing", "out", "_next")), name="next_assets")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
@@ -3030,6 +3030,12 @@ async def get_analytics_templates(request: Request, user: dict = Depends(get_cur
 async def serve_spa(full_path: str):
     if full_path.startswith("api/") or full_path.startswith("analytics") or full_path.startswith("create-order") or full_path.startswith("verify-payment"):
         raise HTTPException(status_code=404, detail="Not Found")
+        
+    # Check if this is a landing page static file
+    landing_asset_path = os.path.join(STATIC_DIR, "landing", "out", full_path)
+    if os.path.exists(landing_asset_path) and os.path.isfile(landing_asset_path):
+        return FileResponse(landing_asset_path)
+        
     html_path = os.path.join(STATIC_DIR, "Madhav_Drafting_Hub.html")
     if not os.path.exists(html_path):
         raise HTTPException(status_code=404, detail="Frontend not built.")
