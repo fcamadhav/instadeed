@@ -59,7 +59,7 @@ export default function Hero() {
           >
             <motion.div variants={itemLeft} className="mb-6">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-1.5 text-xs font-semibold tracking-wider text-primary shadow-sm">
-                Gautam Buddha Nagar&apos;s Most Trusted Platform
+                INDIA'S FIRST ONLINE REGISTRY PLATFORM
               </span>
             </motion.div>
 
