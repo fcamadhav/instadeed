@@ -5,19 +5,19 @@ import { Users, Star, Clock, ShieldCheck } from 'lucide-react'
 
 const stats = [
   {
-    value: '10,000+',
-    label: 'Happy Customers',
+    value: 'Fast',
+    label: 'Delivery',
+    icon: Clock,
+  },
+  {
+    value: 'Easy',
+    label: 'Online Process',
     icon: Users,
   },
   {
-    value: '4.9/5',
-    label: 'Customer Rating',
+    value: 'Expert',
+    label: 'Legal Support',
     icon: Star,
-  },
-  {
-    value: '20 Min',
-    label: 'Average Delivery',
-    icon: Clock,
   },
   {
     value: '100%',

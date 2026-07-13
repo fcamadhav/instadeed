@@ -49,7 +49,7 @@
 
 ### Why Single-File Frontend
 - Early-stage simplicity
-- No build tooling beyond Babel
+- Uses pre-compiled `React.createElement` code embedded directly into the HTML file (no Babel-in-browser). The code is formatted directly within the single file to maintain diffability without requiring an external build step.
 - Tailwind CDN eliminates CSS pipeline
 
 ### Why FPDF

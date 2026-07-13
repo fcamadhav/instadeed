@@ -2,21 +2,26 @@ import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'luc
 
 const footerLinks = {
   quick: [
-    { label: 'Home', href: '#home' },
-    { label: 'Services', href: '#services' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Coverage', href: '#coverage' },
-    { label: 'About', href: '#' },
-    { label: 'Contact', href: '#' },
+    { label: 'Home', href: '/#home' },
+    { label: 'Services', href: '/#services' },
+    { label: 'Pricing', href: '/#pricing' },
+    { label: 'How It Works', href: '/#how-it-works' },
+    { label: 'Coverage', href: '/#coverage' },
+    { label: 'About', href: '/about' },
+    { label: 'Contact', href: '/contact' },
   ],
   services: [
-    { label: 'Rent Agreement', href: '#' },
-    { label: 'Registry', href: '#' },
-    { label: 'Mutation', href: '#' },
-    { label: 'Transfer Memorandum (TM)', href: '#' },
-    { label: 'Permission to Mortgage (PTM)', href: '#' },
-    { label: 'GNIDA 5-in-1 Package', href: '#' },
+    { label: 'Rent Agreement', href: '/services/rent-agreement' },
+    { label: 'Registry', href: '/services/registry' },
+    { label: 'Mutation', href: '/services/mutation' },
+    { label: 'Transfer Memorandum (TM)', href: '/services/tm' },
+    { label: 'Permission to Mortgage (PTM)', href: '/services/ptm' },
+    { label: 'GNIDA 5-in-1 Package', href: '/services/gnida' },
+  ],
+  legal: [
+    { label: 'Privacy Policy', href: '/privacy' },
+    { label: 'Terms of Service', href: '/terms' },
+    { label: 'Refund & Cancellation', href: '/refund' },
   ],
 }
 
@@ -39,7 +44,7 @@ export default function Footer() {
               One platform for all your property document needs. Fast, legal, and
               accepted by all major authorities in Gautam Buddha Nagar.
             </p>
-            <div className="flex gap-4">
+            {/* <div className="flex gap-4">
               <a href="#" className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-50 text-muted transition-colors hover:bg-primary hover:text-white border border-border">
                 <Facebook className="h-4 w-4" />
               </a>
@@ -52,7 +57,7 @@ export default function Footer() {
               <a href="#" className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-50 text-muted transition-colors hover:bg-primary hover:text-white border border-border">
                 <Linkedin className="h-4 w-4" />
               </a>
-            </div>
+            </div> */}
           </div>
 
           {/* Quick Links */}
@@ -99,7 +104,7 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-3">
                 <Phone className="mt-0.5 h-4 w-4 shrink-0 text-muted" />
-                <span className="text-sm font-medium text-muted">+91 98765 43210</span>
+                <span className="text-sm font-medium text-muted">+91 88999 99321</span>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-muted" />
@@ -112,9 +117,21 @@ export default function Footer() {
         </div>
 
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
-          <p className="text-xs font-medium text-muted text-center sm:text-left w-full">
+          <p className="text-xs font-medium text-muted text-center sm:text-left">
             © 2026 INSTADEED. All rights reserved.
           </p>
+          <ul className="flex flex-wrap items-center justify-center gap-6 sm:justify-end">
+            {footerLinks.legal.map((link) => (
+              <li key={link.label}>
+                <a
+                  href={link.href}
+                  className="text-xs font-medium text-muted transition-colors hover:text-primary"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </footer>
