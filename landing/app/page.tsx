@@ -3,8 +3,7 @@
 import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
 import TrustStrip from "@/components/trust-strip";
-import Authorities from "@/components/authorities";
-import Services from "@/components/services";
+import AuthoritySections from "@/components/authority-sections";
 import WhyChooseUs from "@/components/why-choose-us";
 import BrokerComparison from "@/components/broker-comparison";
 import HowItWorks from "@/components/how-it-works";
@@ -19,8 +18,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <TrustStrip />
-      <Authorities />
-      <Services />
+      <AuthoritySections />
       <WhyChooseUs />
       <BrokerComparison />
       <HowItWorks />

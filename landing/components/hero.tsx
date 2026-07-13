@@ -67,9 +67,9 @@ export default function Hero() {
               variants={itemLeft}
               className="text-5xl font-extrabold leading-tight tracking-tight text-dark sm:text-6xl lg:text-7xl"
             >
-              One Platform.<br />
-              All Property Documents.<br />
-              Delivered in <span className="text-primary">20 Minutes</span>.
+              GNIDA, YEIDA &<br />
+              Noida Authority<br />
+              Documentation in <span className="text-primary">20 Mins</span>.
             </motion.h1>
 
             <motion.p
